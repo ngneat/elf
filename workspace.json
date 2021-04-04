@@ -1,0 +1,10 @@
+{
+  
+  
+  "version": 2,
+  
+  "projects": {},
+  "cli": {
+    "defaultCollection": "@nrwl/workspace"
+  }
+}

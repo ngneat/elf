@@ -1,0 +1,42 @@
+{
+  "name": "eleanor",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "nx": "nx",
+    "start": "nx serve",
+    "build": "nx build",
+    "test": "nx test",
+    "lint": "nx workspace-lint && nx lint",
+    "e2e": "nx e2e",
+    "affected:apps": "nx affected:apps",
+    "affected:libs": "nx affected:libs",
+    "affected:build": "nx affected:build",
+    "affected:e2e": "nx affected:e2e",
+    "affected:test": "nx affected:test",
+    "affected:lint": "nx affected:lint",
+    "affected:dep-graph": "nx affected:dep-graph",
+    "affected": "nx affected",
+    "format": "nx format:write",
+    "format:write": "nx format:write",
+    "format:check": "nx format:check",
+    "update": "nx migrate latest",
+    "workspace-generator": "nx workspace-generator",
+    "dep-graph": "nx dep-graph",
+    "help": "nx help"
+  },
+  "private": true,
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "@nrwl/tao": "11.6.1",
+    "@nrwl/cli": "11.6.1",
+    "@nrwl/workspace": "11.6.1",
+    "@types/node": "14.14.33",
+    "dotenv": "8.2.0",
+    "ts-node": "~9.1.1",
+    "typescript": "~4.0.3",
+    "prettier": "2.2.1"
+  }
+}
