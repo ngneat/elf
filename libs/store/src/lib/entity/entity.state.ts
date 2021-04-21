@@ -13,16 +13,9 @@ export class EntitiesRef<EntitiesKey extends string = any, IdsKey extends string
   }
 }
 
-export type EntitiesRecord = Record<any, any>;
-
-export interface BaseEntityOptions<Ref extends EntitiesRef> {
-  ref?: Ref;
-}
-
 export const defaultEntitiesRef = new EntitiesRef({ entitiesKey: defaultEntitiesKey, idsKey: defaultIdsKey });
-export type DefaultEntitiesRef = typeof defaultEntitiesRef;
 
-export const UIRef = new EntitiesRef({
+export const entitiesUIRef = new EntitiesRef({
   entitiesKey: '$UIEntities',
   idsKey: '$UIIds'
 });
@@ -34,7 +27,7 @@ export function withEntitiesFactory<S extends EntitiesRecord,
     [ref.entitiesKey]: {},
     [ref.idsKey]: []
   } as unknown as {
-    [P in Ref['entitiesKey'] | Ref['idsKey'] ] : S[P]
+    [P in Ref['entitiesKey'] | Ref['idsKey']]: S[P]
   };
 }
 
@@ -47,11 +40,9 @@ export function withEntities<EntityType, IdType extends PropertyKey>(config: Par
   };
 }
 
-// State<UIEntityState<EntityType, IdType>, Config>
-
 export function withUIEntities<EntityType, IdType extends PropertyKey>(config: Partial<Config> = {}) {
   return {
-    state: withEntitiesFactory<UIEntityState<EntityType, IdType>, typeof UIRef>(UIRef),
+    state: withEntitiesFactory<UIEntityState<EntityType, IdType>, typeof entitiesUIRef>(entitiesUIRef),
     config: {
       idKey: config?.idKey ?? 'id'
     }
@@ -79,5 +70,10 @@ interface Config {
 
 export type getEntityType<S extends EntitiesRecord, Ref extends EntitiesRef> = S[Ref['entitiesKey']][0];
 export type getIdType<S extends EntitiesRecord, Ref extends EntitiesRef> = S[Ref['idsKey']][0];
-export type Project<E, R> = (entity: E) => R;
 export type ItemPredicate<Item> = (item: Item, index?: number) => boolean;
+export type EntitiesRecord = Record<any, any>;
+export type DefaultEntitiesRef = typeof defaultEntitiesRef;
+
+export interface BaseEntityOptions<Ref extends EntitiesRef> {
+  ref?: Ref;
+}

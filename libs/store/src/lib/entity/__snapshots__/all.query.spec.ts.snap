@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`selectAll should query all 1`] = `Array []`;
+
+exports[`selectAll should query all 2`] = `
+Array [
+  Object {
+    "completed": false,
+    "id": 2,
+    "title": "todo 2",
+  },
+]
+`;
