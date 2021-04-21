@@ -1,49 +1,56 @@
 import { coerceArray, isFunction } from '../core/utils';
-import { EntityState, getEntityType, getIdType } from './entity.state';
+import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getEntityType, getIdType } from './entity.state';
 import { Reducer, Store } from '@eleanor/store';
 import { OrArray } from '../core/types';
 
-interface Options<EntityState> {
-  createFactory(id: getIdType<EntityState>, updatedState: getEntityType<EntityState>): getEntityType<EntityState>;
+interface Options<S extends EntitiesRecord,
+  Ref extends EntitiesRef,
+  U,
+  EntityType = getEntityType<S, Ref>> extends BaseEntityOptions<Ref> {
+  createFactory(id: getIdType<S, Ref>, updatedState: U extends ((entity: EntityType) => EntityType) ? EntityType : Partial<EntityType>): EntityType;
 }
 
 export type UpdateFn<Entity> = Partial<Entity> | ((entity: Entity) => Entity);
 
-function toModel<Entity>(entity: UpdateFn<Entity>, state: Entity): Entity {
-  if(isFunction(entity)) {
-    return entity(state);
+function toModel<Entity>(updater: UpdateFn<Entity>, entity: Entity): Entity {
+  if(isFunction(updater)) {
+    return updater(entity);
   }
 
   return {
-    ...state,
-    ...entity
+    ...entity,
+    ...updater
   };
 }
 
-export function updateEntity<S extends EntityState>(ids: OrArray<getIdType<S>>, updateFn: UpdateFn<getEntityType<S>>, options?: Options<S>): Reducer<S> {
+export function updateEntity<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef, U = UpdateFn<getEntityType<S, Ref>>>(
+  ids: OrArray<getIdType<S, Ref>>,
+  updateFn: U,
+  options: Options<S, Ref, U>
+): Reducer<S> {
   return function reducer(state: S) {
-    const updatedEntities: EntityState['$entities'] = {};
-    const createFactory = options?.createFactory;
-    const newIds: EntityState['$ids'] = [];
+    const { ref: { entitiesKey, idsKey } = defaultEntitiesRef, createFactory } = options;
+    const updatedEntities = {} as Record<getIdType<S, Ref>, getEntityType<S, Ref>>;
+    const newIds = [] as getIdType<S, Ref>[];
 
     for(const id of coerceArray(ids)) {
-      if(id in state.$entities) {
-        updatedEntities[id] = toModel<getEntityType<S>>(updateFn, state.$entities[id]);
+      if(Object.prototype.hasOwnProperty.call(state[entitiesKey], id)) {
+        updatedEntities[id] = toModel<getEntityType<S, Ref>>(updateFn, state[entitiesKey][id]);
       } else if(createFactory) {
-        updatedEntities[id] = createFactory(id, toModel(updateFn, state.$entities[id]));
+        updatedEntities[id] = createFactory(id, toModel<getEntityType<S, Ref>>(updateFn, {} as getEntityType<S, Ref>));
         newIds.push(id);
       }
     }
 
     return {
       ...state,
-      $ids: newIds.length ? [...state.$ids, ...newIds ] : ids,
-      $entities: { ...state.$entities, ...updatedEntities }
+      [idsKey]: newIds.length ? [...state[idsKey], ...newIds] : ids,
+      [entitiesKey]: { ...state[entitiesKey], ...updatedEntities }
     };
   };
 }
 
-export function updateAll<S extends EntityState>(updateFn: UpdateFn<getEntityType<S>>, options?: Options<S>): Reducer<S> {
+export function updateAll<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef, U = UpdateFn<getEntityType<S, Ref>>>(updateFn: UpdateFn<getEntityType<S, Ref>>, options: Options<S, Ref, U>): Reducer<S> {
   return function reducer(state: S, store: Store) {
     return updateEntity(state.$ids, updateFn, options)(state, store);
   };

@@ -1,24 +1,39 @@
-import { EntityState, getEntityType, getIdKey } from './entity.state';
+import { BaseEntityOptions, DefaultEntitiesRef, defaultEntitiesRef, EntitiesRecord, EntitiesRef, getEntityType, getIdKey, getIdType } from './entity.state';
 import { Reducer, Store } from '@eleanor/store';
 import { coerceArray } from '../core/utils';
 import { OrArray } from '../core/types';
 
-interface Options {
-  prepend: boolean;
-  overwrite: boolean;
-}
-
-export function addEntity<S extends EntityState>(entities: OrArray<getEntityType<S>>, options?: Partial<Options>): Reducer<S> {
+/**
+ *
+ * Add entities to the store
+ *
+ * store.reduce(addEntity(entity))
+ *
+ * store.reduce(addEntity([entity, entity]))
+ *
+ * store.reduce(addEntity([entity, entity]), { overwrite: true })
+ *
+ * store.reduce(addEntity([entity, entity]), { prepend: true })
+ */
+export function addEntity<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(
+  entities: OrArray<getEntityType<S, Ref>>,
+  options: {
+    prepend?: boolean;
+    overwrite?: boolean;
+  } & BaseEntityOptions<Ref> = {}
+): Reducer<S> {
   return function reducer(state: S, store: Store) {
-    const { overwrite, prepend } = { overwrite: false, prepend: false, ...options } as Options;
+    const { overwrite = false, prepend = false, ref = defaultEntitiesRef } = options;
 
-    const toObject: EntityState['$entities'] = {};
-    const ids: EntityState['$ids'] = [];
-    const idKey = getIdKey(store);
+    const { entitiesKey, idsKey } = ref!;
+
+    const toObject = {} as Record<getIdType<S, Ref>, getEntityType<S, Ref>>;
+    const ids = [] as getIdType<S, Ref>;
+    const idKey = getIdKey<getIdType<S, Ref>>(store);
 
     for(const entity of coerceArray(entities)) {
       const id = entity[idKey];
-      if(!overwrite && id in state.$entities) continue;
+      if(!overwrite && id in state[entitiesKey]) continue;
 
       ids.push(id);
       toObject[id] = entity;
@@ -28,8 +43,8 @@ export function addEntity<S extends EntityState>(entities: OrArray<getEntityType
 
     return {
       ...state,
-      $entities: overwrite ? toObject : { ...state.$entities, ...toObject },
-      $ids: overwrite ? ids : prepend ? [...ids, ...state.$ids] : [...state.$ids, ...ids]
+      [entitiesKey]: overwrite ? toObject : { ...state[entitiesKey], ...toObject },
+      [idsKey]: overwrite ? ids : prepend ? [...ids, ...state[idsKey]] : [...state[idsKey], ...ids]
     };
   };
 }

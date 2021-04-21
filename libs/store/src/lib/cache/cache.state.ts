@@ -1,13 +1,13 @@
 import { EmptyConfig, State } from '../core/state';
 
 export type CacheState = {
-  $cache: boolean;
+  $cache: 'none' | 'partial' | 'full';
 }
 
 export function withCache(): State<CacheState, EmptyConfig> {
   return {
     state: {
-      $cache: false
+      $cache: 'none'
     },
     config: {}
   };

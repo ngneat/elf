@@ -1,25 +1,38 @@
 import { coerceArray } from '../core/utils';
-import { EntityState, getEntityType, getIdKey, getIdType } from './entity.state';
+import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getEntityType, getIdKey, getIdType } from './entity.state';
 import { Reducer, Store } from '@eleanor/store';
 import { OrArray } from '../core/types';
 
-export function replaceEntity<S extends EntityState>(ids: OrArray<getIdType<S>>, entity: getEntityType<S>): Reducer<S> {
+/**
+ *
+ * Replace entities in the store
+ *
+ * store.reduce(replaceEntity(1, { entity }))
+ *
+ * store.reduce(replaceEntity([1, 2, 3], { entity }))
+ *
+ */
+export function replaceEntity<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(
+  ids: OrArray<getIdType<S, Ref>>,
+  entity: getEntityType<S, Ref>,
+  options: BaseEntityOptions<Ref> = {}
+): Reducer<S> {
   return function reducer(state: S, store: Store) {
-    let updatedEntities: EntityState['$entities'] = {};
-    const idKey = getIdKey(store);
+    const { ref: { entitiesKey } = defaultEntitiesRef } = options;
+
+    const updatedEntities = {} as Record<getIdType<S, Ref>, getEntityType<S, Ref>>;
+    const idKey = getIdKey<getIdType<S, Ref>>(store);
 
     for(const id of coerceArray(ids)) {
-      updatedEntities = {
-        [id]: {
-          [idKey]: id,
-          ...entity
-        }
+      updatedEntities[id] = {
+        [idKey]: id,
+        ...entity
       };
     }
 
     return {
       ...state,
-      $entities: { ...state.$entities, ...updatedEntities }
+      [entitiesKey]: { ...state[entitiesKey], ...updatedEntities }
     };
   };
 }

@@ -1,20 +1,65 @@
-import { State } from '../core/state';
 import { Store } from '@eleanor/store';
 
-export function withEntities<EntityType, IdType extends PropertyKey>(config: Partial<Config> = {}): State<EntityState<EntityType, IdType>, Config> {
+export const defaultEntitiesKey = '$entities' as const;
+export const defaultIdsKey = '$ids' as const;
+
+export class EntitiesRef<EntitiesKey extends string = any, IdsKey extends string = any> {
+  entitiesKey: EntitiesKey;
+  idsKey: IdsKey;
+
+  constructor(private config: { entitiesKey: EntitiesKey, idsKey: IdsKey }) {
+    this.entitiesKey = config.entitiesKey ?? defaultEntitiesKey;
+    this.idsKey = config.idsKey ?? defaultIdsKey;
+  }
+}
+
+export type EntitiesRecord = Record<any, any>;
+
+export interface BaseEntityOptions<Ref extends EntitiesRef> {
+  ref?: Ref;
+}
+
+export const defaultEntitiesRef = new EntitiesRef({ entitiesKey: defaultEntitiesKey, idsKey: defaultIdsKey });
+export type DefaultEntitiesRef = typeof defaultEntitiesRef;
+
+export const UIRef = new EntitiesRef({
+  entitiesKey: '$UIEntities',
+  idsKey: '$UIIds'
+});
+
+export function withEntitiesFactory<S extends EntitiesRecord,
+  Ref extends EntitiesRef,
+  >(ref: Ref) {
   return {
-    state: {
-      $entities: {} as EntityState<EntityType, IdType>['$entities'],
-      $ids: []
-    },
+    [ref.entitiesKey]: {},
+    [ref.idsKey]: []
+  } as unknown as {
+    [P in Ref['entitiesKey'] | Ref['idsKey'] ] : S[P]
+  };
+}
+
+export function withEntities<EntityType, IdType extends PropertyKey>(config: Partial<Config> = {}) {
+  return {
+    state: withEntitiesFactory<EntityState<EntityType, IdType>, typeof defaultEntitiesRef>(defaultEntitiesRef),
     config: {
       idKey: config?.idKey ?? 'id'
     }
   };
 }
 
-export function getIdKey(store: Store) {
-  return store.getConfig<Config>().idKey;
+// State<UIEntityState<EntityType, IdType>, Config>
+
+export function withUIEntities<EntityType, IdType extends PropertyKey>(config: Partial<Config> = {}) {
+  return {
+    state: withEntitiesFactory<UIEntityState<EntityType, IdType>, typeof UIRef>(UIRef),
+    config: {
+      idKey: config?.idKey ?? 'id'
+    }
+  };
+}
+
+export function getIdKey<T>(store: Store): T {
+  return store.getConfig<Config>().idKey as unknown as T;
 }
 
 export interface EntityState<EntityType = any, IdType extends PropertyKey = any> {
@@ -22,11 +67,17 @@ export interface EntityState<EntityType = any, IdType extends PropertyKey = any>
   $ids: Array<IdType>;
 }
 
+export interface UIEntityState<EntityType = any,
+  IdType extends PropertyKey = any> {
+  $UIEntities: Record<IdType, EntityType>;
+  $UIIds: Array<IdType>;
+}
+
 interface Config {
   idKey: string;
 }
 
-export type getEntityType<S> = S extends EntityState<infer I> ? I : never;
-export type getIdType<S> = S extends EntityState<any, infer I> ? I : never;
+export type getEntityType<S extends EntitiesRecord, Ref extends EntitiesRef> = S[Ref['entitiesKey']][0];
+export type getIdType<S extends EntitiesRecord, Ref extends EntitiesRef> = S[Ref['idsKey']][0];
 export type Project<E, R> = (entity: E) => R;
 export type ItemPredicate<Item> = (item: Item, index?: number) => boolean;

@@ -1,6 +1,6 @@
 import { OperatorFunction, pipe } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { EntityState, getEntityType, ItemPredicate } from './entity.state';
+import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getEntityType, getIdType, ItemPredicate } from './entity.state';
 import { untilEntitiesChanges } from './all.query';
 import { select } from '../core/queries';
 
@@ -12,8 +12,9 @@ import { select } from '../core/queries';
  * store.pipe(selectCount())
  *
  */
-export function selectCount<T extends EntityState>(): OperatorFunction<T, number> {
-  return select(state => state.$ids.length);
+export function selectCount<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(options: BaseEntityOptions<Ref>): OperatorFunction<S, number> {
+  const { ref: { idsKey } = defaultEntitiesRef } = options;
+  return select(state => state[idsKey].length);
 }
 
 /**
@@ -24,10 +25,12 @@ export function selectCount<T extends EntityState>(): OperatorFunction<T, number
  * store.pipe(selectCount(entity => entity.completed))
  *
  */
-export function selectCountByPredicate<T extends EntityState>(predicate: ItemPredicate<getEntityType<T>>): OperatorFunction<T, number> {
+export function selectCountByPredicate<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(predicate: ItemPredicate<getEntityType<S, Ref>>, options: BaseEntityOptions<Ref>): OperatorFunction<S, number> {
+  const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
+
   return pipe(
-    untilEntitiesChanges(),
-    map(state => state.$ids.filter((id) => predicate(state.$entities[id])).length),
+    untilEntitiesChanges(entitiesKey),
+    map(state => state[idsKey].filter((id: getIdType<S, Ref>) => predicate(state[entitiesKey][id])).length),
     distinctUntilChanged()
   );
 }

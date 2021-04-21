@@ -1,13 +1,24 @@
 import { coerceArray } from '../core/utils';
-import { EntityState, getIdType } from './entity.state';
+import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getIdType } from './entity.state';
 import { Reducer } from '@eleanor/store';
 import { OrArray } from '../core/types';
 
-export function removeEntity<S extends EntityState>(ids: OrArray<getIdType<S>>): Reducer<S> {
+/**
+ *
+ * Remove entities from the store
+ *
+ * store.reduce(removeEntity(1)
+ *
+ * store.reduce(removeEntity([1, 2, 3])
+ *
+ */
+export function removeEntity<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(ids: OrArray<getIdType<S, Ref>>, options: BaseEntityOptions<Ref> = {}): Reducer<S> {
   return function reducer(state: S) {
+    const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
+
     const idsToRemove = coerceArray(ids);
-    const newEntities = { ...state.$entities };
-    const newIds = state.$ids.filter(id => !idsToRemove.includes(id));
+    const newEntities = { ...state[entitiesKey] };
+    const newIds = state[idsKey].filter((id: getIdType<S, Ref>) => !idsToRemove.includes(id));
 
     for(const id of idsToRemove) {
       delete newEntities[id];
@@ -15,18 +26,27 @@ export function removeEntity<S extends EntityState>(ids: OrArray<getIdType<S>>):
 
     return {
       ...state,
-      $entities: newEntities,
-      $ids: newIds
+      [entitiesKey]: newEntities,
+      [idsKey]: newIds
     };
   };
 }
 
-export function removeAll<S extends EntityState>(): Reducer<S> {
+/**
+ *
+ * Remove all entities from the store
+ *
+ * store.reduce(removeAll())
+ *
+ */
+export function removeAll<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(options: BaseEntityOptions<Ref> = {}): Reducer<S> {
   return function reducer(state: S) {
+    const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
+
     return {
       ...state,
-      $entities: {},
-      $ids: []
+      [entitiesKey]: {},
+      [idsKey]: []
     };
   };
 }

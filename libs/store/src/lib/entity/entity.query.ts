@@ -1,42 +1,61 @@
 import { OperatorFunction } from 'rxjs';
 import { select } from '../core/queries';
 import { isString, isUndefined } from '../core/utils';
-import { EntityState, getEntityType, getIdType, Project } from './entity.state';
+import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getEntityType, getIdType } from './entity.state';
 
+interface Options extends BaseEntityOptions<any> {
+  pluck?: string | ((entity: unknown) => any);
+}
 
 /**
- *
- * Select an entity or a slice of an entity
+ * Select entity from the store
  *
  * @example
  *
- * store.pipe(selectEntity(1))
+ * store.pipe(selectEntity(id, { pluck: 'title' })
  *
  */
-export function selectEntity<T extends EntityState>(id: getIdType<T>): OperatorFunction<T, getEntityType<T> | undefined>;
-/**
- * @example
- *
- * store.pipe(selectEntity(1, 'key'))
- *
- */
-export function selectEntity<T extends EntityState, K extends keyof getEntityType<T>>(id: getIdType<T>, key: K): OperatorFunction<T, getEntityType<T>[K] | undefined>;
-/**
- * @example
- *
- * store.pipe(selectEntity(1, entity => entity.title))
- *
- */
-export function selectEntity<T extends EntityState, R>(id: getIdType<T>, project: Project<getEntityType<T>, R>): OperatorFunction<T, R>;
+export function selectEntity<S extends EntitiesRecord, K extends keyof getEntityType<S, Ref>, Ref extends EntitiesRef = DefaultEntitiesRef>(
+  id: getIdType<S, Ref>,
+  options: { pluck: K } & BaseEntityOptions<Ref>
+): OperatorFunction<S, getEntityType<S, Ref>[K]>;
 
-export function selectEntity<T extends EntityState, R>(id: any, projectOrKey?: any): any {
-  return select<T, R>(state => getEntity(state.$entities, id, projectOrKey));
+/**
+ * Select entity from the store
+ *
+ * @example
+ *
+ * store.pipe(selectEntity(id, { pluck: e => e.title })
+ *
+ */
+export function selectEntity<S extends EntitiesRecord, R, Ref extends EntitiesRef = DefaultEntitiesRef>(
+  id: getIdType<S, Ref>,
+  options: { pluck: (entity: getEntityType<S, Ref>) => R } & BaseEntityOptions<Ref>
+): OperatorFunction<S, R>;
+
+/**
+ * Select entity from the store
+ *
+ * @example
+ *
+ * store.pipe(selectEntity(id)
+ *
+ */
+export function selectEntity<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(
+  id: getIdType<S, Ref>,
+  options?: BaseEntityOptions<Ref>
+): OperatorFunction<S, getEntityType<S, Ref>>;
+
+export function selectEntity<S extends EntitiesRecord, R>(id: any, options: Options = {}) {
+  const { ref: { entitiesKey, pluck } = defaultEntitiesRef } = options;
+
+  return select<S, R>(state => getEntity(state[entitiesKey], id, pluck));
 }
 
 export function getEntity(
-  entities: EntityState['$entities'],
+  entities: EntitiesRecord,
   id: string | number,
-  projectOrKey: Project<any, any> | string
+  pluck: Options['pluck']
 ) {
   const entity = entities[id];
 
@@ -44,13 +63,13 @@ export function getEntity(
     return undefined;
   }
 
-  if(!projectOrKey) {
+  if(!pluck) {
     return entity;
   }
 
-  if(isString(projectOrKey)) {
-    return entity[projectOrKey];
+  if(isString(pluck)) {
+    return entity[pluck];
   }
 
-  return projectOrKey(entity);
+  return pluck(entity);
 }
