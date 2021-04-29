@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export type Reducer<State> = (state: State, store: Store) => State;
 
@@ -38,7 +38,35 @@ export class Store<SDef extends StoreDef = any, State = SDef['state']> extends B
     super.next(this.currentValue);
   }
 
-  destroy() {
-    // stores.removeStore(this.name);
+  combine<R extends Observables>(observables: R): Observable<ReturnTypes<R>> {
+    let hasChange = true;
+    const buffer: any = [];
+
+    return new Observable(observer => {
+      observables.forEach((query, i) => observer.add(
+        query.subscribe(value => {
+          buffer[i] = value;
+          hasChange = true;
+        })));
+
+      return this.subscribe({
+        next() {
+          if(hasChange) {
+            observer.next(buffer);
+            hasChange = false;
+          }
+        },
+        error(e) {
+          observer.error(e);
+        },
+        complete() {
+          observer.complete();
+        }
+      });
+    });
+
   }
 }
+
+type ReturnTypes<T extends Observable<any>[]> = { [P in keyof T]: T[P] extends Observable<infer R> ? R : never };
+type Observables = [Observable<any>] | Observable<any>[];
