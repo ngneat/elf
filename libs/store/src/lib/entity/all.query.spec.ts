@@ -1,12 +1,12 @@
-import { createEntitieStore, createTodo } from '../mocks/stores.mock';
+import { createEntitiesStore, createTodo } from '../mocks/stores.mock';
 import { addEntity } from './add.mutation';
 import { selectAll } from './all.query';
 
 describe('selectAll', () => {
-  let store: ReturnType<typeof createEntitieStore>;
+  let store: ReturnType<typeof createEntitiesStore>;
 
   beforeEach(() => {
-    store = createEntitieStore();
+    store = createEntitiesStore();
   });
 
   it('should query all', () => {

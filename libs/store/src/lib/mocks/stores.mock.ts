@@ -24,4 +24,4 @@ export function toMatchSnapshot(expect: any, store: Store) {
   return expect(store.getValue()).toMatchSnapshot();
 }
 
-export const createEntitieStore = () => new Store({ state, name: 'todos', config });
+export const createEntitiesStore = () => new Store({ state, name: 'todos', config });
