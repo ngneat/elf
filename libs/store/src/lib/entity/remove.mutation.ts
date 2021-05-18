@@ -1,7 +1,7 @@
 import { coerceArray } from '../core/utils';
 import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getIdType } from './entity.state';
-import { Reducer } from '@eleanor/store';
 import { OrArray } from '../core/types';
+import { Reducer } from '../core/store';
 
 /**
  *

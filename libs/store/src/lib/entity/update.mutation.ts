@@ -1,7 +1,7 @@
 import { coerceArray, isFunction } from '../core/utils';
 import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getEntityType, getIdType } from './entity.state';
-import { Reducer, Store } from '@eleanor/store';
 import { OrArray } from '../core/types';
+import { Reducer, Store } from '../core/store';
 
 interface Options<S extends EntitiesRecord,
   Ref extends EntitiesRef,

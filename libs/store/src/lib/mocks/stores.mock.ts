@@ -1,6 +1,6 @@
 import { createState } from '../core/state';
+import { Store } from '../core/store';
 import { withEntities } from '../entity/entity.state';
-import { Store } from '@eleanor/store';
 
 export interface Todo {
   id: number;

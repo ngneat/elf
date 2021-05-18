@@ -1,4 +1,4 @@
-import { Store } from '@eleanor/store';
+import { Store } from '../core/store';
 
 export const defaultEntitiesKey = '$entities' as const;
 export const defaultIdsKey = '$ids' as const;
