@@ -28,9 +28,7 @@ export function updateEntity<S extends EntitiesRecord, Ref extends EntitiesRef =
     const updatedEntities = {} as Record<getIdType<S, Ref>, getEntityType<S, Ref>>;
 
     for(const id of coerceArray(ids)) {
-      if(Object.prototype.hasOwnProperty.call(state[entitiesKey], id)) {
-        updatedEntities[id] = toModel<getEntityType<S, Ref>>(updateFn, state[entitiesKey][id]);
-      }
+      updatedEntities[id] = toModel<getEntityType<S, Ref>>(updateFn, state[entitiesKey][id]);
     }
 
     return {
@@ -40,7 +38,7 @@ export function updateEntity<S extends EntitiesRecord, Ref extends EntitiesRef =
   };
 }
 
-export function updateAll<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef, U = UpdateFn<getEntityType<S, Ref>>>(updateFn: UpdateFn<getEntityType<S, Ref>>, options: Options<Ref>): Reducer<S> {
+export function updateAll<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef, U = UpdateFn<getEntityType<S, Ref>>>(updateFn: U, options: Options<Ref>): Reducer<S> {
   return function reducer(state: S, store: Store) {
     return updateEntity(state.$ids, updateFn, options)(state, store);
   };
