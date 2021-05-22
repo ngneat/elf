@@ -1,7 +1,7 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { produce } from 'immer';
 
-export type Reducer<State> = (state: State, store: Store) => State | void;
+export type Reducer<State> = (state: State, store: Store) => State;
 
 export interface StoreDef<State = any> {
   name: string;
@@ -30,15 +30,16 @@ export class Store<SDef extends StoreDef = any, State = SDef['state']> extends B
   }
 
   reduce(...reducers: Array<Reducer<State>>) {
-    this.currentValue = reducers.reduce((value, reducer) => {
-      value = produce(value, draft => {
-        return reducer(draft as State, this) as any;
-      });
+    const nextState = reducers.reduce((value, reducer) => {
+      value = reducer(value, this);
 
       return value;
     }, this.currentValue);
 
-    super.next(this.currentValue);
+    if(nextState !== this.currentValue) {
+      super.next(nextState);
+    }
+
   }
 
   combine<R extends Observables>(observables: R): Observable<ReturnTypes<R>> {
