@@ -7,9 +7,14 @@ import { withProps } from '../props/props.state';
 import { addEntity } from './add.mutation';
 import { select } from '../core/queries';
 import { selectAll } from './all.query';
+
 import { updateEntity } from './update.mutation';
+import { stateFactory } from '../core/props-factory';
+import { StatusState } from '../core/types';
 
 type UIEntity = { id: number; open: boolean };
+
+export const {  selectStatus, setStatus, withStatus } = stateFactory<{ status: StatusState }>('status')
 
 const { state, config } = createState(
   withEntities<Todo, Todo['id']>(),
@@ -19,7 +24,7 @@ const { state, config } = createState(
 
 const store = new Store({ state, name: 'todos', config });
 
-function change<S>(updater: (state: S) => void): (state: S) => S {
+function write<S>(updater: (state: S) => void): (state: S) => S {
   return function(state: S) {
     return produce(state, draft => {
       updater(draft as S);
@@ -31,7 +36,7 @@ it('', function() {
    store.pipe(select(state => state.id )).subscribe(console.log);
 
    store.reduce(
-     change(state => {
+     write(state => {
        state.id = 1;
      })
    )
@@ -40,7 +45,7 @@ it('', function() {
 it('sho', function() {
 
   store.reduce(
-    change(state => {
+    write(state => {
       state.id = 3;
     }),
     addEntity(createTodo(1)),
@@ -63,13 +68,13 @@ it('sho', function() {
   });
 
   store.reduce(
-    change(state => {
+    write(state => {
       state.skills.push({ title: 'foo' });
       state.skills.push({ title: 'bar' });
     }),
     addEntity(createTodo(2)),
     addEntity({ open: true, id: 2 }, { ref: entitiesUIRef }),
-    updateEntity(1, change<Todo>(entity => {
+    updateEntity(1, write<Todo>(entity => {
       entity.title = 'd';
     }))
   );

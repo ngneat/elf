@@ -21,6 +21,7 @@
     "format:write": "nx format:write",
     "format:check": "nx format:check",
     "update": "nx migrate latest",
+    "migaration": "nx migrate --run-migrations",
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help"
@@ -32,12 +33,12 @@
     "tslib": "^2.1.0"
   },
   "devDependencies": {
-    "@nrwl/cli": "11.6.1",
-    "@nrwl/eslint-plugin-nx": "11.6.1",
-    "@nrwl/jest": "11.6.1",
-    "@nrwl/linter": "11.6.1",
-    "@nrwl/tao": "11.6.1",
-    "@nrwl/workspace": "11.6.1",
+    "@nrwl/cli": "12.3.5",
+    "@nrwl/eslint-plugin-nx": "12.3.5",
+    "@nrwl/jest": "12.3.5",
+    "@nrwl/linter": "12.3.5",
+    "@nrwl/tao": "12.3.5",
+    "@nrwl/workspace": "12.3.5",
     "@types/jest": "26.0.22",
     "@types/node": "14.14.37",
     "@typescript-eslint/eslint-plugin": "4.20.0",
@@ -47,7 +48,7 @@
     "eslint-config-prettier": "8.1.0",
     "jest": "26.6.3",
     "prettier": "2.2.1",
-    "ts-jest": "26.5.4",
+    "ts-jest": "26.5.5",
     "ts-node": "~9.1.1",
     "typescript": "~4.2.3"
   }
