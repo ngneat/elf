@@ -1,5 +1,4 @@
 import { BehaviorSubject, Observable } from 'rxjs';
-import { produce } from 'immer';
 
 export type Reducer<State> = (state: State, store: Store) => State;
 
@@ -37,7 +36,8 @@ export class Store<SDef extends StoreDef = any, State = SDef['state']> extends B
     }, this.currentValue);
 
     if(nextState !== this.currentValue) {
-      super.next(nextState);
+      this.currentValue = nextState;
+      super.next(this.currentValue);
     }
 
   }

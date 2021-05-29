@@ -40,6 +40,8 @@ export function updateEntity<S extends EntitiesRecord, Ref extends EntitiesRef =
 
 export function updateAll<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef, U = UpdateFn<getEntityType<S, Ref>>>(updateFn: U, options: Options<Ref>): Reducer<S> {
   return function reducer(state: S, store: Store) {
-    return updateEntity(state.$ids, updateFn, options)(state, store);
+    const { ref: { idsKey } = defaultEntitiesRef } = options;
+
+    return updateEntity(state[idsKey], updateFn, options)(state, store);
   };
 }

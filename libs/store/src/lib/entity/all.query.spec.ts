@@ -1,5 +1,5 @@
 import { createEntitiesStore, createTodo } from '../mocks/stores.mock';
-import { addEntity } from './add.mutation';
+import { addEntities } from './add.mutation';
 import { selectAll } from './all.query';
 
 describe('selectAll', () => {
@@ -15,7 +15,7 @@ describe('selectAll', () => {
     });
 
     store.reduce(
-      addEntity(createTodo(2))
+      addEntities(createTodo(2))
     );
   });
 

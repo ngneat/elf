@@ -7,7 +7,7 @@ import { Reducer } from '../core/store';
  *
  * Remove entities from the store
  *
- * store.reduce(removeEntity(1)
+ * store.reduce(removeEntity(1))
  *
  * store.reduce(removeEntity([1, 2, 3])
  *

@@ -4,7 +4,7 @@ import { createTodo, Todo } from '../mocks/stores.mock';
 import { Store } from '../core/store';
 import produce from 'immer';
 import { withProps } from '../props/props.state';
-import { addEntity } from './add.mutation';
+import { addEntities } from './add.mutation';
 import { select } from '../core/queries';
 import { selectAll } from './all.query';
 
@@ -48,8 +48,8 @@ it('sho', function() {
     write(state => {
       state.id = 3;
     }),
-    addEntity(createTodo(1)),
-    addEntity({ open: true, id: 1 }, { ref: entitiesUIRef })
+    addEntities(createTodo(1)),
+    addEntities({ open: true, id: 1 }, { ref: entitiesUIRef })
   );
 
   store.combine([
@@ -72,8 +72,8 @@ it('sho', function() {
       state.skills.push({ title: 'foo' });
       state.skills.push({ title: 'bar' });
     }),
-    addEntity(createTodo(2)),
-    addEntity({ open: true, id: 2 }, { ref: entitiesUIRef }),
+    addEntities(createTodo(2)),
+    addEntities({ open: true, id: 2 }, { ref: entitiesUIRef }),
     updateEntity(1, write<Todo>(entity => {
       entity.title = 'd';
     }))

@@ -36,27 +36,6 @@ Object {
 }
 `;
 
-exports[`add should overwrite entities 1`] = `
-Object {
-  "$entities": Object {
-    "3": Object {
-      "completed": false,
-      "id": 3,
-      "title": "todo 3",
-    },
-    "4": Object {
-      "completed": false,
-      "id": 4,
-      "title": "todo 4",
-    },
-  },
-  "$ids": Array [
-    3,
-    4,
-  ],
-}
-`;
-
 exports[`add should prepend entities 1`] = `
 Object {
   "$entities": Object {
@@ -84,6 +63,25 @@ Object {
   "$ids": Array [
     3,
     4,
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`add should work with ref 1`] = `
+Object {
+  "$UIEntities": Object {
+    "1": Object {
+      "id": 1,
+      "open": false,
+    },
+    "2": Object {
+      "id": 2,
+      "open": false,
+    },
+  },
+  "$UIIds": Array [
     1,
     2,
   ],

@@ -1,6 +1,6 @@
 import { createState } from '../core/state';
 import { Store } from '../core/store';
-import { withEntities } from '../entity/entity.state';
+import { withEntities, withUIEntities } from '../entity/entity.state';
 
 export interface Todo {
   id: number;
@@ -25,3 +25,16 @@ export function toMatchSnapshot(expect: any, store: Store) {
 }
 
 export const createEntitiesStore = () => new Store({ state, name: 'todos', config });
+
+export function createUITodo(id: number): { id: number, open: boolean } {
+  return {
+    id,
+    open: false
+  }
+}
+
+export const createUIEntityStore = () => new Store(
+  {
+    name: '',
+    ...createState(withUIEntities<{ id: number, open: boolean }, number>())
+  });
