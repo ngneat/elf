@@ -9,14 +9,15 @@ import { select } from '../core/queries';
 import { selectAll } from './all.query';
 
 import { updateEntity } from './update.mutation';
-import { stateFactory } from '../core/props-factory';
+import { stateFactory } from '../core/state-factory';
 import { StatusState } from '../core/types';
 
 type UIEntity = { id: number; open: boolean };
 
-export const {  selectStatus, setStatus, withStatus } = stateFactory<{ status: StatusState }>('status')
+export const {  selectStatus, setStatus, withStatus } = stateFactory<{ status: StatusState }>('status', 'pending')
 
 const { state, config } = createState(
+  withStatus(),
   withEntities<Todo, Todo['id']>(),
   withUIEntities<UIEntity, Todo['id']>(),
   withProps<{ id: number; skills: { title: string }[] }>({ id: 1, skills: [] })
