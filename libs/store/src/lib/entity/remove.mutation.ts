@@ -1,18 +1,18 @@
 import { coerceArray } from '../core/utils';
-import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getIdType } from './entity.state';
+import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getEntityType, getIdType, ItemPredicate } from './entity.state';
 import { OrArray } from '../core/types';
-import { Reducer } from '../core/store';
+import { Reducer, Store } from '../core/store';
 
 /**
  *
  * Remove entities from the store
  *
- * store.reduce(removeEntity(1))
+ * store.reduce(removeEntities(1))
  *
- * store.reduce(removeEntity([1, 2, 3])
+ * store.reduce(removeEntities([1, 2, 3])
  *
  */
-export function removeEntity<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(ids: OrArray<getIdType<S, Ref>>, options: BaseEntityOptions<Ref> = {}): Reducer<S> {
+export function removeEntities<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(ids: OrArray<getIdType<S, Ref>>, options: BaseEntityOptions<Ref> = {}): Reducer<S> {
   return function reducer(state: S) {
     const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
 
@@ -34,12 +34,34 @@ export function removeEntity<S extends EntitiesRecord, Ref extends EntitiesRef =
 
 /**
  *
- * Remove all entities from the store
+ * Remove entities from the store by predicate
  *
- * store.reduce(removeAll())
+ * store.reduce(removeEntitiesByPredicate(entity => entity.count === 0))
+ *
  *
  */
-export function removeAll<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(options: BaseEntityOptions<Ref> = {}): Reducer<S> {
+export function removeEntitiesByPredicate<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(predicate: ItemPredicate<getEntityType<S, Ref>>, options: BaseEntityOptions<Ref> = {}): Reducer<S> {
+  return function reducer(state: S, store: Store) {
+    const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
+    const entities = state[entitiesKey];
+    const ids = state[idsKey].filter((id: getIdType<S, Ref>) => predicate(entities[id]));
+
+    if(ids.length) {
+      return removeEntities(ids, options)(state, store);
+    }
+
+    return state;
+  };
+}
+
+/**
+ *
+ * Remove all entities from the store
+ *
+ * store.reduce(removeAllEntities())
+ *
+ */
+export function removeAllEntities<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(options: BaseEntityOptions<Ref> = {}): Reducer<S> {
   return function reducer(state: S) {
     const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
 

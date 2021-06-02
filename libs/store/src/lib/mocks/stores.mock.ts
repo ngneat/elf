@@ -20,8 +20,8 @@ export function createTodo(id: number): Todo {
   }
 }
 
-export function toMatchSnapshot(expect: any, store: Store) {
-  return expect(store.getValue()).toMatchSnapshot();
+export function toMatchSnapshot(expect: any, store: Store, name?: string) {
+  return expect(store.getValue()).toMatchSnapshot(name);
 }
 
 export const createEntitiesStore = () => new Store({ state, name: 'todos', config });
