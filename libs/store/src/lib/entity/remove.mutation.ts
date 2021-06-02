@@ -21,7 +21,7 @@ export function removeEntities<S extends EntitiesRecord, Ref extends EntitiesRef
     const newIds = state[idsKey].filter((id: getIdType<S, Ref>) => !idsToRemove.includes(id));
 
     for(const id of idsToRemove) {
-      delete newEntities[id];
+      Reflect.deleteProperty(newEntities, id);
     }
 
     return {
