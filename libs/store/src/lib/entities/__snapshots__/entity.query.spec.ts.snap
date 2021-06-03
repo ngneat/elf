@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`selectEntity should select an entity pluck mapper: 2 calls 1`] = `undefined`;
+
+exports[`selectEntity should select an entity pluck mapper: 2 calls 2`] = `"todo 1"`;
+
+exports[`selectEntity should select an entity pluck property: 2 calls 1`] = `undefined`;
+
+exports[`selectEntity should select an entity pluck property: 2 calls 2`] = `"todo 1"`;
+
+exports[`selectEntity should select an entity: 2 calls 1`] = `undefined`;
+
+exports[`selectEntity should select an entity: 2 calls 2`] = `
+Object {
+  "completed": false,
+  "id": 1,
+  "title": "todo 1",
+}
+`;
+
+exports[`selectEntity should work with ref: 2 calls 1`] = `undefined`;
+
+exports[`selectEntity should work with ref: 2 calls 2`] = `
+Object {
+  "id": 1,
+  "open": false,
+}
+`;

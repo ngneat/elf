@@ -60,7 +60,7 @@ export function selectEntity<S extends EntitiesRecord, R>(
   id: any,
   options: Options = {}
 ) {
-  const { ref: { entitiesKey, pluck } = defaultEntitiesRef } = options;
+  const { ref: { entitiesKey } = defaultEntitiesRef, pluck } = options;
 
   return select<S, R>((state) => getEntity(state[entitiesKey], id, pluck));
 }
