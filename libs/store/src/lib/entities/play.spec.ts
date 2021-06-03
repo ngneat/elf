@@ -8,7 +8,7 @@ import { addEntities } from './add.mutation';
 import { select } from '../core/queries';
 import { selectAll } from './all.query';
 
-import { updateEntity } from './update.mutation';
+import { updateEntities } from './update.mutation';
 import { stateFactory } from '../core/state-factory';
 import { StatusState } from '../core/types';
 
@@ -75,7 +75,7 @@ it('sho', function() {
     }),
     addEntities(createTodo(2)),
     addEntities({ open: true, id: 2 }, { ref: entitiesUIRef }),
-    updateEntity(1, write<Todo>(entity => {
+    updateEntities(1, write<Todo>(entity => {
       entity.title = 'd';
     }))
   );

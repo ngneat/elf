@@ -1,6 +1,6 @@
 import { createState } from '../core/state';
 import { Store } from '../core/store';
-import { withEntities, withUIEntities } from '../entity/entity.state';
+import { withEntities, withUIEntities } from '../entities/entity.state';
 
 export interface Todo {
   id: number;

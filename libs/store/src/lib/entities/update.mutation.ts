@@ -3,8 +3,6 @@ import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesReco
 import { OrArray } from '../core/types';
 import { Reducer, Store } from '../core/store';
 
-type Options<Ref extends EntitiesRef> = BaseEntityOptions<Ref>
-
 export type UpdateFn<Entity> = Partial<Entity> | ((entity: Entity) => Entity);
 
 function toModel<Entity>(updater: UpdateFn<Entity>, entity: Entity): Entity {
@@ -18,10 +16,19 @@ function toModel<Entity>(updater: UpdateFn<Entity>, entity: Entity): Entity {
   };
 }
 
-export function updateEntity<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef, U = UpdateFn<getEntityType<S, Ref>>>(
+/**
+ *
+ * Update entities in the store
+ *
+ * store.reduce(updateEntities(id, { name }))
+ * store.reduce(updateEntities(id, entity => ({ ...entity, name })))
+ * store.reduce(updateEntities([id, id, id], { open: true }))
+ *
+ */
+export function updateEntities<S extends EntitiesRecord, U extends UpdateFn<getEntityType<S, Ref>>, Ref extends EntitiesRef = DefaultEntitiesRef>(
   ids: OrArray<getIdType<S, Ref>>,
   updateFn: U,
-  options: Options<Ref> = {}
+  options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
   return function reducer(state: S) {
     const { ref: { entitiesKey } = defaultEntitiesRef } = options;
@@ -38,10 +45,18 @@ export function updateEntity<S extends EntitiesRecord, Ref extends EntitiesRef =
   };
 }
 
-export function updateAll<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef, U = UpdateFn<getEntityType<S, Ref>>>(updateFn: U, options: Options<Ref>): Reducer<S> {
+/**
+ *
+ * Update all entities in the store
+ *
+ * store.reduce(updateAllEntities({ name }))
+ * store.reduce(updateAllEntities(entity => ({ ...entity, name })))
+ *
+ */
+export function updateAllEntities<S extends EntitiesRecord, U extends UpdateFn<getEntityType<S, Ref>>, Ref extends EntitiesRef = DefaultEntitiesRef>(updateFn: U, options: BaseEntityOptions<Ref> = {}): Reducer<S> {
   return function reducer(state: S, store: Store) {
     const { ref: { idsKey } = defaultEntitiesRef } = options;
 
-    return updateEntity(state[idsKey], updateFn, options)(state, store);
+    return updateEntities(state[idsKey], updateFn, options)(state, store);
   };
 }
