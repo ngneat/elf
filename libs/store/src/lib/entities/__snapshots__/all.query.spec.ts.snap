@@ -1,13 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`selectAll should query all 1`] = `Array []`;
+exports[`selectAll should select all: calls: 1 1`] = `Array []`;
 
-exports[`selectAll should query all 2`] = `
+exports[`selectAll should select all: calls: 2 1`] = `
 Array [
   Object {
     "completed": false,
     "id": 2,
     "title": "todo 2",
+  },
+]
+`;
+
+exports[`selectAll should work with ref: calls: 1 1`] = `Array []`;
+
+exports[`selectAll should work with ref: calls: 2 1`] = `
+Array [
+  Object {
+    "id": 1,
+    "open": false,
+  },
+  Object {
+    "id": 2,
+    "open": false,
   },
 ]
 `;
