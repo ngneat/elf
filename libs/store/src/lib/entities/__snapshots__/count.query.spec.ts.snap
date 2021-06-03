@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`count should select the count by predicate: calls: 1 1`] = `0`;
+
+exports[`count should select the count by predicate: calls: 2 1`] = `1`;
+
+exports[`count should select the count: calls: 1 1`] = `0`;
+
+exports[`count should select the count: calls: 2 1`] = `1`;
+
+exports[`count should work with ref: calls: 1 1`] = `0`;
+
+exports[`count should work with ref: calls: 2 1`] = `2`;

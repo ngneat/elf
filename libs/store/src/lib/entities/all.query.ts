@@ -4,7 +4,9 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 
 export function untilEntitiesChanges<T extends EntitiesRecord>(key: string): MonoTypeOperatorFunction<T> {
   return distinctUntilChanged(
-    (prev, current) => prev[key] === current[key]
+    (prev, current) => {
+      return prev[key] === current[key];
+    }
   );
 }
 
