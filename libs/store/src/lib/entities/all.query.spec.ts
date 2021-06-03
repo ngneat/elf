@@ -1,4 +1,9 @@
-import { createEntitiesStore, createTodo, createUIEntityStore, createUITodo } from '../mocks/stores.mock';
+import {
+  createEntitiesStore,
+  createTodo,
+  createUIEntityStore,
+  createUITodo,
+} from '../mocks/stores.mock';
 import { addEntities } from './add.mutation';
 import { selectAll } from './all.query';
 import { entitiesUIRef } from './entity.state';
@@ -13,13 +18,11 @@ describe('selectAll', () => {
   it('should select all', () => {
     let count = 1;
 
-    store.pipe(selectAll()).subscribe(value => {
+    store.pipe(selectAll()).subscribe((value) => {
       expect(value).toMatchSnapshot(`calls: ${count++}`);
     });
 
-    store.reduce(
-      addEntities(createTodo(2))
-    );
+    store.reduce(addEntities(createTodo(2)));
   });
 
   it('should work with ref', () => {
@@ -27,11 +30,12 @@ describe('selectAll', () => {
 
     const store = createUIEntityStore();
 
-    store.pipe(selectAll({ ref: entitiesUIRef })).subscribe(value => {
+    store.pipe(selectAll({ ref: entitiesUIRef })).subscribe((value) => {
       expect(value).toMatchSnapshot(`calls: ${count++}`);
     });
 
-    store.reduce(addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef }));
+    store.reduce(
+      addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef })
+    );
   });
-
 });

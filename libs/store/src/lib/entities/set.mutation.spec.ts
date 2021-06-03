@@ -1,4 +1,10 @@
-import { createEntitiesStore, createTodo, createUIEntityStore, createUITodo, toMatchSnapshot } from '../mocks/stores.mock';
+import {
+  createEntitiesStore,
+  createTodo,
+  createUIEntityStore,
+  createUITodo,
+  toMatchSnapshot,
+} from '../mocks/stores.mock';
 import { setEntities } from './set.mutation';
 import { entitiesUIRef } from './entity.state';
 
@@ -25,5 +31,4 @@ describe('set', () => {
     store.reduce(setEntities(createUITodo(2), { ref: entitiesUIRef }));
     toMatchSnapshot(expect, store);
   });
-
 });

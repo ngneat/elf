@@ -1,6 +1,14 @@
 import { OperatorFunction, pipe } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getEntityType, ItemPredicate } from './entity.state';
+import {
+  BaseEntityOptions,
+  defaultEntitiesRef,
+  DefaultEntitiesRef,
+  EntitiesRecord,
+  EntitiesRef,
+  getEntityType,
+  ItemPredicate,
+} from './entity.state';
 import { untilEntitiesChanges } from './all.query';
 import { select } from '../core/queries';
 import { findIdsByPredicate } from './entity.utils';
@@ -14,10 +22,13 @@ import { findIdsByPredicate } from './entity.utils';
  * store.pipe(selectEntitiesCount())
  *
  */
-export function selectEntitiesCount<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(options: BaseEntityOptions<Ref> = {}): OperatorFunction<S, number> {
+export function selectEntitiesCount<
+  S extends EntitiesRecord,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(options: BaseEntityOptions<Ref> = {}): OperatorFunction<S, number> {
   const { ref: { idsKey } = defaultEntitiesRef } = options;
 
-  return select(state => state[idsKey].length);
+  return select((state) => state[idsKey].length);
 }
 
 /**
@@ -29,12 +40,18 @@ export function selectEntitiesCount<S extends EntitiesRecord, Ref extends Entiti
  * store.pipe(selectEntitiesCountByPredicate(entity => entity.completed))
  *
  */
-export function selectEntitiesCountByPredicate<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(predicate: ItemPredicate<getEntityType<S, Ref>>, options: BaseEntityOptions<Ref> = {}): OperatorFunction<S, number> {
-  const ref = options.ref || defaultEntitiesRef as Ref;
+export function selectEntitiesCountByPredicate<
+  S extends EntitiesRecord,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(
+  predicate: ItemPredicate<getEntityType<S, Ref>>,
+  options: BaseEntityOptions<Ref> = {}
+): OperatorFunction<S, number> {
+  const ref = options.ref || (defaultEntitiesRef as Ref);
 
   return pipe(
     untilEntitiesChanges(ref.entitiesKey),
-    map(state => findIdsByPredicate(state, ref, predicate).length),
+    map((state) => findIdsByPredicate(state, ref, predicate).length),
     distinctUntilChanged()
   );
 }

@@ -1,5 +1,12 @@
 import { select } from '../core/queries';
-import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getEntityType } from './entity.state';
+import {
+  BaseEntityOptions,
+  defaultEntitiesRef,
+  DefaultEntitiesRef,
+  EntitiesRecord,
+  EntitiesRef,
+  getEntityType,
+} from './entity.state';
 
 /**
  *
@@ -8,8 +15,13 @@ import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesReco
  * store.pipe(selectFirst())
  *
  */
-export function selectFirst<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(options: BaseEntityOptions<Ref> = {}) {
+export function selectFirst<
+  S extends EntitiesRecord,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(options: BaseEntityOptions<Ref> = {}) {
   const { ref: { entitiesKey, idsKey } = defaultEntitiesRef } = options;
 
-  return select<S, getEntityType<S, Ref> | undefined>(state => state[entitiesKey][state[idsKey][0]]);
+  return select<S, getEntityType<S, Ref> | undefined>(
+    (state) => state[entitiesKey][state[idsKey][0]]
+  );
 }

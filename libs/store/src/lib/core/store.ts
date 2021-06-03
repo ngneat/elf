@@ -8,7 +8,10 @@ export interface StoreDef<State = any> {
   config: any;
 }
 
-export class Store<SDef extends StoreDef = any, State = SDef['state']> extends BehaviorSubject<State> {
+export class Store<
+  SDef extends StoreDef = any,
+  State = SDef['state']
+> extends BehaviorSubject<State> {
   private currentValue: State;
 
   constructor(public storeDef: SDef) {
@@ -35,27 +38,29 @@ export class Store<SDef extends StoreDef = any, State = SDef['state']> extends B
       return value;
     }, this.currentValue);
 
-    if(nextState !== this.currentValue) {
+    if (nextState !== this.currentValue) {
       this.currentValue = nextState;
       super.next(this.currentValue);
     }
-
   }
 
   combine<R extends Observables>(observables: R): Observable<ReturnTypes<R>> {
     let hasChange = true;
     const buffer: any = [];
 
-    return new Observable(observer => {
-      observables.forEach((query, i) => observer.add(
-        query.subscribe(value => {
-          buffer[i] = value;
-          hasChange = true;
-        })));
+    return new Observable((observer) => {
+      observables.forEach((query, i) =>
+        observer.add(
+          query.subscribe((value) => {
+            buffer[i] = value;
+            hasChange = true;
+          })
+        )
+      );
 
       return this.subscribe({
         next() {
-          if(hasChange) {
+          if (hasChange) {
             observer.next(buffer);
             hasChange = false;
           }
@@ -65,12 +70,13 @@ export class Store<SDef extends StoreDef = any, State = SDef['state']> extends B
         },
         complete() {
           observer.complete();
-        }
+        },
       });
     });
-
   }
 }
 
-type ReturnTypes<T extends Observable<any>[]> = { [P in keyof T]: T[P] extends Observable<infer R> ? R : never };
+type ReturnTypes<T extends Observable<any>[]> = {
+  [P in keyof T]: T[P] extends Observable<infer R> ? R : never;
+};
 type Observables = [Observable<any>] | Observable<any>[];

@@ -8,33 +8,32 @@ export interface Todo {
   completed: boolean;
 }
 
-const { state, config } = createState(
-  withEntities<Todo, Todo['id']>()
-);
+const { state, config } = createState(withEntities<Todo, Todo['id']>());
 
 export function createTodo(id: number): Todo {
   return {
     id,
     title: `todo ${id}`,
-    completed: false
-  }
+    completed: false,
+  };
 }
 
 export function toMatchSnapshot(expect: any, store: Store, name?: string) {
   return expect(store.getValue()).toMatchSnapshot(name);
 }
 
-export const createEntitiesStore = () => new Store({ state, name: 'todos', config });
+export const createEntitiesStore = () =>
+  new Store({ state, name: 'todos', config });
 
-export function createUITodo(id: number): { id: number, open: boolean } {
+export function createUITodo(id: number): { id: number; open: boolean } {
   return {
     id,
-    open: false
-  }
+    open: false,
+  };
 }
 
-export const createUIEntityStore = () => new Store(
-  {
+export const createUIEntityStore = () =>
+  new Store({
     name: '',
-    ...createState(withUIEntities<{ id: number, open: boolean }, number>())
+    ...createState(withUIEntities<{ id: number; open: boolean }, number>()),
   });

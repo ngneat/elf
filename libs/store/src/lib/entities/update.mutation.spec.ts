@@ -1,6 +1,16 @@
-import { createEntitiesStore, createTodo, createUIEntityStore, createUITodo, toMatchSnapshot } from '../mocks/stores.mock';
+import {
+  createEntitiesStore,
+  createTodo,
+  createUIEntityStore,
+  createUITodo,
+  toMatchSnapshot,
+} from '../mocks/stores.mock';
 import { addEntities } from './add.mutation';
-import { updateAllEntities, updateEntities, updateEntitiesByPredicate } from './update.mutation';
+import {
+  updateAllEntities,
+  updateEntities,
+  updateEntitiesByPredicate,
+} from './update.mutation';
 import { entitiesUIRef } from './entity.state';
 
 describe('update', () => {
@@ -27,7 +37,9 @@ describe('update', () => {
   it('should update by callback', () => {
     store.reduce(addEntities(createTodo(1)));
     toMatchSnapshot(expect, store, 'completed false');
-    store.reduce(updateEntities(1, todo => ({ ...todo, completed: !todo.completed })));
+    store.reduce(
+      updateEntities(1, (todo) => ({ ...todo, completed: !todo.completed }))
+    );
     toMatchSnapshot(expect, store, 'completed true');
   });
 
@@ -35,7 +47,9 @@ describe('update', () => {
     store.reduce(addEntities([createTodo(1), createTodo(2)]));
     toMatchSnapshot(expect, store, 'completed false');
     store.reduce(
-      updateEntitiesByPredicate(entity => entity.id === 1, { completed: true })
+      updateEntitiesByPredicate((entity) => entity.id === 1, {
+        completed: true,
+      })
     );
     toMatchSnapshot(expect, store, 'completed true');
   });
@@ -49,7 +63,9 @@ describe('update', () => {
 
   it('should work with ref', () => {
     const store = createUIEntityStore();
-    store.reduce(addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef }));
+    store.reduce(
+      addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef })
+    );
     toMatchSnapshot(expect, store, 'open false');
     store.reduce(updateEntities(1, { open: true }, { ref: entitiesUIRef }));
     toMatchSnapshot(expect, store, 'open true');
@@ -57,10 +73,11 @@ describe('update', () => {
 
   it('should work with ref update all', () => {
     const store = createUIEntityStore();
-    store.reduce(addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef }));
+    store.reduce(
+      addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef })
+    );
     toMatchSnapshot(expect, store, 'open false');
     store.reduce(updateAllEntities({ open: true }, { ref: entitiesUIRef }));
     toMatchSnapshot(expect, store, 'open true');
   });
-
 });
