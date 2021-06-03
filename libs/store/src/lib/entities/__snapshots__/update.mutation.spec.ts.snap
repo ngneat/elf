@@ -72,6 +72,48 @@ Object {
 }
 `;
 
+exports[`update should update by predicate: completed false 1`] = `
+Object {
+  "$entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "$ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update should update by predicate: completed true 1`] = `
+Object {
+  "$entities": Object {
+    "1": Object {
+      "completed": true,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "$ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
 exports[`update should update multiple entities: multi completed false 1`] = `
 Object {
   "$entities": Object {

@@ -1,7 +1,8 @@
 import { coerceArray, isFunction } from '../core/utils';
-import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getEntityType, getIdType } from './entity.state';
+import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getEntityType, getIdType, ItemPredicate } from './entity.state';
 import { OrArray } from '../core/types';
 import { Reducer, Store } from '../core/store';
+import { findIdsByPredicate } from './entity.utils';
 
 export type UpdateFn<Entity> = Partial<Entity> | ((entity: Entity) => Entity);
 
@@ -27,7 +28,7 @@ function toModel<Entity>(updater: UpdateFn<Entity>, entity: Entity): Entity {
  */
 export function updateEntities<S extends EntitiesRecord, U extends UpdateFn<getEntityType<S, Ref>>, Ref extends EntitiesRef = DefaultEntitiesRef>(
   ids: OrArray<getIdType<S, Ref>>,
-  updateFn: U,
+  updater: U,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
   return function reducer(state: S) {
@@ -35,7 +36,7 @@ export function updateEntities<S extends EntitiesRecord, U extends UpdateFn<getE
     const updatedEntities = {} as Record<getIdType<S, Ref>, getEntityType<S, Ref>>;
 
     for(const id of coerceArray(ids)) {
-      updatedEntities[id] = toModel<getEntityType<S, Ref>>(updateFn, state[entitiesKey][id]);
+      updatedEntities[id] = toModel<getEntityType<S, Ref>>(updater, state[entitiesKey][id]);
     }
 
     return {
@@ -47,16 +48,36 @@ export function updateEntities<S extends EntitiesRecord, U extends UpdateFn<getE
 
 /**
  *
+ * Update entities by predicate
+ *
+ * store.reduce(updateEntitiesByPredicate(entity => entity.count === 0))
+ *
+ */
+export function updateEntitiesByPredicate<S extends EntitiesRecord, U extends UpdateFn<getEntityType<S, Ref>>, Ref extends EntitiesRef = DefaultEntitiesRef>(predicate: ItemPredicate<getEntityType<S, Ref>>, updater: U, options: BaseEntityOptions<Ref> = {}): Reducer<S> {
+  return function(state: S, store: Store) {
+    const ids = findIdsByPredicate(state, options.ref || defaultEntitiesRef as Ref, predicate);
+
+    if(ids.length) {
+      return updateEntities(ids, updater, options)(state, store);
+    }
+
+    return state;
+  };
+}
+
+/**
+ *
  * Update all entities in the store
  *
  * store.reduce(updateAllEntities({ name }))
  * store.reduce(updateAllEntities(entity => ({ ...entity, name })))
  *
  */
-export function updateAllEntities<S extends EntitiesRecord, U extends UpdateFn<getEntityType<S, Ref>>, Ref extends EntitiesRef = DefaultEntitiesRef>(updateFn: U, options: BaseEntityOptions<Ref> = {}): Reducer<S> {
+export function updateAllEntities<S extends EntitiesRecord, U extends UpdateFn<getEntityType<S, Ref>>, Ref extends EntitiesRef = DefaultEntitiesRef>(updater: U, options: BaseEntityOptions<Ref> = {}): Reducer<S> {
   return function reducer(state: S, store: Store) {
     const { ref: { idsKey } = defaultEntitiesRef } = options;
 
-    return updateEntities(state[idsKey], updateFn, options)(state, store);
+    return updateEntities(state[idsKey], updater, options)(state, store);
   };
 }
+

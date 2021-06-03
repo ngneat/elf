@@ -1,4 +1,4 @@
-import { EntitiesRecord, EntitiesRef, getEntityType, getIdType } from './entity.state';
+import { defaultEntitiesRef, EntitiesRecord, EntitiesRef, getEntityType, getIdType, ItemPredicate } from './entity.state';
 import { coerceArray } from '../core/utils';
 
 export function buildEntities<S extends EntitiesRecord, Ref extends EntitiesRef>(ref: Ref, entities: getEntityType<S, Ref>[], idKey: string):
@@ -17,4 +17,12 @@ export function buildEntities<S extends EntitiesRecord, Ref extends EntitiesRef>
     ids,
    asObject
   } as unknown as { ids: getIdType<S, Ref>[], asObject: getEntityType<S, Ref> };
+}
+
+
+export function findIdsByPredicate<S extends EntitiesRecord, Ref extends EntitiesRef>(state: S, ref: Ref, predicate: ItemPredicate<getEntityType<S, Ref>>) {
+  const { idsKey, entitiesKey }  = ref;
+
+  const entities = state[entitiesKey];
+  return  state[idsKey].filter((id: getIdType<S, Ref>) => predicate(entities[id]));
 }

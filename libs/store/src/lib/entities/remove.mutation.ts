@@ -2,6 +2,7 @@ import { coerceArray } from '../core/utils';
 import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getEntityType, getIdType, ItemPredicate } from './entity.state';
 import { OrArray } from '../core/types';
 import { Reducer, Store } from '../core/store';
+import { findIdsByPredicate } from './entity.utils';
 
 /**
  *
@@ -38,13 +39,10 @@ export function removeEntities<S extends EntitiesRecord, Ref extends EntitiesRef
  *
  * store.reduce(removeEntitiesByPredicate(entity => entity.count === 0))
  *
- *
  */
 export function removeEntitiesByPredicate<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(predicate: ItemPredicate<getEntityType<S, Ref>>, options: BaseEntityOptions<Ref> = {}): Reducer<S> {
   return function reducer(state: S, store: Store) {
-    const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
-    const entities = state[entitiesKey];
-    const ids = state[idsKey].filter((id: getIdType<S, Ref>) => predicate(entities[id]));
+    const ids = findIdsByPredicate(state, options.ref || defaultEntitiesRef as Ref, predicate);
 
     if(ids.length) {
       return removeEntities(ids, options)(state, store);

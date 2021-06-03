@@ -1,6 +1,6 @@
 import { createEntitiesStore, createTodo, createUIEntityStore, createUITodo, toMatchSnapshot } from '../mocks/stores.mock';
 import { addEntities } from './add.mutation';
-import { updateAllEntities, updateEntities } from './update.mutation';
+import { updateAllEntities, updateEntities, updateEntitiesByPredicate } from './update.mutation';
 import { entitiesUIRef } from './entity.state';
 
 describe('update', () => {
@@ -28,6 +28,15 @@ describe('update', () => {
     store.reduce(addEntities(createTodo(1)));
     toMatchSnapshot(expect, store, 'completed false');
     store.reduce(updateEntities(1, todo => ({ ...todo, completed: !todo.completed })));
+    toMatchSnapshot(expect, store, 'completed true');
+  });
+
+  it('should update by predicate', () => {
+    store.reduce(addEntities([createTodo(1), createTodo(2)]));
+    toMatchSnapshot(expect, store, 'completed false');
+    store.reduce(
+      updateEntitiesByPredicate(entity => entity.id === 1, { completed: true })
+    );
     toMatchSnapshot(expect, store, 'completed true');
   });
 
