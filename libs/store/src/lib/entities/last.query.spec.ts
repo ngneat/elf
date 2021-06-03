@@ -17,7 +17,7 @@ describe('last', () => {
 
   it('should select the last entity', () => {
     store.pipe(selectLast()).subscribe((value) => {
-      expect(value).toMatchSnapshot();
+      expect(value).toMatchSnapshot('2 calls');
     });
 
     store.reduce(addEntities(createTodo(2)));
@@ -31,7 +31,7 @@ describe('last', () => {
     const store = createUIEntityStore();
 
     store.pipe(selectLast({ ref: entitiesUIRef })).subscribe((value) => {
-      expect(value).toMatchSnapshot();
+      expect(value).toMatchSnapshot('2 calls');
     });
 
     store.reduce(

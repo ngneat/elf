@@ -1,6 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`set should set entities 1`] = `
+exports[`set should set entities work with ref: set one 1`] = `
+Object {
+  "$UIEntities": Object {
+    "1": Object {
+      "id": 1,
+      "open": false,
+    },
+  },
+  "$UIIds": Array [
+    1,
+  ],
+}
+`;
+
+exports[`set should set entities work with ref: set one 2`] = `
+Object {
+  "$UIEntities": Object {
+    "2": Object {
+      "id": 2,
+      "open": false,
+    },
+  },
+  "$UIIds": Array [
+    2,
+  ],
+}
+`;
+
+exports[`set should set entities: set one 1`] = `
 Object {
   "$entities": Object {
     "1": Object {
@@ -15,7 +43,7 @@ Object {
 }
 `;
 
-exports[`set should set entities 2`] = `
+exports[`set should set entities: set one 2`] = `
 Object {
   "$entities": Object {
     "2": Object {
@@ -25,34 +53,6 @@ Object {
     },
   },
   "$ids": Array [
-    2,
-  ],
-}
-`;
-
-exports[`set should set entities work with ref 1`] = `
-Object {
-  "$UIEntities": Object {
-    "1": Object {
-      "id": 1,
-      "open": false,
-    },
-  },
-  "$UIIds": Array [
-    1,
-  ],
-}
-`;
-
-exports[`set should set entities work with ref 2`] = `
-Object {
-  "$UIEntities": Object {
-    "2": Object {
-      "id": 2,
-      "open": false,
-    },
-  },
-  "$UIIds": Array [
     2,
   ],
 }

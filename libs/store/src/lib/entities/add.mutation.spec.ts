@@ -17,12 +17,12 @@ describe('add', () => {
 
   it('should add entity', () => {
     store.reduce(addEntities(createTodo(1)));
-    toMatchSnapshot(expect, store);
+    toMatchSnapshot(expect, store, 'add one');
   });
 
   it('should add multiple entities', () => {
     store.reduce(addEntities([createTodo(1), createTodo(2)]));
-    toMatchSnapshot(expect, store);
+    toMatchSnapshot(expect, store, 'add two');
   });
 
   it('should prepend entities', () => {
@@ -30,7 +30,7 @@ describe('add', () => {
     store.reduce(
       addEntities([createTodo(3), createTodo(4)], { prepend: true })
     );
-    toMatchSnapshot(expect, store);
+    toMatchSnapshot(expect, store, 'prepend');
   });
 
   it('should work with ref', () => {
@@ -38,6 +38,6 @@ describe('add', () => {
     store.reduce(
       addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef })
     );
-    toMatchSnapshot(expect, store);
+    toMatchSnapshot(expect, store, 'ref');
   });
 });

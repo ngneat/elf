@@ -17,7 +17,7 @@ describe('first', () => {
 
   it('should select the first entity', () => {
     store.pipe(selectFirst()).subscribe((value) => {
-      expect(value).toMatchSnapshot();
+      expect(value).toMatchSnapshot('3 calls');
     });
 
     store.reduce(addEntities(createTodo(2)));
@@ -29,7 +29,7 @@ describe('first', () => {
     const store = createUIEntityStore();
 
     store.pipe(selectFirst({ ref: entitiesUIRef })).subscribe((value) => {
-      expect(value).toMatchSnapshot();
+      expect(value).toMatchSnapshot('2 calls');
     });
 
     store.reduce(

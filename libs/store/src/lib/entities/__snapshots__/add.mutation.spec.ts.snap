@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`add should add entity 1`] = `
+exports[`add should add entity: add one 1`] = `
 Object {
   "$entities": Object {
     "1": Object {
@@ -15,7 +15,7 @@ Object {
 }
 `;
 
-exports[`add should add multiple entities 1`] = `
+exports[`add should add multiple entities: add two 1`] = `
 Object {
   "$entities": Object {
     "1": Object {
@@ -36,7 +36,7 @@ Object {
 }
 `;
 
-exports[`add should prepend entities 1`] = `
+exports[`add should prepend entities: prepend 1`] = `
 Object {
   "$entities": Object {
     "1": Object {
@@ -69,7 +69,7 @@ Object {
 }
 `;
 
-exports[`add should work with ref 1`] = `
+exports[`add should work with ref: ref 1`] = `
 Object {
   "$UIEntities": Object {
     "1": Object {

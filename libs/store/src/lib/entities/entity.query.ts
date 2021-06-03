@@ -8,7 +8,7 @@ import {
   EntitiesRecord,
   EntitiesRef,
   getEntityType,
-  getIdType,
+  getIdType
 } from './entity.state';
 
 interface Options extends BaseEntityOptions<any> {
@@ -21,11 +21,9 @@ interface Options extends BaseEntityOptions<any> {
  * store.pipe(selectEntity(id, { pluck: 'title' })
  *
  */
-export function selectEntity<
-  S extends EntitiesRecord,
+export function selectEntity<S extends EntitiesRecord,
   K extends keyof getEntityType<S, Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
->(
+  Ref extends EntitiesRef = DefaultEntitiesRef>(
   id: getIdType<S, Ref>,
   options: { pluck: K } & BaseEntityOptions<Ref>
 ): OperatorFunction<S, getEntityType<S, Ref>[K]>;
@@ -36,11 +34,9 @@ export function selectEntity<
  * store.pipe(selectEntity(id, { pluck: e => e.title })
  *
  */
-export function selectEntity<
-  S extends EntitiesRecord,
+export function selectEntity<S extends EntitiesRecord,
   R,
-  Ref extends EntitiesRef = DefaultEntitiesRef
->(
+  Ref extends EntitiesRef = DefaultEntitiesRef>(
   id: getIdType<S, Ref>,
   options: {
     pluck: (entity: getEntityType<S, Ref>) => R;
@@ -54,13 +50,12 @@ export function selectEntity<
  * store.pipe(selectEntity(id)
  *
  */
-export function selectEntity<
-  S extends EntitiesRecord,
-  Ref extends EntitiesRef = DefaultEntitiesRef
->(
+export function selectEntity<S extends EntitiesRecord,
+  Ref extends EntitiesRef = DefaultEntitiesRef>(
   id: getIdType<S, Ref>,
   options?: BaseEntityOptions<Ref>
 ): OperatorFunction<S, getEntityType<S, Ref>>;
+
 export function selectEntity<S extends EntitiesRecord, R>(
   id: any,
   options: Options = {}
@@ -77,15 +72,15 @@ export function getEntity(
 ) {
   const entity = entities[id];
 
-  if (isUndefined(entity)) {
+  if(isUndefined(entity)) {
     return undefined;
   }
 
-  if (!pluck) {
+  if(!pluck) {
     return entity;
   }
 
-  if (isString(pluck)) {
+  if(isString(pluck)) {
     return entity[pluck];
   }
 

@@ -18,8 +18,8 @@ export function createTodo(id: number): Todo {
   };
 }
 
-export function toMatchSnapshot(expect: any, store: Store, name?: string) {
-  return expect(store.getValue()).toMatchSnapshot(name);
+export function toMatchSnapshot(expect: any, store: Store, label: string) {
+  return expect(store.getValue()).toMatchSnapshot(label);
 }
 
 export const createEntitiesStore = () =>
