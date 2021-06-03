@@ -6,6 +6,7 @@ import { select } from '../core/queries';
 import { findIdsByPredicate } from './entity.utils';
 
 /**
+ *
  * Select the store's entity collection length
  *
  * @example
@@ -15,10 +16,12 @@ import { findIdsByPredicate } from './entity.utils';
  */
 export function selectEntitiesCount<S extends EntitiesRecord, Ref extends EntitiesRef = DefaultEntitiesRef>(options: BaseEntityOptions<Ref> = {}): OperatorFunction<S, number> {
   const { ref: { idsKey } = defaultEntitiesRef } = options;
+
   return select(state => state[idsKey].length);
 }
 
 /**
+ *
  * Select the store's entity collection length
  *
  * @example

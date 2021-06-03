@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`first should select the first entity 1`] = `undefined`;
+
+exports[`first should select the first entity 2`] = `
+Object {
+  "completed": false,
+  "id": 2,
+  "title": "todo 2",
+}
+`;
+
+exports[`first should select the first entity 3`] = `
+Object {
+  "completed": false,
+  "id": 3,
+  "title": "todo 3",
+}
+`;
+
+exports[`first should support ref 1`] = `undefined`;
+
+exports[`first should support ref 2`] = `
+Object {
+  "id": 1,
+  "open": false,
+}
+`;
