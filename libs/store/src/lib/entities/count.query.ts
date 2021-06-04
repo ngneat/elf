@@ -10,7 +10,7 @@ import {
   ItemPredicate,
 } from './entity.state';
 import { untilEntitiesChanges } from './all.query';
-import { select } from '../core/queries';
+import { select } from '../core/operators';
 import { findIdsByPredicate } from './entity.utils';
 
 /**

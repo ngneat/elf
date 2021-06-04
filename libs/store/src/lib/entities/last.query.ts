@@ -6,7 +6,7 @@ import {
   EntitiesRef,
   getEntityType,
 } from './entity.state';
-import { select } from '../core/queries';
+import { select } from '../core/operators';
 
 export function selectLast<
   S extends EntitiesRecord,

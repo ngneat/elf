@@ -1,4 +1,4 @@
-import { select } from '../core/queries';
+import { select } from '../core/operators';
 import {
   BaseEntityOptions,
   defaultEntitiesRef,

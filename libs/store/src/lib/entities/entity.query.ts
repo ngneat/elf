@@ -1,5 +1,5 @@
 import { OperatorFunction } from 'rxjs';
-import { select } from '../core/queries';
+import { select } from '../core/operators';
 import { isString, isUndefined } from '../core/utils';
 import {
   BaseEntityOptions,

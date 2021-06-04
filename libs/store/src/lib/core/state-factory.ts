@@ -1,4 +1,4 @@
-import { select } from './queries';
+import { select } from './operators';
 import { OperatorFunction } from 'rxjs';
 import { EmptyConfig, State } from './state';
 import { Reducer } from './store';
