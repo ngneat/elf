@@ -2,16 +2,18 @@ import { BehaviorSubject, of } from 'rxjs';
 import { distinctUntilArrayItemChanged, head, select } from './operators';
 
 describe('select', () => {
-
   it('should work', () => {
     const data = {
-      foo: 1
+      foo: 1,
     };
 
     const source = new BehaviorSubject(data);
     const spy = jest.fn();
 
-    source.asObservable().pipe(select(state => state.foo)).subscribe(spy);
+    source
+      .asObservable()
+      .pipe(select((state) => state.foo))
+      .subscribe(spy);
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(1);
@@ -24,7 +26,6 @@ describe('select', () => {
     expect(spy).toHaveBeenCalledTimes(2);
     expect(spy).toHaveBeenCalledWith(2);
   });
-
 });
 
 describe('distinctUntilArrayItemChanged', () => {
@@ -63,12 +64,11 @@ describe('distinctUntilArrayItemChanged', () => {
 });
 
 describe('head', () => {
-
   it('should return the first item', () => {
-    of([1]).pipe(head()).subscribe(v => {
-      expect(v).toBe(1);
-    });
+    of([1])
+      .pipe(head())
+      .subscribe((v) => {
+        expect(v).toBe(1);
+      });
   });
-
 });
-

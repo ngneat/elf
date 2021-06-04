@@ -89,7 +89,6 @@
 //   console.log(store.getValue());
 // });
 
-
-it('should', function() {
-    expect(true).toBeTruthy();
-  });
+it('should', function () {
+  expect(true).toBeTruthy();
+});

@@ -5,18 +5,22 @@ export function select<T, R>(mapFn: (state: T) => R): OperatorFunction<T, R> {
   return pipe(map(mapFn), distinctUntilChanged());
 }
 
-export function head<T extends any[],
-  Item = T extends (infer I)[] ? I : never>(): OperatorFunction<T, Item> {
+export function head<
+  T extends any[],
+  Item = T extends (infer I)[] ? I : never
+>(): OperatorFunction<T, Item> {
   return map((arr: T) => arr[0] as Item);
 }
 
-export function distinctUntilArrayItemChanged<T>(): MonoTypeOperatorFunction<T[]> {
+export function distinctUntilArrayItemChanged<T>(): MonoTypeOperatorFunction<
+  T[]
+> {
   return distinctUntilChanged((prevCollection: T[], currentCollection: T[]) => {
-    if(prevCollection === currentCollection) {
+    if (prevCollection === currentCollection) {
       return true;
     }
 
-    if(prevCollection.length !== currentCollection.length) {
+    if (prevCollection.length !== currentCollection.length) {
       return false;
     }
 
