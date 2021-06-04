@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`selectMany should work with ref: calls: 1 1`] = `Array []`;
+
+exports[`selectMany should work with ref: calls: 2 1`] = `
+Array [
+  Object {
+    "id": 1,
+    "open": false,
+  },
+  Object {
+    "id": 2,
+    "open": false,
+  },
+]
+`;
+
+exports[`selectMany should work with ref: calls: 3 1`] = `
+Array [
+  Object {
+    "id": 1,
+    "open": true,
+  },
+  Object {
+    "id": 2,
+    "open": false,
+  },
+]
+`;
+
+exports[`selectMany should work with ref: calls: 4 1`] = `
+Array [
+  Object {
+    "id": 1,
+    "open": true,
+  },
+]
+`;

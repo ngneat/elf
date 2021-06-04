@@ -1,14 +1,6 @@
 import { OperatorFunction, pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {
-  BaseEntityOptions,
-  defaultEntitiesRef,
-  DefaultEntitiesRef,
-  EntitiesRecord,
-  EntitiesRef,
-  getEntityType,
-  getIdType,
-} from './entity.state';
+import { BaseEntityOptions, defaultEntitiesRef, DefaultEntitiesRef, EntitiesRecord, EntitiesRef, getEntityType, getIdType } from './entity.state';
 import { distinctUntilArrayItemChanged, select } from '../core/operators';
 import { isUndefined } from '../core/utils';
 import { getEntity } from './entity.query';
@@ -25,11 +17,9 @@ interface Options extends BaseEntityOptions<any> {
  * store.pipe(selectMany([1,2,3], { pluck: 'title' })
  *
  */
-export function selectMany<
-  S extends EntitiesRecord,
+export function selectMany<S extends EntitiesRecord,
   K extends keyof getEntityType<S, Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
->(
+  Ref extends EntitiesRef = DefaultEntitiesRef>(
   ids: Array<getIdType<S, Ref>>,
   options: { pluck: K } & BaseEntityOptions<Ref>
 ): OperatorFunction<S, getEntityType<S, Ref>[K][]>;
@@ -42,11 +32,9 @@ export function selectMany<
  * store.pipe(selectMany([1,2,3], { pluck: e => e.title })
  *
  */
-export function selectMany<
-  S extends EntitiesRecord,
+export function selectMany<S extends EntitiesRecord,
   R,
-  Ref extends EntitiesRef = DefaultEntitiesRef
->(
+  Ref extends EntitiesRef = DefaultEntitiesRef>(
   ids: Array<getIdType<S, Ref>>,
   options: {
     pluck: (entity: getEntityType<S, Ref>) => R;
@@ -58,13 +46,11 @@ export function selectMany<
  *
  * @example
  *
- * store.pipe(selectMany({ ids: [1,2,3] })
+ * store.pipe(selectMany([1, 2, 3])
  *
  */
-export function selectMany<
-  S extends EntitiesRecord,
-  Ref extends EntitiesRef = DefaultEntitiesRef
->(
+export function selectMany<S extends EntitiesRecord,
+  Ref extends EntitiesRef = DefaultEntitiesRef>(
   ids: Array<getIdType<S, Ref>>,
   options?: BaseEntityOptions<Ref>
 ): OperatorFunction<S, getEntityType<S, Ref>[]>;
@@ -78,12 +64,12 @@ export function selectMany<S extends EntitiesRecord, R>(
   return pipe(
     select<S, R>((state) => state[entitiesKey]),
     map((entities) => {
-      if (!ids.length) return [];
+      if(!ids.length) return [];
 
       const filtered = [];
-      for (const id of ids) {
-        const value = getEntity(entities, id, pluck);
-        if (!isUndefined(value)) filtered.push(value);
+      for(const id of ids) {
+        const entity = getEntity(entities, id, pluck);
+        if(!isUndefined(entity)) filtered.push(entity);
       }
 
       return filtered;
