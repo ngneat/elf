@@ -3,8 +3,8 @@ import {
   BaseEntityOptions,
   defaultEntitiesRef,
   DefaultEntitiesRef,
-  EntitiesRecord,
   EntitiesRef,
+  EntitiesState,
   getEntityType,
 } from './entity.state';
 
@@ -16,7 +16,7 @@ import {
  *
  */
 export function selectFirst<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(options: BaseEntityOptions<Ref> = {}) {
   const { ref: { entitiesKey, idsKey } = defaultEntitiesRef } = options;

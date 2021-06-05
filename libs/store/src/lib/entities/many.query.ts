@@ -6,6 +6,7 @@ import {
   DefaultEntitiesRef,
   EntitiesRecord,
   EntitiesRef,
+  EntitiesState,
   getEntityType,
   getIdType,
 } from './entity.state';
@@ -26,7 +27,7 @@ interface Options extends BaseEntityOptions<any> {
  *
  */
 export function selectMany<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   K extends keyof getEntityType<S, Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
@@ -43,7 +44,7 @@ export function selectMany<
  *
  */
 export function selectMany<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   R,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
@@ -62,21 +63,21 @@ export function selectMany<
  *
  */
 export function selectMany<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
   ids: Array<getIdType<S, Ref>>,
   options?: BaseEntityOptions<Ref>
 ): OperatorFunction<S, getEntityType<S, Ref>[]>;
 
-export function selectMany<S extends EntitiesRecord, R>(
+export function selectMany<S extends EntitiesState<Ref>, Ref>(
   ids: any[],
   options: Options = {}
 ): any {
   const { ref: { entitiesKey } = defaultEntitiesRef, pluck } = options;
 
   return pipe(
-    select<S, R>((state) => state[entitiesKey]),
+    select<S, EntitiesRecord>((state) => state[entitiesKey]),
     map((entities) => {
       if (!ids.length) return [];
 

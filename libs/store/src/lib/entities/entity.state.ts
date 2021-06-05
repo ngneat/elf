@@ -4,8 +4,8 @@ export const defaultEntitiesKey = '$entities' as const;
 export const defaultIdsKey = '$ids' as const;
 
 export class EntitiesRef<
-  EntitiesKey extends string = any,
-  IdsKey extends string = any
+  EntitiesKey extends string = string,
+  IdsKey extends string = string
 > {
   entitiesKey: EntitiesKey;
   idsKey: IdsKey;
@@ -72,18 +72,12 @@ export function getIdKey<T>(store: Store): T {
   return store.getConfig<Config>().idKey as unknown as T;
 }
 
-export interface EntityState<
-  EntityType = any,
-  IdType extends PropertyKey = any
-> {
+interface EntityState<EntityType = any, IdType extends PropertyKey = any> {
   $entities: Record<IdType, EntityType>;
   $ids: Array<IdType>;
 }
 
-export interface UIEntityState<
-  EntityType = any,
-  IdType extends PropertyKey = any
-> {
+interface UIEntityState<EntityType = any, IdType extends PropertyKey = any> {
   $UIEntities: Record<IdType, EntityType>;
   $UIIds: Array<IdType>;
 }
@@ -92,13 +86,33 @@ interface Config {
   idKey: string;
 }
 
-export type getEntityType<S extends EntitiesRecord, Ref extends EntitiesRef> =
-  S[Ref['entitiesKey']][0];
-export type getIdType<S extends EntitiesRecord, Ref extends EntitiesRef> =
+export type getEntityType<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef
+> = S[Ref['entitiesKey']][0];
+export type getIdType<S extends EntitiesState<Ref>, Ref extends EntitiesRef> =
   S[Ref['idsKey']][0];
 export type ItemPredicate<Item> = (item: Item, index?: number) => boolean;
 export type EntitiesRecord = Record<any, any>;
 export type DefaultEntitiesRef = typeof defaultEntitiesRef;
+
+type ValueOf<T> = T[keyof T];
+
+// This will return { entitiesKey: "$entities", idsKey: "$ids" }
+type EntitiesKeys<T> = {
+  [key in keyof T]: key extends 'entitiesKey'
+    ? T[key]
+    : key extends 'idsKey'
+    ? T[key]
+    : never;
+};
+
+// This will return { $entities: any, $ids: any }
+export type EntitiesState<T extends EntitiesRecord> = {
+  [k in ValueOf<EntitiesKeys<T>>]: any;
+} & {
+  [key: string]: any;
+};
 
 export interface BaseEntityOptions<Ref extends EntitiesRef> {
   ref?: Ref;

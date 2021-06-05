@@ -4,6 +4,7 @@ import {
   DefaultEntitiesRef,
   EntitiesRecord,
   EntitiesRef,
+  EntitiesState,
   getEntityType,
   getIdType,
 } from './entity.state';
@@ -19,13 +20,12 @@ export function untilEntitiesChanges<T extends EntitiesRecord>(
 }
 
 export function selectAll<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
   options: BaseEntityOptions<Ref> = {}
 ): OperatorFunction<S, getEntityType<S, Ref>[]> {
-  const { ref = defaultEntitiesRef } = options;
-  const { entitiesKey, idsKey } = ref;
+  const { ref: { entitiesKey, idsKey } = defaultEntitiesRef } = options;
 
   return pipe(
     untilEntitiesChanges(entitiesKey),

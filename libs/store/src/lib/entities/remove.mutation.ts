@@ -3,8 +3,8 @@ import {
   BaseEntityOptions,
   defaultEntitiesRef,
   DefaultEntitiesRef,
-  EntitiesRecord,
   EntitiesRef,
+  EntitiesState,
   getEntityType,
   getIdType,
   ItemPredicate,
@@ -23,7 +23,7 @@ import { findIdsByPredicate } from './entity.utils';
  *
  */
 export function removeEntities<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
   ids: OrArray<getIdType<S, Ref>>,
@@ -58,7 +58,7 @@ export function removeEntities<
  *
  */
 export function removeEntitiesByPredicate<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
   predicate: ItemPredicate<getEntityType<S, Ref>>,
@@ -72,7 +72,7 @@ export function removeEntitiesByPredicate<
     );
 
     if (ids.length) {
-      return removeEntities(ids, options)(state, store);
+      return removeEntities(ids, options)(state, store) as S;
     }
 
     return state;
@@ -87,7 +87,7 @@ export function removeEntitiesByPredicate<
  *
  */
 export function removeAllEntities<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(options: BaseEntityOptions<Ref> = {}): Reducer<S> {
   return function reducer(state: S) {

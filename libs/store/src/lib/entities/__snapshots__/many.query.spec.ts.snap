@@ -1,5 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`selectMany should select many: calls: 1 1`] = `Array []`;
+
+exports[`selectMany should select many: calls: 2 1`] = `
+Array [
+  Object {
+    "completed": false,
+    "id": 1,
+    "title": "todo 1",
+  },
+  Object {
+    "completed": false,
+    "id": 2,
+    "title": "todo 2",
+  },
+]
+`;
+
+exports[`selectMany should select many: calls: 3 1`] = `
+Array [
+  Object {
+    "completed": false,
+    "id": 1,
+    "title": "",
+  },
+  Object {
+    "completed": false,
+    "id": 2,
+    "title": "todo 2",
+  },
+]
+`;
+
+exports[`selectMany should select many: calls: 4 1`] = `
+Array [
+  Object {
+    "completed": false,
+    "id": 1,
+    "title": "",
+  },
+]
+`;
+
 exports[`selectMany should work with ref: calls: 1 1`] = `Array []`;
 
 exports[`selectMany should work with ref: calls: 2 1`] = `

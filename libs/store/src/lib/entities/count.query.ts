@@ -4,8 +4,8 @@ import {
   BaseEntityOptions,
   defaultEntitiesRef,
   DefaultEntitiesRef,
-  EntitiesRecord,
   EntitiesRef,
+  EntitiesState,
   getEntityType,
   ItemPredicate,
 } from './entity.state';
@@ -23,7 +23,7 @@ import { findIdsByPredicate } from './entity.utils';
  *
  */
 export function selectEntitiesCount<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(options: BaseEntityOptions<Ref> = {}): OperatorFunction<S, number> {
   const { ref: { idsKey } = defaultEntitiesRef } = options;
@@ -41,7 +41,7 @@ export function selectEntitiesCount<
  *
  */
 export function selectEntitiesCountByPredicate<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
   predicate: ItemPredicate<getEntityType<S, Ref>>,

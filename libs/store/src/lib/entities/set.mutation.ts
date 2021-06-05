@@ -2,8 +2,8 @@ import {
   BaseEntityOptions,
   DefaultEntitiesRef,
   defaultEntitiesRef,
-  EntitiesRecord,
   EntitiesRef,
+  EntitiesState,
   getEntityType,
   getIdKey,
   getIdType,
@@ -20,7 +20,7 @@ import { buildEntities } from './entity.utils';
  *
  */
 export function setEntities<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
   entities: OrArray<getEntityType<S, Ref>>,

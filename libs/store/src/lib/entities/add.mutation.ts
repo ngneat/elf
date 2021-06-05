@@ -2,8 +2,8 @@ import {
   BaseEntityOptions,
   DefaultEntitiesRef,
   defaultEntitiesRef,
-  EntitiesRecord,
   EntitiesRef,
+  EntitiesState,
   getEntityType,
   getIdKey,
   getIdType,
@@ -23,7 +23,7 @@ import { buildEntities } from './entity.utils';
  * store.reduce(addEntities([entity, entity]), { prepend: true })
  */
 export function addEntities<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
   entities: OrArray<getEntityType<S, Ref>>,

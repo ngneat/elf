@@ -3,8 +3,8 @@ import {
   BaseEntityOptions,
   defaultEntitiesRef,
   DefaultEntitiesRef,
-  EntitiesRecord,
   EntitiesRef,
+  EntitiesState,
   getEntityType,
   getIdType,
   ItemPredicate,
@@ -36,7 +36,7 @@ function toModel<Entity>(updater: UpdateFn<Entity>, entity: Entity): Entity {
  *
  */
 export function updateEntities<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   U extends UpdateFn<getEntityType<S, Ref>>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
@@ -73,7 +73,7 @@ export function updateEntities<
  *
  */
 export function updateEntitiesByPredicate<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   U extends UpdateFn<getEntityType<S, Ref>>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
@@ -89,7 +89,7 @@ export function updateEntitiesByPredicate<
     );
 
     if (ids.length) {
-      return updateEntities(ids, updater, options)(state, store);
+      return updateEntities(ids, updater, options)(state, store) as S;
     }
 
     return state;
@@ -105,13 +105,13 @@ export function updateEntitiesByPredicate<
  *
  */
 export function updateAllEntities<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   U extends UpdateFn<getEntityType<S, Ref>>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(updater: U, options: BaseEntityOptions<Ref> = {}): Reducer<S> {
   return function reducer(state: S, store: Store) {
     const { ref: { idsKey } = defaultEntitiesRef } = options;
 
-    return updateEntities(state[idsKey], updater, options)(state, store);
+    return updateEntities(state[idsKey], updater, options)(state, store) as S;
   };
 }

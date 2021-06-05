@@ -1,7 +1,6 @@
 import {
-  defaultEntitiesRef,
-  EntitiesRecord,
   EntitiesRef,
+  EntitiesState,
   getEntityType,
   getIdType,
   ItemPredicate,
@@ -9,7 +8,7 @@ import {
 import { coerceArray } from '../core/utils';
 
 export function buildEntities<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   Ref extends EntitiesRef
 >(
   ref: Ref,
@@ -36,7 +35,7 @@ export function buildEntities<
 }
 
 export function findIdsByPredicate<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   Ref extends EntitiesRef
 >(state: S, ref: Ref, predicate: ItemPredicate<getEntityType<S, Ref>>) {
   const { idsKey, entitiesKey } = ref;

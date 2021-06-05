@@ -2,14 +2,14 @@ import {
   BaseEntityOptions,
   defaultEntitiesRef,
   DefaultEntitiesRef,
-  EntitiesRecord,
   EntitiesRef,
+  EntitiesState,
   getEntityType,
 } from './entity.state';
 import { select } from '../core/operators';
 
 export function selectLast<
-  S extends EntitiesRecord,
+  S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(options: BaseEntityOptions<Ref> = {}) {
   const { ref: { entitiesKey, idsKey } = defaultEntitiesRef } = options;
