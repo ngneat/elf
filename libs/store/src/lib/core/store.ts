@@ -1,4 +1,5 @@
 import { BehaviorSubject, Observable } from 'rxjs';
+import { addStore, removeStore } from './registry';
 
 export type Reducer<State> = (state: State, store: Store) => State;
 
@@ -8,15 +9,14 @@ export interface StoreDef<State = any> {
   config: any;
 }
 
-export class Store<
-  SDef extends StoreDef = any,
-  State = SDef['state']
-> extends BehaviorSubject<State> {
+export class Store<SDef extends StoreDef = any,
+  State = SDef['state']> extends BehaviorSubject<State> {
   private currentValue: State;
 
   constructor(public storeDef: SDef) {
     super(storeDef.state);
     this.currentValue = this.getValue();
+    addStore(this);
   }
 
   get state() {
@@ -38,7 +38,7 @@ export class Store<
       return value;
     }, this.currentValue);
 
-    if (nextState !== this.currentValue) {
+    if(nextState !== this.currentValue) {
       this.currentValue = nextState;
       super.next(this.currentValue);
     }
@@ -60,7 +60,7 @@ export class Store<
 
       return this.subscribe({
         next() {
-          if (hasChange) {
+          if(hasChange) {
             observer.next(buffer);
             hasChange = false;
           }
@@ -70,9 +70,13 @@ export class Store<
         },
         complete() {
           observer.complete();
-        },
+        }
       });
     });
+  }
+
+  destroy() {
+    removeStore(this);
   }
 }
 
@@ -80,3 +84,4 @@ type ReturnTypes<T extends Observable<any>[]> = {
   [P in keyof T]: T[P] extends Observable<infer R> ? R : never;
 };
 type Observables = [Observable<any>] | Observable<any>[];
+export type StoreValue<T extends Store> = T['state'];

@@ -16,7 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@eleanor/store": ["libs/store/src/index.ts"]
+      "@eleanor/store/*": ["libs/store/src/lib/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

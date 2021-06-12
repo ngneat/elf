@@ -22,8 +22,8 @@ export function toMatchSnapshot(expect: any, store: Store, label: string) {
   return expect(store.getValue()).toMatchSnapshot(label);
 }
 
-export const createEntitiesStore = () =>
-  new Store({ state, name: 'todos', config });
+export const createEntitiesStore = (name = 'todos') =>
+  new Store({ state, name, config });
 
 export function createUITodo(id: number): { id: number; open: boolean } {
   return {
@@ -32,8 +32,8 @@ export function createUITodo(id: number): { id: number; open: boolean } {
   };
 }
 
-export const createUIEntityStore = () =>
+export const createUIEntityStore = (name = 'UIEntityStore') =>
   new Store({
-    name: '',
+    name,
     ...createState(withUIEntities<{ id: number; open: boolean }, number>()),
   });
