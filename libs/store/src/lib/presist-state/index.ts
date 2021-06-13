@@ -1,4 +1,4 @@
-import { from, Observable, Subject } from 'rxjs';
+import { from, Observable, ReplaySubject } from 'rxjs';
 import { Store, StoreValue } from '@eleanor/store/core';
 import { skip, switchMap } from 'rxjs/operators';
 import { StateStorage } from '@eleanor/store/presist-state/storage';
@@ -18,7 +18,7 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
   const merged = { ...defaultOptions, ...options };
 
   const { setItem, getItem } = options.storage;
-  const initialized = new Subject();
+  const initialized = new ReplaySubject(1);
   const name = `${store.name}@store`;
 
   from(getItem(name)).subscribe((value) => {
@@ -37,9 +37,7 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
 
   const subscription = merged.source!(store).pipe(
     skip(1),
-    switchMap((value: StoreValue<S>) => {
-      return setItem(name, value);
-    })).subscribe();
+    switchMap((value: StoreValue<S>) => setItem(name, value))).subscribe();
 
   return {
     initialized$: initialized.asObservable(),
