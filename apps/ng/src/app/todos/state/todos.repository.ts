@@ -33,8 +33,8 @@ export class TodosRepository {
     this.todos$
   ]).pipe(map(data => filterTodos(...data)));
 
-  addTodo(todo: Todo) {
-    store.reduce(addEntities(todo));
+  addTodo(title: Todo['title']) {
+    store.reduce(addEntities({ id: Math.random(), title, completed: false }));
   }
 
   updateFilter(filter: TodosProps['filter']) {
@@ -45,7 +45,7 @@ export class TodosRepository {
     );
   }
 
-  updateCompleted(id: number) {
+  updateCompleted(id: Todo['id']) {
     store.reduce(updateEntities(id, entity => ({
       ...entity,
       completed: !entity.completed
