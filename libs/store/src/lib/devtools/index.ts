@@ -4,6 +4,7 @@ import { registry$ } from '../core/registry';
 
 interface DevtoolsOptions {
   maxAge?: number;
+  preAction?: () => void;
 }
 
 declare global {
@@ -40,7 +41,8 @@ export function devTools(options: DevtoolsOptions = {}) {
 
       const update = store.pipe(skip(1)).subscribe(value => {
         rootState[name] = value;
-        send({ type: `Update ${displayName}` }, rootState);
+        options.preAction?.();
+        send({ type: `Update ${displayName}`}, rootState);
       });
 
       subscriptions.set(name, update);

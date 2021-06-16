@@ -1,0 +1,13 @@
+<h1>Todos</h1>
+
+<button (click)="updateFilter('COMPLETED')">Complete</button>
+<button (click)="updateFilter('ACTIVE')">Active</button>
+<button (click)="updateFilter('ALL')">All</button>
+
+<ul>
+  <li *ngFor="let todo of todos$ | async">
+    <input type="checkbox" (change)="updateComplete(todo.id)" [checked]="todo.completed"> {{ todo.title }}
+  </li>
+</ul>
+
+<input #todo placeholder="title" (keydown.enter)="add(todo.value)">

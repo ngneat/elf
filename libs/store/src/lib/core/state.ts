@@ -10,9 +10,9 @@ type Merge<State extends any[], Key extends PropertyKey> = UnionToIntersection<
 export type State<State, Config> = { state: State; config: Config };
 export type EmptyConfig = Record<string, any>;
 
-export function createState<State extends any[]>(
-  ...state: State
-): { state: Merge<State, 'state'>; config: Merge<State, 'config'> } {
+export function createState<S extends State<any, any>[]>(
+  ...state: S
+): { state: Merge<S, 'state'>; config: Merge<S, 'config'> } {
   return state.reduce(
     (acc, current) => {
       acc.config = {
