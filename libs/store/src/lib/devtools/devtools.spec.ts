@@ -1,9 +1,9 @@
-import { devTools } from '@eleanor/store/devtools/index';
+import { devTools } from '@elf/store/devtools/index';
 import {
   createEntitiesStore,
   createTodo,
-} from '@eleanor/store/mocks/stores.mock';
-import { addEntities } from '@eleanor/store/entities';
+} from '@elf/store/mocks/stores.mock';
+import { addEntities } from '@elf/store/entities';
 
 describe('devtools', () => {
   const instanceMock = {

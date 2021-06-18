@@ -1,11 +1,11 @@
-import { createState } from '@eleanor/store/core/state';
+import { createState } from '@elf/store/core/state';
 import {
   addEntities,
   selectAll,
   updateEntities,
   withEntities,
-} from '@eleanor/store/entities';
-import { select, Store, withProps } from '@eleanor/store/core';
+} from '@elf/store/entities';
+import { select, Store, withProps } from '@elf/store/core';
 import { Injectable } from '@angular/core';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';

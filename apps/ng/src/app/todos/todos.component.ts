@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TodosRepository } from './state/todos.repository';
 
 @Component({
-  selector: 'eleanor-todos',
+  selector: 'elf-todos',
   templateUrl: './todos.component.html',
   styleUrls: ['./todos.component.css'],
 })

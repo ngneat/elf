@@ -1,11 +1,11 @@
 {
-  "name": "eleanor",
+  "name": "elf",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "nx": "nx",
     "start": "nx serve",
-    "build": "nx build",
+    "build": "nx build --project store",
     "test": "nx test --project store",
     "lint": "nx workspace-lint && nx lint",
     "e2e": "nx e2e",

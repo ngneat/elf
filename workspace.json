@@ -45,7 +45,7 @@
       "projectType": "application",
       "root": "apps/ng",
       "sourceRoot": "apps/ng/src",
-      "prefix": "eleanor",
+      "prefix": "elf",
       "targets": {
         "build": {
           "executor": "@angular-devkit/build-angular:browser",

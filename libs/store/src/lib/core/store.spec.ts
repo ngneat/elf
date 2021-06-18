@@ -2,18 +2,18 @@ import {
   createTodo,
   createUITodo,
   Todo,
-} from '@eleanor/store/mocks/stores.mock';
+} from '@elf/store/mocks/stores.mock';
 import {
   addEntities,
   selectAll,
   updateEntities,
   withEntities,
   withUIEntities,
-} from '@eleanor/store/entities';
-import { createState } from '@eleanor/store/core/state';
-import { Store } from '@eleanor/store/core/store';
-import { entitiesUIRef } from '@eleanor/store/entities/entity.state';
-import { withProps } from '@eleanor/store/props/props.state';
+} from '@elf/store/entities';
+import { createState } from '@elf/store/core/state';
+import { Store } from '@elf/store/core/store';
+import { entitiesUIRef } from '@elf/store/entities/entity.state';
+import { withProps } from '@elf/store/props/props.state';
 
 type UIEntity = { id: number; open: boolean };
 

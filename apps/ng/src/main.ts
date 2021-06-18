@@ -3,7 +3,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
-import { devTools } from '@eleanor/store/devtools';
+import { devTools } from '@elf/store/devtools';
 
 devTools();
 

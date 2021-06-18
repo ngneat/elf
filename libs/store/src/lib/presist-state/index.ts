@@ -1,7 +1,7 @@
 import { from, Observable, ReplaySubject } from 'rxjs';
-import { Store, StoreValue } from '@eleanor/store/core';
+import { Store, StoreValue } from '@elf/store/core';
 import { skip, switchMap } from 'rxjs/operators';
-import { StateStorage } from '@eleanor/store/presist-state/storage';
+import { StateStorage } from '@elf/store/presist-state/storage';
 
 interface Options<S extends Store> {
   storage: StateStorage;

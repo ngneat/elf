@@ -1,10 +1,10 @@
-import { StateStorage } from '@eleanor/store/presist-state/storage';
+import { StateStorage } from '@elf/store/presist-state/storage';
 import {
   createEntitiesStore,
   createTodo,
-} from '@eleanor/store/mocks/stores.mock';
-import { persistState } from '@eleanor/store/presist-state/index';
-import { addEntities } from '@eleanor/store/entities';
+} from '@elf/store/mocks/stores.mock';
+import { persistState } from '@elf/store/presist-state/index';
+import { addEntities } from '@elf/store/entities';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 

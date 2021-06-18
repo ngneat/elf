@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'eleanor-root',
+  selector: 'elf-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
