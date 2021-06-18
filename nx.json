@@ -23,15 +23,15 @@
     }
   },
   "projects": {
-    "store": {
-      "tags": []
-    },
     "ng": {
       "tags": []
     },
     "ng-e2e": {
       "tags": [],
       "implicitDependencies": ["ng"]
+    },
+    "store": {
+      "tags": []
     }
   }
 }
