@@ -28,16 +28,12 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/store/**/*.ts"
-            ]
+            "lintFilePatterns": ["libs/store/**/*.ts"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/store"
-          ],
+          "outputs": ["coverage/libs/store"],
           "options": {
             "jestConfig": "libs/store/jest.config.js",
             "passWithNoTests": true
@@ -53,9 +49,7 @@
       "targets": {
         "build": {
           "executor": "@angular-devkit/build-angular:browser",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/ng",
             "index": "apps/ng/src/index.html",
@@ -63,13 +57,8 @@
             "polyfills": "apps/ng/src/polyfills.ts",
             "tsConfig": "apps/ng/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "apps/ng/src/favicon.ico",
-              "apps/ng/src/assets"
-            ],
-            "styles": [
-              "apps/ng/src/styles.scss"
-            ],
+            "assets": ["apps/ng/src/favicon.ico", "apps/ng/src/assets"],
+            "styles": ["apps/ng/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -126,17 +115,12 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/ng/src/**/*.ts",
-              "apps/ng/src/**/*.html"
-            ]
+            "lintFilePatterns": ["apps/ng/src/**/*.ts", "apps/ng/src/**/*.html"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/ng"
-          ],
+          "outputs": ["coverage/apps/ng"],
           "options": {
             "jestConfig": "apps/ng/jest.config.js",
             "passWithNoTests": true
@@ -165,9 +149,7 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/ng-e2e/**/*.{js,ts}"
-            ]
+            "lintFilePatterns": ["apps/ng-e2e/**/*.{js,ts}"]
           }
         }
       }

@@ -9,8 +9,10 @@ export interface StoreDef<State = any> {
   config: any;
 }
 
-export class Store<SDef extends StoreDef = any,
-  State = SDef['state']> extends BehaviorSubject<State> {
+export class Store<
+  SDef extends StoreDef = any,
+  State = SDef['state']
+> extends BehaviorSubject<State> {
   private currentValue: State;
 
   constructor(public storeDef: SDef) {
@@ -38,7 +40,7 @@ export class Store<SDef extends StoreDef = any,
       return value;
     }, this.currentValue);
 
-    if(nextState !== this.currentValue) {
+    if (nextState !== this.currentValue) {
       this.currentValue = nextState;
       super.next(this.currentValue);
     }
@@ -60,7 +62,7 @@ export class Store<SDef extends StoreDef = any,
 
       return this.subscribe({
         next() {
-          if(hasChange) {
+          if (hasChange) {
             observer.next(buffer);
             hasChange = false;
           }
@@ -70,7 +72,7 @@ export class Store<SDef extends StoreDef = any,
         },
         complete() {
           observer.complete();
-        }
+        },
       });
     });
   }

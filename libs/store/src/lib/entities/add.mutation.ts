@@ -6,7 +6,7 @@ import {
   EntitiesState,
   getEntityType,
   getIdKey,
-  getIdType
+  getIdType,
 } from './entity.state';
 import { OrArray } from '../core/types';
 import { Reducer, Store } from '../core/store';
@@ -22,8 +22,10 @@ import { buildEntities } from './entity.utils';
  *
  * store.reduce(addEntities([entity, entity]), { prepend: true })
  */
-export function addEntities<S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef>(
+export function addEntities<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(
   entities: OrArray<getEntityType<S, Ref>>,
   options: {
     prepend?: boolean;
@@ -45,7 +47,7 @@ export function addEntities<S extends EntitiesState<Ref>,
       [entitiesKey]: { ...state[entitiesKey], ...asObject },
       [idsKey]: prepend
         ? [...ids, ...state[idsKey]]
-        : [...state[idsKey], ...ids]
+        : [...state[idsKey], ...ids],
     };
   };
 }

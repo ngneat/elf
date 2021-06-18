@@ -6,8 +6,17 @@
 
 <ul>
   <li *ngFor="let todo of todosRepo.visibleTodos$ | async">
-    <input type="checkbox" (change)="todosRepo.updateCompleted(todo.id)" [checked]="todo.completed"> {{ todo.title }}
+    <input
+      type="checkbox"
+      (change)="todosRepo.updateCompleted(todo.id)"
+      [checked]="todo.completed"
+    />
+    {{ todo.title }}
   </li>
 </ul>
 
-<input #todo placeholder="title" (keydown.enter)="todosRepo.addTodo(todo.value)">
+<input
+  #todo
+  placeholder="title"
+  (keydown.enter)="todosRepo.addTodo(todo.value)"
+/>

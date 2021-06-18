@@ -11,8 +11,8 @@ interface Options<S extends Store> {
 
 export function persistState<S extends Store>(store: S, options: Options<S>) {
   const defaultOptions: Partial<Options<S>> = {
-    source: store => store,
-    preStoreInit: value => value
+    source: (store) => store,
+    preStoreInit: (value) => value,
   };
 
   const merged = { ...defaultOptions, ...options };
@@ -22,11 +22,11 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
   const name = `${store.name}@store`;
 
   from(getItem(name)).subscribe((value) => {
-    if(value) {
+    if (value) {
       store.reduce((state) => {
         return merged.preStoreInit!({
           ...state,
-          ...value
+          ...value,
         });
       });
     }
@@ -35,14 +35,17 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
     initialized.complete();
   });
 
-  const subscription = merged.source!(store).pipe(
-    skip(1),
-    switchMap((value: StoreValue<S>) => setItem(name, value))).subscribe();
+  const subscription = merged.source!(store)
+    .pipe(
+      skip(1),
+      switchMap((value: StoreValue<S>) => setItem(name, value))
+    )
+    .subscribe();
 
   return {
     initialized$: initialized.asObservable(),
     unsubscribe() {
       subscription.unsubscribe();
-    }
+    },
   };
 }

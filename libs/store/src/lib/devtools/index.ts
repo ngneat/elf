@@ -11,23 +11,32 @@ declare global {
   interface Window {
     __REDUX_DEVTOOLS_EXTENSION__: {
       connect(options: DevtoolsOptions): {
-        send(data: { type: string } & Record<string, any>, state: Record<string, any>): void;
+        send(
+          data: { type: string } & Record<string, any>,
+          state: Record<string, any>
+        ): void;
         init(state: Record<string, any>): void;
         unsubscribe(): void;
-        subscribe(cb: (message: { type: string, payload: { type: string } }) => void): () => void;
+        subscribe(
+          cb: (message: { type: string; payload: { type: string } }) => void
+        ): () => void;
       };
     };
   }
 }
 
 export function devTools(options: DevtoolsOptions = {}) {
-  const capitalize = (value: string) => value && value.charAt(0).toUpperCase() + value.slice(1);
+  const capitalize = (value: string) =>
+    value && value.charAt(0).toUpperCase() + value.slice(1);
   const instance = window.__REDUX_DEVTOOLS_EXTENSION__.connect(options);
 
   const rootState: Record<string, any> = {};
   const subscriptions = new Map<string, Subscription>();
 
-  const send = (data: { type: string } & Record<string, any>, state?: Record<string, any>) => {
+  const send = (
+    data: { type: string } & Record<string, any>,
+    state?: Record<string, any>
+  ) => {
     instance.send(data, state ?? rootState);
   };
 
@@ -35,20 +44,20 @@ export function devTools(options: DevtoolsOptions = {}) {
     const name = store.name;
     const displayName = capitalize(name);
 
-    if(type === 'add') {
+    if (type === 'add') {
       rootState[name] = store.getValue();
       send({ type: `@Init ${displayName}` }, rootState);
 
-      const update = store.pipe(skip(1)).subscribe(value => {
+      const update = store.pipe(skip(1)).subscribe((value) => {
         rootState[name] = value;
         options.preAction?.();
-        send({ type: `Update ${displayName}`}, rootState);
+        send({ type: `Update ${displayName}` }, rootState);
       });
 
       subscriptions.set(name, update);
     }
 
-    if(type === 'remove') {
+    if (type === 'remove') {
       Reflect.deleteProperty(rootState, name);
       subscriptions.get(name)!.unsubscribe();
       subscriptions.delete(name);
@@ -56,11 +65,11 @@ export function devTools(options: DevtoolsOptions = {}) {
     }
   });
 
-  const devtoolsDispose = instance.subscribe(message => {
-    if(message.type === 'DISPATCH') {
+  const devtoolsDispose = instance.subscribe((message) => {
+    if (message.type === 'DISPATCH') {
       const payloadType = message.payload.type;
 
-      if(payloadType === 'COMMIT') {
+      if (payloadType === 'COMMIT') {
         instance.init(rootState);
         return;
       }
@@ -72,8 +81,8 @@ export function devTools(options: DevtoolsOptions = {}) {
     unsubscribe() {
       subscription.unsubscribe();
       instance.unsubscribe();
-      subscriptions.forEach(sub => sub.unsubscribe());
+      subscriptions.forEach((sub) => sub.unsubscribe());
       devtoolsDispose();
-    }
+    },
   };
 }

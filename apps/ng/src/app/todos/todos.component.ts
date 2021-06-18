@@ -4,9 +4,8 @@ import { TodosRepository } from './state/todos.repository';
 @Component({
   selector: 'eleanor-todos',
   templateUrl: './todos.component.html',
-  styleUrls: ['./todos.component.css']
+  styleUrls: ['./todos.component.css'],
 })
 export class TodosComponent {
-  constructor(public todosRepo: TodosRepository) {
-  }
+  constructor(public todosRepo: TodosRepository) {}
 }

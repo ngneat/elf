@@ -7,12 +7,12 @@ import { devTools } from '@eleanor/store/devtools';
 
 devTools();
 
-if(environment.production) {
+if (environment.production) {
   enableProdMode();
 }
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule, {
-    defaultEncapsulation: ViewEncapsulation.Emulated
+    defaultEncapsulation: ViewEncapsulation.Emulated,
   })
   .catch((err) => console.error(err));

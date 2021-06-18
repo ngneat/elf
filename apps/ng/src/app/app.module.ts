@@ -8,13 +8,15 @@ import { RouterModule } from '@angular/router';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    RouterModule.forRoot([{
-      path: 'todos',
-      loadChildren: () => import('./todos/todos.module').then(m => m.TodosModule)
-    }])
+    RouterModule.forRoot([
+      {
+        path: 'todos',
+        loadChildren: () =>
+          import('./todos/todos.module').then((m) => m.TodosModule),
+      },
+    ]),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

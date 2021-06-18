@@ -2,7 +2,7 @@ import { Store, StoreDef } from './store';
 import { Subject } from 'rxjs';
 
 const registry = new Map<string, Store>();
-const registryActions = new Subject<{ type: 'add' | 'remove', store: Store }>();
+const registryActions = new Subject<{ type: 'add' | 'remove'; store: Store }>();
 
 export const registry$ = registryActions.asObservable();
 
@@ -16,11 +16,12 @@ export function removeStore(store: Store) {
   registryActions.next({ type: 'remove', store });
 }
 
-export function getStore<T extends StoreDef>(name: string): Store<T> | undefined {
+export function getStore<T extends StoreDef>(
+  name: string
+): Store<T> | undefined {
   return registry.get(name);
 }
 
 export function getRegistry() {
   return registry;
 }
-
