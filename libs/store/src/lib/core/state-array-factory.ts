@@ -5,13 +5,13 @@ import { capitalize } from './utils';
 export function stateArrayFactory<
   T extends Record<any, any[]>,
   K extends keyof T = T extends Record<infer Key, any> ? Key : never
->(key: K, defaultValue: T[K], options?: { idKey: keyof T[0] }) {
+>(key: K, initialValue: T[K], options?: { idKey: keyof T[0] }) {
   const normalizedKey = capitalize(key as string);
-  const base = stateFactory<T, K>(key, defaultValue);
+  const base = stateFactory<T, K>(key, initialValue);
 
   return {
     ...base,
-    [`add${normalizedKey}`]: function (value: any) {
+    [`add${normalizedKey}`](value: any) {
       return function (state: any) {
         return {
           ...state,
@@ -19,7 +19,7 @@ export function stateArrayFactory<
         };
       };
     },
-    [`remove${normalizedKey}`]: function (id: any) {
+    [`remove${normalizedKey}`](id: any) {
       return function (state: any) {
         return {
           ...state,
@@ -27,7 +27,7 @@ export function stateArrayFactory<
         };
       };
     },
-    [`toggle${normalizedKey}`]: function (id: any) {
+    [`toggle${normalizedKey}`](id: any) {
       return function (state: any) {
         return {
           ...state,

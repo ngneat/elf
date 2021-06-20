@@ -1,5 +1,40 @@
-import { createState, Store } from '@ngneat/elf';
+import { createState, stateFactory, Store, withProps } from '@ngneat/elf';
 import { stateArrayFactory } from './state-array-factory';
+
+describe('stateFactory', () => {
+  it('should work', () => {
+    const { selectActiveId, setActiveId, withActiveId, resetActiveId } =
+      stateFactory<{ activeId: number | undefined }>('activeId', undefined);
+
+    const { state, config } = createState(
+      withActiveId(),
+      withProps<{ filter: string }>({ filter: '' })
+    );
+
+    const store = new Store({ state, config, name: '' });
+    expect(store.getValue()).toEqual({ activeId: undefined, filter: '' });
+
+    const spy = jest.fn();
+    store.pipe(selectActiveId()).subscribe(spy);
+
+    expect(spy).toHaveBeenCalledWith(undefined);
+    expect(spy).toHaveBeenCalledTimes(1);
+
+    store.reduce(setActiveId(1));
+    expect(spy).toHaveBeenCalledTimes(2);
+    expect(store.getValue()).toEqual({ activeId: 1, filter: '' });
+
+    store.reduce((state) => ({
+      ...state,
+      filter: 'foo',
+    }));
+    expect(spy).toHaveBeenCalledTimes(2);
+
+    store.reduce(resetActiveId());
+    expect(spy).toHaveBeenCalledTimes(3);
+    expect(store.getValue()).toEqual({ activeId: undefined, filter: 'foo' });
+  });
+});
 
 describe('stateArrayFactory', () => {
   it('should work', () => {

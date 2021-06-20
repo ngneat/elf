@@ -7,19 +7,19 @@ import { capitalize, isFunction } from './utils';
 export function stateFactory<
   T extends Record<any, any>,
   K extends keyof T = T extends Record<infer Key, any> ? Key : never
->(key: K, defaultValue: T[K]) {
+>(key: K, initialValue: T[K]) {
   const normalizedKey = capitalize(key as string);
 
   return {
-    [`with${normalizedKey}`]: function (initialValue = defaultValue) {
+    [`with${normalizedKey}`](value = initialValue) {
       return {
         state: {
-          [key]: initialValue,
+          [key]: value,
         },
         config: undefined,
       };
     },
-    [`set${normalizedKey}`]: function (value: any) {
+    [`set${normalizedKey}`](value: any) {
       return function (state: any) {
         const newVal = isFunction(value) ? value(state) : value;
 
@@ -29,12 +29,21 @@ export function stateFactory<
         };
       };
     },
-    [`select${normalizedKey}`]: function () {
+    [`reset${normalizedKey}`]() {
+      return function (state: any) {
+        return {
+          ...state,
+          [key]: initialValue,
+        };
+      };
+    },
+    [`select${normalizedKey}`]() {
       return select((state: any) => state[key]);
     },
   } as unknown as {
     [P in
       | `set${Capitalize<string & K>}`
+      | `reset${Capitalize<string & K>}`
       | `select${Capitalize<string & K>}`
       | `with${Capitalize<string & K>}`]: P extends `set${Capitalize<
       string & K
@@ -42,6 +51,8 @@ export function stateFactory<
       ? <S extends T>(value: S[K] | ((state: S) => S)) => Reducer<S>
       : P extends `select${Capitalize<string & K>}`
       ? <S extends T>() => OperatorFunction<S, S[K]>
+      : P extends `reset${Capitalize<string & K>}`
+      ? <S extends T>() => Reducer<S>
       : (initialValue?: T[K]) => State<T, EmptyConfig>;
   };
 }
