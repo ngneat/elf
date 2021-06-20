@@ -16,7 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@elf/store/*": ["libs/store/src/lib/*"]
+      "@ngneat/elf": ["libs/store/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

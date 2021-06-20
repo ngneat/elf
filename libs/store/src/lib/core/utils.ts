@@ -16,3 +16,11 @@ export function isUndefined(value: any): value is undefined {
 export function isString(value: any): value is string {
   return typeof value === 'string';
 }
+
+export function capitalize(key: string): string {
+  return key.charAt(0).toUpperCase() + key.slice(1);
+}
+
+export function isObject(item: any) {
+  return typeof item === 'object' && !Array.isArray(item) && item !== null;
+}

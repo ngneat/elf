@@ -2,11 +2,7 @@ import { select } from './operators';
 import { OperatorFunction } from 'rxjs';
 import { EmptyConfig, State } from './state';
 import { Reducer } from './store';
-import { isFunction } from './utils';
-
-function capitalize(key: string) {
-  return key.charAt(0).toUpperCase() + key.slice(1);
-}
+import { capitalize, isFunction } from './utils';
 
 export function stateFactory<
   T extends Record<any, any>,

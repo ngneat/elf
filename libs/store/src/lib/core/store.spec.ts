@@ -1,19 +1,15 @@
-import {
-  createTodo,
-  createUITodo,
-  Todo,
-} from '@elf/store/mocks/stores.mock';
+import { createTodo, createUITodo, Todo } from '../mocks/stores.mock';
 import {
   addEntities,
   selectAll,
   updateEntities,
   withEntities,
   withUIEntities,
-} from '@elf/store/entities';
-import { createState } from '@elf/store/core/state';
-import { Store } from '@elf/store/core/store';
-import { entitiesUIRef } from '@elf/store/entities/entity.state';
-import { withProps } from '@elf/store/props/props.state';
+} from '../entities';
+import { withProps } from '../props/props.state';
+import { Store } from './store';
+import { entitiesUIRef } from '../entities/entity.state';
+import { createState } from './state';
 
 type UIEntity = { id: number; open: boolean };
 

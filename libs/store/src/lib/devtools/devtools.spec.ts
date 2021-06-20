@@ -1,9 +1,6 @@
-import { devTools } from '@elf/store/devtools/index';
-import {
-  createEntitiesStore,
-  createTodo,
-} from '@elf/store/mocks/stores.mock';
-import { addEntities } from '@elf/store/entities';
+import { addEntities } from '../entities';
+import { createEntitiesStore, createTodo } from '../mocks/stores.mock';
+import { devTools } from './index';
 
 describe('devtools', () => {
   const instanceMock = {

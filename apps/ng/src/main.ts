@@ -3,9 +3,9 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
-import { devTools } from '@elf/store/devtools';
+// import { devTools } from '@ngneat/elf-devtools';
 
-devTools();
+// devTools();
 
 if (environment.production) {
   enableProdMode();

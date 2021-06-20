@@ -1,12 +1,9 @@
-import { StateStorage } from '@elf/store/presist-state/storage';
-import {
-  createEntitiesStore,
-  createTodo,
-} from '@elf/store/mocks/stores.mock';
-import { persistState } from '@elf/store/presist-state/index';
-import { addEntities } from '@elf/store/entities';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { addEntities } from '../entities';
+import { StateStorage } from './storage';
+import { persistState } from './index';
+import { createEntitiesStore, createTodo } from '../mocks/stores.mock';
 
 describe('persist state', () => {
   it('should persist upon update', () => {
