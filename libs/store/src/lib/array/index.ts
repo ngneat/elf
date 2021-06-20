@@ -1,5 +1,16 @@
 import { isObject } from '../core/utils';
 
+/**
+ *
+ * Add array item
+ *
+ * @example
+ *
+ * arrayAdd([1, 2, 3], 5)
+ *
+ * arrayAdd([1, 2, 3], 5, { prepend: true })
+ *
+ */
 export function arrayAdd<T extends any[]>(
   arr: T,
   item: T[0],
@@ -8,6 +19,19 @@ export function arrayAdd<T extends any[]>(
   return options.prepend ? ([item, ...arr] as T) : ([...arr, item] as T);
 }
 
+/**
+ *
+ * Remove array item
+ *
+ * @example
+ *
+ * arrayRemove([1, 2, 3], 2)
+ *
+ * arrayRemove([{ id: 1, title }, { id: 2, title }], 2)
+ *
+ * arrayRemove([{ _id: 1, title }, { _id: 2, title }], 2, { idKey: '_id' })
+ *
+ */
 export function arrayRemove<T extends any[], IdKey extends keyof T[0]>(
   arr: T,
   id: T[0] extends Record<any, any> ? T[0][IdKey] : T[0],
@@ -27,9 +51,12 @@ export function arrayRemove<T extends any[], IdKey extends keyof T[0]>(
 
 /**
  *
+ * Update array item
+ *
  * @example
  *
  * arrayUpdate([1, 2, 3], 2, 4)
+ *
  * arrayUpdate([{ id: 1, title }, { id: 2, title }], 2, { title: 'foo' })
  *
  */
@@ -62,6 +89,18 @@ export function arrayUpdate<T extends any[], IdKey extends keyof T[0]>(
   return isPrimitive ? (handlePrimitive() as T) : (handleObjects() as T);
 }
 
+
+/**
+ *
+ * Toggle array item
+ *
+ * @example
+ *
+ * arrayToggle([1, 2, 3], 2)
+ *
+ * arrayToggle([{ id: 1, title }, { id: 2, title }], { id: 1, title })
+ *
+ */
 export function arrayToggle<T extends any[], IdKey extends keyof T[0]>(
   arr: T,
   item: T[0],
