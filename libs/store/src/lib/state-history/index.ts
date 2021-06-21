@@ -22,7 +22,7 @@ class StateHistory<T extends Store, State extends StoreValue<T>> {
   private history: History<State> = {
     past: [],
     present: null,
-    future: []
+    future: [],
   };
 
   private skipUpdate = false;
@@ -34,9 +34,14 @@ class StateHistory<T extends Store, State extends StoreValue<T>> {
   private mergedOptions: StateHistoryOptions<State>;
 
   hasPast$ = this.hasPastSubject.asObservable().pipe(distinctUntilChanged());
-  hasFuture$ = this.hasFutureSubject.asObservable().pipe(distinctUntilChanged());
+  hasFuture$ = this.hasFutureSubject
+    .asObservable()
+    .pipe(distinctUntilChanged());
 
-  constructor(protected store: T, private options: Partial<StateHistoryOptions<State>> = {}) {
+  constructor(
+    protected store: T,
+    private options: Partial<StateHistoryOptions<State>> = {}
+  ) {
     this.mergedOptions = { maxAge: 10, comparatorFn: () => true, ...options };
     this.activate();
   }
@@ -55,14 +60,14 @@ class StateHistory<T extends Store, State extends StoreValue<T>> {
     this.subscription = this.store
       .pipe(pairwise())
       .subscribe(([past, present]) => {
-        if(this.skipUpdate || this.paused) {
+        if (this.skipUpdate || this.paused) {
           return;
         }
 
         const shouldUpdate = this.mergedOptions.comparatorFn!(past, present);
 
-        if(shouldUpdate) {
-          if(this.history.past.length === this.mergedOptions.maxAge) {
+        if (shouldUpdate) {
+          if (this.history.past.length === this.mergedOptions.maxAge) {
             this.history.past = this.history.past.slice(1);
           }
           this.history.past = [...this.history.past, past];
@@ -73,7 +78,7 @@ class StateHistory<T extends Store, State extends StoreValue<T>> {
   }
 
   undo() {
-    if(this.history.past.length) {
+    if (this.history.past.length) {
       const { past, present, future } = this.history;
       const previous = past[past.length - 1];
       this.history.past = past.slice(0, past.length - 1);
@@ -84,7 +89,7 @@ class StateHistory<T extends Store, State extends StoreValue<T>> {
   }
 
   redo() {
-    if(this.history.future.length) {
+    if (this.history.future.length) {
       const { past, present, future } = this.history;
       const next = future[0];
       const newFuture = future.slice(1);
@@ -96,11 +101,15 @@ class StateHistory<T extends Store, State extends StoreValue<T>> {
   }
 
   jumpToPast(index: number) {
-    if(index < 0 || index >= this.history.past.length) return;
+    if (index < 0 || index >= this.history.past.length) return;
 
     const { past, future, present } = this.history;
     const newPast = past.slice(0, index);
-    const newFuture = [...past.slice(index + 1), present, ...future] as History<State>['future'];
+    const newFuture = [
+      ...past.slice(index + 1),
+      present,
+      ...future,
+    ] as History<State>['future'];
     const newPresent = past[index];
     this.history.past = newPast;
     this.history.present = newPresent;
@@ -109,7 +118,7 @@ class StateHistory<T extends Store, State extends StoreValue<T>> {
   }
 
   jumpToFuture(index: number) {
-    if(index < 0 || index >= this.history.future.length) return;
+    if (index < 0 || index >= this.history.future.length) return;
 
     const { past, future, present } = this.history;
 
@@ -128,8 +137,8 @@ class StateHistory<T extends Store, State extends StoreValue<T>> {
    *
    */
   jump(n: number) {
-    if(n > 0) return this.jumpToFuture(n - 1);
-    if(n < 0) return this.jumpToPast(this.history.past.length + n);
+    if (n > 0) return this.jumpToFuture(n - 1);
+    if (n < 0) return this.jumpToPast(this.history.past.length + n);
   }
 
   /**
@@ -152,15 +161,15 @@ class StateHistory<T extends Store, State extends StoreValue<T>> {
     this.history = isFunction(customUpdateFn)
       ? customUpdateFn(this.history)
       : {
-        past: [],
-        present: null,
-        future: []
-      };
+          past: [],
+          present: null,
+          future: [],
+        };
     this.updateHasHistory();
   }
 
   destroy({ clearHistory = false }: { clearHistory?: boolean } = {}) {
-    if(clearHistory) {
+    if (clearHistory) {
       this.clear();
     }
 
@@ -188,6 +197,9 @@ class StateHistory<T extends Store, State extends StoreValue<T>> {
   }
 }
 
-export function stateHistory<T extends Store, State extends StoreValue<T>>(store: T, options: Partial<StateHistoryOptions<State>> = {}) {
+export function stateHistory<T extends Store, State extends StoreValue<T>>(
+  store: T,
+  options: Partial<StateHistoryOptions<State>> = {}
+) {
   return new StateHistory<T, State>(store, options);
 }

@@ -47,5 +47,4 @@ describe('state history', () => {
     history.undo();
     eq(store, 0);
   });
-
 });
