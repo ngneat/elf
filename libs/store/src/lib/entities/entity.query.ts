@@ -1,4 +1,4 @@
-import { OperatorFunction } from 'rxjs';
+import { OperatorFunction, pipe } from 'rxjs';
 import { select } from '../core/operators';
 import { isString, isUndefined } from '../core/utils';
 import {
@@ -11,6 +11,7 @@ import {
   getEntityType,
   getIdType,
 } from './entity.state';
+import { untilEntitiesChanges } from './all.query';
 
 interface Options extends BaseEntityOptions<any> {
   pluck?: string | ((entity: unknown) => any);
@@ -18,6 +19,8 @@ interface Options extends BaseEntityOptions<any> {
 
 /**
  * Select entity from the store
+ *
+ * @example
  *
  * store.pipe(selectEntity(id, { pluck: 'title' })
  *
@@ -33,6 +36,8 @@ export function selectEntity<
 
 /**
  * Select entity from the store
+ *
+ * @example
  *
  * store.pipe(selectEntity(id, { pluck: e => e.title })
  *
@@ -52,7 +57,9 @@ export function selectEntity<
  *
  * Select entity from the store
  *
- * store.pipe(selectEntity(id)
+ * @example
+ *
+ * store.pipe(selectEntity(id))
  *
  */
 export function selectEntity<
@@ -69,7 +76,10 @@ export function selectEntity<S extends EntitiesState<Ref>, Ref>(
 ) {
   const { ref: { entitiesKey } = defaultEntitiesRef, pluck } = options;
 
-  return select<S, Ref>((state) => getEntity(state[entitiesKey], id, pluck));
+  return pipe(
+    untilEntitiesChanges(entitiesKey),
+    select<S, Ref>((state) => getEntity(state[entitiesKey], id, pluck))
+  );
 }
 
 export function getEntity(

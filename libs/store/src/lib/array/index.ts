@@ -89,7 +89,6 @@ export function arrayUpdate<T extends any[], IdKey extends keyof T[0]>(
   return isPrimitive ? (handlePrimitive() as T) : (handleObjects() as T);
 }
 
-
 /**
  *
  * Toggle array item
