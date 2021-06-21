@@ -10,7 +10,7 @@ import {
 } from '../entities/entity.state';
 import { selectEntity } from '@ngneat/elf';
 import { switchMap } from 'rxjs/operators';
-import {StateOf} from "../core/types";
+import { StateOf } from '../core/types';
 
 export const { selectActiveId, setActiveId, withActiveId, resetActiveId } =
   stateFactory<{ activeId: number | undefined }>('activeId', undefined);
