@@ -1,6 +1,6 @@
 import { createState, Store } from '../core';
 import { addEntities, updateEntities, withEntities } from '../entities';
-import { selectActiveEntity, setActiveId, withActiveId } from './active-id';
+import {selectActiveEntity, selectActiveId, setActiveId, withActiveId} from './active-id';
 
 describe('activeId', () => {
   it('should select the active entity', () => {
@@ -12,6 +12,9 @@ describe('activeId', () => {
     const store = new Store({ state, config, name: '' });
 
     const spy = jest.fn();
+    store.pipe(selectActiveId()).subscribe(v => {
+
+    });
     store.pipe(selectActiveEntity()).subscribe(spy);
     expect(spy).toHaveBeenCalledWith(undefined);
 
