@@ -2,7 +2,7 @@
 
 exports[`remove should remove all the entities: should have three entities 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
@@ -19,7 +19,7 @@ Object {
       "title": "todo 3",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
     2,
     3,
@@ -29,14 +29,14 @@ Object {
 
 exports[`remove should remove all the entities: should remove all 1`] = `
 Object {
-  "$entities": Object {},
-  "$ids": Array [],
+  "entities": Object {},
+  "ids": Array [],
 }
 `;
 
 exports[`remove should remove by predicate: should have three entities 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
@@ -53,7 +53,7 @@ Object {
       "title": "todo 3",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
     2,
     3,
@@ -63,7 +63,7 @@ Object {
 
 exports[`remove should remove by predicate: should remove the entity with id of 1 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "2": Object {
       "completed": false,
       "id": 2,
@@ -75,7 +75,7 @@ Object {
       "title": "todo 3",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     2,
     3,
   ],
@@ -84,7 +84,7 @@ Object {
 
 exports[`remove should remove entities: should have three entities 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
@@ -101,7 +101,7 @@ Object {
       "title": "todo 3",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
     2,
     3,
@@ -111,14 +111,14 @@ Object {
 
 exports[`remove should remove entities: should remove two entities 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "3": Object {
       "completed": false,
       "id": 3,
       "title": "todo 3",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     3,
   ],
 }
@@ -126,7 +126,7 @@ Object {
 
 exports[`remove should remove entity: should have two entities 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
@@ -138,7 +138,7 @@ Object {
       "title": "todo 2",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
     2,
   ],
@@ -147,14 +147,14 @@ Object {
 
 exports[`remove should remove entity: should remove one entity 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "2": Object {
       "completed": false,
       "id": 2,
       "title": "todo 2",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     2,
   ],
 }
@@ -162,7 +162,7 @@ Object {
 
 exports[`remove should work with ref: should have three ui entities 1`] = `
 Object {
-  "$UIEntities": Object {
+  "UIEntities": Object {
     "1": Object {
       "id": 1,
       "open": false,
@@ -172,7 +172,7 @@ Object {
       "open": false,
     },
   },
-  "$UIIds": Array [
+  "UIIds": Array [
     1,
     2,
   ],
@@ -181,13 +181,13 @@ Object {
 
 exports[`remove should work with ref: should remove the ui entity with id of 1 1`] = `
 Object {
-  "$UIEntities": Object {
+  "UIEntities": Object {
     "2": Object {
       "id": 2,
       "open": false,
     },
   },
-  "$UIIds": Array [
+  "UIIds": Array [
     2,
   ],
 }

@@ -2,14 +2,14 @@
 
 exports[`add should add entity: add one 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
       "title": "todo 1",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
   ],
 }
@@ -17,7 +17,7 @@ Object {
 
 exports[`add should add multiple entities: add two 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
@@ -29,7 +29,7 @@ Object {
       "title": "todo 2",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
     2,
   ],
@@ -38,7 +38,7 @@ Object {
 
 exports[`add should prepend entities: prepend 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
@@ -60,7 +60,7 @@ Object {
       "title": "todo 4",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     3,
     4,
     1,
@@ -71,7 +71,7 @@ Object {
 
 exports[`add should work with ref: ref 1`] = `
 Object {
-  "$UIEntities": Object {
+  "UIEntities": Object {
     "1": Object {
       "id": 1,
       "open": false,
@@ -81,7 +81,7 @@ Object {
       "open": false,
     },
   },
-  "$UIIds": Array [
+  "UIIds": Array [
     1,
     2,
   ],

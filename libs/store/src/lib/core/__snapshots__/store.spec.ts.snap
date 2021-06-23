@@ -2,60 +2,60 @@
 
 exports[`store combine should fire only once 1`] = `
 Object {
-  "$UIEntities": Object {},
-  "$UIIds": Array [],
-  "$entities": Object {},
-  "$ids": Array [],
+  "UIEntities": Object {},
+  "UIIds": Array [],
+  "entities": Object {},
   "filter": "",
+  "ids": Array [],
 }
 `;
 
 exports[`store combine should fire only once 2`] = `
 Object {
-  "$UIEntities": Object {
+  "UIEntities": Object {
     "1": Object {
       "id": 1,
       "open": false,
     },
   },
-  "$UIIds": Array [
+  "UIIds": Array [
     1,
   ],
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
       "title": "todo 1",
     },
   },
-  "$ids": Array [
+  "filter": "",
+  "ids": Array [
     1,
   ],
-  "filter": "",
 }
 `;
 
 exports[`store combine should fire only once 3`] = `
 Object {
-  "$UIEntities": Object {
+  "UIEntities": Object {
     "1": Object {
       "id": 1,
       "open": false,
     },
   },
-  "$UIIds": Array [
+  "UIIds": Array [
     1,
   ],
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
       "title": "foo",
     },
   },
-  "$ids": Array [
+  "filter": "hello",
+  "ids": Array [
     1,
   ],
-  "filter": "hello",
 }
 `;

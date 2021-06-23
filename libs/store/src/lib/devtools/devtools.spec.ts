@@ -26,8 +26,8 @@ describe('devtools', () => {
       { type: '@Init Todos' },
       {
         todos: {
-          $entities: {},
-          $ids: [],
+          entities: {},
+          ids: [],
         },
       }
     );
@@ -38,14 +38,14 @@ describe('devtools', () => {
       { type: 'Update Todos' },
       {
         todos: {
-          $entities: {
+          entities: {
             1: {
               completed: false,
               id: 1,
               title: 'todo 1',
             },
           },
-          $ids: [1],
+          ids: [1],
         },
       }
     );
@@ -63,8 +63,8 @@ describe('devtools', () => {
       { type: '@Init Foo' },
       {
         foo: {
-          $entities: {},
-          $ids: [],
+          entities: {},
+          ids: [],
         },
       }
     );
@@ -75,12 +75,12 @@ describe('devtools', () => {
       { type: '@Init Bar' },
       {
         foo: {
-          $entities: {},
-          $ids: [],
+          entities: {},
+          ids: [],
         },
         bar: {
-          $entities: {},
-          $ids: [],
+          entities: {},
+          ids: [],
         },
       }
     );
@@ -91,18 +91,18 @@ describe('devtools', () => {
       { type: 'Update Bar' },
       {
         foo: {
-          $entities: {},
-          $ids: [],
+          entities: {},
+          ids: [],
         },
         bar: {
-          $entities: {
+          entities: {
             1: {
               completed: false,
               id: 1,
               title: 'todo 1',
             },
           },
-          $ids: [1],
+          ids: [1],
         },
       }
     );

@@ -2,7 +2,7 @@
 
 exports[`update should update all: completed false 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
@@ -14,7 +14,7 @@ Object {
       "title": "todo 2",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
     2,
   ],
@@ -23,7 +23,7 @@ Object {
 
 exports[`update should update all: completed true 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": true,
       "id": 1,
@@ -35,7 +35,7 @@ Object {
       "title": "todo 2",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
     2,
   ],
@@ -44,14 +44,14 @@ Object {
 
 exports[`update should update by callback: completed false 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
       "title": "todo 1",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
   ],
 }
@@ -59,14 +59,14 @@ Object {
 
 exports[`update should update by callback: completed true 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": true,
       "id": 1,
       "title": "todo 1",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
   ],
 }
@@ -74,7 +74,7 @@ Object {
 
 exports[`update should update by predicate: completed false 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
@@ -86,7 +86,7 @@ Object {
       "title": "todo 2",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
     2,
   ],
@@ -95,7 +95,7 @@ Object {
 
 exports[`update should update by predicate: completed true 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": true,
       "id": 1,
@@ -107,7 +107,7 @@ Object {
       "title": "todo 2",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
     2,
   ],
@@ -116,7 +116,7 @@ Object {
 
 exports[`update should update multiple entities: multi completed false 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
@@ -128,7 +128,7 @@ Object {
       "title": "todo 2",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
     2,
   ],
@@ -137,7 +137,7 @@ Object {
 
 exports[`update should update multiple entities: multi completed true 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": true,
       "id": 1,
@@ -149,7 +149,7 @@ Object {
       "title": "todo 2",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
     2,
   ],
@@ -158,14 +158,14 @@ Object {
 
 exports[`update should update one entity: completed false 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
       "title": "todo 1",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
   ],
 }
@@ -173,14 +173,14 @@ Object {
 
 exports[`update should update one entity: completed true 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": true,
       "id": 1,
       "title": "todo 1",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
   ],
 }
@@ -188,7 +188,7 @@ Object {
 
 exports[`update should work with ref update all: open false 1`] = `
 Object {
-  "$UIEntities": Object {
+  "UIEntities": Object {
     "1": Object {
       "id": 1,
       "open": false,
@@ -198,7 +198,7 @@ Object {
       "open": false,
     },
   },
-  "$UIIds": Array [
+  "UIIds": Array [
     1,
     2,
   ],
@@ -207,7 +207,7 @@ Object {
 
 exports[`update should work with ref update all: open true 1`] = `
 Object {
-  "$UIEntities": Object {
+  "UIEntities": Object {
     "1": Object {
       "id": 1,
       "open": true,
@@ -217,7 +217,7 @@ Object {
       "open": true,
     },
   },
-  "$UIIds": Array [
+  "UIIds": Array [
     1,
     2,
   ],
@@ -226,7 +226,7 @@ Object {
 
 exports[`update should work with ref: open false 1`] = `
 Object {
-  "$UIEntities": Object {
+  "UIEntities": Object {
     "1": Object {
       "id": 1,
       "open": false,
@@ -236,7 +236,7 @@ Object {
       "open": false,
     },
   },
-  "$UIIds": Array [
+  "UIIds": Array [
     1,
     2,
   ],
@@ -245,7 +245,7 @@ Object {
 
 exports[`update should work with ref: open true 1`] = `
 Object {
-  "$UIEntities": Object {
+  "UIEntities": Object {
     "1": Object {
       "id": 1,
       "open": true,
@@ -255,7 +255,7 @@ Object {
       "open": false,
     },
   },
-  "$UIIds": Array [
+  "UIIds": Array [
     1,
     2,
   ],

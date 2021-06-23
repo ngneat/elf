@@ -2,13 +2,13 @@
 
 exports[`set should set entities work with ref: set one 1`] = `
 Object {
-  "$UIEntities": Object {
+  "UIEntities": Object {
     "1": Object {
       "id": 1,
       "open": false,
     },
   },
-  "$UIIds": Array [
+  "UIIds": Array [
     1,
   ],
 }
@@ -16,13 +16,13 @@ Object {
 
 exports[`set should set entities work with ref: set one 2`] = `
 Object {
-  "$UIEntities": Object {
+  "UIEntities": Object {
     "2": Object {
       "id": 2,
       "open": false,
     },
   },
-  "$UIIds": Array [
+  "UIIds": Array [
     2,
   ],
 }
@@ -30,14 +30,14 @@ Object {
 
 exports[`set should set entities: set one 1`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "1": Object {
       "completed": false,
       "id": 1,
       "title": "todo 1",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     1,
   ],
 }
@@ -45,14 +45,14 @@ Object {
 
 exports[`set should set entities: set one 2`] = `
 Object {
-  "$entities": Object {
+  "entities": Object {
     "2": Object {
       "completed": false,
       "id": 2,
       "title": "todo 2",
     },
   },
-  "$ids": Array [
+  "ids": Array [
     2,
   ],
 }

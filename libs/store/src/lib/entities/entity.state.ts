@@ -1,7 +1,7 @@
 import { Store } from '../core/store';
 
-export const defaultEntitiesKey = '$entities' as const;
-export const defaultIdsKey = '$ids' as const;
+export const defaultEntitiesKey = 'entities' as const;
+export const defaultIdsKey = 'ids' as const;
 
 export class EntitiesRef<
   EntitiesKey extends string = string,
@@ -22,8 +22,8 @@ export const defaultEntitiesRef = new EntitiesRef({
 });
 
 export const entitiesUIRef = new EntitiesRef({
-  entitiesKey: '$UIEntities',
-  idsKey: '$UIIds',
+  entitiesKey: 'UIEntities',
+  idsKey: 'UIIds',
 });
 
 export function withEntitiesFactory<
@@ -73,13 +73,13 @@ export function getIdKey<T>(store: Store): T {
 }
 
 interface EntityState<EntityType = any, IdType extends PropertyKey = any> {
-  $entities: Record<IdType, EntityType>;
-  $ids: Array<IdType>;
+  entities: Record<IdType, EntityType>;
+  ids: Array<IdType>;
 }
 
 interface UIEntityState<EntityType = any, IdType extends PropertyKey = any> {
-  $UIEntities: Record<IdType, EntityType>;
-  $UIIds: Array<IdType>;
+  UIEntities: Record<IdType, EntityType>;
+  UIIds: Array<IdType>;
 }
 
 interface Config {
@@ -98,7 +98,7 @@ export type DefaultEntitiesRef = typeof defaultEntitiesRef;
 
 type ValueOf<T> = T[keyof T];
 
-// This will return { entitiesKey: "$entities", idsKey: "$ids" }
+// This will return { entitiesKey: "entities", idsKey: "ids" }
 type EntitiesKeys<T> = {
   [key in keyof T]: key extends 'entitiesKey'
     ? T[key]
@@ -107,7 +107,7 @@ type EntitiesKeys<T> = {
     : never;
 };
 
-// This will return { $entities: any, $ids: any }
+// This will return { entities: any, ids: any }
 export type EntitiesState<T extends EntitiesRecord> = {
   [k in ValueOf<EntitiesKeys<T>>]: any;
 } & {

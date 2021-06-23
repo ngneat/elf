@@ -26,7 +26,7 @@ describe('persist state', () => {
   });
 
   it('should initialize the store from storage', () => {
-    const value = { $ids: [1], $entities: { 1: { id: 1 } } };
+    const value = { ids: [1], entities: { 1: { id: 1 } } };
 
     const storage: StateStorage = {
       getItem: jest.fn().mockImplementation(() => of(value)),
@@ -52,14 +52,14 @@ describe('persist state', () => {
     const store = createEntitiesStore();
     persistState(store, {
       storage,
-      source: (store) => store.pipe(map((value) => ({ $ids: [1, 2] }))),
+      source: (store) => store.pipe(map((value) => ({ ids: [1, 2] }))),
     });
     expect(storage.setItem).not.toHaveBeenCalled();
 
     store.reduce(addEntities(createTodo(1)));
     expect(storage.setItem).toHaveBeenCalledTimes(1);
     expect(storage.setItem).toHaveBeenCalledWith(`todos@store`, {
-      $ids: [1, 2],
+      ids: [1, 2],
     });
   });
 });
