@@ -8,7 +8,7 @@ import {
   EntitiesState,
   getEntityType,
 } from '../entities/entity.state';
-import { selectEntity } from '@ngneat/elf';
+import { selectEntity } from '../entities';
 import { switchMap } from 'rxjs/operators';
 import { StateOf } from '../core/types';
 

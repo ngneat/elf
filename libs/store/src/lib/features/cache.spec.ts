@@ -1,7 +1,6 @@
-import { createState, Store } from '../core';
-import { addEntities, withEntities } from '../entities';
-import { selectStatus, setStatus } from './status';
-import { selectCache, setCache, withCache } from './cache';
+import {createState, Store} from '../core';
+import {addEntities, withEntities} from '../entities';
+import {selectCache, setCache, withCache} from './cache';
 
 describe('cache', () => {
   it('should select cache', () => {
