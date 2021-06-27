@@ -5,7 +5,7 @@ import { selectCache, setCache, withCache } from './cache';
 describe('cache', () => {
   it('should select cache', () => {
     const { state, config } = createState(
-      withEntities<{ id: number; title: string }, number>(),
+      withEntities<{ id: number; title: string }>(),
       withCache()
     );
 

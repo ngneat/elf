@@ -5,7 +5,7 @@ import { selectStatus, setStatus, withStatus } from './status';
 describe('status', () => {
   it('should select status', () => {
     const { state, config } = createState(
-      withEntities<{ id: number; title: string }, number>(),
+      withEntities<{ id: number; title: string }>(),
       withStatus()
     );
 

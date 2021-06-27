@@ -24,7 +24,7 @@ export interface TodosProps {
 }
 
 const { state, config } = createState(
-  withEntities<Todo, Todo['id']>(),
+  withEntities<Todo>(),
   withProps<TodosProps>({ filter: 'ALL' })
 );
 

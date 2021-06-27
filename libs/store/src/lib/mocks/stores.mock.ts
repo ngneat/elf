@@ -8,7 +8,7 @@ export interface Todo {
   completed: boolean;
 }
 
-const { state, config } = createState(withEntities<Todo, Todo['id']>());
+const { state, config } = createState(withEntities<Todo>());
 
 export function createTodo(id: number): Todo {
   return {
@@ -35,5 +35,5 @@ export function createUITodo(id: number): { id: number; open: boolean } {
 export const createUIEntityStore = (name = 'UIEntityStore') =>
   new Store({
     name,
-    ...createState(withUIEntities<{ id: number; open: boolean }, number>()),
+    ...createState(withUIEntities<{ id: number; open: boolean }>()),
   });

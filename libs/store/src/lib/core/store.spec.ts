@@ -16,8 +16,8 @@ type UIEntity = { id: number; open: boolean };
 describe('store', () => {
   describe('combine', () => {
     const { state, config } = createState(
-      withEntities<Todo, Todo['id']>(),
-      withUIEntities<UIEntity, Todo['id']>(),
+      withEntities<Todo>(),
+      withUIEntities<UIEntity>(),
       withProps<{ filter: string }>({ filter: '' })
     );
 

@@ -1,7 +1,7 @@
 ```ts
 const { state, config } = createState(
-  withEntities<Todo, Todo['id']>(),
-  withUIEntities<UIEntity, Todo['id']>(),
+  withEntities<Todo>(),
+  withUIEntities<UIEntity>(),
   withProps<{ foo: string }>({ foo: '' })
 );
 

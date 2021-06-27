@@ -2,28 +2,34 @@ import { Store } from '../core/store';
 
 export const defaultEntitiesKey = 'entities' as const;
 export const defaultIdsKey = 'ids' as const;
+export const defaultIdKeyRef = 'idKey' as const;
 
 export class EntitiesRef<
   EntitiesKey extends string = string,
-  IdsKey extends string = string
+  IdsKey extends string = string,
+  IdKey extends string = string
 > {
   entitiesKey: EntitiesKey;
   idsKey: IdsKey;
+  idKeyRef = 'idKey';
 
-  constructor(private config: { entitiesKey: EntitiesKey; idsKey: IdsKey }) {
+  constructor(private config: { entitiesKey: EntitiesKey; idsKey: IdsKey, idKeyRef: IdKey }) {
     this.entitiesKey = config.entitiesKey ?? defaultEntitiesKey;
     this.idsKey = config.idsKey ?? defaultIdsKey;
+    this.idKeyRef = config.idKeyRef ?? defaultIdKeyRef;
   }
 }
 
 export const defaultEntitiesRef = new EntitiesRef({
   entitiesKey: defaultEntitiesKey,
   idsKey: defaultIdsKey,
+  idKeyRef: defaultIdKeyRef
 });
 
 export const entitiesUIRef = new EntitiesRef({
   entitiesKey: 'UIEntities',
   idsKey: 'UIIds',
+  idKeyRef: 'idKeyUI'
 });
 
 export function withEntitiesFactory<
@@ -38,52 +44,52 @@ export function withEntitiesFactory<
   };
 }
 
-export function withEntities<EntityType, IdType extends PropertyKey>(
-  config: Partial<Config> = {}
+export function withEntities<EntityType extends Record<any, any>, IdType extends keyof EntityType = 'id'>(
+  config: {
+    idKey: IdType
+  } = { idKey: 'id' as IdType }
 ) {
   return {
     state:
       withEntitiesFactory<
-        EntityState<EntityType, IdType>,
+        EntityState<EntityType, EntityType[IdType]>,
         typeof defaultEntitiesRef
       >(defaultEntitiesRef),
     config: {
-      idKey: config?.idKey ?? 'id',
+      idKey: config.idKey,
     },
   };
 }
 
-export function withUIEntities<EntityType, IdType extends PropertyKey>(
-  config: Partial<Config> = {}
+export function withUIEntities<EntityType extends Record<any, any>, IdType extends keyof EntityType = 'id'>(
+  config: {
+    idKey: IdType
+  } = { idKey: 'id' as IdType }
 ) {
   return {
     state:
       withEntitiesFactory<
-        UIEntityState<EntityType, IdType>,
+        UIEntityState<EntityType, EntityType[IdType]>,
         typeof entitiesUIRef
       >(entitiesUIRef),
     config: {
-      idKey: config?.idKey ?? 'id',
+      idKeyUI: config.idKey,
     },
   };
 }
 
-export function getIdKey<T>(store: Store): T {
-  return store.getConfig<Config>().idKey as unknown as T;
+export function getIdKey<T>(store: Store, ref: EntitiesRef): T {
+  return store.getConfig()[ref.idKeyRef] as T;
 }
 
-interface EntityState<EntityType = any, IdType extends PropertyKey = any> {
+interface EntityState<EntityType, IdType extends PropertyKey> {
   entities: Record<IdType, EntityType>;
   ids: Array<IdType>;
 }
 
-interface UIEntityState<EntityType = any, IdType extends PropertyKey = any> {
+interface UIEntityState<EntityType, IdType extends PropertyKey> {
   UIEntities: Record<IdType, EntityType>;
   UIIds: Array<IdType>;
-}
-
-interface Config {
-  idKey: string;
 }
 
 export type getEntityType<

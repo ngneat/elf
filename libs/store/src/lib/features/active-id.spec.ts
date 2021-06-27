@@ -5,14 +5,14 @@ import {
   selectActiveEntities,
   selectActiveEntity,
   selectActiveId, selectActiveIds,
-  setActiveId, setActiveIds, toggleActiveIds,
+  setActiveId, setActiveIds, setActivetest, toggleActiveIds,
   withActiveId, withActiveIds,
 } from './active-id';
 
 describe('activeId', () => {
   it('should select the active entity', () => {
     const {state, config} = createState(
-      withEntities<{ id: number; title: string }, number>(),
+      withEntities<{ id: number; title: string }>(),
       withActiveId()
     );
 
@@ -42,7 +42,7 @@ describe('activeId', () => {
 describe('activeIds', () => {
   it('should select the active entities', () => {
     const {state, config} = createState(
-      withEntities<{ id: number; title: string }, number>(),
+      withEntities<{ id: number; title: string }>(),
       withActiveIds()
     );
 
@@ -53,7 +53,6 @@ describe('activeIds', () => {
     expect(spy).toHaveBeenCalledWith([]);
 
     store.reduce(addEntities({id: 1, title: ''}));
-
     store.reduce(setActiveIds([1]));
     expect(spy).toHaveBeenCalledWith([{id: 1, title: ''}]);
 

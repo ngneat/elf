@@ -39,7 +39,7 @@ export function addEntities<
     const { ids, asObject } = buildEntities<S, Ref>(
       ref as Ref,
       entities,
-      getIdKey<getIdType<S, Ref>>(store)
+      getIdKey(store, ref)
     );
 
     return {

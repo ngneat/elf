@@ -6,15 +6,24 @@ import {
   DefaultEntitiesRef,
   EntitiesRef,
   EntitiesState,
-  getEntityType,
+  getEntityType, getIdType,
 } from '../entities/entity.state';
 import {selectEntity, selectMany} from '../entities';
 import {switchMap} from 'rxjs/operators';
 import {StateOf} from '../core/types';
 import {stateArrayFactory} from "../core/state-array-factory";
+import {Reducer} from "@ngneat/elf";
 
 export const {selectActiveId, setActiveId, withActiveId, resetActiveId} =
   stateFactory<{ activeId: number | undefined }>('activeId', undefined);
+
+// export function setActivetest<S extends EntitiesState<Ref> & StateOf<typeof withActiveId>, Ref extends EntitiesRef = DefaultEntitiesRef>(
+//   ids: getIdType<S, Ref>
+// ): Reducer<S> {
+//   return function (state: S) {
+//     return state;
+//   }
+// }
 
 export function selectActiveEntity<S extends EntitiesState<Ref> & StateOf<typeof withActiveId>,
   Ref extends EntitiesRef = DefaultEntitiesRef>(

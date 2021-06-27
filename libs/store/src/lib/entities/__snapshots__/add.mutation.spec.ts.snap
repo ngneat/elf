@@ -69,6 +69,28 @@ Object {
 }
 `;
 
+exports[`add should work a different idKey 1`] = `
+Object {
+  "UIEntities": Object {
+    "1": Object {
+      "_id": "1",
+      "name": "foo",
+    },
+  },
+  "UIIds": Array [
+    "1",
+  ],
+  "entities": Object {
+    "1": Object {
+      "id": 1,
+    },
+  },
+  "ids": Array [
+    1,
+  ],
+}
+`;
+
 exports[`add should work with ref: ref 1`] = `
 Object {
   "UIEntities": Object {

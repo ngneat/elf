@@ -29,7 +29,7 @@ export class Store<
     return this.storeDef.name;
   }
 
-  getConfig<Config>(): Config {
+  getConfig<Config extends Record<any, any>>(): Config {
     return this.storeDef.config;
   }
 
