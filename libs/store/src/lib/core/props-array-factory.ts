@@ -1,13 +1,13 @@
 import { arrayAdd, arrayRemove, arrayToggle } from '../array';
-import { Reducer, stateFactory } from '@ngneat/elf';
+import { Reducer, propsFactory } from '@ngneat/elf';
 import { capitalize } from './utils';
 
-export function stateArrayFactory<
+export function propsArrayFactory<
   T extends Record<any, any[]>,
   K extends keyof T = T extends Record<infer Key, any> ? Key : never
 >(key: K, initialValue: T[K], options?: { idKey: keyof T[0] }) {
   const normalizedKey = capitalize(key as string);
-  const base = stateFactory<T, K>(key, initialValue);
+  const base = propsFactory<T, K>(key, initialValue);
 
   return {
     ...base,

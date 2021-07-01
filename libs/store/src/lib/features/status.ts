@@ -1,5 +1,5 @@
-import { stateFactory } from '../core/state-factory';
+import { propsFactory } from '../core/props-factory';
 import { StatusState } from '../core/types';
 
 export const { withStatus, setStatus, selectStatus, resetStatus } =
-  stateFactory<{ status: StatusState }>('status', 'idle');
+  propsFactory<{ status: StatusState }>('status', 'idle');

@@ -1,12 +1,12 @@
 import { stateHistory } from './index';
-import { createState, stateFactory, Store } from '@ngneat/elf';
+import { createState, propsFactory, Store } from '@ngneat/elf';
 
 function eq(store: Store, value: number) {
   expect(store.getValue()).toEqual({ prop: value });
 }
 
 describe('state history', () => {
-  const { withProp, setProp } = stateFactory<{ prop: number }>('prop', 0);
+  const { withProp, setProp } = propsFactory<{ prop: number }>('prop', 0);
 
   it('should work', () => {
     const { state, config } = createState(withProp());

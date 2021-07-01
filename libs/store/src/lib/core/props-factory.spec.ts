@@ -1,10 +1,10 @@
-import { createState, stateFactory, Store, withProps } from '@ngneat/elf';
-import { stateArrayFactory } from './state-array-factory';
+import { createState, propsFactory, Store, withProps } from '@ngneat/elf';
+import { propsArrayFactory } from './props-array-factory';
 
 describe('stateFactory', () => {
   it('should work', () => {
     const { selectActiveId, setActiveId, withActiveId, resetActiveId } =
-      stateFactory<{ activeId: number | undefined }>('activeId', undefined);
+      propsFactory<{ activeId: number | undefined }>('activeId', undefined);
 
     const { state, config } = createState(
       withActiveId(),
@@ -45,7 +45,7 @@ describe('stateArrayFactory', () => {
       addActiveIds,
       removeActiveIds,
       toggleActiveIds,
-    } = stateArrayFactory<{ activeIds: number[] }>('activeIds', []);
+    } = propsArrayFactory<{ activeIds: number[] }>('activeIds', []);
 
     const { state, config } = createState(withActiveIds());
 

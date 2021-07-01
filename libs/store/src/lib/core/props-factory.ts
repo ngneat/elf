@@ -4,7 +4,7 @@ import { EmptyConfig, State } from './state';
 import { Reducer } from './store';
 import { capitalize, isFunction } from './utils';
 
-export function stateFactory<
+export function propsFactory<
   T extends Record<any, any>,
   K extends keyof T = T extends Record<infer Key, any> ? Key : never
 >(key: K, initialValue: T[K]) {
