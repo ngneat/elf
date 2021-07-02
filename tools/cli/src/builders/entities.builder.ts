@@ -47,7 +47,7 @@ export class EntitiesBuilder extends FeatureBuilder {
   }
 
   run() {
-    this.addNamedImport(['withEntities', ...this.options.crud]);
+    this.addNamedImport(['withEntities', 'selectAll', ...this.options.crud]);
 
     this.sourceFile.insertInterface(1, {
       name: capitalize(this.singularName),
