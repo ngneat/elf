@@ -1,7 +1,7 @@
 import { Command, flags } from '@oclif/command';
 
 import { prompt } from '../prompt';
-import { createRepo } from '../repo-builder';
+import { createRepo } from '../builders/repo-builder';
 import { writeFileSync } from 'fs-extra';
 import { dash } from '../utils';
 
@@ -20,6 +20,9 @@ export default class Repo extends Command {
     const { args, flags } = this.parse(Repo);
 
     const options = await prompt();
+
+    this.log(createRepo(options));
+
     writeFileSync(
       `${options.path}/${dash(options.storeName)}.repository.ts`,
       createRepo(options)

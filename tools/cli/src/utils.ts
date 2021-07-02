@@ -19,3 +19,7 @@ export function dash(val: string) {
 export function has(options: Options, feature: Options['features'][0]) {
   return options.features.includes(feature);
 }
+
+export function coerceArray<T>(value: T[] | T): T[] {
+  return Array.isArray(value) ? value : [value];
+}

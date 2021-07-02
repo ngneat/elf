@@ -1,10 +1,12 @@
 export interface Options {
   storeName: string;
-  features: Array<typeof baseFeatures[number]['value']>;
+  features: Array<Features>;
   crud: Array<'addEntities' | 'updateEntities' | 'removeEntities'>;
   idKey: string;
   path: string;
 }
+
+export type Features = typeof baseFeatures[number]['value'];
 
 export const baseFeatures = [
   { name: 'Props', value: 'withProps' },
