@@ -21,8 +21,6 @@ export default class Repo extends Command {
 
     const options = await prompt();
 
-    this.log(createRepo(options));
-
     writeFileSync(
       `${options.path}/${dash(options.storeName)}.repository.ts`,
       createRepo(options)
