@@ -30,12 +30,12 @@ export function createRepo(options: Options) {
 
   const sourceFile = project.createSourceFile(`repo.ts`, ``);
 
-  const repo = sourceFile.addClass({
+  const repoDecl = sourceFile.addClass({
     name: `${capitalize(storeName)}Repository`,
     isExported: true,
   });
 
-  sourceFile.addImportDeclaration({
+  const importDecl = sourceFile.addImportDeclaration({
     moduleSpecifier: '@ngneat/elf',
     namedImports: ['Store', 'createState'].map((name) => ({
       kind: StructureKind.ImportSpecifier,
@@ -58,7 +58,7 @@ export function createRepo(options: Options) {
   for (const feature of options.features) {
     for (const builder of builders) {
       if (builder.supports(feature)) {
-        const instance = new builder(sourceFile, repo, options);
+        const instance = new builder(sourceFile, repoDecl, importDecl, options);
         instance.run();
         propsFactories.push(instance.getPropsFactory());
       }
@@ -71,7 +71,7 @@ export function createRepo(options: Options) {
     propsFactories
   );
 
-  const repoPosition = repo.getChildIndex();
+  const repoPosition = repoDecl.getChildIndex();
 
   sourceFile.insertVariableStatement(repoPosition, {
     declarationKind: VariableDeclarationKind.Const,
