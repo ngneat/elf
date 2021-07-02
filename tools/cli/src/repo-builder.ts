@@ -7,14 +7,14 @@ import {
   StructureKind,
   VariableDeclarationKind,
 } from 'ts-morph';
-import { CallExpression, factory, ScriptTarget } from 'typescript';
-import { camelize, capitalize, has } from './utils';
-import { Options } from './types';
+import {CallExpression, factory, ScriptTarget} from 'typescript';
+import {camelize, capitalize, has} from './utils';
+import {Options} from './types';
 // @ts-ignore
 import * as pluralize from 'pluralize';
 
 export function createRepo(options: Options) {
-  const { storeName } = options;
+  const {storeName} = options;
 
   const project = new Project({
     manipulationSettings: {
@@ -72,10 +72,11 @@ export function createRepo(options: Options) {
 
   extendRepo(repo, options);
 
-  sourceFile.formatText({ indentSize: 2 });
+  sourceFile.formatText({indentSize: 2});
 
   return sourceFile.getText();
 }
+
 
 function extendRepo(repo: ClassDeclaration, options: Options) {
   if (has(options, 'withEntities')) {
@@ -89,7 +90,16 @@ function extendRepo(repo: ClassDeclaration, options: Options) {
       crudOps[type](repo, options);
     });
   }
+
+  if (has(options, 'withActiveId')) {
+    extendActiveId(repo, options);
+  }
+
+  if (has(options, 'withActiveIds')) {
+    extendActiveIds(repo, options);
+  }
 }
+
 
 const crudOps: {
   [key in Options['crud'][0]]: (
@@ -150,6 +160,50 @@ const crudOps: {
   },
 };
 
+function extendActiveId(repo: ClassDeclaration, options: Options) {
+  const singularName = pluralize.singular(options.storeName);
+
+  repo.addMember({
+    kind: StructureKind.Method,
+    name: `setActiveId`,
+    parameters: [
+      {
+        name: 'id',
+        type: `${capitalize(singularName)}['${options.idKey}']`,
+      },
+    ],
+    statements: [`store.reduce(setActiveId(id));`],
+  });
+
+  repo.insertMember(0, {
+    name: `active${capitalize(camelize(singularName))}$`,
+    kind: StructureKind.Property,
+    initializer: `store.pipe(selectActiveEntity())`,
+  });
+}
+
+function extendActiveIds(repo: ClassDeclaration, options: Options) {
+  const singularName = pluralize.singular(options.storeName);
+
+  repo.addMember({
+    kind: StructureKind.Method,
+    name: `toggleActiveIds`,
+    parameters: [
+      {
+        name: 'ids',
+        type: `Array<${capitalize(singularName)}['${options.idKey}']>`,
+      },
+    ],
+    statements: [`store.reduce(setActiveIds(ids));`],
+  });
+
+  repo.insertMember(0, {
+    name: `active${capitalize(camelize(options.storeName))}$`,
+    kind: StructureKind.Property,
+    initializer: `store.pipe(selectActiveEntities())`,
+  });
+}
+
 function resolveImports(options: Options) {
   const base = [
     'Store',
@@ -160,6 +214,14 @@ function resolveImports(options: Options) {
 
   if (has(options, 'withEntities')) {
     base.push('selectAll');
+  }
+
+  if (has(options, 'withActiveId')) {
+    base.push('setActiveId', 'selectActiveEntity');
+  }
+
+  if (has(options, 'withActiveIds')) {
+    base.push('toggleActiveIds', 'selectActiveEntities');
   }
 
   return base;
@@ -181,32 +243,64 @@ const features: {
     );
   },
   withEntities(options) {
+    const type: any[] = [
+      factory.createTypeReferenceNode(
+        factory.createIdentifier(capitalize(pluralize.singular(options.storeName))),
+        undefined
+      ),
+    ]
+
+    if (options.idKey !== 'id') {
+      type.push(factory.createLiteralTypeNode(factory.createStringLiteral("_id", true)))
+    }
+
+    let props: any[] = [];
+
+    if (options.idKey !== 'id') {
+      props = [factory.createObjectLiteralExpression(
+        [factory.createPropertyAssignment(
+          factory.createIdentifier("idKey"),
+          factory.createStringLiteral("_id", true)
+        )],
+        false
+      )]
+    }
+
     return factory.createCallExpression(
-      factory.createIdentifier('withEntities'),
-      [
-        factory.createTypeReferenceNode(
-          factory.createIdentifier(
-            capitalize(pluralize.singular(options.storeName))
-          ),
-          undefined
-        ),
-      ],
-      []
-    );
+      factory.createIdentifier("withEntities"),
+      type,
+      props
+    )
   },
   withUIEntities(options) {
+    const type: any[] = [
+      factory.createTypeReferenceNode(
+        factory.createIdentifier(`${capitalize(pluralize.singular(options.storeName))}UI`),
+        undefined
+      ),
+    ]
+
+    if (options.idKey !== 'id') {
+      type.push(factory.createLiteralTypeNode(factory.createStringLiteral("_id", true)))
+    }
+
+    let props: any[] = [];
+
+    if (options.idKey !== 'id') {
+      props = [factory.createObjectLiteralExpression(
+        [factory.createPropertyAssignment(
+          factory.createIdentifier("idKey"),
+          factory.createStringLiteral("_id", true)
+        )],
+        false
+      )]
+    }
+
     return factory.createCallExpression(
-      factory.createIdentifier('withUIEntities'),
-      [
-        factory.createTypeReferenceNode(
-          factory.createIdentifier(
-            `${capitalize(pluralize.singular(options.storeName))}UI`
-          ),
-          undefined
-        ),
-      ],
-      []
-    );
+      factory.createIdentifier("withUIEntities"),
+      type,
+      props
+    )
   },
   withStatus() {
     return factory.createCallExpression(
@@ -218,6 +312,20 @@ const features: {
   withCache() {
     return factory.createCallExpression(
       factory.createIdentifier('withCache'),
+      undefined,
+      []
+    );
+  },
+  withActiveId() {
+    return factory.createCallExpression(
+      factory.createIdentifier('withActiveId'),
+      undefined,
+      []
+    );
+  },
+  withActiveIds() {
+    return factory.createCallExpression(
+      factory.createIdentifier('withActiveIds'),
       undefined,
       []
     );

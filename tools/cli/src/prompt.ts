@@ -1,6 +1,6 @@
 import * as inquirer from 'inquirer';
-import { baseFeatures, Options } from './types';
-import { has } from './utils';
+import {baseFeatures, Options} from './types';
+import {has} from './utils';
 
 inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'));
 
@@ -23,6 +23,15 @@ export async function prompt() {
       message: 'Select features',
       type: 'checkbox',
       choices: baseFeatures,
+      validate(input) {
+        if (input.includes('withActiveId') || input.includes('withActiveIds')) {
+          if (!input.includes('withEntities')) {
+            return 'You must use Entities with Active';
+          }
+        }
+
+        return true;
+      },
     },
     {
       name: 'crud',
@@ -32,12 +41,12 @@ export async function prompt() {
       message: 'Select CRUD operations',
       type: 'checkbox',
       choices: [
-        { name: 'Create', value: 'addEntities' },
+        {name: 'Create', value: 'addEntities'},
         {
           name: 'Update',
           value: 'updateEntities',
         },
-        { name: 'Delete', value: 'removeEntities' },
+        {name: 'Delete', value: 'removeEntities'},
       ],
     },
     {

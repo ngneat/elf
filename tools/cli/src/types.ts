@@ -14,6 +14,14 @@ export const baseFeatures = [
     value: 'withUIEntities',
   },
   {
+    name: 'Active Id',
+    value: 'withActiveId',
+  },
+  {
+    name: 'Active Ids',
+    value: 'withActiveIds',
+  },
+  {
     name: 'Cache',
     value: 'withCache',
   },
