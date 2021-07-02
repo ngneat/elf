@@ -7,14 +7,14 @@ import {
   StructureKind,
   VariableDeclarationKind,
 } from 'ts-morph';
-import {CallExpression, factory, ScriptTarget} from 'typescript';
-import {camelize, capitalize, has} from './utils';
-import {Options} from './types';
+import { CallExpression, factory, ScriptTarget } from 'typescript';
+import { camelize, capitalize, has } from './utils';
+import { Options } from './types';
 // @ts-ignore
 import * as pluralize from 'pluralize';
 
 export function createRepo(options: Options) {
-  const {storeName} = options;
+  const { storeName } = options;
 
   const project = new Project({
     manipulationSettings: {
@@ -72,11 +72,10 @@ export function createRepo(options: Options) {
 
   extendRepo(repo, options);
 
-  sourceFile.formatText({indentSize: 2});
+  sourceFile.formatText({ indentSize: 2 });
 
   return sourceFile.getText();
 }
-
 
 function extendRepo(repo: ClassDeclaration, options: Options) {
   if (has(options, 'withEntities')) {
@@ -99,7 +98,6 @@ function extendRepo(repo: ClassDeclaration, options: Options) {
     extendActiveIds(repo, options);
   }
 }
-
 
 const crudOps: {
   [key in Options['crud'][0]]: (
@@ -245,62 +243,78 @@ const features: {
   withEntities(options) {
     const type: any[] = [
       factory.createTypeReferenceNode(
-        factory.createIdentifier(capitalize(pluralize.singular(options.storeName))),
+        factory.createIdentifier(
+          capitalize(pluralize.singular(options.storeName))
+        ),
         undefined
       ),
-    ]
+    ];
 
     if (options.idKey !== 'id') {
-      type.push(factory.createLiteralTypeNode(factory.createStringLiteral("_id", true)))
+      type.push(
+        factory.createLiteralTypeNode(factory.createStringLiteral('_id', true))
+      );
     }
 
     let props: any[] = [];
 
     if (options.idKey !== 'id') {
-      props = [factory.createObjectLiteralExpression(
-        [factory.createPropertyAssignment(
-          factory.createIdentifier("idKey"),
-          factory.createStringLiteral("_id", true)
-        )],
-        false
-      )]
+      props = [
+        factory.createObjectLiteralExpression(
+          [
+            factory.createPropertyAssignment(
+              factory.createIdentifier('idKey'),
+              factory.createStringLiteral('_id', true)
+            ),
+          ],
+          false
+        ),
+      ];
     }
 
     return factory.createCallExpression(
-      factory.createIdentifier("withEntities"),
+      factory.createIdentifier('withEntities'),
       type,
       props
-    )
+    );
   },
   withUIEntities(options) {
     const type: any[] = [
       factory.createTypeReferenceNode(
-        factory.createIdentifier(`${capitalize(pluralize.singular(options.storeName))}UI`),
+        factory.createIdentifier(
+          `${capitalize(pluralize.singular(options.storeName))}UI`
+        ),
         undefined
       ),
-    ]
+    ];
 
     if (options.idKey !== 'id') {
-      type.push(factory.createLiteralTypeNode(factory.createStringLiteral("_id", true)))
+      type.push(
+        factory.createLiteralTypeNode(factory.createStringLiteral('_id', true))
+      );
     }
 
     let props: any[] = [];
 
     if (options.idKey !== 'id') {
-      props = [factory.createObjectLiteralExpression(
-        [factory.createPropertyAssignment(
-          factory.createIdentifier("idKey"),
-          factory.createStringLiteral("_id", true)
-        )],
-        false
-      )]
+      props = [
+        factory.createObjectLiteralExpression(
+          [
+            factory.createPropertyAssignment(
+              factory.createIdentifier('idKey'),
+              factory.createStringLiteral('_id', true)
+            ),
+          ],
+          false
+        ),
+      ];
     }
 
     return factory.createCallExpression(
-      factory.createIdentifier("withUIEntities"),
+      factory.createIdentifier('withUIEntities'),
       type,
       props
-    )
+    );
   },
   withStatus() {
     return factory.createCallExpression(
