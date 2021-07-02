@@ -13,7 +13,13 @@ export class EntitiesRef<
   idsKey: IdsKey;
   idKeyRef = 'idKey';
 
-  constructor(private config: { entitiesKey: EntitiesKey; idsKey: IdsKey, idKeyRef: IdKey }) {
+  constructor(
+    private config: {
+      entitiesKey: EntitiesKey;
+      idsKey: IdsKey;
+      idKeyRef: IdKey;
+    }
+  ) {
     this.entitiesKey = config.entitiesKey ?? defaultEntitiesKey;
     this.idsKey = config.idsKey ?? defaultIdsKey;
     this.idKeyRef = config.idKeyRef ?? defaultIdKeyRef;
@@ -23,13 +29,13 @@ export class EntitiesRef<
 export const defaultEntitiesRef = new EntitiesRef({
   entitiesKey: defaultEntitiesKey,
   idsKey: defaultIdsKey,
-  idKeyRef: defaultIdKeyRef
+  idKeyRef: defaultIdKeyRef,
 });
 
 export const entitiesUIRef = new EntitiesRef({
   entitiesKey: 'UIEntities',
   idsKey: 'UIIds',
-  idKeyRef: 'idKeyUI'
+  idKeyRef: 'idKeyUI',
 });
 
 export function withEntitiesFactory<
@@ -44,9 +50,12 @@ export function withEntitiesFactory<
   };
 }
 
-export function withEntities<EntityType extends Record<any, any>, IdType extends keyof EntityType = 'id'>(
+export function withEntities<
+  EntityType extends Record<any, any>,
+  IdType extends keyof EntityType = 'id'
+>(
   config: {
-    idKey: IdType
+    idKey: IdType;
   } = { idKey: 'id' as IdType }
 ) {
   return {
@@ -61,9 +70,12 @@ export function withEntities<EntityType extends Record<any, any>, IdType extends
   };
 }
 
-export function withUIEntities<EntityType extends Record<any, any>, IdType extends keyof EntityType = 'id'>(
+export function withUIEntities<
+  EntityType extends Record<any, any>,
+  IdType extends keyof EntityType = 'id'
+>(
   config: {
-    idKey: IdType
+    idKey: IdType;
   } = { idKey: 'id' as IdType }
 ) {
   return {

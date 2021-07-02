@@ -25,7 +25,8 @@
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
-    "postinstall": "ngcc --properties es2015 browser module main"
+    "postinstall": "ngcc --properties es2015 browser module main",
+    "cli": "./tools/cli/bin/run"
   },
   "private": true,
   "dependencies": {
