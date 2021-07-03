@@ -15,7 +15,9 @@ import { findIdsByPredicate } from './entity.utils';
 
 /**
  *
- * Remove entities from the store
+ * Remove entities
+ *
+ * @example
  *
  * store.reduce(removeEntities(1))
  *
@@ -52,7 +54,9 @@ export function removeEntities<
 
 /**
  *
- * Remove entities from the store by predicate
+ * Remove entities by predicate
+ *
+ * @example
  *
  * store.reduce(removeEntitiesByPredicate(entity => entity.count === 0))
  *
@@ -81,7 +85,9 @@ export function removeEntitiesByPredicate<
 
 /**
  *
- * Remove all entities from the store
+ * Remove all entities
+ *
+ * @example
  *
  * store.reduce(removeAllEntities())
  *

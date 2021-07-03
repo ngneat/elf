@@ -6,7 +6,6 @@ import {
   EntitiesState,
   getEntityType,
   getIdKey,
-  getIdType,
 } from './entity.state';
 import { OrArray } from '../core/types';
 import { Reducer, Store } from '../core/store';
@@ -14,13 +13,16 @@ import { buildEntities } from './entity.utils';
 
 /**
  *
- * Add entities to the store
+ * Add entities
+ *
+ * @example
  *
  * store.reduce(addEntities(entity))
  *
  * store.reduce(addEntities([entity, entity]))
  *
  * store.reduce(addEntities([entity, entity]), { prepend: true })
+ *
  */
 export function addEntities<
   S extends EntitiesState<Ref>,

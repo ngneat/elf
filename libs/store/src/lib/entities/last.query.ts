@@ -8,6 +8,15 @@ import {
 } from './entity.state';
 import { select } from '../core/operators';
 
+/**
+ *
+ * Observe the last entity
+ *
+ * @example
+ *
+ * store.pipe(selectLast())
+ *
+ */
 export function selectLast<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef

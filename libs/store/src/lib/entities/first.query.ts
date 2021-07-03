@@ -10,7 +10,9 @@ import {
 
 /**
  *
- * Select the first entity
+ * Observe the first entity
+ *
+ * @example
  *
  * store.pipe(selectFirst())
  *

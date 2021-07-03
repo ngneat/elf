@@ -18,11 +18,13 @@ interface Options extends BaseEntityOptions<any> {
 }
 
 /**
- * Select entity from the store
+ * Observe an entity
  *
  * @example
  *
  * store.pipe(selectEntity(id, { pluck: 'title' })
+ *
+ * store.pipe(selectEntity(id, { ref: entitiesUIRef })
  *
  */
 export function selectEntity<
@@ -35,11 +37,13 @@ export function selectEntity<
 ): OperatorFunction<S, getEntityType<S, Ref>[K] | undefined>;
 
 /**
- * Select entity from the store
+ * Observe an entity
  *
  * @example
  *
  * store.pipe(selectEntity(id, { pluck: e => e.title })
+ *
+ * store.pipe(selectEntity(id, { ref: entitiesUIRef })
  *
  */
 export function selectEntity<
@@ -55,11 +59,13 @@ export function selectEntity<
 
 /**
  *
- * Select entity from the store
+ * Observe an entity
  *
  * @example
  *
  * store.pipe(selectEntity(id))
+ *
+ * store.pipe(selectEntity(id, { ref: entitiesUIRef })
  *
  */
 export function selectEntity<

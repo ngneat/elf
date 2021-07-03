@@ -15,7 +15,7 @@ import { findIdsByPredicate } from './entity.utils';
 
 /**
  *
- * Select the store's entity collection length
+ * Observe the entities size
  *
  * @example
  *
@@ -33,7 +33,7 @@ export function selectEntitiesCount<
 
 /**
  *
- * Select the store's entity collection length
+ * Observe the entities size
  *
  * @example
  *

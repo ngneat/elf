@@ -14,7 +14,9 @@ import { buildEntities } from './entity.utils';
 
 /**
  *
- * Set entities in the store
+ * Set entities
+ *
+ * @example
  *
  * store.reduce(setEntities([entity, entity]))
  *

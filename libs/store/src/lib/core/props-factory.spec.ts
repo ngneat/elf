@@ -4,7 +4,7 @@ import { propsArrayFactory } from './props-array-factory';
 describe('stateFactory', () => {
   it('should work', () => {
     const { selectActiveId, setActiveId, withActiveId, resetActiveId } =
-      propsFactory<{ activeId: number | undefined }>('activeId', undefined);
+      propsFactory<{ activeId: any }>('activeId', undefined);
 
     const { state, config } = createState(
       withActiveId(),
@@ -45,7 +45,7 @@ describe('stateArrayFactory', () => {
       addActiveIds,
       removeActiveIds,
       toggleActiveIds,
-    } = propsArrayFactory<{ activeIds: number[] }>('activeIds', []);
+    } = propsArrayFactory<{ activeIds: any[] }>('activeIds', []);
 
     const { state, config } = createState(withActiveIds());
 

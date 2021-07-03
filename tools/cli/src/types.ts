@@ -24,8 +24,8 @@ export const baseFeatures = [
     value: 'withActiveIds',
   },
   {
-    name: 'Cache',
-    value: 'withCache',
+    name: 'Cache Status',
+    value: 'withCacheStatus',
   },
   {
     name: 'Status',

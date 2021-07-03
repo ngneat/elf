@@ -19,7 +19,7 @@ interface Options extends BaseEntityOptions<any> {
 }
 
 /**
- * Select multiple entities from the store
+ * Observe multiple entities
  *
  * @example
  *
@@ -36,7 +36,7 @@ export function selectMany<
 ): OperatorFunction<S, getEntityType<S, Ref>[K][]>;
 
 /**
- * Select multiple entities from the store
+ * Observe multiple entities
  *
  * @example
  *
@@ -55,7 +55,7 @@ export function selectMany<
 ): OperatorFunction<S, R[]>;
 
 /**
- * Select multiple entities from the store
+ * Observe multiple entities
  *
  * @example
  *

@@ -52,16 +52,16 @@ export function withEntitiesFactory<
 
 export function withEntities<
   EntityType extends Record<any, any>,
-  IdType extends keyof EntityType = 'id'
+  IdKey extends keyof EntityType = 'id'
 >(
   config: {
-    idKey: IdType;
-  } = { idKey: 'id' as IdType }
+    idKey: IdKey;
+  } = { idKey: 'id' as IdKey }
 ) {
   return {
     state:
       withEntitiesFactory<
-        EntityState<EntityType, EntityType[IdType]>,
+        EntityState<EntityType, EntityType[IdKey]>,
         typeof defaultEntitiesRef
       >(defaultEntitiesRef),
     config: {
@@ -72,16 +72,16 @@ export function withEntities<
 
 export function withUIEntities<
   EntityType extends Record<any, any>,
-  IdType extends keyof EntityType = 'id'
+  IdKey extends keyof EntityType = 'id'
 >(
   config: {
-    idKey: IdType;
-  } = { idKey: 'id' as IdType }
+    idKey: IdKey;
+  } = { idKey: 'id' as IdKey }
 ) {
   return {
     state:
       withEntitiesFactory<
-        UIEntityState<EntityType, EntityType[IdType]>,
+        UIEntityState<EntityType, EntityType[IdKey]>,
         typeof entitiesUIRef
       >(entitiesUIRef),
     config: {

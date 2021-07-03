@@ -1,23 +1,27 @@
 import { createState, Store } from '../core';
 import { addEntities, withEntities } from '../entities';
-import { selectCache, setCache, withCache } from './cache';
+import {
+  withCacheStatus,
+  selectCacheStatus,
+  setCacheStatus,
+} from './cache-status';
 
 describe('cache', () => {
   it('should select cache', () => {
     const { state, config } = createState(
       withEntities<{ id: number; title: string }>(),
-      withCache()
+      withCacheStatus()
     );
 
     const store = new Store({ state, config, name: '' });
 
     const spy = jest.fn();
-    store.pipe(selectCache()).subscribe(spy);
+    store.pipe(selectCacheStatus()).subscribe(spy);
     expect(spy).toHaveBeenCalledWith('none');
 
     store.reduce(addEntities({ id: 1, title: '' }));
 
-    store.reduce(setCache('full'));
+    store.reduce(setCacheStatus('full'));
     expect(spy).toHaveBeenCalledWith('full');
 
     store.reduce(addEntities({ id: 2, title: '' }));

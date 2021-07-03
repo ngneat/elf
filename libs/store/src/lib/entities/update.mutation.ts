@@ -28,7 +28,9 @@ function toModel<Entity>(updater: UpdateFn<Entity>, entity: Entity): Entity {
 
 /**
  *
- * Update entities in the store
+ * Update entities
+ *
+ * @example
  *
  * store.reduce(updateEntities(id, { name }))
  * store.reduce(updateEntities(id, entity => ({ ...entity, name })))
@@ -69,6 +71,8 @@ export function updateEntities<
  *
  * Update entities by predicate
  *
+ * @example
+ *
  * store.reduce(updateEntitiesByPredicate(entity => entity.count === 0))
  *
  */
@@ -98,7 +102,9 @@ export function updateEntitiesByPredicate<
 
 /**
  *
- * Update all entities in the store
+ * Update all entities
+ *
+ * @example
  *
  * store.reduce(updateAllEntities({ name }))
  * store.reduce(updateAllEntities(entity => ({ ...entity, name })))

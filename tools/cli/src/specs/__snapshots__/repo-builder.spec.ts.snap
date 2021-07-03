@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Repo Builder all: all 1`] = `
-"import { Store, createState, withProps, withEntities, selectAll, removeEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds, withCache, selectCache, setCache, CacheState, withStatus, selectStatus, setStatus, StatusState } from '@ngneat/elf';
+"import { Store, createState, withProps, withEntities, selectAll, removeEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds, withCacheStatus, selectCacheStatus, setCacheStatus, CacheStatus, withStatus, selectStatus, setStatus, StatusState } from '@ngneat/elf';
 
 export interface TodoUI {
   id: number;
@@ -14,12 +14,12 @@ export interface Todo {
 export interface TodosProps {
 }
 
-const { state, config } = createState(withProps<TodosProps>({}), withEntities<Todo>(), withUIEntities<TodoUI>(), withActiveId(), withActiveIds(), withCache(), withStatus());
+const { state, config } = createState(withProps<TodosProps>({}), withEntities<Todo>(), withUIEntities<TodoUI>(), withActiveId(), withActiveIds(), withCacheState(), withStatus());
 const store = new Store({ name: 'todos', state, config });
 
 export class TodosRepository {
   status$ = store.pipe(selectStatus());
-  cache$ = store.pipe(selectCache());
+  cacheStatus$ = store.pipe(selectCacheStatus());
   activeTodos$ = store.pipe(selectActiveEntities());
   activeTodo$ = store.pipe(selectActiveEntity());
   todos$ = store.pipe(selectAll());
@@ -44,8 +44,8 @@ export class TodosRepository {
     store.reduce(toggleActiveIds(ids));
   }
 
-  updateCache(value: CacheState) {
-    store.reduce(setCache(value));
+  updateCacheStatus(value: CacheStatus) {
+    store.reduce(setCacheStatus(value));
   }
 
   updateStatus(value: StatusState) {
@@ -87,17 +87,17 @@ export class TodosRepository {
 "
 `;
 
-exports[`Repo Builder withCache: withCache 1`] = `
-"import { Store, createState, withCache, selectCache, setCache, CacheState } from '@ngneat/elf';
+exports[`Repo Builder withCacheStatus: withCacheStatus 1`] = `
+"import { Store, createState, withCacheStatus, selectCacheStatus, setCacheStatus, CacheStatus } from '@ngneat/elf';
 
-const { state, config } = createState(withCache());
+const { state, config } = createState(withCacheState());
 const store = new Store({ name: 'todos', state, config });
 
 export class TodosRepository {
-  cache$ = store.pipe(selectCache());
+  cacheStatus$ = store.pipe(selectCacheStatus());
 
-  updateCache(value: CacheState) {
-    store.reduce(setCache(value));
+  updateCacheStatus(value: CacheStatus) {
+    store.reduce(setCacheStatus(value));
   }
 }
 "
