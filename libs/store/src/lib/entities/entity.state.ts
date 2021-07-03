@@ -51,8 +51,8 @@ export function withEntitiesFactory<
 }
 
 export function withEntities<
-  EntityType extends Record<any, any>,
-  IdKey extends keyof EntityType = 'id'
+  EntityType extends { [P in IdKey]: string | number },
+  IdKey extends string = 'id'
 >(
   config: {
     idKey: IdKey;
@@ -71,8 +71,8 @@ export function withEntities<
 }
 
 export function withUIEntities<
-  EntityType extends Record<any, any>,
-  IdKey extends keyof EntityType = 'id'
+  EntityType extends { [P in IdKey]: string | number },
+  IdKey extends string = 'id'
 >(
   config: {
     idKey: IdKey;
