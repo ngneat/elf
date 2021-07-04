@@ -10,7 +10,7 @@ export class CacheStatusBuilder extends FeatureBuilder {
 
   getPropsFactory() {
     return factory.createCallExpression(
-      factory.createIdentifier('withCacheState'),
+      factory.createIdentifier('withCacheStatus'),
       undefined,
       []
     );
