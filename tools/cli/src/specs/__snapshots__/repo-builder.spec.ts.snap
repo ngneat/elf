@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Repo Builder all: all 1`] = `
-"import { Store, createState, withProps, withEntities, selectAll, removeEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds, withCacheStatus, selectCacheStatus, setCacheStatus, CacheStatus, withStatus, selectStatus, setStatus, StatusState } from '@ngneat/elf';
+"import { Store, createState, withProps, withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds, withCacheStatus, selectCacheStatus, setCacheStatus, CacheStatus, withStatus, selectStatus, setStatus, StatusState } from '@ngneat/elf';
 
 export interface TodoUI {
   id: number;
@@ -24,8 +24,8 @@ export class TodosRepository {
   activeTodo$ = store.pipe(selectActiveEntity());
   todos$ = store.pipe(selectAll());
 
-  removeTodo(id: Todo['id']) {
-    store.reduce(removeEntities(id));
+  deleteTodo(id: Todo['id']) {
+    store.reduce(deleteEntities(id));
   }
 
   addTodo(todo: Todo) {
@@ -104,7 +104,7 @@ export class TodosRepository {
 `;
 
 exports[`Repo Builder withEntities idKey: withEntities 1`] = `
-"import { Store, createState, withEntities, selectAll, addEntities, updateEntities, removeEntities } from '@ngneat/elf';
+"import { Store, createState, withEntities, selectAll, addEntities, updateEntities, deleteEntities } from '@ngneat/elf';
 
 export interface Todo {
   _id: number;
@@ -124,15 +124,15 @@ export class TodosRepository {
     store.reduce(updateEntities(id, todo));
   }
 
-  removeTodo(id: Todo['_id']) {
-    store.reduce(removeEntities(id));
+  deleteTodo(id: Todo['_id']) {
+    store.reduce(deleteEntities(id));
   }
 }
 "
 `;
 
 exports[`Repo Builder withEntities: withEntities 1`] = `
-"import { Store, createState, withEntities, selectAll, addEntities, updateEntities, removeEntities } from '@ngneat/elf';
+"import { Store, createState, withEntities, selectAll, addEntities, updateEntities, deleteEntities } from '@ngneat/elf';
 
 export interface Todo {
   id: number;
@@ -152,8 +152,8 @@ export class TodosRepository {
     store.reduce(updateEntities(id, todo));
   }
 
-  removeTodo(id: Todo['id']) {
-    store.reduce(removeEntities(id));
+  deleteTodo(id: Todo['id']) {
+    store.reduce(deleteEntities(id));
   }
 }
 "

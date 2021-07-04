@@ -17,7 +17,7 @@ export class Store<
 
   constructor(public storeDef: SDef) {
     super(storeDef.state);
-    this.currentValue = this.getValue();
+    this.currentValue = storeDef.state;
     addStore(this);
   }
 
@@ -31,6 +31,10 @@ export class Store<
 
   getConfig<Config extends Record<any, any>>(): Config {
     return this.storeDef.config;
+  }
+
+  query<R>(selector: (state: State) => R) {
+    return selector(this.currentValue);
   }
 
   reduce(...reducers: Array<Reducer<State>>) {
@@ -79,6 +83,15 @@ export class Store<
 
   destroy() {
     removeStore(this);
+  }
+
+  getValue(): State {
+    throw new Error(`Use the state property`);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  next(_: State) {
+    throw new Error(`Using next() isn't allowed`);
   }
 }
 

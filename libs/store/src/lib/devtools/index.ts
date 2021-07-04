@@ -45,7 +45,7 @@ export function devTools(options: DevtoolsOptions = {}) {
     const displayName = capitalize(name);
 
     if (type === 'add') {
-      rootState[name] = store.getValue();
+      rootState[name] = store.state;
       send({ type: `@Init ${displayName}` }, rootState);
 
       const update = store.pipe(skip(1)).subscribe((value) => {

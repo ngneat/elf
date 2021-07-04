@@ -66,7 +66,7 @@ describe('Repo Builder', () => {
     const output = createRepo({
       idKey: 'id',
       features: ['withEntities'],
-      crud: ['addEntities', 'updateEntities', 'removeEntities'],
+      crud: ['addEntities', 'updateEntities', 'deleteEntities'],
       storeName: 'todos',
       path: '',
     });
@@ -78,7 +78,7 @@ describe('Repo Builder', () => {
     const output = createRepo({
       idKey: '_id',
       features: ['withEntities'],
-      crud: ['addEntities', 'updateEntities', 'removeEntities'],
+      crud: ['addEntities', 'updateEntities', 'deleteEntities'],
       storeName: 'todos',
       path: '',
     });
@@ -102,7 +102,7 @@ describe('Repo Builder', () => {
     const output = createRepo({
       idKey: 'id',
       features: baseFeatures.map(({ value }) => value),
-      crud: ['removeEntities', 'addEntities', 'updateEntities'],
+      crud: ['deleteEntities', 'addEntities', 'updateEntities'],
       storeName: 'todos',
       path: '',
     });

@@ -12,7 +12,7 @@ describe('stateFactory', () => {
     );
 
     const store = new Store({ state, config, name: '' });
-    expect(store.getValue()).toEqual({ activeId: undefined, filter: '' });
+    expect(store.state).toEqual({ activeId: undefined, filter: '' });
 
     const spy = jest.fn();
     store.pipe(selectActiveId()).subscribe(spy);
@@ -22,7 +22,7 @@ describe('stateFactory', () => {
 
     store.reduce(setActiveId(1));
     expect(spy).toHaveBeenCalledTimes(2);
-    expect(store.getValue()).toEqual({ activeId: 1, filter: '' });
+    expect(store.state).toEqual({ activeId: 1, filter: '' });
 
     store.reduce((state) => ({
       ...state,
@@ -32,7 +32,7 @@ describe('stateFactory', () => {
 
     store.reduce(resetActiveId());
     expect(spy).toHaveBeenCalledTimes(3);
-    expect(store.getValue()).toEqual({ activeId: undefined, filter: 'foo' });
+    expect(store.state).toEqual({ activeId: undefined, filter: 'foo' });
   });
 });
 
@@ -55,22 +55,22 @@ describe('stateArrayFactory', () => {
 
     store.reduce(setActiveIds([1]));
 
-    expect(store.getValue()).toEqual({ activeIds: [1] });
+    expect(store.state).toEqual({ activeIds: [1] });
 
     store.reduce(addActiveIds(2));
 
-    expect(store.getValue()).toEqual({ activeIds: [1, 2] });
+    expect(store.state).toEqual({ activeIds: [1, 2] });
 
     store.reduce(removeActiveIds(1));
 
-    expect(store.getValue()).toEqual({ activeIds: [2] });
+    expect(store.state).toEqual({ activeIds: [2] });
 
     store.reduce(toggleActiveIds(2));
 
-    expect(store.getValue()).toEqual({ activeIds: [] });
+    expect(store.state).toEqual({ activeIds: [] });
 
     store.reduce(toggleActiveIds(3));
 
-    expect(store.getValue()).toEqual({ activeIds: [3] });
+    expect(store.state).toEqual({ activeIds: [3] });
   });
 });

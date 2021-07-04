@@ -7,45 +7,45 @@ import {
 } from '../mocks/stores.mock';
 import { addEntities } from './add.mutation';
 import {
-  removeAllEntities,
-  removeEntities,
-  removeEntitiesByPredicate,
-} from './remove.mutation';
+  deleteAllEntities,
+  deleteEntities,
+  deleteEntitiesByPredicate,
+} from './delete.mutation';
 import { entitiesUIRef } from './entity.state';
 
-describe('remove', () => {
+describe('delete', () => {
   let store: ReturnType<typeof createEntitiesStore>;
 
   beforeEach(() => {
     store = createEntitiesStore();
   });
 
-  it('should remove entity', () => {
+  it('should delete entity', () => {
     store.reduce(addEntities([createTodo(1), createTodo(2)]));
     toMatchSnapshot(expect, store, 'should have two entities');
-    store.reduce(removeEntities(1));
-    toMatchSnapshot(expect, store, 'should remove one entity');
+    store.reduce(deleteEntities(1));
+    toMatchSnapshot(expect, store, 'should delete one entity');
   });
 
-  it('should remove entities', () => {
+  it('should delete entities', () => {
     store.reduce(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
     toMatchSnapshot(expect, store, 'should have three entities');
-    store.reduce(removeEntities([1, 2]));
-    toMatchSnapshot(expect, store, 'should remove two entities');
+    store.reduce(deleteEntities([1, 2]));
+    toMatchSnapshot(expect, store, 'should delete two entities');
   });
 
-  it('should remove all the entities', () => {
+  it('should delete all the entities', () => {
     store.reduce(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
     toMatchSnapshot(expect, store, 'should have three entities');
-    store.reduce(removeAllEntities());
-    toMatchSnapshot(expect, store, 'should remove all');
+    store.reduce(deleteAllEntities());
+    toMatchSnapshot(expect, store, 'should delete all');
   });
 
-  it('should remove by predicate', () => {
+  it('should delete by predicate', () => {
     store.reduce(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
     toMatchSnapshot(expect, store, 'should have three entities');
-    store.reduce(removeEntitiesByPredicate((entity) => entity.id === 1));
-    toMatchSnapshot(expect, store, 'should remove the entity with id of 1');
+    store.reduce(deleteEntitiesByPredicate((entity) => entity.id === 1));
+    toMatchSnapshot(expect, store, 'should delete the entity with id of 1');
   });
 
   it('should work with ref', () => {
@@ -55,10 +55,10 @@ describe('remove', () => {
     );
     toMatchSnapshot(expect, store, 'should have three ui entities');
     store.reduce(
-      removeEntitiesByPredicate((entity) => entity.id === 1, {
+      deleteEntitiesByPredicate((entity) => entity.id === 1, {
         ref: entitiesUIRef,
       })
     );
-    toMatchSnapshot(expect, store, 'should remove the ui entity with id of 1');
+    toMatchSnapshot(expect, store, 'should delete the ui entity with id of 1');
   });
 });

@@ -7,7 +7,7 @@ import {
 import { addEntities } from './add.mutation';
 import { selectMany } from './many.query';
 import { updateEntities } from './update.mutation';
-import { removeEntities } from './remove.mutation';
+import { deleteEntities } from './delete.mutation';
 import { entitiesUIRef } from './entity.state';
 
 describe('selectMany', () => {
@@ -28,7 +28,7 @@ describe('selectMany', () => {
     store.reduce(addEntities(createTodo(4)));
 
     store.reduce(updateEntities(1, { title: '' }));
-    store.reduce(removeEntities(2));
+    store.reduce(deleteEntities(2));
   });
 
   it('should work with ref', () => {
@@ -50,6 +50,6 @@ describe('selectMany', () => {
     store.reduce(addEntities(createUITodo(4), { ref: entitiesUIRef }));
 
     store.reduce(updateEntities(1, { open: true }, { ref: entitiesUIRef }));
-    store.reduce(removeEntities(2, { ref: entitiesUIRef }));
+    store.reduce(deleteEntities(2, { ref: entitiesUIRef }));
   });
 });

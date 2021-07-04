@@ -19,7 +19,7 @@ export function createTodo(id: number): Todo {
 }
 
 export function toMatchSnapshot(expect: any, store: Store, label: string) {
-  return expect(store.getValue()).toMatchSnapshot(label);
+  return expect(store.state).toMatchSnapshot(label);
 }
 
 export const createEntitiesStore = (name = 'todos') =>

@@ -1,9 +1,9 @@
 export { addEntities } from './add.mutation';
 export {
-  removeAllEntities,
-  removeEntities,
-  removeEntitiesByPredicate,
-} from './remove.mutation';
+  deleteAllEntities,
+  deleteEntities,
+  deleteEntitiesByPredicate,
+} from './delete.mutation';
 export { setEntities } from './set.mutation';
 export {
   updateAllEntities,

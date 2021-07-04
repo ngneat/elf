@@ -19,12 +19,12 @@ import { findIdsByPredicate } from './entity.utils';
  *
  * @example
  *
- * store.reduce(removeEntities(1))
+ * store.reduce(deleteEntities(1))
  *
- * store.reduce(removeEntities([1, 2, 3])
+ * store.reduce(deleteEntities([1, 2, 3])
  *
  */
-export function removeEntities<
+export function deleteEntities<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
@@ -58,10 +58,10 @@ export function removeEntities<
  *
  * @example
  *
- * store.reduce(removeEntitiesByPredicate(entity => entity.count === 0))
+ * store.reduce(deleteEntitiesByPredicate(entity => entity.count === 0))
  *
  */
-export function removeEntitiesByPredicate<
+export function deleteEntitiesByPredicate<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
@@ -76,7 +76,7 @@ export function removeEntitiesByPredicate<
     );
 
     if (ids.length) {
-      return removeEntities(ids, options)(state, store) as S;
+      return deleteEntities(ids, options)(state, store) as S;
     }
 
     return state;
@@ -89,10 +89,10 @@ export function removeEntitiesByPredicate<
  *
  * @example
  *
- * store.reduce(removeAllEntities())
+ * store.reduce(deleteAllEntities())
  *
  */
-export function removeAllEntities<
+export function deleteAllEntities<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(options: BaseEntityOptions<Ref> = {}): Reducer<S> {

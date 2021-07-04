@@ -105,17 +105,17 @@ export class EntitiesBuilder extends FeatureBuilder {
     });
   }
 
-  removeEntities() {
+  deleteEntities() {
     this.repo.addMember({
       kind: StructureKind.Method,
-      name: `remove${capitalize(this.singularName)}`,
+      name: `delete${capitalize(this.singularName)}`,
       parameters: [
         {
           name: 'id',
           type: `${capitalize(this.singularName)}['${this.idKey}']`,
         },
       ],
-      statements: [`store.reduce(removeEntities(id));`],
+      statements: [`store.reduce(deleteEntities(id));`],
     });
   }
 }

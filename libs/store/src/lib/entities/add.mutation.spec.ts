@@ -52,6 +52,6 @@ describe('add', () => {
       addEntities({ _id: '1', name: 'foo' }, { ref: entitiesUIRef })
     );
     store.reduce(addEntities({ id: 1 }));
-    expect(store.getValue()).toMatchSnapshot();
+    expect(store.state).toMatchSnapshot();
   });
 });

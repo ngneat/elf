@@ -46,7 +46,7 @@ export async function prompt() {
           name: 'Update',
           value: 'updateEntities',
         },
-        { name: 'Delete', value: 'removeEntities' },
+        { name: 'Delete', value: 'deleteEntities' },
       ],
     },
     {

@@ -1,40 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`remove should remove all the entities: should have three entities 1`] = `
-Object {
-  "entities": Object {
-    "1": Object {
-      "completed": false,
-      "id": 1,
-      "title": "todo 1",
-    },
-    "2": Object {
-      "completed": false,
-      "id": 2,
-      "title": "todo 2",
-    },
-    "3": Object {
-      "completed": false,
-      "id": 3,
-      "title": "todo 3",
-    },
-  },
-  "ids": Array [
-    1,
-    2,
-    3,
-  ],
-}
-`;
-
-exports[`remove should remove all the entities: should remove all 1`] = `
+exports[`delete should delete all the entities: should delete all 1`] = `
 Object {
   "entities": Object {},
   "ids": Array [],
 }
 `;
 
-exports[`remove should remove by predicate: should have three entities 1`] = `
+exports[`delete should delete all the entities: should have three entities 1`] = `
 Object {
   "entities": Object {
     "1": Object {
@@ -61,7 +34,7 @@ Object {
 }
 `;
 
-exports[`remove should remove by predicate: should remove the entity with id of 1 1`] = `
+exports[`delete should delete by predicate: should delete the entity with id of 1 1`] = `
 Object {
   "entities": Object {
     "2": Object {
@@ -82,7 +55,7 @@ Object {
 }
 `;
 
-exports[`remove should remove entities: should have three entities 1`] = `
+exports[`delete should delete by predicate: should have three entities 1`] = `
 Object {
   "entities": Object {
     "1": Object {
@@ -109,7 +82,7 @@ Object {
 }
 `;
 
-exports[`remove should remove entities: should remove two entities 1`] = `
+exports[`delete should delete entities: should delete two entities 1`] = `
 Object {
   "entities": Object {
     "3": Object {
@@ -124,7 +97,49 @@ Object {
 }
 `;
 
-exports[`remove should remove entity: should have two entities 1`] = `
+exports[`delete should delete entities: should have three entities 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+    "3": Object {
+      "completed": false,
+      "id": 3,
+      "title": "todo 3",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+    3,
+  ],
+}
+`;
+
+exports[`delete should delete entity: should delete one entity 1`] = `
+Object {
+  "entities": Object {
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    2,
+  ],
+}
+`;
+
+exports[`delete should delete entity: should have two entities 1`] = `
 Object {
   "entities": Object {
     "1": Object {
@@ -145,22 +160,21 @@ Object {
 }
 `;
 
-exports[`remove should remove entity: should remove one entity 1`] = `
+exports[`delete should work with ref: should delete the ui entity with id of 1 1`] = `
 Object {
-  "entities": Object {
+  "UIEntities": Object {
     "2": Object {
-      "completed": false,
       "id": 2,
-      "title": "todo 2",
+      "open": false,
     },
   },
-  "ids": Array [
+  "UIIds": Array [
     2,
   ],
 }
 `;
 
-exports[`remove should work with ref: should have three ui entities 1`] = `
+exports[`delete should work with ref: should have three ui entities 1`] = `
 Object {
   "UIEntities": Object {
     "1": Object {
@@ -174,20 +188,6 @@ Object {
   },
   "UIIds": Array [
     1,
-    2,
-  ],
-}
-`;
-
-exports[`remove should work with ref: should remove the ui entity with id of 1 1`] = `
-Object {
-  "UIEntities": Object {
-    "2": Object {
-      "id": 2,
-      "open": false,
-    },
-  },
-  "UIIds": Array [
     2,
   ],
 }

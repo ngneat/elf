@@ -55,7 +55,7 @@ class StateHistory<T extends Store, State extends StoreValue<T>> {
   }
 
   activate() {
-    this.history.present = this.store.getValue();
+    this.history.present = this.store.state;
 
     this.subscription = this.store
       .pipe(pairwise())
