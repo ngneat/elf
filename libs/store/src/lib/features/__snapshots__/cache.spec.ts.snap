@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cache should work: delete todo cache 1`] = `
+Object {
+  "cache": Object {},
+  "entities": Object {},
+  "ids": Array [],
+}
+`;
+
+exports[`cache should work: reset 1`] = `
+Object {
+  "cache": Object {},
+  "entities": Object {},
+  "ids": Array [],
+}
+`;
+
+exports[`cache should work: update 1`] = `
+Object {
+  "cache": Object {
+    "todos": "full",
+  },
+  "entities": Object {},
+  "ids": Array [],
+}
+`;
+
+exports[`cache should work: update 2`] = `
+Object {
+  "cache": Object {
+    "todo": "partial",
+    "todos": "full",
+  },
+  "entities": Object {},
+  "ids": Array [],
+}
+`;

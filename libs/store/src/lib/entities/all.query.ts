@@ -8,8 +8,9 @@ import {
   getEntityType,
   getIdType,
 } from './entity.state';
-import { MonoTypeOperatorFunction, OperatorFunction, pipe } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import {MonoTypeOperatorFunction, OperatorFunction, pipe} from 'rxjs';
+import {distinctUntilChanged, map} from 'rxjs/operators';
+import {select} from "../core";
 
 export function untilEntitiesChanges<T extends EntitiesRecord>(
   key: string
@@ -30,13 +31,11 @@ export function untilEntitiesChanges<T extends EntitiesRecord>(
  * store.pipe(selectAll({ ref: entitiesUIRef }))
  *
  */
-export function selectAll<
-  S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
->(
+export function selectAll<S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef>(
   options: BaseEntityOptions<Ref> = {}
 ): OperatorFunction<S, getEntityType<S, Ref>[]> {
-  const { ref: { entitiesKey, idsKey } = defaultEntitiesRef } = options;
+  const {ref: {entitiesKey, idsKey} = defaultEntitiesRef} = options;
 
   return pipe(
     untilEntitiesChanges(entitiesKey),
@@ -45,3 +44,25 @@ export function selectAll<
     )
   );
 }
+
+
+/**
+ *
+ * Observe entities object
+ *
+ * @example
+ *
+ * store.pipe(selectEntities())
+ *
+ * store.pipe(selectEntities({ ref: entitiesUIRef }))
+ *
+ */
+export function selectEntities<S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef>(
+  options: BaseEntityOptions<Ref> = {}
+): OperatorFunction<S, Record<getIdType<S, Ref>, getEntityType<S, Ref>>> {
+  const {ref: {entitiesKey} = defaultEntitiesRef} = options;
+
+  return select(state => state[entitiesKey]);
+}
+

@@ -69,6 +69,23 @@ export class EntitiesBuilder extends FeatureBuilder {
     this.options.crud.forEach((op) => this[op]?.());
   }
 
+
+  setEntities() {
+    this.repo.addMember({
+      kind: StructureKind.Method,
+      name: `set${capitalize(this.storeName)}`,
+      parameters: [
+        {
+          name: camelize(this.storeName),
+          type: `${capitalize(this.singularName)}[]`,
+        },
+      ],
+      statements: [
+        `store.reduce(setEntities(${camelize(this.storeName)}));`,
+      ],
+    });
+  }
+
   addEntities() {
     this.repo.addMember({
       kind: StructureKind.Method,

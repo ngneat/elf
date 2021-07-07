@@ -3,14 +3,14 @@ import { Features } from '../types';
 import { StructureKind } from 'ts-morph';
 import { factory } from 'typescript';
 
-export class CacheStatusBuilder extends FeatureBuilder {
+export class CacheBuilder extends FeatureBuilder {
   static supports(featureName: Features): boolean {
-    return featureName === 'withCacheStatus';
+    return featureName === 'withCache';
   }
 
   getPropsFactory() {
     return factory.createCallExpression(
-      factory.createIdentifier('withCacheStatus'),
+      factory.createIdentifier('withCache'),
       undefined,
       []
     );
@@ -18,23 +18,16 @@ export class CacheStatusBuilder extends FeatureBuilder {
 
   run() {
     this.addNamedImport([
-      'withCacheStatus',
-      'selectCacheStatus',
-      'setCacheStatus',
+      'withCache',
+      'updateCache',
       'CacheStatus',
     ]);
 
-    this.repo.insertMember(0, {
-      name: `cacheStatus$`,
-      kind: StructureKind.Property,
-      initializer: `store.pipe(selectCacheStatus())`,
-    });
-
     this.repo.addMember({
-      name: `updateCacheStatus`,
+      name: `updateCache`,
       kind: StructureKind.Method,
       parameters: [{ name: 'value', type: 'CacheStatus' }],
-      statements: `store.reduce(setCacheStatus(value));`,
+      statements: `store.reduce(updateCache(value));`,
     });
   }
 }

@@ -41,6 +41,7 @@ export async function prompt() {
       message: 'Select CRUD operations',
       type: 'checkbox',
       choices: [
+        { name: 'Set', value: 'setEntities' },
         { name: 'Create', value: 'addEntities' },
         {
           name: 'Update',

@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`selectAll should observe entities object: should be an object 1`] = `Object {}`;
+
+exports[`selectAll should observe entities object: should be an object 2`] = `
+Object {
+  "1": Object {
+    "completed": false,
+    "id": 1,
+    "title": "todo 1",
+  },
+}
+`;
+
 exports[`selectAll should select all: calls: 1 1`] = `Array []`;
 
 exports[`selectAll should select all: calls: 2 1`] = `

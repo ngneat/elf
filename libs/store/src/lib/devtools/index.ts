@@ -46,12 +46,12 @@ export function devTools(options: DevtoolsOptions = {}) {
 
     if (type === 'add') {
       rootState[name] = store.state;
-      send({ type: `@Init ${displayName}` }, rootState);
+      send({ type: `[${displayName}] - @Init` }, rootState);
 
       const update = store.pipe(skip(1)).subscribe((value) => {
         rootState[name] = value;
         options.preAction?.();
-        send({ type: `Update ${displayName}` }, rootState);
+        send({ type: `[${displayName}] - Update` }, rootState);
       });
 
       subscriptions.set(name, update);

@@ -1,7 +1,7 @@
 export interface Options {
   storeName: string;
   features: Array<Features>;
-  crud: Array<'addEntities' | 'updateEntities' | 'deleteEntities'>;
+  crud: Array<'addEntities' | 'updateEntities' | 'deleteEntities' | 'setEntities'>;
   idKey: string;
   path: string;
 }
@@ -24,8 +24,8 @@ export const baseFeatures = [
     value: 'withActiveIds',
   },
   {
-    name: 'Cache Status',
-    value: 'withCacheStatus',
+    name: 'Cache',
+    value: 'withCache',
   },
   {
     name: 'Status',

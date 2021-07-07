@@ -6,7 +6,7 @@ import {
   VariableDeclarationKind,
 } from 'ts-morph';
 import { CallExpression, factory, ScriptTarget } from 'typescript';
-import { CacheStatusBuilder } from './cache-status.builder';
+import { CacheBuilder } from './cache.builder';
 import { ActiveIdsBuilder } from './active-ids.builder';
 import { EntitiesBuilder } from './entities.builder';
 import { UIEntitiesBuilder } from './ui-entities.builder';
@@ -44,7 +44,7 @@ export function createRepo(options: Options) {
   });
 
   const builders = [
-    CacheStatusBuilder,
+    CacheBuilder,
     StatusBuilder,
     ActiveIdBuilder,
     ActiveIdsBuilder,

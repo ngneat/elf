@@ -13,12 +13,12 @@ describe('status', () => {
 
     const spy = jest.fn();
     store.pipe(selectStatus()).subscribe(spy);
-    expect(spy).toHaveBeenCalledWith('idle');
+    expect(spy).toHaveBeenCalledWith({ type: 'idle', error: null, requestCount: 0 });
 
     store.reduce(addEntities({ id: 1, title: '' }));
 
-    store.reduce(setStatus('pending'));
-    expect(spy).toHaveBeenCalledWith('pending');
+    store.reduce(setStatus({ type: 'pending', error: '', requestCount: 3 }));
+    expect(spy).toHaveBeenCalledWith({ type: 'pending', error: '', requestCount: 3 });
 
     store.reduce(addEntities({ id: 2, title: '' }));
     expect(spy).toHaveBeenCalledTimes(2);

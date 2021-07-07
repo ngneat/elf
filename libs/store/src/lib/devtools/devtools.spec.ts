@@ -23,7 +23,7 @@ describe('devtools', () => {
     const store = createEntitiesStore();
 
     expect(instanceMock.send).toHaveBeenCalledWith(
-      { type: '@Init Todos' },
+      { type: '[Todos] - @Init' },
       {
         todos: {
           entities: {},
@@ -35,7 +35,7 @@ describe('devtools', () => {
     store.reduce(addEntities(createTodo(1)));
 
     expect(instanceMock.send).toHaveBeenCalledWith(
-      { type: 'Update Todos' },
+      { type: '[Todos] - Update' },
       {
         todos: {
           entities: {
@@ -60,7 +60,7 @@ describe('devtools', () => {
     createEntitiesStore('foo');
 
     expect(instanceMock.send).toHaveBeenCalledWith(
-      { type: '@Init Foo' },
+      { type: '[Foo] - @Init' },
       {
         foo: {
           entities: {},
@@ -72,7 +72,7 @@ describe('devtools', () => {
     const bar = createEntitiesStore('bar');
 
     expect(instanceMock.send).toHaveBeenCalledWith(
-      { type: '@Init Bar' },
+      { type: '[Bar] - @Init' },
       {
         foo: {
           entities: {},
@@ -88,7 +88,7 @@ describe('devtools', () => {
     bar.reduce(addEntities(createTodo(1)));
 
     expect(instanceMock.send).toHaveBeenCalledWith(
-      { type: 'Update Bar' },
+        { type: '[Bar] - Update' },
       {
         foo: {
           entities: {},

@@ -1,3 +1,3 @@
 export * from './status';
-export * from './cache-status';
+export * from './cache';
 export * from './active-id';

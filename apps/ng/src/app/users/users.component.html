@@ -1,0 +1,7 @@
+<ul>
+  <li *ngFor="let user of usersRepo.users$ | async">
+    {{ user.name }}
+  </li>
+</ul>
+
+<h1>{{ usersRepo.status$ | async }}</h1>
