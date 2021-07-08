@@ -88,7 +88,7 @@ describe('devtools', () => {
     bar.reduce(addEntities(createTodo(1)));
 
     expect(instanceMock.send).toHaveBeenCalledWith(
-        { type: '[Bar] - Update' },
+      { type: '[Bar] - Update' },
       {
         foo: {
           entities: {},

@@ -1,52 +1,108 @@
-import { createState, propsFactory, Store, withProps } from '@ngneat/elf';
-import { propsArrayFactory } from './props-array-factory';
+import {
+  addActiveIds,
+  createState,
+  getRequests,
+  removeActiveIds,
+  resetRequests,
+  selectActiveIds,
+  selectRequests,
+  setActiveIds,
+  setRequests,
+  Store,
+  toggleActiveIds,
+  updateRequests,
+  withActiveIds,
+  withRequests,
+} from '@ngneat/elf';
+import { take } from 'rxjs/operators';
 
-describe('stateFactory', () => {
+describe('propsFactory', () => {
+  const { state, config } = createState(withRequests());
+  const store = new Store({ state, config, name: '' });
+
   it('should work', () => {
-    const { selectActiveId, setActiveId, withActiveId, resetActiveId } =
-      propsFactory<{ activeId: any }>('activeId', undefined);
+    expect(store.state).toEqual({ requests: { cache: {}, status: {} } });
+  });
 
-    const { state, config } = createState(
-      withActiveId(),
-      withProps<{ filter: string }>({ filter: '' })
+  it('should update', () => {
+    store.reduce(
+      updateRequests({ cache: { 1: 'full' }, status: { 1: 'success' } })
     );
+    expect(store.state).toEqual({
+      requests: { cache: { 1: 'full' }, status: { 1: 'success' } },
+    });
+  });
 
-    const store = new Store({ state, config, name: '' });
-    expect(store.state).toEqual({ activeId: undefined, filter: '' });
+  it('should update by callback', () => {
+    store.reduce(
+      updateRequests((state) => ({
+        cache: {
+          ...state.requests.cache,
+          2: 'partial',
+        },
+      }))
+    );
+    expect(store.state).toEqual({
+      requests: {
+        cache: { 1: 'full', 2: 'partial' },
+        status: { 1: 'success' },
+      },
+    });
+  });
 
+  it('should set', () => {
+    store.reduce(
+      setRequests({ cache: { 1: 'full' }, status: { 1: 'success' } })
+    );
+    expect(store.state).toEqual({
+      requests: { cache: { 1: 'full' }, status: { 1: 'success' } },
+    });
+  });
+
+  it('should set by callback', () => {
+    store.reduce(
+      setRequests((state) => ({
+        status: {},
+        cache: {
+          ...state.requests.cache,
+          2: 'partial',
+        },
+      }))
+    );
+    expect(store.state).toEqual({
+      requests: { cache: { 1: 'full', 2: 'partial' }, status: {} },
+    });
+  });
+
+  it('should reset', () => {
+    store.reduce(resetRequests());
+    expect(store.state).toEqual({ requests: { cache: {}, status: {} } });
+  });
+
+  it('should query', () => {
+    expect(store.query(getRequests)).toEqual({ cache: {}, status: {} });
+  });
+
+  it('should select', () => {
+    store.pipe(selectRequests(), take(1)).subscribe((v) => {
+      expect(v).toEqual({ cache: {}, status: {} });
+    });
+  });
+
+  it('should not emit if it returns the same value', () => {
     const spy = jest.fn();
-    store.pipe(selectActiveId()).subscribe(spy);
+    store.subscribe(spy);
 
-    expect(spy).toHaveBeenCalledWith(undefined);
     expect(spy).toHaveBeenCalledTimes(1);
 
-    store.reduce(setActiveId(1));
-    expect(spy).toHaveBeenCalledTimes(2);
-    expect(store.state).toEqual({ activeId: 1, filter: '' });
+    store.reduce(setRequests((state) => state.requests));
 
-    store.reduce((state) => ({
-      ...state,
-      filter: 'foo',
-    }));
-    expect(spy).toHaveBeenCalledTimes(2);
-
-    store.reduce(resetActiveId());
-    expect(spy).toHaveBeenCalledTimes(3);
-    expect(store.state).toEqual({ activeId: undefined, filter: 'foo' });
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });
 
 describe('stateArrayFactory', () => {
   it('should work', () => {
-    const {
-      selectActiveIds,
-      setActiveIds,
-      withActiveIds,
-      addActiveIds,
-      removeActiveIds,
-      toggleActiveIds,
-    } = propsArrayFactory<{ activeIds: any[] }>('activeIds', []);
-
     const { state, config } = createState(withActiveIds());
 
     const store = new Store({ state, config, name: '' });

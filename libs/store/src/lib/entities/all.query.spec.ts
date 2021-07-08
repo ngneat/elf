@@ -4,9 +4,9 @@ import {
   createUIEntityStore,
   createUITodo,
 } from '../mocks/stores.mock';
-import {addEntities} from './add.mutation';
-import {selectAll, selectEntities} from './all.query';
-import {entitiesUIRef} from './entity.state';
+import { addEntities } from './add.mutation';
+import { selectAll, selectEntities } from './all.query';
+import { entitiesUIRef } from './entity.state';
 
 describe('selectAll', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -30,18 +30,17 @@ describe('selectAll', () => {
 
     const store = createUIEntityStore();
 
-    store.pipe(selectAll({ref: entitiesUIRef})).subscribe((value) => {
+    store.pipe(selectAll({ ref: entitiesUIRef })).subscribe((value) => {
       expect(value).toMatchSnapshot(`calls: ${count++}`);
     });
 
     store.reduce(
-      addEntities([createUITodo(1), createUITodo(2)], {ref: entitiesUIRef})
+      addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef })
     );
   });
 
   it('should observe entities object', () => {
-
-    store.pipe(selectEntities()).subscribe(v => {
+    store.pipe(selectEntities()).subscribe((v) => {
       expect(v).toMatchSnapshot('should be an object');
     });
 

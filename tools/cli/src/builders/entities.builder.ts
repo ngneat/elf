@@ -69,7 +69,6 @@ export class EntitiesBuilder extends FeatureBuilder {
     this.options.crud.forEach((op) => this[op]?.());
   }
 
-
   setEntities() {
     this.repo.addMember({
       kind: StructureKind.Method,
@@ -80,9 +79,7 @@ export class EntitiesBuilder extends FeatureBuilder {
           type: `${capitalize(this.singularName)}[]`,
         },
       ],
-      statements: [
-        `store.reduce(setEntities(${camelize(this.storeName)}));`,
-      ],
+      statements: [`store.reduce(setEntities(${camelize(this.storeName)}));`],
     });
   }
 

@@ -17,11 +17,7 @@ export class CacheBuilder extends FeatureBuilder {
   }
 
   run() {
-    this.addNamedImport([
-      'withCache',
-      'updateCache',
-      'CacheStatus',
-    ]);
+    this.addNamedImport(['withCache', 'updateCache', 'CacheStatus']);
 
     this.repo.addMember({
       name: `updateCache`,

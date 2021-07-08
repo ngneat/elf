@@ -1,7 +1,9 @@
 export interface Options {
   storeName: string;
   features: Array<Features>;
-  crud: Array<'addEntities' | 'updateEntities' | 'deleteEntities' | 'setEntities'>;
+  crud: Array<
+    'addEntities' | 'updateEntities' | 'deleteEntities' | 'setEntities'
+  >;
   idKey: string;
   path: string;
 }

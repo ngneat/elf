@@ -13,8 +13,13 @@ import { switchMap } from 'rxjs/operators';
 import { StateOf } from '../core/types';
 import { propsArrayFactory } from '../core/props-array-factory';
 
-export const { selectActiveId, setActiveId, withActiveId, resetActiveId, getActiveId } =
-  propsFactory<{ activeId: any }>('activeId', undefined);
+export const {
+  selectActiveId,
+  setActiveId,
+  withActiveId,
+  resetActiveId,
+  getActiveId,
+} = propsFactory('activeId', { initialValue: undefined as any });
 
 export function selectActiveEntity<
   S extends EntitiesState<Ref> & StateOf<typeof withActiveId>,
@@ -39,8 +44,8 @@ export const {
   toggleActiveIds,
   removeActiveIds,
   addActiveIds,
-  getActiveIds
-} = propsArrayFactory<{ activeIds: any[] }>('activeIds', []);
+  getActiveIds,
+} = propsArrayFactory('activeIds', { initialValue: [] as any[] });
 
 export function selectActiveEntities<
   S extends EntitiesState<Ref> & StateOf<typeof withActiveIds>,

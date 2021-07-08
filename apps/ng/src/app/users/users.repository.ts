@@ -5,11 +5,10 @@ import {
   setEntities,
   Store,
   updateCache,
-  withCache,
   withEntities,
-  withStatus
+  withRequests,
 } from '@ngneat/elf';
-import {Injectable} from "@angular/core";
+import { Injectable } from '@angular/core';
 
 export interface User {
   id: number;
@@ -17,19 +16,21 @@ export interface User {
   email: string;
 }
 
-const {state, config} = createState(withEntities<User>(), withCache(), withStatus());
-const store = new Store({name: 'users', state, config});
+export const USERS_STORE_NAME = 'users';
 
-@Injectable({providedIn: 'root'})
+const { state, config } = createState(withEntities<User>(), withRequests());
+const store = new Store({ name: USERS_STORE_NAME, state, config });
+
+@Injectable({ providedIn: 'root' })
 export class UsersRepository {
-  status$ = store.pipe(selectStatus());
   users$ = store.pipe(selectAll());
+  status$ = store.pipe(selectStatus(USERS_STORE_NAME));
 
   get store() {
     return store;
   }
 
   setUsers(users: User[]) {
-    store.reduce(setEntities(users), updateCache({users: 'full'}));
+    store.reduce(setEntities(users), updateCache(USERS_STORE_NAME));
   }
 }

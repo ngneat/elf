@@ -1,13 +1,14 @@
 import { arrayAdd, arrayRemove, arrayToggle } from '../array';
-import { Reducer, propsFactory } from '@ngneat/elf';
+import { propsFactory, Reducer } from '@ngneat/elf';
 import { capitalize } from './utils';
 
 export function propsArrayFactory<
-  T extends Record<any, any[]>,
-  K extends keyof T = T extends Record<infer Key, any> ? Key : never
->(key: K, initialValue: T[K], options?: { idKey: keyof T[0] }) {
+  T extends any[],
+  K extends string,
+  PropState extends { [Key in K]: T }
+>(key: K, options: { initialValue: T; config?: any; idKey?: keyof T[0] }) {
   const normalizedKey = capitalize(key as string);
-  const base = propsFactory<T, K>(key, initialValue);
+  const base = propsFactory<T, K, PropState>(key, options);
 
   return {
     ...base,
@@ -38,16 +39,14 @@ export function propsArrayFactory<
   } as unknown as typeof base &
     {
       [P in
-        | `remove${Capitalize<string & K>}`
-        | `add${Capitalize<string & K>}`
-        | `toggle${Capitalize<string & K>}`]: P extends `toggle${Capitalize<
-        string & K
-      >}`
-        ? <S extends T>(value: S[K][0]) => Reducer<S>
-        : P extends `add${Capitalize<string & K>}`
-        ? <S extends T>(value: S[K][0]) => Reducer<S>
-        : P extends `remove${Capitalize<string & K>}`
-        ? <S extends T>(value: S[K][0]) => Reducer<S>
+        | `remove${Capitalize<K>}`
+        | `add${Capitalize<K>}`
+        | `toggle${Capitalize<K>}`]: P extends `toggle${Capitalize<K>}`
+        ? <S extends PropState>(value: T[0]) => Reducer<S>
+        : P extends `add${Capitalize<K>}`
+        ? <S extends PropState>(value: T[0]) => Reducer<S>
+        : P extends `remove${Capitalize<K>}`
+        ? <S extends PropState>(value: T[0]) => Reducer<S>
         : never;
     };
 }

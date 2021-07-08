@@ -6,7 +6,7 @@ function eq(store: Store, value: number) {
 }
 
 describe('state history', () => {
-  const { withProp, setProp } = propsFactory<{ prop: number }>('prop', 0);
+  const { withProp, setProp } = propsFactory('prop', { initialValue: 0 });
 
   it('should work', () => {
     const { state, config } = createState(withProp());

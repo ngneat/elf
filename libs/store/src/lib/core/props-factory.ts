@@ -1,11 +1,14 @@
-import {select} from './operators';
-import {OperatorFunction} from 'rxjs';
-import {EmptyConfig, State} from './state';
-import {Reducer} from './store';
-import {capitalize, isFunction, isObject} from './utils';
+import { select } from './operators';
+import { OperatorFunction } from 'rxjs';
+import { EmptyConfig, State } from './state';
+import { Reducer } from './store';
+import { capitalize, isFunction, isObject } from './utils';
 
-export function propsFactory<T extends Record<any, any>,
-  K extends keyof T = T extends Record<infer Key, any> ? Key : never>(key: K, initialValue: T[K]) {
+export function propsFactory<
+  T,
+  K extends string,
+  PropState extends { [Key in K]: T }
+>(key: K, { initialValue, config = {} }: { initialValue: T; config?: any }) {
   const normalizedKey = capitalize(key as string);
 
   return {
@@ -14,12 +17,16 @@ export function propsFactory<T extends Record<any, any>,
         state: {
           [key]: value,
         },
-        config: undefined,
+        config,
       };
     },
     [`set${normalizedKey}`](value: any) {
       return function (state: any) {
         const newVal = isFunction(value) ? value(state) : value;
+
+        if (newVal === state[key]) {
+          return state;
+        }
 
         return {
           ...state,
@@ -31,12 +38,18 @@ export function propsFactory<T extends Record<any, any>,
       return function (state: any) {
         const newVal = isFunction(value) ? value(state) : value;
 
+        if (newVal === state[key]) {
+          return state;
+        }
+
         return {
           ...state,
-          [key]: isObject(value) ? {
-            ...state[key],
-            ...newVal
-          } : newVal
+          [key]: isObject(newVal)
+            ? {
+                ...state[key],
+                ...newVal,
+              }
+            : newVal,
         };
       };
     },
@@ -55,23 +68,26 @@ export function propsFactory<T extends Record<any, any>,
       return state[key];
     },
   } as unknown as {
-    [P in | `get${Capitalize<string & K>}`
-      | `set${Capitalize<string & K>}`
-      | `update${Capitalize<string & K>}`
-      | `reset${Capitalize<string & K>}`
-      | `select${Capitalize<string & K>}`
-      | `with${Capitalize<string & K>}`]:
-
-    P extends `set${Capitalize<string & K>}`
-      ? <S extends T>(value: S[K] | ((state: S) => S[K])) => Reducer<S> :
-      P extends `update${Capitalize<string & K>}`
-        ? <S extends T>(value: Partial<S[K]>) => Reducer<S>
-        : P extends `get${Capitalize<string & K>}`
-        ? <S extends T>() => S[K]
-        : P extends `select${Capitalize<string & K>}`
-          ? <S extends T>() => OperatorFunction<S, S[K]>
-          : P extends `reset${Capitalize<string & K>}`
-            ? <S extends T>() => Reducer<S>
-            : (initialValue?: T[K]) => State<T, EmptyConfig>;
+    [P in
+      | `with${Capitalize<K>}`
+      | `update${Capitalize<K>}`
+      | `set${Capitalize<K>}`
+      | `reset${Capitalize<K>}`
+      | `select${Capitalize<K>}`
+      | `get${Capitalize<K>}`]: P extends `get${Capitalize<K>}`
+      ? <S extends PropState>() => T
+      : P extends `select${Capitalize<K>}`
+      ? <S extends PropState>() => OperatorFunction<S, T>
+      : P extends `reset${Capitalize<K>}`
+      ? <S extends PropState>() => Reducer<S>
+      : P extends `set${Capitalize<K>}`
+      ? <S extends PropState>(value: T | ((state: S) => T)) => Reducer<S>
+      : P extends `update${Capitalize<K>}`
+      ? <S extends PropState>(
+          value: Partial<T> | ((state: S) => Partial<T>)
+        ) => Reducer<S>
+      : P extends `with${Capitalize<K>}`
+      ? (initialValue?: T) => State<PropState, EmptyConfig>
+      : any;
   };
 }
