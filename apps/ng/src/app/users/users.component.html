@@ -1,7 +1,7 @@
 <ul>
-  <li *ngFor="let user of usersRepo.users$ | async">
-    {{ user.name }}
+  <li *ngFor="let user of users$ | async">
+    <a [routerLink]="user.id.toString()">{{ user.name }}</a>
   </li>
 </ul>
 
-<h1>{{ usersRepo.status$ | async }}</h1>
+<h1>{{ status$ | async }}</h1>

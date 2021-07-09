@@ -1,12 +1,17 @@
 import {
+  addEntities,
   createState,
+  requestsStateForEntities,
   selectAll,
-  selectRequestsStatus,
+  selectEntity,
+  selectRequestStatus,
   setEntities,
   Store,
   updateRequestsCache,
+  updateRequestsStatus,
   withEntities,
-  withRequests,
+  withRequestsCache,
+  withRequestsStatus,
 } from '@ngneat/elf';
 import { Injectable } from '@angular/core';
 
@@ -16,21 +21,48 @@ export interface User {
   email: string;
 }
 
-export const USERS_STORE_NAME = 'users';
+export const enum UsersRequests {
+  default = 'users',
+  user = 'user',
+}
 
-const { state, config } = createState(withEntities<User>(), withRequests());
-const store = new Store({ name: USERS_STORE_NAME, state, config });
+const { state, config } = createState(
+  withEntities<User>(),
+  withRequestsStatus(),
+  withRequestsCache()
+);
+const store = new Store({ name: 'users', state, config });
 
 @Injectable({ providedIn: 'root' })
 export class UsersRepository {
   users$ = store.pipe(selectAll());
-  status$ = store.pipe(selectRequestsStatus(USERS_STORE_NAME));
+  status$ = store.pipe(selectRequestStatus(UsersRequests.default));
+
+  user$(id: User['id']) {
+    return store.pipe(selectEntity(id));
+  }
+
+  userStatus$(id: string) {
+    return store.pipe(selectRequestStatus(id));
+  }
 
   get store() {
     return store;
   }
 
   setUsers(users: User[]) {
-    store.reduce(setEntities(users), updateRequestsCache(USERS_STORE_NAME));
+    const { cache, status } = requestsStateForEntities(users);
+    store.reduce(
+      setEntities(users),
+      updateRequestsCache({ users: 'full', ...cache }),
+      updateRequestsStatus(status)
+    );
+  }
+
+  addUser(user: User) {
+    this.store.reduce(
+      addEntities(user),
+      updateRequestsCache({ [user.id]: 'full' })
+    );
   }
 }

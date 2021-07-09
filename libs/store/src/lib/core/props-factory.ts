@@ -75,7 +75,7 @@ export function propsFactory<
       | `reset${Capitalize<K>}`
       | `select${Capitalize<K>}`
       | `get${Capitalize<K>}`]: P extends `get${Capitalize<K>}`
-      ? <S extends PropState>() => T
+      ? <S extends PropState>(state: S) => T
       : P extends `select${Capitalize<K>}`
       ? <S extends PropState>() => OperatorFunction<S, T>
       : P extends `reset${Capitalize<K>}`

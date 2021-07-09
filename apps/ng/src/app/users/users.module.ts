@@ -4,11 +4,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { UsersRoutingModule } from './users-routing.module';
 import { UsersComponent } from './users.component';
+import { UserComponent } from './user/user.component';
 
 const routes: Routes = [{ path: '', component: UsersComponent }];
 
 @NgModule({
-  declarations: [UsersComponent],
+  declarations: [UsersComponent, UserComponent],
   imports: [CommonModule, UsersRoutingModule, RouterModule.forChild(routes)],
 })
 export class UsersModule {}

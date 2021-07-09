@@ -1,91 +1,79 @@
 import {
   addActiveIds,
   createState,
-  getRequests,
+  getRequestsStatus,
   removeActiveIds,
-  resetRequests,
+  resetRequestsStatus,
   selectActiveIds,
-  selectRequests,
+  selectRequestsStatus,
   setActiveIds,
-  setRequests,
+  setRequestsStatus,
   Store,
   toggleActiveIds,
-  updateRequests,
+  updateRequestsStatus,
   withActiveIds,
-  withRequests,
+  withRequestsStatus,
 } from '@ngneat/elf';
 import { take } from 'rxjs/operators';
 
 describe('propsFactory', () => {
-  const { state, config } = createState(withRequests());
+  const { state, config } = createState(withRequestsStatus());
   const store = new Store({ state, config, name: '' });
 
   it('should work', () => {
-    expect(store.state).toEqual({ requests: { cache: {}, status: {} } });
+    expect(store.state).toEqual({ requestsStatus: {} });
   });
 
   it('should update', () => {
-    store.reduce(
-      updateRequests({ cache: { 1: 'full' }, status: { 1: 'success' } })
-    );
+    store.reduce(updateRequestsStatus({ 1: 'success' }));
     expect(store.state).toEqual({
-      requests: { cache: { 1: 'full' }, status: { 1: 'success' } },
+      requestsStatus: { 1: 'success' },
     });
   });
 
   it('should update by callback', () => {
     store.reduce(
-      updateRequests((state) => ({
-        cache: {
-          ...state.requests.cache,
-          2: 'partial',
-        },
-      }))
+      updateRequestsStatus((state) => {
+        return {
+          2: 'error',
+        };
+      })
     );
+
     expect(store.state).toEqual({
-      requests: {
-        cache: { 1: 'full', 2: 'partial' },
-        status: { 1: 'success' },
-      },
+      requestsStatus: { 1: 'success', 2: 'error' },
     });
   });
 
   it('should set', () => {
-    store.reduce(
-      setRequests({ cache: { 1: 'full' }, status: { 1: 'success' } })
-    );
-    expect(store.state).toEqual({
-      requests: { cache: { 1: 'full' }, status: { 1: 'success' } },
-    });
+    store.reduce(setRequestsStatus({ 10: 'success' }));
+    expect(store.state).toEqual({ requestsStatus: { 10: 'success' } });
   });
 
   it('should set by callback', () => {
     store.reduce(
-      setRequests((state) => ({
-        status: {},
-        cache: {
-          ...state.requests.cache,
-          2: 'partial',
-        },
+      setRequestsStatus((state) => ({
+        ...state.requestsStatus,
+        2: 'success',
       }))
     );
     expect(store.state).toEqual({
-      requests: { cache: { 1: 'full', 2: 'partial' }, status: {} },
+      requestsStatus: { 10: 'success', 2: 'success' },
     });
   });
 
   it('should reset', () => {
-    store.reduce(resetRequests());
-    expect(store.state).toEqual({ requests: { cache: {}, status: {} } });
+    store.reduce(resetRequestsStatus());
+    expect(store.state).toEqual({ requestsStatus: {} });
   });
 
   it('should query', () => {
-    expect(store.query(getRequests)).toEqual({ cache: {}, status: {} });
+    expect(store.query(getRequestsStatus)).toEqual({});
   });
 
   it('should select', () => {
-    store.pipe(selectRequests(), take(1)).subscribe((v) => {
-      expect(v).toEqual({ cache: {}, status: {} });
+    store.pipe(selectRequestsStatus(), take(1)).subscribe((v) => {
+      expect(v).toEqual({});
     });
   });
 
@@ -95,7 +83,7 @@ describe('propsFactory', () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
 
-    store.reduce(setRequests((state) => state.requests));
+    store.reduce(setRequestsStatus((state) => state.requestsStatus));
 
     expect(spy).toHaveBeenCalledTimes(1);
   });
