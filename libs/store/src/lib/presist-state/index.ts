@@ -7,21 +7,22 @@ interface Options<S extends Store> {
   storage: StateStorage;
   source?: (store: S) => Observable<Partial<StoreValue<S>>>;
   preStoreInit?: (value: StoreValue<S>) => Partial<StoreValue<S>>;
+  key?: string;
 }
 
 export function persistState<S extends Store>(store: S, options: Options<S>) {
   const defaultOptions: Partial<Options<S>> = {
     source: (store) => store,
     preStoreInit: (value) => value,
+    key: options.key ?? `${store.name}@store`
   };
 
   const merged = { ...defaultOptions, ...options };
 
   const { setItem, getItem } = options.storage;
   const initialized = new ReplaySubject(1);
-  const name = `${store.name}@store`;
 
-  from(getItem(name)).subscribe((value) => {
+  from(getItem(merged.key!)).subscribe((value) => {
     if (value) {
       store.reduce((state) => {
         return merged.preStoreInit!({
@@ -38,7 +39,7 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
   const subscription = merged.source!(store)
     .pipe(
       skip(1),
-      switchMap((value: StoreValue<S>) => setItem(name, value))
+      switchMap((value: StoreValue<S>) => setItem(merged.key!, value))
     )
     .subscribe();
 
