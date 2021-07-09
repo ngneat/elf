@@ -33,13 +33,13 @@ export const {
   } as Requests,
 });
 
-export function selectCache<S extends StateOf<typeof withRequests>>(
+export function selectRequestsCache<S extends StateOf<typeof withRequests>>(
   key: string
 ): OperatorFunction<S, CacheState>;
-export function selectCache<
+export function selectRequestsCache<
   S extends StateOf<typeof withRequests>
 >(): OperatorFunction<S, S['requests']['cache']>;
-export function selectCache<S extends StateOf<typeof withRequests>>(
+export function selectRequestsCache<S extends StateOf<typeof withRequests>>(
   key?: string
 ): OperatorFunction<S, S['requests']['cache'] | CacheState> {
   return select((state) => {
@@ -47,13 +47,13 @@ export function selectCache<S extends StateOf<typeof withRequests>>(
   });
 }
 
-export function selectStatus<S extends StateOf<typeof withRequests>>(
+export function selectRequestsStatus<S extends StateOf<typeof withRequests>>(
   key: string
 ): OperatorFunction<S, StatusState>;
-export function selectStatus<
+export function selectRequestsStatus<
   S extends StateOf<typeof withRequests>
 >(): OperatorFunction<S, S['requests']['status']>;
-export function selectStatus<S extends StateOf<typeof withRequests>>(
+export function selectRequestsStatus<S extends StateOf<typeof withRequests>>(
   key?: string
 ): OperatorFunction<S, StatusState | S['requests']['status']> {
   return select((state) => {
@@ -61,14 +61,14 @@ export function selectStatus<S extends StateOf<typeof withRequests>>(
   });
 }
 
-export function getCache<S extends StateOf<typeof withRequests>>(
+export function getRequestsCache<S extends StateOf<typeof withRequests>>(
   key: string
 ): Query<S, CacheState>;
-export function getCache<S extends StateOf<typeof withRequests>>(): Query<
+export function getRequestsCache<S extends StateOf<typeof withRequests>>(): Query<
   S,
   S['requests']['cache']
 >;
-export function getCache<S extends StateOf<typeof withRequests>>(
+export function getRequestsCache<S extends StateOf<typeof withRequests>>(
   key?: string
 ): Query<S, S['requests']['cache'] | CacheState> {
   return function (state: S) {
@@ -76,14 +76,14 @@ export function getCache<S extends StateOf<typeof withRequests>>(
   };
 }
 
-export function getStatus<S extends StateOf<typeof withRequests>>(
+export function getRequestsStatus<S extends StateOf<typeof withRequests>>(
   key: string
 ): Query<S, StatusState>;
-export function getStatus<S extends StateOf<typeof withRequests>>(): Query<
+export function getRequestsStatus<S extends StateOf<typeof withRequests>>(): Query<
   S,
   S['requests']['status']
 >;
-export function getStatus<S extends StateOf<typeof withRequests>>(
+export function getRequestsStatus<S extends StateOf<typeof withRequests>>(
   key?: string
 ): Query<S, S['requests']['status'] | StatusState> {
   return function (state: S) {
@@ -91,7 +91,7 @@ export function getStatus<S extends StateOf<typeof withRequests>>(
   };
 }
 
-export function updateCache<S extends StateOf<typeof withRequests>>(
+export function updateRequestsCache<S extends StateOf<typeof withRequests>>(
   key: string,
   value: CacheState = 'full'
 ): Reducer<S> {
@@ -109,7 +109,7 @@ export function updateCache<S extends StateOf<typeof withRequests>>(
   });
 }
 
-export function updateStatus<S extends StateOf<typeof withRequests>>(
+export function updateRequestsStatus<S extends StateOf<typeof withRequests>>(
   key: string,
   value: StatusState
 ): Reducer<S> {
@@ -132,7 +132,7 @@ export function inCache<S extends StateOf<typeof withRequests>>(
   value: CacheState = 'full'
 ) {
   return function (state: S) {
-    return getCache(key)(state) === value;
+    return getRequestsCache(key)(state) === value;
   };
 }
 
@@ -150,21 +150,21 @@ export function skipWhileCached<T, S extends StateOf<typeof withRequests>>(
   };
 }
 
-export function setStatus<T, S extends StateOf<typeof withRequests>>(
+export function setRequestStatus<T, S extends StateOf<typeof withRequests>>(
   store: Store<StoreDef<S>>,
   key: string
 ): MonoTypeOperatorFunction<T> {
   return function (source: Observable<T>) {
     return defer(() => {
-      store.reduce(updateStatus(key, 'pending'));
+      store.reduce(updateRequestsStatus(key, 'pending'));
 
       return source.pipe(
         tap({
           next() {
-            store.reduce(updateStatus(key, 'success'));
+            store.reduce(updateRequestsStatus(key, 'success'));
           },
           error() {
-            store.reduce(updateStatus(key, 'error'));
+            store.reduce(updateRequestsStatus(key, 'error'));
           },
         })
       );
