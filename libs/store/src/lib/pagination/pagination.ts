@@ -15,7 +15,7 @@ import { Query, StateOf } from '../core/types';
 interface PaginationState<IdType extends number | string = number> {
   pagination: {
     activePage: IdType;
-    value: Record<IdType, IdType[]>;
+    pages: Record<IdType, IdType[]>;
   };
 }
 
@@ -26,7 +26,7 @@ export function withPagination<
     state: {
       pagination: {
         activePage: 0 as IdType,
-        value: {} as Record<IdType, IdType[]>,
+        pages: {} as Record<IdType, IdType[]>,
       },
     },
     config: {},
@@ -42,8 +42,8 @@ export function setPage<
       ...state,
       pagination: {
         ...state.pagination,
-        value: {
-          ...state.pagination.value,
+        pages: {
+          ...state.pagination.pages,
           [id]: ids,
         },
       },
@@ -56,14 +56,14 @@ export function deletePage<
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(id: getIdType<S, Ref>): Reducer<S> {
   return function (state: S) {
-    const value = { ...state.pagination.value };
-    Reflect.deleteProperty(value, id);
+    const pages = { ...state.pagination.pages };
+    Reflect.deleteProperty(pages, id);
 
     return {
       ...state,
       pagination: {
         ...state.pagination,
-        value,
+        pages,
       },
     };
   };
@@ -78,7 +78,7 @@ export function deleteAllPages<
       ...state,
       pagination: {
         ...state.pagination,
-        value: {},
+        pages: {},
       },
     };
   };
@@ -107,14 +107,14 @@ export function selectActivePage<
 export function selectHasPage<S extends StateOf<typeof withPagination>>(
   id: S['pagination']['activePage']
 ): OperatorFunction<S, boolean> {
-  return select((state) => Reflect.has(state.pagination.value, id));
+  return select((state) => Reflect.has(state.pagination.pages, id));
 }
 
 export function hasPage<S extends StateOf<typeof withPagination>>(
   id: S['pagination']['activePage']
 ): Query<S, boolean> {
   return function (state: S) {
-    return Reflect.has(state.pagination.value, id);
+    return Reflect.has(state.pagination.pages, id);
   };
 }
 
@@ -125,7 +125,7 @@ export function selectActivePageEntities<
   return function (source: Observable<S>) {
     return source.pipe(
       selectActivePage(),
-      withLatestFrom(source.pipe(select((state) => state.pagination.value))),
+      withLatestFrom(source.pipe(select((state) => state.pagination.pages))),
       switchMap(([activePage, pages]) => {
         return source.pipe(selectMany(pages[activePage]));
       })
