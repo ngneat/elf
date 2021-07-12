@@ -37,7 +37,6 @@ export function propsFactory<
     [`update${normalizedKey}`](value: any) {
       return function (state: any) {
         const newVal = isFunction(value) ? value(state) : value;
-
         if (newVal === state[key]) {
           return state;
         }

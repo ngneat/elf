@@ -1,4 +1,4 @@
-import { createTodo, createUITodo, Todo } from '../mocks/stores.mock';
+import {createTodo, createUITodo, Todo} from '../mocks/stores.mock';
 import {
   addEntities,
   selectAll,
@@ -6,22 +6,22 @@ import {
   withEntities,
   withUIEntities,
 } from '../entities';
-import { withProps } from '../props/props.state';
-import { Store } from './store';
-import { entitiesUIRef } from '../entities/entity.state';
-import { createState } from './state';
+import {withProps} from '../props/props.state';
+import {Store} from './store';
+import {entitiesUIRef} from '../entities/entity.state';
+import {createState} from './state';
 
 type UIEntity = { id: number; open: boolean };
 
 describe('store', () => {
   describe('combine', () => {
-    const { state, config } = createState(
+    const {state, config} = createState(
       withEntities<Todo>(),
       withUIEntities<UIEntity>(),
-      withProps<{ filter: string }>({ filter: '' })
+      withProps<{ filter: string }>({filter: ''})
     );
 
-    const store = new Store({ state, name: 'todos', config });
+    const store = new Store({state, name: 'todos', config});
 
     it('should fire only once', () => {
       const spy = jest.fn();
@@ -29,7 +29,7 @@ describe('store', () => {
       store
         .combine([
           store.pipe(selectAll()),
-          store.pipe(selectAll({ ref: entitiesUIRef })),
+          store.pipe(selectAll({ref: entitiesUIRef})),
         ])
         .subscribe(spy);
 
@@ -39,18 +39,18 @@ describe('store', () => {
 
       store.reduce(
         addEntities(createTodo(1)),
-        addEntities(createUITodo(1), { ref: entitiesUIRef })
+        addEntities(createUITodo(1), {ref: entitiesUIRef})
       );
 
       expect(spy).toHaveBeenCalledTimes(2);
       expect(store.state).toMatchSnapshot();
 
-      store.reduce((state) => ({ ...state, filter: 'foo' }));
+      store.reduce((state) => ({...state, filter: 'foo'}));
 
       // Update non related value should not call `next`
       expect(spy).toHaveBeenCalledTimes(2);
 
-      store.reduce(updateEntities(1, { title: 'foo' }), (state) => ({
+      store.reduce(updateEntities(1, {title: 'foo'}), (state) => ({
         ...state,
         filter: 'hello',
       }));
@@ -59,4 +59,34 @@ describe('store', () => {
       expect(spy).toHaveBeenCalledTimes(3);
     });
   });
+
+  it('should ', () => {
+    const {state, config} = createState(
+      withEntities<Todo>(),
+      withUIEntities<UIEntity>(),
+      withProps<{ filter: string }>({filter: ''})
+    );
+
+    const store = new Store({ name: '', config, state });
+    const spy = jest.fn();
+
+    store.subscribe(spy);
+
+    store.reduce(addEntities(createTodo(1)));
+    store.reduce(state => ({
+      ...state,
+      filter: 'foo'
+    }));
+
+
+
+    return flushPromises().then(() => {
+      expect(spy).toHaveBeenCalledTimes(2);
+    });
+
+  });
 });
+
+function flushPromises() {
+  return new Promise(resolve => setTimeout(resolve));
+}

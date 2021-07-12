@@ -13,7 +13,7 @@ import {
   withRequestsCache,
   withRequestsStatus,
 } from '@ngneat/elf';
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 export interface User {
   id: number;
@@ -26,14 +26,14 @@ export const enum UsersRequests {
   user = 'user',
 }
 
-const {state, config} = createState(
+const { state, config } = createState(
   withEntities<User>(),
   withRequestsStatus(),
   withRequestsCache()
 );
-const store = new Store({name: 'users', state, config});
+const store = new Store({ name: 'users', state, config });
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class UsersRepository {
   users$ = store.pipe(selectAll());
   status$ = store.pipe(selectRequestStatus(UsersRequests.default));
@@ -53,10 +53,10 @@ export class UsersRepository {
   }
 
   setUsers(users: User[]) {
-    const {cache, status} = requestsStateForEntities(users);
+    const { cache, status } = requestsStateForEntities(users);
     store.reduce(
       setEntities(users),
-      updateRequestsCache({users: 'full', ...cache}),
+      updateRequestsCache({ users: 'full', ...cache }),
       updateRequestsStatus(status)
     );
   }
@@ -64,7 +64,7 @@ export class UsersRepository {
   addUser(user: User) {
     this.store.reduce(
       addEntities(user),
-      updateRequestsCache({[user.id]: 'full'})
+      updateRequestsCache({ [user.id]: 'full' })
     );
   }
 }

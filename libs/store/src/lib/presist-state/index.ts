@@ -14,7 +14,7 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
   const defaultOptions: Partial<Options<S>> = {
     source: (store) => store,
     preStoreInit: (value) => value,
-    key: options.key ?? `${store.name}@store`
+    key: options.key ?? `${store.name}@store`,
   };
 
   const merged = { ...defaultOptions, ...options };

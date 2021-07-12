@@ -21,6 +21,11 @@ import { HttpClientModule } from '@angular/common/http';
         loadChildren: () =>
           import('./users/users.module').then((m) => m.UsersModule),
       },
+      {
+        path: 'contacts',
+        loadChildren: () =>
+          import('./contacts/contacts.module').then((m) => m.ContactsModule),
+      },
     ]),
   ],
   providers: [],
