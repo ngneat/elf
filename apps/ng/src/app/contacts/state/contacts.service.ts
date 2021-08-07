@@ -12,13 +12,13 @@ export class ContactsService {
   }
 
   getContacts(page: number) {
-    return timer(3000).pipe(
+    return timer(300).pipe(
       map(() => getData({page})),
-      // tap((res) => {
-      //   this.repo.addContacts(page, res.data);
-      // }),
+      tap((res) => {
+        this.repo.addContacts(page, res);
+      }),
       setRequestStatus(this.repo.store, 'contacts'),
-      // skipWhilePageExists(this.repo.store, page)
+      skipWhilePageExists(this.repo.store, page)
     );
   }
 }

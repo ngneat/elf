@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import {addEntities, createState, selectRequestStatus, Store, withEntities, withRequestsStatus} from '@ngneat/elf';
 import {
+  PaginationResponse,
   selectActivePage,
   selectActivePageEntities,
   setActivePage,
-  setPage,
+  setPage, setPagination,
   withPagination,
 } from '../../../../../../libs/store/src/lib/pagination/pagination';
 
@@ -33,13 +34,16 @@ export class ContactsRepository {
     store.reduce(setActivePage(id));
   }
 
-  addContacts(page: number, contacts: Contact[]) {
+  addContacts(page: number, contacts: PaginationResponse<Contact>) {
+    const { data, ...pagination } = contacts;
+
     store.reduce(
-      // addEntities(contacts),
-      // setPage(
-      //   page,
-      //   contacts.map((c) => c.id)
-      // )
+      addEntities(data),
+      setPagination(pagination),
+      setPage(
+        page,
+        data.map((c) => c.id)
+      )
     );
   }
 

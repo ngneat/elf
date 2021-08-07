@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ContactsService } from './state/contacts.service';
-import { generatePages } from './contacts-data';
-import { ContactsRepository } from './state/contacts.repository';
-import { switchMap, tap } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {ContactsService} from './state/contacts.service';
+import {generatePages} from './contacts-data';
+import {ContactsRepository} from './state/contacts.repository';
+import {switchMap, tap} from 'rxjs/operators';
+import {asap} from "@ngneat/elf";
+
 
 @Component({
   selector: 'elf-contacts',
@@ -17,11 +19,13 @@ export class ContactsComponent implements OnInit {
   constructor(
     private service: ContactsService,
     private repo: ContactsRepository
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.repo.activePage$
       .pipe(
+        asap(),
         switchMap((page) => {
           return this.service.getContacts(page).pipe(
             tap((c) => {
