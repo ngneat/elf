@@ -1,14 +1,17 @@
 <p>contacts works!</p>
-<h1>{{ status$ | async}}</h1>
 
-<ul>
-  <li *ngFor="let contact of contacts$ | async">
-    {{ contact.name }}
-  </li>
-</ul>
+<ng-container *ngIf="data$ | async as data">
+  <h1>{{ data.status }}</h1>
 
-<ul class="flex">
-  <li *ngFor="let page of indicators" (click)="updateActivePage(page)">
-    {{ page }}
-  </li>
-</ul>
+  <ul>
+    <li *ngFor="let contact of data.contacts">
+      {{ contact.name }}
+    </li>
+  </ul>
+
+  <ul class="flex">
+    <li *ngFor="let page of data.indicators" (click)="updateActivePage(page)">
+      {{ page }}
+    </li>
+  </ul>
+</ng-container>

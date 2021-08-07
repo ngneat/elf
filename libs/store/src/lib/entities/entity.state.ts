@@ -59,11 +59,10 @@ export function withEntities<
   } = { idKey: 'id' as IdKey }
 ) {
   return {
-    state:
-      withEntitiesFactory<
-        EntityState<EntityType, EntityType[IdKey]>,
-        typeof defaultEntitiesRef
-      >(defaultEntitiesRef),
+    state: withEntitiesFactory<
+      EntityState<EntityType, EntityType[IdKey]>,
+      typeof defaultEntitiesRef
+    >(defaultEntitiesRef),
     config: {
       idKey: config.idKey,
     },
@@ -79,11 +78,10 @@ export function withUIEntities<
   } = { idKey: 'id' as IdKey }
 ) {
   return {
-    state:
-      withEntitiesFactory<
-        UIEntityState<EntityType, EntityType[IdKey]>,
-        typeof entitiesUIRef
-      >(entitiesUIRef),
+    state: withEntitiesFactory<
+      UIEntityState<EntityType, EntityType[IdKey]>,
+      typeof entitiesUIRef
+    >(entitiesUIRef),
     config: {
       idKeyUI: config.idKey,
     },
@@ -108,8 +106,10 @@ export type getEntityType<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef
 > = S[Ref['entitiesKey']][0];
-export type getIdType<S extends EntitiesState<Ref>, Ref extends EntitiesRef> =
-  S[Ref['idsKey']][0];
+export type getIdType<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef
+> = S[Ref['idsKey']][0];
 export type ItemPredicate<Item> = (item: Item, index?: number) => boolean;
 export type EntitiesRecord = Record<any, any>;
 export type DefaultEntitiesRef = typeof defaultEntitiesRef;

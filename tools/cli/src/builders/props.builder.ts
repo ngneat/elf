@@ -1,6 +1,5 @@
 import { FeatureBuilder } from './feature-builder';
 import { Features } from '../types';
-import { StructureKind } from 'ts-morph';
 import { capitalize } from '../utils';
 import { factory } from 'typescript';
 

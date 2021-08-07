@@ -1,5 +1,5 @@
-import {asapScheduler, MonoTypeOperatorFunction} from "rxjs";
-import {debounceTime} from "rxjs/operators";
+import { asapScheduler, MonoTypeOperatorFunction } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 export function coerceArray<T>(value: T | T[]): T[];
 export function coerceArray<T>(value: T | readonly T[]): readonly T[];
@@ -28,5 +28,5 @@ export function isObject(item: any) {
   return typeof item === 'object' && !Array.isArray(item) && item !== null;
 }
 
-
-export const asap = <T>(): MonoTypeOperatorFunction<T> => debounceTime(0, asapScheduler);
+export const asap = <T>(): MonoTypeOperatorFunction<T> =>
+  debounceTime(0, asapScheduler);
