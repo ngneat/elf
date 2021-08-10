@@ -59,29 +59,6 @@ describe('store', () => {
       expect(spy).toHaveBeenCalledTimes(3);
     });
   });
-
-  it('should ', () => {
-    const { state, config } = createState(
-      withEntities<Todo>(),
-      withUIEntities<UIEntity>(),
-      withProps<{ filter: string }>({ filter: '' })
-    );
-
-    const store = new Store({ name: '', config, state });
-    const spy = jest.fn();
-
-    store.subscribe(spy);
-
-    store.reduce(addEntities(createTodo(1)));
-    store.reduce((state) => ({
-      ...state,
-      filter: 'foo',
-    }));
-
-    return flushPromises().then(() => {
-      expect(spy).toHaveBeenCalledTimes(2);
-    });
-  });
 });
 
 function flushPromises() {

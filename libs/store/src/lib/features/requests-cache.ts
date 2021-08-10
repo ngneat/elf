@@ -1,4 +1,4 @@
-import { propsFactory, select, Store } from '@ngneat/elf';
+import { propsFactory, select, Store } from '../core';
 import { Query, StateOf } from '../core/types';
 import { EMPTY, Observable, OperatorFunction } from 'rxjs';
 import { coerceArray } from '../core/utils';

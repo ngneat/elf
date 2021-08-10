@@ -1,6 +1,7 @@
 import { arrayAdd, arrayRemove, arrayToggle } from '../array';
-import { propsFactory, Reducer } from '@ngneat/elf';
 import { capitalize } from './utils';
+import { propsFactory } from './props-factory';
+import { Reducer } from './store';
 
 export function propsArrayFactory<
   T extends any[],

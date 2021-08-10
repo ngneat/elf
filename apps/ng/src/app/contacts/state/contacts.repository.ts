@@ -15,7 +15,7 @@ import {
   setPage,
   setPagination,
   withPagination,
-} from '../../../../../../libs/store/src/lib/pagination/pagination';
+} from '@ngneat/elf';
 
 interface Contact {
   id: number;

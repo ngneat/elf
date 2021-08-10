@@ -7,7 +7,7 @@ import {
 } from '../mocks/stores.mock';
 import { addEntities } from './add.mutation';
 import { entitiesUIRef, withEntities, withUIEntities } from './entity.state';
-import { createState, Store } from '@ngneat/elf';
+import { createState, Store } from '../core';
 
 describe('add', () => {
   let store: ReturnType<typeof createEntitiesStore>;

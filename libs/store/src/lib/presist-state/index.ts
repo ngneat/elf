@@ -20,7 +20,7 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
   const merged = { ...defaultOptions, ...options };
 
   const { setItem, getItem } = options.storage;
-  const initialized = new ReplaySubject(1);
+  const initialized = new ReplaySubject<boolean>(1);
 
   from(getItem(merged.key!)).subscribe((value) => {
     if (value) {
@@ -32,7 +32,7 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
       });
     }
 
-    initialized.next();
+    initialized.next(true);
     initialized.complete();
   });
 

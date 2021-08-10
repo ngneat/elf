@@ -1,4 +1,5 @@
-import { CacheState, StatusState } from '@ngneat/elf';
+import { CacheState } from './requests-cache';
+import { StatusState } from './requests-status';
 
 export function requestsStateForEntities<T extends any[]>(
   entities: T,

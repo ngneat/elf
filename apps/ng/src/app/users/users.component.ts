@@ -4,6 +4,7 @@ import { UsersService } from './users.service';
 import { MonoTypeOperatorFunction, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+// should support cancellation
 function effect<T>(
   cb: (data: T) => Observable<any>
 ): MonoTypeOperatorFunction<T> {

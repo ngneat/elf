@@ -1,6 +1,6 @@
+import { take } from 'rxjs/operators';
 import {
   addActiveIds,
-  createState,
   getRequestsStatus,
   removeActiveIds,
   resetRequestsStatus,
@@ -8,13 +8,13 @@ import {
   selectRequestsStatus,
   setActiveIds,
   setRequestsStatus,
-  Store,
   toggleActiveIds,
   updateRequestsStatus,
   withActiveIds,
   withRequestsStatus,
-} from '@ngneat/elf';
-import { take } from 'rxjs/operators';
+} from '../features';
+import { createState } from './state';
+import { Store } from './store';
 
 describe('propsFactory', () => {
   const { state, config } = createState(withRequestsStatus());

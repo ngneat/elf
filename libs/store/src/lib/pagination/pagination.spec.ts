@@ -1,4 +1,3 @@
-import { addEntities, createState, Store, withEntities } from '@ngneat/elf';
 import {
   hasPage,
   selectActivePage,
@@ -8,6 +7,9 @@ import {
   withPagination,
 } from './pagination';
 import { createTodo } from '../mocks/stores.mock';
+import { withEntities } from '../entities/entity.state';
+import { createState, Store } from '../core';
+import { addEntities } from '../entities';
 
 describe('withPagination', () => {
   it('should work', () => {

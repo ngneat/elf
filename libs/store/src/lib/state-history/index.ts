@@ -1,5 +1,5 @@
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { Store, StoreValue } from '@ngneat/elf';
+import { Store, StoreValue } from '../core';
 import { distinctUntilChanged, pairwise } from 'rxjs/operators';
 import { isFunction } from '../core/utils';
 

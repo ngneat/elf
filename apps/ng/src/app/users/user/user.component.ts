@@ -5,6 +5,7 @@ import { switchMap, tap } from 'rxjs/operators';
 import { UsersRepository } from '../users.repository';
 import { MonoTypeOperatorFunction, Observable, of } from 'rxjs';
 
+// should support cancellation
 function effect<T>(
   cb: (data: T) => Observable<any>
 ): MonoTypeOperatorFunction<T> {

@@ -5,7 +5,7 @@ import {
   createUITodo,
 } from '../mocks/stores.mock';
 import { getEntity, hasEntity } from './queries';
-import { addEntities } from '@ngneat/elf';
+import { addEntities } from './add.mutation';
 import { entitiesUIRef } from './entity.state';
 
 describe('queries', () => {
