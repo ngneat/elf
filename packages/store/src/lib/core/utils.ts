@@ -7,8 +7,7 @@ export function coerceArray<T>(value: T | T[]): T[] {
   return Array.isArray(value) ? value : [value];
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function isFunction(value: any): value is Function {
+export function isFunction(value: any): value is (...args: any[]) => any {
   return typeof value === 'function';
 }
 

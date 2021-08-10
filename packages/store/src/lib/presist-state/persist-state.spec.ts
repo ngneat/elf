@@ -49,7 +49,7 @@ describe('persist state', () => {
     const store = createEntitiesStore();
     persistState(store, {
       storage,
-      source: (store) => store.pipe(map((value) => ({ ids: [1, 2] }))),
+      source: (store) => store.pipe(map(() => ({ ids: [1, 2] }))),
     });
     expect(storage.setItem).not.toHaveBeenCalled();
 

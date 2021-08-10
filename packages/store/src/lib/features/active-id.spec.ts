@@ -22,7 +22,9 @@ describe('activeId', () => {
     const store = new Store({ state, config, name: '' });
 
     const spy = jest.fn();
-    store.pipe(selectActiveId()).subscribe((v: string) => {});
+    store.pipe(selectActiveId()).subscribe(() => {
+      //
+    });
     store.pipe(selectActiveEntity()).subscribe(spy);
     expect(spy).toHaveBeenCalledWith(undefined);
 

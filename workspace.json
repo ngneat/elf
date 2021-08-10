@@ -134,21 +134,31 @@
       }
     },
     "store": {
-      "root": "libs/store",
-      "sourceRoot": "libs/store/src",
+      "root": "packages/store",
+      "sourceRoot": "packages/store/src",
       "projectType": "library",
       "targets": {
+        "build": {
+          "executor": "@nrwl/workspace:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/packages/store",
+            "main": "packages/store/src/index.ts",
+            "tsConfig": "packages/store/tsconfig.lib.json",
+            "assets": ["packages/store/*.md"]
+          }
+        },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/store/**/*.ts"]
+            "lintFilePatterns": ["packages/store/**/*.ts"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/store"],
+          "outputs": ["coverage/packages/store"],
           "options": {
-            "jestConfig": "libs/store/jest.config.js",
+            "jestConfig": "packages/store/jest.config.js",
             "passWithNoTests": true
           }
         }

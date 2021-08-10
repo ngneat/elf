@@ -33,7 +33,7 @@ describe('propsFactory', () => {
 
   it('should update by callback', () => {
     store.reduce(
-      updateRequestsStatus((state) => {
+      updateRequestsStatus(() => {
         return {
           2: 'error',
         };

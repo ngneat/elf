@@ -60,7 +60,3 @@ describe('store', () => {
     });
   });
 });
-
-function flushPromises() {
-  return new Promise((resolve) => setTimeout(resolve));
-}

@@ -1,3 +1,5 @@
+# A Reactive State Management for JS Application (WIP)
+
 ```ts
 const { state, config } = createState(
   withEntities<Todo>(),
