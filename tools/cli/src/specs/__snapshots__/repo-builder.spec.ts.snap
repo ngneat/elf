@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Repo Builder all: all 1`] = `
-"import { Store, createState, withProps, withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds, withCacheStatus, selectCacheStatus, setCacheStatus, CacheStatus, withStatus, selectStatus, setStatus, StatusState } from '@ngneat/elf';
+"import { Store, createState, withProps, withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds, withRequestsCache, updateRequestsCache, CacheState, withRequestsStatus, selectRequestStatus, updateRequestsStatus, StatusState } from '@ngneat/elf';
 
 export interface TodoUI {
   id: number;
@@ -14,12 +14,11 @@ export interface Todo {
 export interface TodosProps {
 }
 
-const { state, config } = createState(withProps<TodosProps>({}), withEntities<Todo>(), withUIEntities<TodoUI>(), withActiveId(), withActiveIds(), withCacheState(), withStatus());
+const { state, config } = createState(withProps<TodosProps>({}), withEntities<Todo>(), withUIEntities<TodoUI>(), withActiveId(), withActiveIds(), withRequestsCache(), withRequestsStatus());
 const store = new Store({ name: 'todos', state, config });
 
 export class TodosRepository {
-  status$ = store.pipe(selectStatus());
-  cacheStatus$ = store.pipe(selectCacheStatus());
+  status$ = store.pipe(selectRequestStatus('key'));
   activeTodos$ = store.pipe(selectActiveEntities());
   activeTodo$ = store.pipe(selectActiveEntity());
   todos$ = store.pipe(selectAll());
@@ -44,12 +43,12 @@ export class TodosRepository {
     store.reduce(toggleActiveIds(ids));
   }
 
-  updateCacheStatus(value: CacheStatus) {
-    store.reduce(setCacheStatus(value));
+  updateRequestCache(state: CacheState) {
+    store.reduce(updateRequestsCache({ key: state }));
   }
 
-  updateStatus(value: StatusState) {
-    store.reduce(setStatus(value));
+  updateRequestStatus(state: StatusState) {
+    store.reduce(updateRequestsStatus({ key: state }));
   }
 }
 "
@@ -82,22 +81,6 @@ export class TodosRepository {
 
   toggleActiveIds(ids: Array<Todo['id']>) {
     store.reduce(toggleActiveIds(ids));
-  }
-}
-"
-`;
-
-exports[`Repo Builder withCacheStatus: withCacheStatus 1`] = `
-"import { Store, createState, withCacheStatus, selectCacheStatus, setCacheStatus, CacheStatus } from '@ngneat/elf';
-
-const { state, config } = createState(withCacheState());
-const store = new Store({ name: 'todos', state, config });
-
-export class TodosRepository {
-  cacheStatus$ = store.pipe(selectCacheStatus());
-
-  updateCacheStatus(value: CacheStatus) {
-    store.reduce(setCacheStatus(value));
   }
 }
 "
@@ -173,17 +156,31 @@ export class TodosRepository {
 "
 `;
 
-exports[`Repo Builder withStatus: withStatus 1`] = `
-"import { Store, createState, withStatus, selectStatus, setStatus, StatusState } from '@ngneat/elf';
+exports[`Repo Builder withRequestsCache: withRequestsCache 1`] = `
+"import { Store, createState, withRequestsCache, updateRequestsCache, CacheState } from '@ngneat/elf';
 
-const { state, config } = createState(withStatus());
+const { state, config } = createState(withRequestsCache());
 const store = new Store({ name: 'todos', state, config });
 
 export class TodosRepository {
-  status$ = store.pipe(selectStatus());
+  updateRequestCache(state: CacheState) {
+    store.reduce(updateRequestsCache({ key: state }));
+  }
+}
+"
+`;
 
-  updateStatus(value: StatusState) {
-    store.reduce(setStatus(value));
+exports[`Repo Builder withRequestsStatus: withRequestsStatus 1`] = `
+"import { Store, createState, withRequestsStatus, selectRequestStatus, updateRequestsStatus, StatusState } from '@ngneat/elf';
+
+const { state, config } = createState(withRequestsStatus());
+const store = new Store({ name: 'todos', state, config });
+
+export class TodosRepository {
+  status$ = store.pipe(selectRequestStatus('key'));
+
+  updateRequestStatus(state: StatusState) {
+    store.reduce(updateRequestsStatus({ key: state }));
   }
 }
 "

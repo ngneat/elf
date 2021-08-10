@@ -14,28 +14,28 @@ describe('Repo Builder', () => {
     expect(output).toMatchSnapshot('withProps');
   });
 
-  it('withCacheStatus', () => {
+  it('withRequestsCache', () => {
     const output = createRepo({
       idKey: 'id',
-      features: ['withCacheStatus'],
+      features: ['withRequestsCache'],
       crud: [],
       storeName: 'todos',
       path: '',
     });
 
-    expect(output).toMatchSnapshot('withCacheStatus');
+    expect(output).toMatchSnapshot('withRequestsCache');
   });
 
-  it('withStatus', () => {
+  it('withRequestsStatus', () => {
     const output = createRepo({
       idKey: 'id',
-      features: ['withStatus'],
+      features: ['withRequestsStatus'],
       crud: [],
       storeName: 'todos',
       path: '',
     });
 
-    expect(output).toMatchSnapshot('withStatus');
+    expect(output).toMatchSnapshot('withRequestsStatus');
   });
 
   it('withActiveId', () => {

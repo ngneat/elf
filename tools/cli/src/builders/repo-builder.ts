@@ -6,11 +6,11 @@ import {
   VariableDeclarationKind,
 } from 'ts-morph';
 import { CallExpression, factory, ScriptTarget } from 'typescript';
-import { CacheBuilder } from './cache.builder';
+import { RequestsCacheBuilder } from './requests-cache.builder';
 import { ActiveIdsBuilder } from './active-ids.builder';
 import { EntitiesBuilder } from './entities.builder';
 import { UIEntitiesBuilder } from './ui-entities.builder';
-import { StatusBuilder } from './status.builder';
+import { RequestsStatusBuilder } from './requests-status.builder';
 import { ActiveIdBuilder } from './active-id.builder';
 import { PropsBuilder } from './props.builder';
 import { camelize, capitalize } from '../utils';
@@ -44,8 +44,8 @@ export function createRepo(options: Options) {
   });
 
   const builders = [
-    CacheBuilder,
-    StatusBuilder,
+    RequestsCacheBuilder,
+    RequestsStatusBuilder,
     ActiveIdBuilder,
     ActiveIdsBuilder,
     EntitiesBuilder,

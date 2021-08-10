@@ -26,11 +26,11 @@ export const baseFeatures = [
     value: 'withActiveIds',
   },
   {
-    name: 'Cache',
-    value: 'withCache',
+    name: 'Requests Cache',
+    value: 'withRequestsCache',
   },
   {
-    name: 'Status',
-    value: 'withStatus',
+    name: 'Requests Status',
+    value: 'withRequestsStatus',
   },
 ] as const;

@@ -3,14 +3,14 @@ import { Features } from '../types';
 import { StructureKind } from 'ts-morph';
 import { factory } from 'typescript';
 
-export class StatusBuilder extends FeatureBuilder {
+export class RequestsStatusBuilder extends FeatureBuilder {
   static supports(featureName: Features): boolean {
-    return featureName === 'withStatus';
+    return featureName === 'withRequestsStatus';
   }
 
   getPropsFactory() {
     return factory.createCallExpression(
-      factory.createIdentifier('withStatus'),
+      factory.createIdentifier('withRequestsStatus'),
       undefined,
       []
     );
@@ -18,23 +18,23 @@ export class StatusBuilder extends FeatureBuilder {
 
   run() {
     this.addNamedImport([
-      'withStatus',
-      'selectStatus',
-      'setStatus',
+      'withRequestsStatus',
+      'selectRequestStatus',
+      'updateRequestsStatus',
       'StatusState',
     ]);
 
     this.repo.insertMember(0, {
       name: `status$`,
       kind: StructureKind.Property,
-      initializer: `store.pipe(selectStatus())`,
+      initializer: `store.pipe(selectRequestStatus('key'))`,
     });
 
     this.repo.addMember({
-      name: `updateStatus`,
+      name: `updateRequestStatus`,
       kind: StructureKind.Method,
-      parameters: [{ name: 'value', type: 'StatusState' }],
-      statements: `store.reduce(setStatus(value));`,
+      parameters: [{ name: 'state', type: 'StatusState' }],
+      statements: `store.reduce(updateRequestsStatus({ key: state }));`,
     });
   }
 }
