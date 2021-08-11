@@ -5,9 +5,9 @@ import {
   createUITodo,
   toMatchSnapshot,
 } from '../mocks/stores.mock';
-import { addEntities } from './add.mutation';
-import { entitiesUIRef, withEntities, withUIEntities } from './entity.state';
-import { createState, Store } from '../core';
+import {addEntities, addEntitiesFifo} from './add.mutation';
+import {entitiesUIRef, withEntities, withUIEntities} from './entity.state';
+import {createState, Store} from '../core';
 
 describe('add', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -29,7 +29,7 @@ describe('add', () => {
   it('should prepend entities', () => {
     store.reduce(addEntities([createTodo(1), createTodo(2)]));
     store.reduce(
-      addEntities([createTodo(3), createTodo(4)], { prepend: true })
+      addEntities([createTodo(3), createTodo(4)], {prepend: true})
     );
     toMatchSnapshot(expect, store, 'prepend');
   });
@@ -37,21 +37,47 @@ describe('add', () => {
   it('should work with ref', () => {
     const store = createUIEntityStore();
     store.reduce(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef })
+      addEntities([createUITodo(1), createUITodo(2)], {ref: entitiesUIRef})
     );
     toMatchSnapshot(expect, store, 'ref');
   });
 
   it('should work a different idKey', () => {
-    const { state, config } = createState(
+    const {state, config} = createState(
       withEntities<{ id: number }>(),
-      withUIEntities<{ _id: string; name: string }, '_id'>({ idKey: '_id' })
+      withUIEntities<{ _id: string; name: string }, '_id'>({idKey: '_id'})
     );
-    const store = new Store({ state, name: '', config });
+    const store = new Store({state, name: '', config});
     store.reduce(
-      addEntities({ _id: '1', name: 'foo' }, { ref: entitiesUIRef })
+      addEntities({_id: '1', name: 'foo'}, {ref: entitiesUIRef})
     );
-    store.reduce(addEntities({ id: 1 }));
+    store.reduce(addEntities({id: 1}));
     expect(store.state).toMatchSnapshot();
   });
+
+
+  describe('addEntitiesFifo', () => {
+
+    it('should work', () => {
+      const limit = 3;
+      store.reduce(addEntitiesFifo([createTodo(1), createTodo(2), createTodo(3)], {limit}));
+      store.reduce(addEntitiesFifo([createTodo(4)], {limit}));
+
+      expect(store.state).toMatchSnapshot('should be 4 3 2');
+
+      store.reduce(addEntitiesFifo([createTodo(5), createTodo(6)], {limit}));
+      expect(store.state).toMatchSnapshot('should be 6 5 4');
+
+      store.reduce(addEntitiesFifo([createTodo(1), createTodo(2), createTodo(3)], {limit}));
+      expect(store.state).toMatchSnapshot('should be 3 2 1');
+
+      store.reduce(addEntitiesFifo([createTodo(4), createTodo(5), createTodo(6), createTodo(7)], {limit}));
+      expect(store.state).toMatchSnapshot('should be 7 6 5');
+
+      store.reduce(addEntitiesFifo([], {limit}));
+      expect(store.state).toMatchSnapshot('should be 7 6 5 empty array');
+    });
+
+  });
+
 });

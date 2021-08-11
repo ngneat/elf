@@ -1,5 +1,140 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`add addEntitiesFifo should work: should be 3 2 1 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+    "3": Object {
+      "completed": false,
+      "id": 3,
+      "title": "todo 3",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+    3,
+  ],
+}
+`;
+
+exports[`add addEntitiesFifo should work: should be 4 3 2 1`] = `
+Object {
+  "entities": Object {
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+    "3": Object {
+      "completed": false,
+      "id": 3,
+      "title": "todo 3",
+    },
+    "4": Object {
+      "completed": false,
+      "id": 4,
+      "title": "todo 4",
+    },
+  },
+  "ids": Array [
+    2,
+    3,
+    4,
+  ],
+}
+`;
+
+exports[`add addEntitiesFifo should work: should be 6 5 4 1`] = `
+Object {
+  "entities": Object {
+    "4": Object {
+      "completed": false,
+      "id": 4,
+      "title": "todo 4",
+    },
+    "5": Object {
+      "completed": false,
+      "id": 5,
+      "title": "todo 5",
+    },
+    "6": Object {
+      "completed": false,
+      "id": 6,
+      "title": "todo 6",
+    },
+  },
+  "ids": Array [
+    4,
+    5,
+    6,
+  ],
+}
+`;
+
+exports[`add addEntitiesFifo should work: should be 7 6 5 1`] = `
+Object {
+  "entities": Object {
+    "5": Object {
+      "completed": false,
+      "id": 5,
+      "title": "todo 5",
+    },
+    "6": Object {
+      "completed": false,
+      "id": 6,
+      "title": "todo 6",
+    },
+    "7": Object {
+      "completed": false,
+      "id": 7,
+      "title": "todo 7",
+    },
+  },
+  "ids": Array [
+    5,
+    6,
+    7,
+  ],
+}
+`;
+
+exports[`add addEntitiesFifo should work: should be 7 6 5 empty array 1`] = `
+Object {
+  "entities": Object {
+    "5": Object {
+      "completed": false,
+      "id": 5,
+      "title": "todo 5",
+    },
+    "6": Object {
+      "completed": false,
+      "id": 6,
+      "title": "todo 6",
+    },
+    "7": Object {
+      "completed": false,
+      "id": 7,
+      "title": "todo 7",
+    },
+  },
+  "ids": Array [
+    5,
+    6,
+    7,
+  ],
+}
+`;
+
 exports[`add should add entity: add one 1`] = `
 Object {
   "entities": Object {
