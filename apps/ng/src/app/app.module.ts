@@ -26,6 +26,11 @@ import { HttpClientModule } from '@angular/common/http';
         loadChildren: () =>
           import('./contacts/contacts.module').then((m) => m.ContactsModule),
       },
+      {
+        path: 'gallery',
+        loadChildren: () =>
+          import('./gallery/gallery.module').then((m) => m.GalleryModule),
+      },
     ]),
   ],
   providers: [],
