@@ -32,7 +32,7 @@ export const defaultEntitiesRef = new EntitiesRef({
   idKeyRef: defaultIdKeyRef,
 });
 
-export const entitiesUIRef = new EntitiesRef({
+export const UIEntitiesRef = new EntitiesRef({
   entitiesKey: 'UIEntities',
   idsKey: 'UIIds',
   idKeyRef: 'idKeyUI',
@@ -80,8 +80,8 @@ export function withUIEntities<
   return {
     state: withEntitiesFactory<
       UIEntityState<EntityType, EntityType[IdKey]>,
-      typeof entitiesUIRef
-    >(entitiesUIRef),
+      typeof UIEntitiesRef
+    >(UIEntitiesRef),
     config: {
       idKeyUI: config.idKey,
     },

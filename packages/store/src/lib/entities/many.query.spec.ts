@@ -8,7 +8,7 @@ import { addEntities } from './add.mutation';
 import { selectMany } from './many.query';
 import { updateEntities } from './update.mutation';
 import { deleteEntities } from './delete.mutation';
-import { entitiesUIRef } from './entity.state';
+import { UIEntitiesRef } from './entity.state';
 
 describe('selectMany', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -37,19 +37,19 @@ describe('selectMany', () => {
     const store = createUIEntityStore();
 
     store
-      .pipe(selectMany([1, 2], { ref: entitiesUIRef }))
+      .pipe(selectMany([1, 2], { ref: UIEntitiesRef }))
       .subscribe((value) => {
         expect(value).toMatchSnapshot(`calls: ${count++}`);
       });
 
     store.reduce(
       addEntities([createUITodo(1), createUITodo(2), createUITodo(3)], {
-        ref: entitiesUIRef,
+        ref: UIEntitiesRef,
       })
     );
-    store.reduce(addEntities(createUITodo(4), { ref: entitiesUIRef }));
+    store.reduce(addEntities(createUITodo(4), { ref: UIEntitiesRef }));
 
-    store.reduce(updateEntities(1, { open: true }, { ref: entitiesUIRef }));
-    store.reduce(deleteEntities(2, { ref: entitiesUIRef }));
+    store.reduce(updateEntities(1, { open: true }, { ref: UIEntitiesRef }));
+    store.reduce(deleteEntities(2, { ref: UIEntitiesRef }));
   });
 });

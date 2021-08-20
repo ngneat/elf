@@ -1,5 +1,21 @@
 import { BehaviorSubject, of } from 'rxjs';
-import { distinctUntilArrayItemChanged, head, select } from './operators';
+import {
+  distinctUntilArrayItemChanged,
+  head,
+  intersectEntities,
+  select,
+} from './operators';
+import { selectAll, selectEntities } from '../entities/all.query';
+import {
+  UIEntitiesRef,
+  withEntities,
+  withUIEntities,
+} from '../entities/entity.state';
+import { tap } from 'rxjs/operators';
+import { createTodo, Todo } from '../mocks/stores.mock';
+import { addEntities, updateEntities } from '../entities';
+import { Store } from './store';
+import { createState } from './state';
 
 describe('select', () => {
   it('should work', () => {
@@ -70,5 +86,95 @@ describe('head', () => {
       .subscribe((v) => {
         expect(v).toBe(1);
       });
+  });
+});
+
+describe('intersectEntities', () => {
+  it('should return intersection of ui and model', () => {
+    const { state, config } = createState(
+      withEntities<Todo>(),
+      withUIEntities<{ id: Todo['id']; open: boolean }>()
+    );
+
+    const store = new Store({ state, name: 'todos', config });
+    const spy = jest.fn();
+
+    store
+      .combine({
+        entities: store.pipe(selectAll()),
+        UIEntities: store.pipe(selectEntities({ ref: UIEntitiesRef })),
+      })
+      .pipe(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        tap((v) => {
+          //
+        }),
+        intersectEntities()
+      )
+      .subscribe((v) => {
+        spy(v);
+      });
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith([]);
+
+    store.reduce(
+      addEntities(createTodo(1)),
+      addEntities({ id: 1, open: false }, { ref: UIEntitiesRef })
+    );
+
+    expect(spy).toHaveBeenCalledTimes(2);
+
+    expect(spy).toHaveBeenCalledWith([
+      {
+        ...createTodo(1),
+        open: false,
+      },
+    ]);
+
+    store.reduce(updateEntities(1, { open: true }, { ref: UIEntitiesRef }));
+
+    expect(spy).toHaveBeenCalledTimes(3);
+
+    expect(spy).toHaveBeenCalledWith([
+      {
+        ...createTodo(1),
+        open: true,
+      },
+    ]);
+
+    store.reduce(
+      addEntities(createTodo(2)),
+      addEntities({ id: 2, open: false }, { ref: UIEntitiesRef })
+    );
+
+    expect(spy).toHaveBeenCalledTimes(4);
+    expect(spy).toHaveBeenCalledWith([
+      {
+        ...createTodo(1),
+        open: true,
+      },
+      {
+        ...createTodo(2),
+        open: false,
+      },
+    ]);
+
+    store.reduce(updateEntities(1, { title: 'baz' }));
+
+    expect(spy).toHaveBeenCalledTimes(5);
+    expect(spy).toHaveBeenCalledWith([
+      {
+        ...{
+          ...createTodo(1),
+          title: 'baz',
+        },
+        open: true,
+      },
+      {
+        ...createTodo(2),
+        open: false,
+      },
+    ]);
   });
 });

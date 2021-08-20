@@ -6,7 +6,7 @@ import {
 } from '../mocks/stores.mock';
 import { getEntity, hasEntity } from './queries';
 import { addEntities } from './add.mutation';
-import { entitiesUIRef } from './entity.state';
+import { UIEntitiesRef } from './entity.state';
 
 describe('queries', () => {
   describe('getEntity', () => {
@@ -32,10 +32,10 @@ describe('queries', () => {
 
     it('should work with ref', () => {
       const store = createUIEntityStore();
-      expect(store.query(hasEntity(1, { ref: entitiesUIRef }))).toEqual(false);
+      expect(store.query(hasEntity(1, { ref: UIEntitiesRef }))).toEqual(false);
 
-      store.reduce(addEntities(createUITodo(1), { ref: entitiesUIRef }));
-      expect(store.query(hasEntity(1, { ref: entitiesUIRef }))).toEqual(true);
+      store.reduce(addEntities(createUITodo(1), { ref: UIEntitiesRef }));
+      expect(store.query(hasEntity(1, { ref: UIEntitiesRef }))).toEqual(true);
     });
   });
 });

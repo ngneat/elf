@@ -6,7 +6,7 @@ import {
 } from '../mocks/stores.mock';
 import { addEntities } from './add.mutation';
 import { selectAll, selectEntities } from './all.query';
-import { entitiesUIRef } from './entity.state';
+import { UIEntitiesRef } from './entity.state';
 
 describe('selectAll', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -30,12 +30,12 @@ describe('selectAll', () => {
 
     const store = createUIEntityStore();
 
-    store.pipe(selectAll({ ref: entitiesUIRef })).subscribe((value) => {
+    store.pipe(selectAll({ ref: UIEntitiesRef })).subscribe((value) => {
       expect(value).toMatchSnapshot(`calls: ${count++}`);
     });
 
     store.reduce(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef })
+      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
     );
   });
 

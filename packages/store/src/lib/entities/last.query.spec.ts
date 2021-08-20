@@ -5,7 +5,7 @@ import {
   createUITodo,
 } from '../mocks/stores.mock';
 import { addEntities } from './add.mutation';
-import { entitiesUIRef } from './entity.state';
+import { UIEntitiesRef } from './entity.state';
 import { selectLast } from './last.query';
 
 describe('last', () => {
@@ -30,12 +30,12 @@ describe('last', () => {
   it('should support ref', () => {
     const store = createUIEntityStore();
 
-    store.pipe(selectLast({ ref: entitiesUIRef })).subscribe((value) => {
+    store.pipe(selectLast({ ref: UIEntitiesRef })).subscribe((value) => {
       expect(value).toMatchSnapshot('2 calls');
     });
 
     store.reduce(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef })
+      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
     );
   });
 });

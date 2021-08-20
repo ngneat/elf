@@ -6,7 +6,7 @@ import {
   toMatchSnapshot,
 } from '../mocks/stores.mock';
 import { setEntities } from './set.mutation';
-import { entitiesUIRef } from './entity.state';
+import { UIEntitiesRef } from './entity.state';
 
 describe('set', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -25,10 +25,10 @@ describe('set', () => {
 
   it('should set entities work with ref', () => {
     const store = createUIEntityStore();
-    store.reduce(setEntities(createUITodo(1), { ref: entitiesUIRef }));
+    store.reduce(setEntities(createUITodo(1), { ref: UIEntitiesRef }));
     toMatchSnapshot(expect, store, 'set one');
 
-    store.reduce(setEntities(createUITodo(2), { ref: entitiesUIRef }));
+    store.reduce(setEntities(createUITodo(2), { ref: UIEntitiesRef }));
     toMatchSnapshot(expect, store, 'set one');
   });
 });

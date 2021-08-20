@@ -6,7 +6,7 @@ import {
 } from '../mocks/stores.mock';
 import { addEntities } from './add.mutation';
 import { selectFirst } from './first.query';
-import { entitiesUIRef } from './entity.state';
+import { UIEntitiesRef } from './entity.state';
 
 describe('first', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -28,12 +28,12 @@ describe('first', () => {
   it('should support ref', () => {
     const store = createUIEntityStore();
 
-    store.pipe(selectFirst({ ref: entitiesUIRef })).subscribe((value) => {
+    store.pipe(selectFirst({ ref: UIEntitiesRef })).subscribe((value) => {
       expect(value).toMatchSnapshot('2 calls');
     });
 
     store.reduce(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef })
+      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
     );
   });
 });
