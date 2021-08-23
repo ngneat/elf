@@ -17,24 +17,24 @@ export class RequestsStatusBuilder extends FeatureBuilder {
   }
 
   run() {
-    this.addNamedImport([
+    this.addImport([
       'withRequestsStatus',
       'selectRequestStatus',
       'updateRequestsStatus',
-      'StatusState',
-    ]);
+      'StatusState'
+    ], '@ngneat/elf-requests');
 
     this.repo.insertMember(0, {
       name: `status$`,
       kind: StructureKind.Property,
-      initializer: `store.pipe(selectRequestStatus('key'))`,
+      initializer: `store.pipe(selectRequestStatus('key'))`
     });
 
     this.repo.addMember({
       name: `updateRequestStatus`,
       kind: StructureKind.Method,
       parameters: [{ name: 'state', type: 'StatusState' }],
-      statements: `store.reduce(updateRequestsStatus({ key: state }));`,
+      statements: `store.reduce(updateRequestsStatus({ key: state }));`
     });
   }
 }

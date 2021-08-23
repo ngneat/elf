@@ -46,7 +46,7 @@ export class UIEntitiesBuilder extends FeatureBuilder {
   }
 
   run() {
-    this.addNamedImport(['withUIEntities']);
+    this.addImport(['withUIEntities']);
 
     this.sourceFile.insertInterface(1, {
       name: `${capitalize(this.singularName)}UI`,

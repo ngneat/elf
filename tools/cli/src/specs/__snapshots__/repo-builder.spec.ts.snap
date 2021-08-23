@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Repo Builder all: all 1`] = `
-"import { Store, createState, withProps, withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds, withRequestsCache, updateRequestsCache, CacheState, withRequestsStatus, selectRequestStatus, updateRequestsStatus, StatusState } from '@ngneat/elf';
+"import { Store, createState, withProps, withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf';
+import { withRequestsCache, updateRequestsCache, CacheState, withRequestsStatus, selectRequestStatus, updateRequestsStatus, StatusState } from '@ngneat/elf-requests';
 
 export interface TodoUI {
   id: number;
@@ -157,7 +158,8 @@ export class TodosRepository {
 `;
 
 exports[`Repo Builder withRequestsCache: withRequestsCache 1`] = `
-"import { Store, createState, withRequestsCache, updateRequestsCache, CacheState } from '@ngneat/elf';
+"import { Store, createState } from '@ngneat/elf';
+import { withRequestsCache, updateRequestsCache, CacheState } from '@ngneat/elf-requests';
 
 const { state, config } = createState(withRequestsCache());
 const store = new Store({ name: 'todos', state, config });
@@ -171,7 +173,8 @@ export class TodosRepository {
 `;
 
 exports[`Repo Builder withRequestsStatus: withRequestsStatus 1`] = `
-"import { Store, createState, withRequestsStatus, selectRequestStatus, updateRequestsStatus, StatusState } from '@ngneat/elf';
+"import { Store, createState } from '@ngneat/elf';
+import { withRequestsStatus, selectRequestStatus, updateRequestsStatus, StatusState } from '@ngneat/elf-requests';
 
 const { state, config } = createState(withRequestsStatus());
 const store = new Store({ name: 'todos', state, config });

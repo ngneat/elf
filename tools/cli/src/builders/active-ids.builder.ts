@@ -18,7 +18,7 @@ export class ActiveIdsBuilder extends FeatureBuilder {
   }
 
   run() {
-    this.addNamedImport([
+    this.addImport([
       'withActiveIds',
       'selectActiveEntities',
       'toggleActiveIds',

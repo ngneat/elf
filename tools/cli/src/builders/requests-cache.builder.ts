@@ -17,11 +17,11 @@ export class RequestsCacheBuilder extends FeatureBuilder {
   }
 
   run() {
-    this.addNamedImport([
+    this.addImport([
       'withRequestsCache',
       'updateRequestsCache',
       'CacheState',
-    ]);
+    ], '@ngneat/elf-requests');
 
     this.repo.addMember({
       name: `updateRequestCache`,
