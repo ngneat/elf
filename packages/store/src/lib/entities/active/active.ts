@@ -1,4 +1,4 @@
-import { propsFactory } from '../core/props-factory';
+import { propsFactory } from '../../core/props-factory';
 import { Observable, OperatorFunction } from 'rxjs';
 import {
   BaseEntityOptions,
@@ -7,11 +7,11 @@ import {
   EntitiesRef,
   EntitiesState,
   getEntityType,
-} from '../entities/entity.state';
-import { selectEntity, selectMany } from '../entities';
+} from '../entity.state';
+import { selectEntity, selectMany } from '../index';
 import { switchMap } from 'rxjs/operators';
-import { StateOf } from '../core/types';
-import { propsArrayFactory } from '../core/props-array-factory';
+import { StateOf } from '../../core/types';
+import { propsArrayFactory } from '../../core/props-array-factory';
 
 export const {
   selectActiveId,

@@ -1,5 +1,5 @@
-import { createState, Store } from '../core';
-import { addEntities, updateEntities, withEntities } from '../entities';
+import { createState, Store } from '../../core';
+import { addEntities, updateEntities, withEntities } from '../index';
 import {
   removeActiveIds,
   selectActiveEntities,
@@ -10,7 +10,7 @@ import {
   toggleActiveIds,
   withActiveId,
   withActiveIds,
-} from './active-id';
+} from './active';
 
 describe('activeId', () => {
   it('should select the active entity', () => {

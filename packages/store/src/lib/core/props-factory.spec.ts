@@ -2,6 +2,7 @@ import { take } from 'rxjs/operators';
 
 import { createState } from './state';
 import { Store } from './store';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import {
   getRequestsStatus,
   resetRequestsStatus,
@@ -17,7 +18,7 @@ import {
   addActiveIds,
   removeActiveIds,
   toggleActiveIds,
-} from '../active-id/active-id';
+} from '../entities/active/active';
 
 describe('propsFactory', () => {
   const { state, config } = createState(withRequestsStatus());
