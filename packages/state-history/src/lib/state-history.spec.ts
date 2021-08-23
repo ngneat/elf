@@ -1,5 +1,5 @@
-import { stateHistory } from './index';
-import { createState, propsFactory, Store } from '../core';
+import { stateHistory } from './state-history';
+import { createState, propsFactory, Store } from '@ngneat/elf';
 
 function eq(store: Store, value: number) {
   expect(store.state).toEqual({ prop: value });

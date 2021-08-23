@@ -1,7 +1,6 @@
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { Store, StoreValue } from '../core';
 import { distinctUntilChanged, pairwise } from 'rxjs/operators';
-import { isFunction } from '../core/utils';
+import { isFunction, Store, StoreValue  } from '@ngneat/elf';
 
 export interface StateHistoryOptions<State> {
   maxAge: number;

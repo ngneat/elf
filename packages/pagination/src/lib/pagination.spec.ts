@@ -6,10 +6,8 @@ import {
   setPage,
   withPagination,
 } from './pagination';
-import { createTodo } from '../mocks/stores.mock';
-import { withEntities } from '../entities/entity.state';
-import { createState, Store } from '../core';
-import { addEntities } from '../entities';
+import { createTodo } from '@ngneat/elf-mocks';
+import { withEntities, createState, Store, addEntities } from '@ngneat/elf';
 
 describe('withPagination', () => {
   it('should work', () => {

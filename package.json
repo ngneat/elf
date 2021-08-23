@@ -7,7 +7,7 @@
     "start": "nx serve --project ng",
     "build": "nx build --project store",
     "test": "nx test --project store",
-    "test:all": "nx test --project store && npm test --prefix tools/cli",
+    "test:all": "nx run-many --target=test --exclude=ng --all && npm test --prefix tools/cli",
     "lint:all": "nx run-many --target=lint --all",
     "e2e": "nx e2e",
     "affected:apps": "nx affected:apps",

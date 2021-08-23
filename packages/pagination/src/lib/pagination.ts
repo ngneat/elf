@@ -1,17 +1,11 @@
 import { EMPTY, Observable, OperatorFunction } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { EmptyConfig, State } from '../core/state';
-import {
-  DefaultEntitiesRef,
+import { EmptyConfig, State,  DefaultEntitiesRef,
   EntitiesRef,
   EntitiesState,
   getEntityType,
-  getIdType,
-} from '../entities/entity.state';
-import { Query, StateOf } from '../core/types';
-import { Reducer, Store, StoreDef } from '../core/store';
-import { select } from '../core';
-import { selectMany } from '../entities';
+  getIdType, Query, StateOf, Reducer, Store, StoreDef, select,  selectMany } from '@ngneat/elf';
+
 
 export interface PaginationResponse<Entity> {
   data: Entity[];

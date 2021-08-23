@@ -1,7 +1,7 @@
 import { from, Observable, ReplaySubject } from 'rxjs';
 import { StateStorage } from './storage';
 import { skip, switchMap } from 'rxjs/operators';
-import { Store, StoreValue } from '../core';
+import { Store, StoreValue } from '@ngneat/elf';
 
 interface Options<S extends Store> {
   storage: StateStorage;

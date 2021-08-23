@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { skip } from 'rxjs/operators';
-import { registry$ } from '../core/registry';
+import { registry$ } from '@ngneat/elf';
 
 interface DevtoolsOptions {
   maxAge?: number;

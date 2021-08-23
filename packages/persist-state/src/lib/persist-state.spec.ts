@@ -1,9 +1,9 @@
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { addEntities } from '../entities';
+import { addEntities } from '@ngneat/elf';
+import { createEntitiesStore, createTodo } from '@ngneat/elf-mocks';
 import { StateStorage } from './storage';
-import { persistState } from './index';
-import { createEntitiesStore, createTodo } from '../mocks/stores.mock';
+import { persistState } from './persist-state';
 
 describe('persist state', () => {
   it('should persist upon update', () => {

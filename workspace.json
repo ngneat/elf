@@ -20,6 +20,37 @@
     }
   },
   "projects": {
+    "devtools": {
+      "root": "packages/devtools",
+      "sourceRoot": "packages/devtools/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/workspace:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/packages/devtools",
+            "main": "packages/devtools/src/index.ts",
+            "tsConfig": "packages/devtools/tsconfig.lib.json",
+            "assets": ["packages/devtools/*.md"]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["packages/devtools/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/packages/devtools"],
+          "options": {
+            "jestConfig": "packages/devtools/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "ng": {
       "projectType": "application",
       "root": "apps/ng",
@@ -129,6 +160,99 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/ng-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "pagination": {
+      "root": "packages/pagination",
+      "sourceRoot": "packages/pagination/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/workspace:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/packages/pagination",
+            "main": "packages/pagination/src/index.ts",
+            "tsConfig": "packages/pagination/tsconfig.lib.json",
+            "assets": ["packages/pagination/*.md"]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["packages/pagination/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/packages/pagination"],
+          "options": {
+            "jestConfig": "packages/pagination/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "persist-state": {
+      "root": "packages/persist-state",
+      "sourceRoot": "packages/persist-state/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/workspace:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/packages/persist-state",
+            "main": "packages/persist-state/src/index.ts",
+            "tsConfig": "packages/persist-state/tsconfig.lib.json",
+            "assets": ["packages/persist-state/*.md"]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["packages/persist-state/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/packages/persist-state"],
+          "options": {
+            "jestConfig": "packages/persist-state/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "state-history": {
+      "root": "packages/state-history",
+      "sourceRoot": "packages/state-history/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/workspace:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/packages/state-history",
+            "main": "packages/state-history/src/index.ts",
+            "tsConfig": "packages/state-history/tsconfig.lib.json",
+            "assets": ["packages/state-history/*.md"]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["packages/state-history/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/packages/state-history"],
+          "options": {
+            "jestConfig": "packages/state-history/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }

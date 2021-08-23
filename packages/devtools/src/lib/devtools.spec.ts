@@ -1,6 +1,6 @@
-import { addEntities } from '../entities';
-import { createEntitiesStore, createTodo } from '../mocks/stores.mock';
-import { devTools } from './index';
+import { addEntities } from '@ngneat/elf';
+import { createEntitiesStore, createTodo } from '@ngneat/elf-mocks';
+import { devTools } from './devtools';
 
 describe('devtools', () => {
   const instanceMock = {
