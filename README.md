@@ -1,3 +1,7 @@
+<p align="center">
+ <img width="20%" height="20%" src="./logo.png">
+</p>
+
 # A Reactive State Management for JS Application (WIP)
 
 ```ts
