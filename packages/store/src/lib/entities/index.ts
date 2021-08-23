@@ -26,5 +26,5 @@ export {
   getIdType,
   DefaultEntitiesRef,
   EntitiesRef,
-  EntitiesState
+  EntitiesState,
 } from './entity.state';

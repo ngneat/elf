@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
-import {
-  addEntities,
-  createState,
-  selectRequestStatus,
-  Store,
-  withEntities,
-  withRequestsStatus,
-} from '@ngneat/elf';
+import { addEntities, createState, Store, withEntities } from '@ngneat/elf';
+
+import { selectRequestStatus, withRequestsStatus } from '@ngneat/elf-requests';
 import {
   PaginationResponse,
   selectActivePage,

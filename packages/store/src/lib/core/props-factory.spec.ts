@@ -1,20 +1,23 @@
 import { take } from 'rxjs/operators';
-import {
-  addActiveIds,
-  getRequestsStatus,
-  removeActiveIds,
-  resetRequestsStatus,
-  selectActiveIds,
-  selectRequestsStatus,
-  setActiveIds,
-  setRequestsStatus,
-  toggleActiveIds,
-  updateRequestsStatus,
-  withActiveIds,
-  withRequestsStatus,
-} from '../features';
+
 import { createState } from './state';
 import { Store } from './store';
+import {
+  getRequestsStatus,
+  resetRequestsStatus,
+  selectRequestsStatus,
+  setRequestsStatus,
+  updateRequestsStatus,
+  withRequestsStatus,
+} from '../../../../requests/src/lib/requests-status';
+import {
+  withActiveIds,
+  selectActiveIds,
+  setActiveIds,
+  addActiveIds,
+  removeActiveIds,
+  toggleActiveIds,
+} from '../active-id/active-id';
 
 describe('propsFactory', () => {
   const { state, config } = createState(withRequestsStatus());

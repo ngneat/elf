@@ -1,12 +1,17 @@
-import { propsFactory, select, Store } from '../core';
-import { Query, StateOf } from '../core/types';
+import {
+  propsFactory,
+  select,
+  Store,
+  Query,
+  StateOf,
+  StoreDef,
+} from '@ngneat/elf';
 import {
   defer,
   MonoTypeOperatorFunction,
   Observable,
   OperatorFunction,
 } from 'rxjs';
-import { StoreDef } from '../core/store';
 import { tap } from 'rxjs/operators';
 
 type StatusValue = Record<string | number, StatusState>;

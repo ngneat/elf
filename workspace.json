@@ -226,6 +226,37 @@
         }
       }
     },
+    "requests": {
+      "root": "packages/requests",
+      "sourceRoot": "packages/requests/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/workspace:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/packages/requests",
+            "main": "packages/requests/src/index.ts",
+            "tsConfig": "packages/requests/tsconfig.lib.json",
+            "assets": ["packages/requests/*.md"]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["packages/requests/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/packages/requests"],
+          "options": {
+            "jestConfig": "packages/requests/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "state-history": {
       "root": "packages/state-history",
       "sourceRoot": "packages/state-history/src",

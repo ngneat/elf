@@ -1,3 +1,3 @@
 export * from './lib/core';
 export * from './lib/entities';
-export * from './lib/features';
+export * from './lib/active-id/active-id';

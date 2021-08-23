@@ -1,8 +1,14 @@
-import { propsFactory, select, Store } from '../core';
-import { Query, StateOf } from '../core/types';
+import {
+  propsFactory,
+  select,
+  Store,
+  Query,
+  StateOf,
+  StoreDef,
+  coerceArray,
+} from '@ngneat/elf';
+
 import { EMPTY, Observable, OperatorFunction } from 'rxjs';
-import { coerceArray } from '../core/utils';
-import { StoreDef } from '../core/store';
 
 type CacheValue = Record<string | number, CacheState>;
 export type CacheState = 'none' | 'partial' | 'full';

@@ -38,6 +38,9 @@
     "persist-state": {
       "tags": []
     },
+    "requests": {
+      "tags": []
+    },
     "state-history": {
       "tags": []
     },
