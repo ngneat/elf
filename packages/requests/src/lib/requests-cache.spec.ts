@@ -22,21 +22,33 @@ describe('requestsCache', () => {
       spy(v);
     });
 
-    expect(spy).toHaveBeenCalledWith('none');
+    expect(spy).toHaveBeenCalledWith({
+      value: 'none',
+    });
 
-    expect(store.query(getRequestCache(requestKey))).toBe('none');
+    expect(store.query(getRequestCache(requestKey))).toStrictEqual({
+      value: 'none',
+    });
 
     store.reduce(
       updateRequestsCache({
-        [requestKey]: 'partial',
+        [requestKey]: {
+          value: 'partial',
+        },
       })
     );
-    expect(store.query(getRequestCache(requestKey))).toBe('partial');
-    expect(spy).toHaveBeenCalledWith('partial');
+    expect(store.query(getRequestCache(requestKey))).toStrictEqual({
+      value: 'partial',
+    });
+    expect(spy).toHaveBeenCalledWith({
+      value: 'partial',
+    });
 
     store.reduce(
       updateRequestsCache({
-        bar: 'partial',
+        bar: {
+          value: 'partial',
+        },
       })
     );
 
@@ -50,7 +62,7 @@ describe('requestsCache', () => {
     // It's partial not full
     expect(store.query(isRequestCached(requestKey))).toBeFalsy();
     expect(
-      store.query(isRequestCached(requestKey, { type: 'partial' }))
+      store.query(isRequestCached(requestKey, { value: 'partial' }))
     ).toBeTruthy();
   });
 
@@ -66,7 +78,9 @@ describe('requestsCache', () => {
 
     store.reduce(
       updateRequestsCache({
-        bar: 'full',
+        bar: {
+          value: 'full',
+        },
       })
     );
 

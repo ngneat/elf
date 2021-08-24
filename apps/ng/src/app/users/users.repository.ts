@@ -8,12 +8,11 @@ import {
   withEntities,
 } from '@ngneat/elf';
 import {
+  selectRequestStatus,
+  updateRequestsCache,
+  updateRequestsStatus,
   withRequestsCache,
   withRequestsStatus,
-  updateRequestsCache,
-  selectRequestStatus,
-  requestsStateForEntities,
-  updateRequestsStatus,
 } from '@ngneat/elf-requests';
 import { Injectable } from '@angular/core';
 
@@ -55,18 +54,29 @@ export class UsersRepository {
   }
 
   setUsers(users: User[]) {
-    const { cache, status } = requestsStateForEntities(users);
     store.reduce(
       setEntities(users),
-      updateRequestsCache({ users: 'full', ...cache }),
-      updateRequestsStatus(status)
+      updateRequestsCache({
+        users: {
+          value: 'full',
+        },
+      }),
+      updateRequestsStatus({
+        users: {
+          value: 'success',
+        },
+      })
     );
   }
 
   addUser(user: User) {
     this.store.reduce(
       addEntities(user),
-      updateRequestsCache({ [user.id]: 'full' })
+      updateRequestsCache({
+        [user.id]: {
+          value: 'full',
+        },
+      })
     );
   }
 }
