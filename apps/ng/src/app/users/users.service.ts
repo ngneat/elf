@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { User, UsersRepository, UsersRequests } from './users.repository';
-import { setRequestStatus, skipWhileCached } from '@ngneat/elf';
+import { setRequestStatus, skipWhileCached } from '@ngneat/elf-requests';
 
 @Injectable({
   providedIn: 'root',
