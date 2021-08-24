@@ -25,7 +25,11 @@ describe('activeId', () => {
     store.pipe(selectActiveId()).subscribe(() => {
       //
     });
-    store.pipe(selectActiveEntity()).subscribe(spy);
+
+    store.pipe(selectActiveEntity()).subscribe((v) => {
+      spy(v);
+    });
+
     expect(spy).toHaveBeenCalledWith(undefined);
 
     store.reduce(addEntities({ id: 1, title: '' }));

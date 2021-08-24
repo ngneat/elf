@@ -1,12 +1,10 @@
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import {
   propsFactory,
-  select,
-  Store,
   Query,
+  select,
   StateOf,
+  Store,
   StoreDef,
-  coerceArray,
 } from '@ngneat/elf';
 
 import { EMPTY, Observable, OperatorFunction } from 'rxjs';
@@ -42,25 +40,25 @@ export function getRequestCache<S extends StateOf<typeof withRequestsCache>>(
 export function selectIsRequestCached<
   S extends StateOf<typeof withRequestsCache>
 >(
-  key: string | number | string[] | number[],
+  key: Parameters<typeof isRequestCached>[0],
   options?: { type?: CacheState }
 ): OperatorFunction<S, boolean> {
   return select((state) => isRequestCached(key, options)(state));
 }
 
 export function isRequestCached<S extends StateOf<typeof withRequestsCache>>(
-  key: string | number | string[] | number[],
+  key: string | number,
   options?: { type?: CacheState }
-) {
+): Query<S, boolean> {
   return function (state: S) {
     const type = options?.type ?? 'full';
-    return coerceArray(key).some((k) => getRequestCache(k)(state) === type);
+    return getRequestCache(key)(state) === type;
   };
 }
 
 export function skipWhileCached<T, S extends StateOf<typeof withRequestsCache>>(
   store: Store<StoreDef<S>>,
-  key: string | number | string[] | number[],
+  key: Parameters<typeof isRequestCached>[0],
   options?: { type?: CacheState; returnSource?: Observable<any> }
 ) {
   return function (source: Observable<T>) {

@@ -14,8 +14,7 @@ export abstract class FeatureBuilder {
     protected sourceFile: SourceFile,
     protected repo: ClassDeclaration,
     protected options: Options
-  ) {
-  }
+  ) {}
 
   abstract run(): void;
 
@@ -36,13 +35,13 @@ export abstract class FeatureBuilder {
   addImport(name: string | string[], moduleSpecifier = '@ngneat/elf') {
     const importDecl = this.sourceFile.getImportDeclaration(moduleSpecifier);
 
-    if(!importDecl) {
+    if (!importDecl) {
       this.sourceFile.addImportDeclaration({
         moduleSpecifier,
         namedImports: coerceArray(name).map((name) => ({
           kind: StructureKind.ImportSpecifier,
-          name
-        }))
+          name,
+        })),
       });
     } else {
       coerceArray(name).forEach((v) => importDecl.addNamedImport(v));

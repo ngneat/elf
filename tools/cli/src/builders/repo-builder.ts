@@ -3,7 +3,7 @@ import {
   Project,
   QuoteKind,
   StructureKind,
-  VariableDeclarationKind
+  VariableDeclarationKind,
 } from 'ts-morph';
 import { CallExpression, factory, ScriptTarget } from 'typescript';
 import { RequestsCacheBuilder } from './requests-cache.builder';
@@ -21,26 +21,26 @@ export function createRepo(options: Options) {
 
   const project = new Project({
     manipulationSettings: {
-      quoteKind: QuoteKind.Single
+      quoteKind: QuoteKind.Single,
     },
     compilerOptions: {
-      target: ScriptTarget.ES2015
-    }
+      target: ScriptTarget.ES2015,
+    },
   });
 
   const sourceFile = project.createSourceFile(`repo.ts`, ``);
 
   const repoDecl = sourceFile.addClass({
     name: `${capitalize(storeName)}Repository`,
-    isExported: true
+    isExported: true,
   });
 
   sourceFile.addImportDeclaration({
     moduleSpecifier: '@ngneat/elf',
     namedImports: ['Store', 'createState'].map((name) => ({
       kind: StructureKind.ImportSpecifier,
-      name
-    }))
+      name,
+    })),
   });
 
   const builders = [
@@ -50,14 +50,14 @@ export function createRepo(options: Options) {
     ActiveIdsBuilder,
     EntitiesBuilder,
     PropsBuilder,
-    UIEntitiesBuilder
+    UIEntitiesBuilder,
   ];
 
   const propsFactories: CallExpression[] = [];
 
-  for(const feature of options.features) {
-    for(const builder of builders) {
-      if(builder.supports(feature)) {
+  for (const feature of options.features) {
+    for (const builder of builders) {
+      if (builder.supports(feature)) {
         const instance = new builder(sourceFile, repoDecl, options);
         instance.run();
         propsFactories.push(instance.getPropsFactory());
@@ -80,9 +80,9 @@ export function createRepo(options: Options) {
         name: 'store',
         initializer: `new Store({ name: '${camelize(
           storeName
-        )}', state, config })`
-      }
-    ]
+        )}', state, config })`,
+      },
+    ],
   });
 
   sourceFile.insertVariableStatement(repoPosition, {
@@ -90,9 +90,9 @@ export function createRepo(options: Options) {
     declarations: [
       {
         name: '{ state, config }',
-        initializer: printNode(state)
-      }
-    ]
+        initializer: printNode(state),
+      },
+    ],
   });
 
   sourceFile.formatText({ indentSize: 2 });

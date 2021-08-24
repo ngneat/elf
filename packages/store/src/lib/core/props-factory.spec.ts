@@ -2,25 +2,31 @@ import { take } from 'rxjs/operators';
 
 import { createState } from './state';
 import { Store } from './store';
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import {
-  getRequestsStatus,
-  resetRequestsStatus,
-  selectRequestsStatus,
-  setRequestsStatus,
-  updateRequestsStatus,
-  withRequestsStatus,
-} from '../../../../requests/src/lib/requests-status';
-import {
-  withActiveIds,
-  selectActiveIds,
-  setActiveIds,
   addActiveIds,
   removeActiveIds,
+  selectActiveIds,
+  setActiveIds,
   toggleActiveIds,
+  withActiveIds,
 } from '../entities/active/active';
+import { propsFactory } from './props-factory';
+
+type StatusValue = Record<string | number, StatusState>;
+type StatusState = 'pending' | 'success' | 'error';
 
 describe('propsFactory', () => {
+  const {
+    withRequestsStatus,
+    updateRequestsStatus,
+    selectRequestsStatus,
+    resetRequestsStatus,
+    getRequestsStatus,
+    setRequestsStatus,
+  } = propsFactory('requestsStatus', {
+    initialValue: {} as StatusValue,
+  });
+
   const { state, config } = createState(withRequestsStatus());
   const store = new Store({ state, config, name: '' });
 
@@ -99,7 +105,9 @@ describe('stateArrayFactory', () => {
 
     const store = new Store({ state, config, name: '' });
 
-    store.pipe(selectActiveIds()).subscribe(jest.fn());
+    store.pipe(selectActiveIds()).subscribe((v) => {
+      //
+    });
 
     store.reduce(setActiveIds([1]));
 

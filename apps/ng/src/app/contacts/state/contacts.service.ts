@@ -4,7 +4,7 @@ import { timer } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ContactsRepository } from './contacts.repository';
 import { setRequestStatus } from '@ngneat/elf-requests';
-import { skipWhilePageExists } from '@ngneat/elf-pagination'
+import { skipWhilePageExists } from '@ngneat/elf-pagination';
 
 @Injectable({ providedIn: 'root' })
 export class ContactsService {
