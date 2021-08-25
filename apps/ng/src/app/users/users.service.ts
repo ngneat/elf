@@ -26,7 +26,7 @@ export class UsersService {
       .pipe(
         tap((user) => this.usersRepo.addUser(user)),
         setRequestStatus(this.usersRepo.store, id),
-        skipWhileCached(this.usersRepo.store, id)
+        skipWhileCached(this.usersRepo.store, [id, UsersRequests.default])
       );
   }
 }

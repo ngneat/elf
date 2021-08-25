@@ -9,8 +9,7 @@ import {
 } from '@ngneat/elf';
 import {
   selectRequestStatus,
-  updateRequestsCache,
-  updateRequestsStatus,
+  updateRequestCache,
   withRequestsCache,
   withRequestsStatus,
 } from '@ngneat/elf-requests';
@@ -24,7 +23,6 @@ export interface User {
 
 export const enum UsersRequests {
   default = 'users',
-  user = 'user',
 }
 
 const { state, config } = createState(
@@ -46,7 +44,9 @@ export class UsersRepository {
   }
 
   userStatus$(id: string) {
-    return store.pipe(selectRequestStatus(id));
+    return store.pipe(
+      selectRequestStatus(id, { groupKey: UsersRequests.default })
+    );
   }
 
   get store() {
@@ -56,27 +56,11 @@ export class UsersRepository {
   setUsers(users: User[]) {
     store.reduce(
       setEntities(users),
-      updateRequestsCache({
-        users: {
-          value: 'full',
-        },
-      }),
-      updateRequestsStatus({
-        users: {
-          value: 'success',
-        },
-      })
+      updateRequestCache(UsersRequests.default, 'full')
     );
   }
 
   addUser(user: User) {
-    this.store.reduce(
-      addEntities(user),
-      updateRequestsCache({
-        [user.id]: {
-          value: 'full',
-        },
-      })
-    );
+    this.store.reduce(addEntities(user), updateRequestCache(user.id, 'full'));
   }
 }

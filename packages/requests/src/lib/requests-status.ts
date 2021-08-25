@@ -1,6 +1,7 @@
 import {
   propsFactory,
   Query,
+  Reducer,
   select,
   StateOf,
   Store,
@@ -44,8 +45,29 @@ export const {
 
 export function selectRequestStatus<
   S extends StateOf<typeof withRequestsStatus>
->(key: string | number): OperatorFunction<S, StatusState> {
-  return select((state) => getRequestStatus(key)(state));
+>(
+  key: string | number,
+  options?: { groupKey?: string }
+): OperatorFunction<S, StatusState> {
+  return select((state) => {
+    const base = getRequestStatus(key)(state);
+    if (options?.groupKey) {
+      const parent = getRequestStatus(options.groupKey)(state);
+      return parent.value === 'success' ? parent : base;
+    }
+
+    return base;
+  });
+}
+
+export function updateRequestStatus<
+  S extends StateOf<typeof withRequestsStatus>
+>(key: string | number, value: StatusState['value']): Reducer<S> {
+  return updateRequestsStatus({
+    [key]: {
+      value,
+    } as StatusState,
+  });
 }
 
 export function getRequestStatus<S extends StateOf<typeof withRequestsStatus>>(
