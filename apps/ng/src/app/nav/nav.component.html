@@ -1,0 +1,12 @@
+<nav class="navbar navbar-expand-lg bg ps-3 pe-4 nav-purple-bg">
+  <div class="container-fluid">
+    <a routerLink="/">
+      <img src="../../assets/elf.svg" class="logo">
+    </a>
+    <ul class="navbar-nav">
+      <li *ngFor="let item of navItems" class="nav-item mx-2">
+        <a routerLinkActive="text-dark" [routerLink]="item.toLowerCase()" class='nav-link text-light'>{{ item }}</a>
+      </li>
+    </ul>
+  </div>
+</nav>
