@@ -6,6 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent {
-  navItems = ['Todos', 'Users', 'Contacts'];
+  navItems = [
+    { label:'Todos', link: 'todos'},
+    { label:'Users', link: 'users'},
+    { label:'Contacts', link: 'contacts'}
+  ];
 
 }
