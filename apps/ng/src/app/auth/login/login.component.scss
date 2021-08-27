@@ -11,10 +11,6 @@
   }
 }
 
-input[type=email]:focus + .fa-envelope {
-  color: red;
-}
-
 input[type=email], input[type=password]{
   padding-left: 45px;
 }

@@ -4,16 +4,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { LoginComponent } from './auth/login/login.component';
-import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
     RouterModule.forRoot([
+      {
+        path: 'login',
+        loadChildren: () => import('./auth/login/login.module').then((m) => m.LoginModule),
+      },
       {
         path: 'todos',
         loadChildren: () =>
