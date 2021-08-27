@@ -4,11 +4,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './auth/login/login.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, LoginComponent],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     HttpClientModule,
     RouterModule.forRoot([
       {
@@ -27,6 +30,7 @@ import { HttpClientModule } from '@angular/common/http';
           import('./contacts/contacts.module').then((m) => m.ContactsModule),
       },
     ]),
+
   ],
   providers: [],
   bootstrap: [AppComponent],
