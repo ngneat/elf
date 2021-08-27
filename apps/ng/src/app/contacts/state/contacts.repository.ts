@@ -4,11 +4,11 @@ import { addEntities, createState, Store, withEntities } from '@ngneat/elf';
 import { selectRequestStatus, withRequestsStatus } from '@ngneat/elf-requests';
 import {
   PaginationResponse,
-  selectActivePage,
+  selectCurrentPage,
   selectActivePageEntities,
-  setActivePage,
+  setCurrentPage,
   setPage,
-  setPagination,
+  updatePaginationData,
   withPagination,
 } from '@ngneat/elf-pagination';
 
@@ -29,12 +29,12 @@ const store = new Store({ state, config, name: 'contacts' });
 
 @Injectable({ providedIn: 'root' })
 export class ContactsRepository {
-  activePage$ = store.pipe(selectActivePage());
+  activePage$ = store.pipe(selectCurrentPage());
   activePageContacts$ = store.pipe(selectActivePageEntities());
   status$ = store.pipe(selectRequestStatus('contacts'));
 
   setActivePage(id: Contact['id']) {
-    store.reduce(setActivePage(id));
+    store.reduce(setCurrentPage(id));
   }
 
   addContacts(page: number, contacts: PaginationResponse<Contact>) {
@@ -42,7 +42,7 @@ export class ContactsRepository {
 
     store.reduce(
       addEntities(data),
-      setPagination(pagination),
+      updatePaginationData(pagination),
       setPage(
         page,
         data.map((c) => c.id)

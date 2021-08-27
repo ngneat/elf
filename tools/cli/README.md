@@ -10,6 +10,7 @@ elf cli
 
 <!-- toc -->
 
+- [@ngneat/elf-cli](#ngneatelf-cli)
 - [Usage](#usage)
 - [Commands](#commands)
 <!-- tocstop -->
@@ -23,7 +24,7 @@ $ npm install -g @ngneat/elf-cli
 $ elf COMMAND
 running command...
 $ elf (-v|--version|version)
-@ngneat/elf-cli/1.0.0 darwin-x64 node-v14.15.4
+@ngneat/elf-cli/1.0.0 darwin-x64 node-v12.19.0
 $ elf --help [COMMAND]
 USAGE
   $ elf COMMAND
@@ -36,28 +37,9 @@ USAGE
 
 <!-- commands -->
 
-- [`elf hello [FILE]`](#elf-hello-file)
 - [`elf help [COMMAND]`](#elf-help-command)
-
-## `elf hello [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ elf hello [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-
-EXAMPLE
-  $ elf hello
-  hello world from ./src/hello.ts!
-```
-
-_See code: [src/commands/hello.ts](https://github.com/ngneat/elf/https://github.com/ngneat/elf/blob/v1.0.0/src/commands/hello.ts)_
+- [`elf install [FILE]`](#elf-install-file)
+- [`elf repo`](#elf-repo)
 
 ## `elf help [COMMAND]`
 
@@ -75,5 +57,35 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
+
+## `elf install [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ elf install [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/install.ts](https://github.com/ngneat/elf/blob/v1.0.0/src/commands/install.ts)_
+
+## `elf repo`
+
+describe the command here
+
+```
+USAGE
+  $ elf repo
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/repo.ts](https://github.com/ngneat/elf/blob/v1.0.0/src/commands/repo.ts)_
 
 <!-- commandsstop -->
