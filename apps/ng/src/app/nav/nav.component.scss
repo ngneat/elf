@@ -6,3 +6,15 @@
   background: #7E3AB7;
   background: linear-gradient(to bottom right, #7E3AB7, #9871CA);
 }
+
+.nav-link{
+  color: #e9ecef;
+  &:hover {
+    color: #ffff;
+  }
+}
+
+.active {
+  color: #ffff;
+  transform: scale(1.05);
+}

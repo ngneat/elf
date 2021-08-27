@@ -3,10 +3,12 @@
     <a routerLink="/">
       <img src="../../assets/elf.svg" class="logo">
     </a>
-    <ul class="navbar-nav">
-      <li *ngFor="let item of navItems" class="nav-item mx-2">
-        <a routerLinkActive="text-dark" [routerLink]="item.toLowerCase()" class='nav-link text-light'>{{ item }}</a>
-      </li>
-    </ul>
+    <div class="float-end">
+      <ul class="collapse navbar-collapse navbar-nav">
+        <li *ngFor="let item of navItems" class="nav-item ms-2">
+          <a routerLinkActive="active" [routerLink]="item.toLowerCase()" class='nav-link'>{{ item }}</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
