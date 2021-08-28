@@ -1,0 +1,27 @@
+.login-input {
+  padding: 10px;
+  font-size: 20px;
+  font-weight: 300;
+  box-shadow: none;
+  border: solid #7E3AB7 1px;
+  border-radius: 15px;
+
+  &:focus {
+    border: solid #7E3AB7 2px;
+  }
+}
+
+input[type=email], input[type=password]{
+  padding-left: 45px;
+}
+
+.btn {
+  border-radius: 5px;
+}
+
+.icon {
+  position: absolute;
+  padding: 17px 15px;
+  color: #7E3AB7;
+  opacity: 0.7;
+}

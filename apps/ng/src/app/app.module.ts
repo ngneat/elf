@@ -13,6 +13,10 @@ import { NavComponent } from './nav/nav.component';
     HttpClientModule,
     RouterModule.forRoot([
       {
+        path: 'login',
+        loadChildren: () => import('./auth/login/login.module').then((m) => m.LoginModule),
+      },
+      {
         path: 'todos',
         loadChildren: () =>
           import('./todos/todos.module').then((m) => m.TodosModule),
@@ -28,6 +32,7 @@ import { NavComponent } from './nav/nav.component';
           import('./contacts/contacts.module').then((m) => m.ContactsModule),
       },
     ]),
+
   ],
   providers: [],
   bootstrap: [AppComponent],
