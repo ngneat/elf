@@ -3,7 +3,7 @@ import { addEntities, createState, Store, withEntities } from '@ngneat/elf';
 
 import { selectRequestStatus, withRequestsStatus } from '@ngneat/elf-requests';
 import {
-  PaginationResponse,
+  PaginationData,
   selectCurrentPage,
   selectActivePageEntities,
   setCurrentPage,
@@ -37,7 +37,7 @@ export class ContactsRepository {
     store.reduce(setCurrentPage(id));
   }
 
-  addContacts(page: number, contacts: PaginationResponse<Contact>) {
+  addContacts(page: number, contacts: PaginationData & { data: Contact[]}) {
     const { data, ...pagination } = contacts;
 
     store.reduce(

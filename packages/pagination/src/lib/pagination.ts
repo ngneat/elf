@@ -17,7 +17,7 @@ import {
   StoreDef,
 } from '@ngneat/elf';
 
-interface PaginationData<IdType extends number | string = number> {
+export interface PaginationData<IdType extends number | string = number> {
   total: number;
   perPage: number;
   lastPage: number;
