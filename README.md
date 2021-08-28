@@ -61,10 +61,13 @@ const { state, config } = createState(
 );
 ``` 
 
-This will allow you to import and use the following generated methods: `setEntities`, `addEntities`, `updateEntities` & `deleteEntities`.
-Additional methods include: `addEntitiesFifo`. 
+This will allow you to use the following ready-made reducers in your Store:
+`addEntities`, `addEntitiesFifo`, `deleteEntities`, `deleteEntitiesByPredicate`, `deleteAllEntities`, `setEntities`, `updateEntities`, `updateEntitiesByPredicate`, `updateAllEntities`.
+Simply import the ones you need from the library. Similarly, you can query the store with the `getEntity` or `selectEntity` 
+query methods (the former returns the value based on the id/predicate, the latter - an Observable). 
 
-#### UIEntities 
+
+#### withUIEntities 
 This feature allows the store to hold UI-specific entity data, for instance whether the card representing an entity has been opened by the user.  
 When used in conjunction with `withEntities` this can be used to store additional UI data separately from the entities themselves.
 
@@ -75,13 +78,15 @@ const { state, config } = createState(
   withUIEntities<UIEntity>(),
 );
 ``` 
-The usage is similar to that of entities - you can use the same methods, with the addition of a `ref: entitiesUIRef` in the method's options parameter, e.g.: 
+The usage is similar to that of entities - you can use the same methods, with the addition of a `ref: entitiesUIRef` 
+in the method's options parameter, e.g.: 
 ```ts
 addEntities (uiItems, {ref: entitiesUIRef});
 ```
 
 #### withProps
-This feature allows you to hold additional store properties separate from its main storage, such a which filters the user is currently using. 
+This feature allows you to hold additional store properties separate from its main storage, such as which filters the 
+user is currently using. 
 
 ```ts
 const { state, config } = createState(
@@ -89,11 +94,31 @@ const { state, config } = createState(
 );
 ``` 
 
-#### cache 
+#### withRequestsCache 
 
-#### ActiveId 
+This feature lets you automatically cache the requests made for the store. It offers the following helper methods: 
+`selectRequestCache`, `getRequestCache`, `selectIsRequestCached`, `isRequestCached` (similar to `selectIsRequestCached` 
+except it returns the current value, rather than an `Observable`), and `skipWhileCached`, which enables skipping the 
+server call if the passed id is located in the store cache. 
 
-#### Create your own filter.
+```ts
+return this.http.get(...)
+  .pipe(
+    ...
+    skipWhileCached(store, id)
+  );
+``` 
+
+#### withActiveId 
+
+This feature lets you hold one or more IDs indicating the entities that are currently active. It is often useful 
+for monitoring which entities the user is interacting with. The following methods are availble: 
+
+`setActiveIds`, `getActiveIds`, `selectActiveIds`, `resetActiveIds`, `toggleActiveIds`, `removeActiveIds`, `addActiveIds` and `selectActiveEntities`.
+
+#### Create Your Own Feature
+
+You can create your own feature by extending the `FeatureBuilder` abstract class. 
 
 ## Creating the Store
 
@@ -112,11 +137,21 @@ To write to the store, add a `store.reduce()` call, and place inside it any redu
     );
 ```
 
-
 ## Querying the Store
-To read from the store, add a `store.reduce()` call, and place inside it any reducer functions you want to use to change the store state.
+There are several methods of querying the store: 
 
-You can also get the entire store state by simply calling `this.store.state`.
+1. To Store extend an RxJS `BehaviorSubject`, so reading from it is as simple as subscribing to it. 
+
+2. You can call the `store.query()` method and pass a method to return the 
+
+3. Alternatively, you can call one or more queries inside a `pipe()`. 
+```ts
+store.pipe(selectEntity(id));
+```
+
+When calling more than one also can use the `store.combine()` and pass it the `Observables` array.  
+
+4. You can also get the entire store state by simply calling `this.store.state`.
 
 ## Plugins:
 
@@ -124,6 +159,25 @@ You can also get the entire store state by simply calling `this.store.state`.
 ### StateHistory
 
 ## DevTools
+Elf provides built-in integration with the Redux dev-tools Chrome extension.
+
+## Usage
+Install the Redux extension from the supported App stores ( [Chrome](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en), [Firefox](https://addons.mozilla.org/en-US/firefox/addon/reduxdevtools/) ).
+
+And call the `devtools()` method:
+
+```ts
+import { devTools } from '@ngneat/elf';
+
+devTools();
+```
+
+## Options
+The plugin supports the following options passed as the second function parameter:
+
+`maxAge`: Maximum amount of actions to be stored in the history tree.
+
+`preAction`: A method that's called before each action.
 
 ## <a id="akita"></a> What about Akita?
 
