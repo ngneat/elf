@@ -9,7 +9,8 @@ export class NavComponent {
   navItems = [
     { label:'Todos', link: 'todos'},
     { label:'Users', link: 'users'},
-    { label:'Contacts', link: 'contacts'}
+    { label:'Contacts', link: 'contacts'},
+    { label:'Gallery', link: 'gallery'}
   ];
 
 }

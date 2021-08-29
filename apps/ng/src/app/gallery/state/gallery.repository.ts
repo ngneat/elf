@@ -5,12 +5,13 @@ import {
   Store,
   updateEntities,
   withEntities,
-  withRequestsStatus,
-  withUIEntities
+  withUIEntities,
 } from '@ngneat/elf';
-import { entitiesUIRef } from '../../../../../../packages/store/src/lib/entities/entity.state';
+import { map, tap } from 'rxjs/operators';
+import { withRequestsStatus } from '@ngneat/elf-requests';
+import { UIEntitiesRef } from '../../../../../../packages/store/src/lib/entities/entity.state';
 import { selectEntities } from '../../../../../../packages/store/src/lib/entities/all.query';
-import { map } from 'rxjs/operators';
+import { intersectEntities } from '../../../../../../packages/store/src/lib/core/operators';
 
 export interface GalleryItem {
   id: number;
@@ -33,15 +34,27 @@ const store = new Store({ name: 'gallery', state, config });
 
 @Injectable({ providedIn: 'root' })
 export class GalleryRepository {
-  items$ = this.store.combine([this.store.pipe(selectAll()), this.store.pipe(selectEntities({ref : entitiesUIRef}))]).pipe(
-    map(([entities, uiEntities])=>entities.map((galleryItem)=>(
-      {...galleryItem, open: uiEntities[galleryItem.id].open}))));
+  items$ = this.store.combine({
+      entities: store.pipe(selectAll()),
+      UIEntities: store.pipe(selectEntities({ ref: UIEntitiesRef })),
+    })
+    .pipe(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      tap((v) => {
+        //
+      }),
+      intersectEntities()
+    );
+
+  // items$ = this.store.combine([this.store.pipe(selectAll()), this.store.pipe(  selectEntities({ref : UIEntitiesRef}))]).pipe(
+  //   map(([entities, uiEntities])=>entities.map((galleryItem)=>(
+  //     {...galleryItem, open: uiEntities[galleryItem.id].open}))));
 
   addGalleryItems(galleryItems: GalleryItem[]) {
     const uiGalleryItems =  galleryItems.map(({id})=>({id, open: false}));
     store.reduce(
       addEntities(galleryItems),
-      addEntities (uiGalleryItems, {ref: entitiesUIRef})
+      addEntities (uiGalleryItems, {ref: UIEntitiesRef})
     );
   }
 
@@ -50,7 +63,7 @@ export class GalleryRepository {
   }
 
   toggleItemOpen(galleryItemId: number) {
-    this.store.reduce(updateEntities(galleryItemId, (item)=>({...item, open: !item.open}), {ref: entitiesUIRef}))
+    this.store.reduce(updateEntities(galleryItemId, (item)=>({...item, open: !item.open}), {ref: UIEntitiesRef}))
   }
 }
 

@@ -28,7 +28,7 @@ export function untilEntitiesChanges<T extends EntitiesRecord>(
  *
  * store.pipe(selectAll())
  *
- * store.pipe(selectAll({ ref: entitiesUIRef }))
+ * store.pipe(selectAll({ ref: UIEntitiesRef }))
  *
  */
 export function selectAll<
@@ -55,7 +55,7 @@ export function selectAll<
  *
  * store.pipe(selectEntities())
  *
- * store.pipe(selectEntities({ ref: entitiesUIRef }))
+ * store.pipe(selectEntities({ ref: UIEntitiesRef }))
  *
  */
 export function selectEntities<

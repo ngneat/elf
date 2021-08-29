@@ -3,7 +3,7 @@ import { getData } from '../gallery-data';
 import { timer } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { GalleryRepository } from './gallery.repository';
-import { setRequestStatus } from '@ngneat/elf';
+import { setRequestStatus } from '@ngneat/elf-requests';
 
 @Injectable({ providedIn: 'root' })
 export class GalleryService {

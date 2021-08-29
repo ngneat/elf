@@ -82,10 +82,10 @@ const { state, config } = createState(
   withUIEntities<UIEntity>(),
 );
 ``` 
-The usage is similar to that of entities - you can use the same methods, with the addition of a `ref: entitiesUIRef` 
+The usage is similar to that of entities - you can use the same methods, with the addition of a `ref: UIEntitiesRef` 
 in the method's options parameter, e.g.: 
 ```ts
-addEntities (uiItems, {ref: entitiesUIRef});
+addEntities (uiItems, {ref: UIEntitiesRef});
 ```
 
 #### withProps
@@ -137,7 +137,7 @@ To write to the store, add a `store.reduce()` call, and place inside it any redu
 ```ts
     store.reduce(
       addEntities(items),
-      addEntities (uiItems, {ref: entitiesUIRef})
+      addEntities (uiItems, {ref: UIEntitiesRef})
     );
 ```
 
