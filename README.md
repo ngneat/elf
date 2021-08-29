@@ -137,6 +137,8 @@ To write to the store, add a `store.reduce()` call, and place inside it any redu
     );
 ```
 
+You can also create your own reducer - a method that receives the existing state and store and returns a state which will serve as the store's new state. 
+
 ## Querying the Store
 There are several methods of querying the store: 
 
