@@ -1,4 +1,4 @@
-import { ClassDeclaration, SourceFile, ImportDeclaration } from 'ts-morph';
+import { ClassDeclaration, SourceFile, StructureKind } from 'ts-morph';
 import { Features, Options } from '../types';
 import { coerceArray } from '../utils';
 // @ts-ignore
@@ -13,7 +13,6 @@ export abstract class FeatureBuilder {
   constructor(
     protected sourceFile: SourceFile,
     protected repo: ClassDeclaration,
-    protected importDecl: ImportDeclaration,
     protected options: Options
   ) {}
 
@@ -33,7 +32,19 @@ export abstract class FeatureBuilder {
     return this.options.idKey;
   }
 
-  addNamedImport(name: string | string[]) {
-    coerceArray(name).forEach((v) => this.importDecl!.addNamedImport(v));
+  addImport(name: string | string[], moduleSpecifier = '@ngneat/elf') {
+    const importDecl = this.sourceFile.getImportDeclaration(moduleSpecifier);
+
+    if (!importDecl) {
+      this.sourceFile.addImportDeclaration({
+        moduleSpecifier,
+        namedImports: coerceArray(name).map((name) => ({
+          kind: StructureKind.ImportSpecifier,
+          name,
+        })),
+      });
+    } else {
+      coerceArray(name).forEach((v) => importDecl.addNamedImport(v));
+    }
   }
 }

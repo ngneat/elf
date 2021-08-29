@@ -1,29 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UsersService } from '../users.service';
-import { switchMap, tap } from 'rxjs/operators';
 import { UsersRepository } from '../users.repository';
-import { MonoTypeOperatorFunction, Observable, of } from 'rxjs';
-
-// should support cancellation
-function effect<T>(
-  cb: (data: T) => Observable<any>
-): MonoTypeOperatorFunction<T> {
-  return tap((...args) => cb(...args).subscribe());
-}
 
 @Component({
   template: `
-    <h1>Status: {{ status$ | async }}</h1>
+    <h1>Status: {{ status$ | async | json }}</h1>
 
     <h1>User: {{ user$ | async | json }}</h1>
   `,
 })
-export class UserComponent {
-  user$ = of(this.router.snapshot.params.id).pipe(
-    effect((id) => this.usersService.getUser(id)),
-    switchMap((id) => this.usersRepository.user$(id))
-  );
+export class UserComponent implements OnInit {
+  id = this.router.snapshot.params.id;
+  user$ = this.usersRepository.user$(this.id);
 
   status$ = this.usersRepository.userStatus$(this.router.snapshot.params.id);
 
@@ -32,4 +21,8 @@ export class UserComponent {
     private usersService: UsersService,
     private usersRepository: UsersRepository
   ) {}
+
+  ngOnInit() {
+    this.usersService.getUser(this.id).subscribe();
+  }
 }

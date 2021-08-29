@@ -22,12 +22,27 @@
     }
   },
   "projects": {
+    "devtools": {
+      "tags": []
+    },
     "ng": {
       "tags": []
     },
     "ng-e2e": {
       "tags": [],
       "implicitDependencies": ["ng"]
+    },
+    "pagination": {
+      "tags": []
+    },
+    "persist-state": {
+      "tags": []
+    },
+    "requests": {
+      "tags": []
+    },
+    "state-history": {
+      "tags": []
     },
     "store": {
       "tags": []

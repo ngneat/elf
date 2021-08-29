@@ -11,7 +11,7 @@ import {
   deleteEntities,
   deleteEntitiesByPredicate,
 } from './delete.mutation';
-import { entitiesUIRef } from './entity.state';
+import { UIEntitiesRef } from './entity.state';
 
 describe('delete', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -51,12 +51,12 @@ describe('delete', () => {
   it('should work with ref', () => {
     const store = createUIEntityStore();
     store.reduce(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef })
+      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
     );
     toMatchSnapshot(expect, store, 'should have three ui entities');
     store.reduce(
       deleteEntitiesByPredicate((entity) => entity.id === 1, {
-        ref: entitiesUIRef,
+        ref: UIEntitiesRef,
       })
     );
     toMatchSnapshot(expect, store, 'should delete the ui entity with id of 1');

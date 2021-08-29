@@ -18,7 +18,7 @@ export class ActiveIdBuilder extends FeatureBuilder {
   }
 
   run() {
-    this.addNamedImport(['withActiveId', 'selectActiveEntity', 'setActiveId']);
+    this.addImport(['withActiveId', 'selectActiveEntity', 'setActiveId']);
 
     this.repo.insertMember(0, {
       name: `active${capitalize(camelize(this.singularName))}$`,

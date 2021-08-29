@@ -22,7 +22,7 @@ export class PropsBuilder extends FeatureBuilder {
   }
 
   run() {
-    this.addNamedImport(['withProps']);
+    this.addImport(['withProps']);
 
     this.sourceFile.insertInterface(1, {
       name: `${capitalize(this.storeName)}Props`,

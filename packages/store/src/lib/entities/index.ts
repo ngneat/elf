@@ -25,4 +25,6 @@ export {
   getEntityType,
   getIdType,
   DefaultEntitiesRef,
+  EntitiesRef,
+  EntitiesState,
 } from './entity.state';

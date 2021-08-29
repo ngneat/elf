@@ -8,7 +8,7 @@ import {
 } from '../entities';
 import { withProps } from '../props/props.state';
 import { Store } from './store';
-import { entitiesUIRef } from '../entities/entity.state';
+import { UIEntitiesRef } from '../entities/entity.state';
 import { createState } from './state';
 
 type UIEntity = { id: number; open: boolean };
@@ -27,10 +27,10 @@ describe('store', () => {
       const spy = jest.fn();
 
       store
-        .combine([
-          store.pipe(selectAll()),
-          store.pipe(selectAll({ ref: entitiesUIRef })),
-        ])
+        .combine({
+          todos: store.pipe(selectAll()),
+          ui: store.pipe(selectAll({ ref: UIEntitiesRef })),
+        })
         .subscribe(spy);
 
       expect(spy).toHaveBeenCalledTimes(1);
@@ -39,7 +39,7 @@ describe('store', () => {
 
       store.reduce(
         addEntities(createTodo(1)),
-        addEntities(createUITodo(1), { ref: entitiesUIRef })
+        addEntities(createUITodo(1), { ref: UIEntitiesRef })
       );
 
       expect(spy).toHaveBeenCalledTimes(2);

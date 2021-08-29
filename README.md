@@ -1,3 +1,7 @@
+<p align="center">
+ <img width="20%" height="20%" src="elf.png">
+</p>
+
 # A Reactive State Management for JS Application (WIP)
 
 ## Introduction - What is Elf
@@ -189,3 +193,5 @@ Furthermore, Akita is Datorama driven, and therefore performing significant chan
 Elf was created to be more community driven.
 
 
+
+<div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>

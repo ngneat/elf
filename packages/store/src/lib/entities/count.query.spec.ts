@@ -10,7 +10,7 @@ import {
   selectEntitiesCountByPredicate,
 } from './count.query';
 import { updateEntities } from './update.mutation';
-import { entitiesUIRef } from './entity.state';
+import { UIEntitiesRef } from './entity.state';
 
 describe('count', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -35,13 +35,13 @@ describe('count', () => {
     const store = createUIEntityStore();
 
     store
-      .pipe(selectEntitiesCount({ ref: entitiesUIRef }))
+      .pipe(selectEntitiesCount({ ref: UIEntitiesRef }))
       .subscribe((value) => {
         expect(value).toMatchSnapshot(`calls: ${count++}`);
       });
 
     store.reduce(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef })
+      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
     );
   });
 

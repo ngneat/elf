@@ -1,14 +1,6 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { addStore, removeStore } from './registry';
 
-export type Reducer<State> = (state: State, store: Store) => State;
-
-export interface StoreDef<State = any> {
-  name: string;
-  state: State;
-  config: any;
-}
-
 export class Store<
   SDef extends StoreDef = any,
   State = SDef['state']
@@ -50,24 +42,30 @@ export class Store<
     }
   }
 
-  combine<R extends Observables>(observables: R): Observable<ReturnTypes<R>> {
+  combine<O extends Record<string, Observable<any>>>(
+    observables: O
+  ): Observable<
+    {
+      [P in keyof O]: O[P] extends Observable<infer R> ? R : never;
+    }
+  > {
     let hasChange = true;
-    const buffer: any = [];
+    const buffer: Record<string, any> = {};
 
     return new Observable((observer) => {
-      observables.forEach((query, i) =>
+      for (const [key, query] of Object.entries(observables)) {
         observer.add(
           query.subscribe((value) => {
-            buffer[i] = value;
+            buffer[key] = value;
             hasChange = true;
           })
-        )
-      );
+        );
+      }
 
       return this.subscribe({
         next() {
           if (hasChange) {
-            observer.next(buffer);
+            observer.next(buffer as any);
             hasChange = false;
           }
         },
@@ -95,8 +93,11 @@ export class Store<
   }
 }
 
-type ReturnTypes<T extends Observable<any>[]> = {
-  [P in keyof T]: T[P] extends Observable<infer R> ? R : never;
-};
-type Observables = [Observable<any>] | Observable<any>[];
 export type StoreValue<T extends Store> = T['state'];
+export type Reducer<State> = (state: State, store: Store) => State;
+
+export interface StoreDef<State = any> {
+  name: string;
+  state: State;
+  config: any;
+}

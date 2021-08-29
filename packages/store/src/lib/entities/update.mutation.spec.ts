@@ -11,7 +11,7 @@ import {
   updateEntities,
   updateEntitiesByPredicate,
 } from './update.mutation';
-import { entitiesUIRef } from './entity.state';
+import { UIEntitiesRef } from './entity.state';
 
 describe('update', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -64,20 +64,20 @@ describe('update', () => {
   it('should work with ref', () => {
     const store = createUIEntityStore();
     store.reduce(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef })
+      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
     );
     toMatchSnapshot(expect, store, 'open false');
-    store.reduce(updateEntities(1, { open: true }, { ref: entitiesUIRef }));
+    store.reduce(updateEntities(1, { open: true }, { ref: UIEntitiesRef }));
     toMatchSnapshot(expect, store, 'open true');
   });
 
   it('should work with ref update all', () => {
     const store = createUIEntityStore();
     store.reduce(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: entitiesUIRef })
+      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
     );
     toMatchSnapshot(expect, store, 'open false');
-    store.reduce(updateAllEntities({ open: true }, { ref: entitiesUIRef }));
+    store.reduce(updateAllEntities({ open: true }, { ref: UIEntitiesRef }));
     toMatchSnapshot(expect, store, 'open true');
   });
 });

@@ -1,18 +1,18 @@
 import {
   addEntities,
   createState,
-  requestsStateForEntities,
   selectAll,
   selectEntity,
-  selectRequestStatus,
   setEntities,
   Store,
-  updateRequestsCache,
-  updateRequestsStatus,
   withEntities,
+} from '@ngneat/elf';
+import {
+  selectRequestStatus,
+  updateRequestCache,
   withRequestsCache,
   withRequestsStatus,
-} from '@ngneat/elf';
+} from '@ngneat/elf-requests';
 import { Injectable } from '@angular/core';
 
 export interface User {
@@ -23,7 +23,6 @@ export interface User {
 
 export const enum UsersRequests {
   default = 'users',
-  user = 'user',
 }
 
 const { state, config } = createState(
@@ -45,7 +44,9 @@ export class UsersRepository {
   }
 
   userStatus$(id: string) {
-    return store.pipe(selectRequestStatus(id));
+    return store.pipe(
+      selectRequestStatus(id, { groupKey: UsersRequests.default })
+    );
   }
 
   get store() {
@@ -53,18 +54,13 @@ export class UsersRepository {
   }
 
   setUsers(users: User[]) {
-    const { cache, status } = requestsStateForEntities(users);
     store.reduce(
       setEntities(users),
-      updateRequestsCache({ users: 'full', ...cache }),
-      updateRequestsStatus(status)
+      updateRequestCache(UsersRequests.default, 'full')
     );
   }
 
   addUser(user: User) {
-    this.store.reduce(
-      addEntities(user),
-      updateRequestsCache({ [user.id]: 'full' })
-    );
+    this.store.reduce(addEntities(user), updateRequestCache(user.id, 'full'));
   }
 }

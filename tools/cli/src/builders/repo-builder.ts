@@ -35,7 +35,7 @@ export function createRepo(options: Options) {
     isExported: true,
   });
 
-  const importDecl = sourceFile.addImportDeclaration({
+  sourceFile.addImportDeclaration({
     moduleSpecifier: '@ngneat/elf',
     namedImports: ['Store', 'createState'].map((name) => ({
       kind: StructureKind.ImportSpecifier,
@@ -58,7 +58,7 @@ export function createRepo(options: Options) {
   for (const feature of options.features) {
     for (const builder of builders) {
       if (builder.supports(feature)) {
-        const instance = new builder(sourceFile, repoDecl, importDecl, options);
+        const instance = new builder(sourceFile, repoDecl, options);
         instance.run();
         propsFactories.push(instance.getPropsFactory());
       }

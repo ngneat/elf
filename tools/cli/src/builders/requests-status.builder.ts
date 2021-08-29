@@ -17,12 +17,15 @@ export class RequestsStatusBuilder extends FeatureBuilder {
   }
 
   run() {
-    this.addNamedImport([
-      'withRequestsStatus',
-      'selectRequestStatus',
-      'updateRequestsStatus',
-      'StatusState',
-    ]);
+    this.addImport(
+      [
+        'withRequestsStatus',
+        'selectRequestStatus',
+        'updateRequestsStatus',
+        'StatusState',
+      ],
+      '@ngneat/elf-requests'
+    );
 
     this.repo.insertMember(0, {
       name: `status$`,

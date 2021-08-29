@@ -1,21 +1,16 @@
 import { Injectable } from '@angular/core';
+import { addEntities, createState, Store, withEntities } from '@ngneat/elf';
+
+import { selectRequestStatus, withRequestsStatus } from '@ngneat/elf-requests';
 import {
-  addEntities,
-  createState,
-  selectRequestStatus,
-  Store,
-  withEntities,
-  withRequestsStatus,
-} from '@ngneat/elf';
-import {
-  PaginationResponse,
-  selectActivePage,
+  PaginationData,
+  selectCurrentPage,
   selectActivePageEntities,
-  setActivePage,
+  setCurrentPage,
   setPage,
-  setPagination,
+  updatePaginationData,
   withPagination,
-} from '@ngneat/elf';
+} from '@ngneat/elf-pagination';
 
 interface Contact {
   id: number;
@@ -34,20 +29,20 @@ const store = new Store({ state, config, name: 'contacts' });
 
 @Injectable({ providedIn: 'root' })
 export class ContactsRepository {
-  activePage$ = store.pipe(selectActivePage());
+  activePage$ = store.pipe(selectCurrentPage());
   activePageContacts$ = store.pipe(selectActivePageEntities());
   status$ = store.pipe(selectRequestStatus('contacts'));
 
   setActivePage(id: Contact['id']) {
-    store.reduce(setActivePage(id));
+    store.reduce(setCurrentPage(id));
   }
 
-  addContacts(page: number, contacts: PaginationResponse<Contact>) {
+  addContacts(page: number, contacts: PaginationData & { data: Contact[]}) {
     const { data, ...pagination } = contacts;
 
     store.reduce(
       addEntities(data),
-      setPagination(pagination),
+      updatePaginationData(pagination),
       setPage(
         page,
         data.map((c) => c.id)
