@@ -88,6 +88,15 @@ in the method's options parameter, e.g.:
 addEntities (uiItems, {ref: UIEntitiesRef});
 ```
 
+It's common to have a store with Entities and corresponding UIEntities, in which case they can be easily combined using the `intersectEntities()` method. 
+```ts
+storeItems$ = this.store.combine({
+  entities: store.pipe(selectAll()),
+  UIEntities: store.pipe(selectEntities({ ref: UIEntitiesRef })),
+})
+  .pipe(intersectEntities());
+```
+
 #### withProps
 This feature allows you to hold additional store properties separate from its main storage, such as which filters the 
 user is currently using. 
@@ -116,9 +125,35 @@ return this.http.get(...)
 #### withActiveId 
 
 This feature lets you hold one or more IDs indicating the entities that are currently active. It is often useful 
-for monitoring which entities the user is interacting with. The following methods are availble: 
+for monitoring which entities the user is interacting with. The following methods are available: 
 
 `setActiveIds`, `getActiveIds`, `selectActiveIds`, `resetActiveIds`, `toggleActiveIds`, `removeActiveIds`, `addActiveIds` and `selectActiveEntities`.
+
+#### Pagination
+
+To add support for pagination in your entities store, you need to install the bundle by calling `elf-cli install`. Then to add the feature to your store use it like this:
+
+```ts
+const { state, config } = createState(
+withEntities<Item>(),
+withPagination()
+);
+```
+
+Call `updatePaginationData()` with an object that determines the various pagination settings, and call `setPage()` whenever you want to define the ids that belong to a certain page number.
+
+```ts
+    store.reduce(
+  addEntities(data),
+  updatePaginationData({currentPage: 1, perPage: 10, total: 96, lastPage: 10}),
+  setPage(
+    1,
+    data.map((c) => c.id)
+  )
+);
+```
+
+Additional methods available are: `setCurrentPage` (by default it's page 1), `selectCurrentPage`, `selectHasPage`,`hasPage`, `deletePage`,`deleteAllPages`,`updatePaginationData`,`selectPaginationData`,`getPaginationData`,
 
 #### Create Your Own Feature
 
@@ -158,6 +193,10 @@ store.pipe(selectEntity(id));
 When calling more than one also can use the `store.combine()` and pass it the `Observables` array.  
 
 4. You can also get the entire store state by simply calling `this.store.state`.
+
+### Pagination
+This is a feature which arrives in a separate bundle. To install it run the command 'elf-cli install'
+
 
 ## Plugins:
 

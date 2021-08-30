@@ -38,17 +38,7 @@ export class GalleryRepository {
       entities: store.pipe(selectAll()),
       UIEntities: store.pipe(selectEntities({ ref: UIEntitiesRef })),
     })
-    .pipe(
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      tap((v) => {
-        //
-      }),
-      intersectEntities()
-    );
-
-  // items$ = this.store.combine([this.store.pipe(selectAll()), this.store.pipe(  selectEntities({ref : UIEntitiesRef}))]).pipe(
-  //   map(([entities, uiEntities])=>entities.map((galleryItem)=>(
-  //     {...galleryItem, open: uiEntities[galleryItem.id].open}))));
+    .pipe(intersectEntities());
 
   addGalleryItems(galleryItems: GalleryItem[]) {
     const uiGalleryItems =  galleryItems.map(({id})=>({id, open: false}));
