@@ -131,7 +131,7 @@ for monitoring which entities the user is interacting with. The following method
 
 #### Pagination
 
-To add support for pagination in your entities store, you need to install the bundle by calling `elf-cli install`. Then to add the feature to your store use it like this:
+To add support for pagination in your entities store, you need to install the bundle by calling `elf-cli install` and selecting the pagination package. Then to add the feature to your store use it like this:
 
 ```ts
 const { state, config } = createState(
@@ -153,7 +153,10 @@ Call `updatePaginationData()` with an object that determines the various paginat
 );
 ```
 
-Additional methods available are: `setCurrentPage` (by default it's page 1), `selectCurrentPage`, `selectHasPage`,`hasPage`, `deletePage`,`deleteAllPages`,`updatePaginationData`,`selectPaginationData`,`getPaginationData`,
+Additional methods available are: `setCurrentPage` (by default it's page 1), `selectCurrentPage`, 
+`selectCurrentPageEntities`, `selectHasPage`, `hasPage`, `deletePage`, `deleteAllPages`, `updatePaginationData`, 
+`selectPaginationData`, `getPaginationData`, and `skipWhilePageExists`, which enables you to skip server calls 
+if the page exists in the store.
 
 #### Create Your Own Feature
 
