@@ -165,7 +165,7 @@ export function hasPage<S extends StateOf<typeof withPagination>>(
   };
 }
 
-export function selectActivePageEntities<
+export function selectCurrentPageEntities<
   S extends StateOf<typeof withPagination> & EntitiesState<DefaultEntitiesRef>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(): OperatorFunction<S, Array<getEntityType<S, Ref>>> {

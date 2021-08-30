@@ -3,7 +3,7 @@ import {
   deletePage,
   getPaginationData,
   hasPage,
-  selectActivePageEntities,
+  selectCurrentPageEntities,
   selectCurrentPage,
   selectHasPage,
   setCurrentPage,
@@ -146,10 +146,10 @@ describe('withPagination', () => {
     expect(spy).toHaveBeenCalledTimes(2);
   });
 
-  it('should selectActivePageEntities', () => {
+  it('should selectCurrentPageEntities', () => {
     const spy = jest.fn();
 
-    store.pipe(selectActivePageEntities()).subscribe((v) => {
+    store.pipe(selectCurrentPageEntities()).subscribe((v) => {
       spy(v);
     });
 
