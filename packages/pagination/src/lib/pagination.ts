@@ -86,7 +86,7 @@ export function getPaginationData<
 export function updatePaginationData<
   S extends StateOf<typeof withPagination> & EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
->(data: Omit<PaginationState['pagination'], 'pages'>): Reducer<S> {
+>(data: PaginationData): Reducer<S> {
   return function (state: S) {
     return {
       ...state,
