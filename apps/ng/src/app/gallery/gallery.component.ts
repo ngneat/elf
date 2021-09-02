@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'elf-gallery',
   templateUrl: './gallery.component.html',
-  styleUrls: ['./gallery.component.css'],
+  styleUrls: ['./gallery.component.scss'],
 })
 export class GalleryComponent implements OnInit {
   items$: Observable<(GalleryItem & GalleryUIItem)[]> | null;

@@ -1,11 +1,7 @@
----
-sidebar_position: 4
----
-
 # Pagination
 
 This feature requires the `withEntities` to be used in the Store. To add support for pagination in your entities store, 
-you need to install the package by calling `elf-cli install` and selecting the pagination package. 
+you need to install the package by calling `elf-cli install` and selecting the pagination package (`@ngneat/elf-pagination`). 
 To add the feature to your store declare it in the `createState` call:
 
 ```ts

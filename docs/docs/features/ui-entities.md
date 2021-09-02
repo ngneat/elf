@@ -1,7 +1,3 @@
----
-sidebar_position: 3
----
-
 # UI Entities
 This feature allows the store to hold UI-specific entity data, for instance whether the card representing an entity has been opened by the user.  
 When used in conjunction with `withEntities` this can be used to store additional UI data separately from the entities themselves.
