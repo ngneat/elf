@@ -72,7 +72,7 @@
     "eslint": "7.23.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-cypress": "2.10.3",
-    "faker": "^5.5.3",
+    "faker": "5.5.3",
     "jest": "27.0.4",
     "jest-preset-angular": "8.4.0",
     "lodash": "4.17.21",
