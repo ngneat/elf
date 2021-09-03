@@ -10,8 +10,8 @@ module.exports = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'ngneat', // Usually your GitHub org/user name.
+  projectName: 'elf', // Usually your repo name.
   themeConfig: {
     navbar: {
       title: 'Elf',
@@ -21,10 +21,10 @@ module.exports = {
       },
       items: [
         {
-          type: 'doc',
-          docId: 'intro',
-          position: 'left',
+          to: 'docs/introduction',
+          activeBasePath: 'docs',
           label: 'Docs',
+          position: 'left',
         },
         {
           href: 'https://github.com/facebook/docusaurus',

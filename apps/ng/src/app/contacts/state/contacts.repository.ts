@@ -5,7 +5,7 @@ import { selectRequestStatus, withRequestsStatus } from '@ngneat/elf-requests';
 import {
   PaginationData,
   selectCurrentPage,
-  selectActivePageEntities,
+  selectCurrentPageEntities,
   setCurrentPage,
   setPage,
   updatePaginationData,
@@ -30,7 +30,7 @@ const store = new Store({ state, config, name: 'contacts' });
 @Injectable({ providedIn: 'root' })
 export class ContactsRepository {
   activePage$ = store.pipe(selectCurrentPage());
-  activePageContacts$ = store.pipe(selectActivePageEntities());
+  activePageContacts$ = store.pipe(selectCurrentPageEntities());
   status$ = store.pipe(selectRequestStatus('contacts'));
 
   setActivePage(id: Contact['id']) {

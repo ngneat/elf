@@ -24,7 +24,7 @@ interface Options extends BaseEntityOptions<any> {
  *
  * store.pipe(selectEntity(id, { pluck: 'title' })
  *
- * store.pipe(selectEntity(id, { ref: entitiesUIRef })
+ * store.pipe(selectEntity(id, { ref: UIEntitiesRef })
  *
  */
 export function selectEntity<
@@ -43,7 +43,7 @@ export function selectEntity<
  *
  * store.pipe(selectEntity(id, { pluck: e => e.title })
  *
- * store.pipe(selectEntity(id, { ref: entitiesUIRef })
+ * store.pipe(selectEntity(id, { ref: UIEntitiesRef })
  *
  */
 export function selectEntity<
@@ -65,7 +65,7 @@ export function selectEntity<
  *
  * store.pipe(selectEntity(id))
  *
- * store.pipe(selectEntity(id, { ref: entitiesUIRef })
+ * store.pipe(selectEntity(id, { ref: UIEntitiesRef })
  *
  */
 export function selectEntity<
