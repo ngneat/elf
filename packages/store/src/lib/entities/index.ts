@@ -10,7 +10,7 @@ export {
   updateEntities,
   updateEntitiesByPredicate,
 } from './update.mutation';
-export { selectAll } from './all.query';
+export { selectAll, selectEntities } from './all.query';
 export { selectEntity } from './entity.query';
 export { selectFirst } from './first.query';
 export { selectLast } from './last.query';
@@ -27,4 +27,5 @@ export {
   DefaultEntitiesRef,
   EntitiesRef,
   EntitiesState,
+  UIEntitiesRef,
 } from './entity.state';

@@ -4,4 +4,4 @@ Once you've received a state and config from the createState method call, creati
 
 ```ts
 const store = new Store({ state, name: 'storeName', config });
-````
+```

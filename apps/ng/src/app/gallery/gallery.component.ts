@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { GalleryItem, GalleryRepository, GalleryUIItem } from './state/gallery.repository';
+import { GalleryItem, GalleryRepository } from './state/gallery.repository';
 import { GalleryService } from './state/gallery.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'elf-gallery',
@@ -9,12 +8,12 @@ import { Observable } from 'rxjs';
   styleUrls: ['./gallery.component.scss'],
 })
 export class GalleryComponent implements OnInit {
-  items$: Observable<(GalleryItem & GalleryUIItem)[]> | null;
+  items$ = this.galleryRepo.items$;
 
-  constructor(    private service: GalleryService,
-                  public galleryRepo: GalleryRepository) {
-    this.items$ = null;
-  }
+  constructor(
+    private service: GalleryService,
+    private galleryRepo: GalleryRepository
+  ) {}
 
   toggleItemOpen(galleryItemId: number) {
     this.galleryRepo.toggleItemOpen(galleryItemId);
@@ -26,6 +25,5 @@ export class GalleryComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getGalleryItems().subscribe();
-    this.items$ = this.galleryRepo.items$;
   }
 }

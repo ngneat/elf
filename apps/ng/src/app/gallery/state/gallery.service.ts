@@ -13,7 +13,7 @@ export class GalleryService {
     return timer(300).pipe(
       map(() => getData()),
       tap((res) => this.repo.addGalleryItems(res)),
-      setRequestStatus(this.repo.store, 'gallery'),
+      setRequestStatus(this.repo.store, 'gallery')
     );
   }
 }

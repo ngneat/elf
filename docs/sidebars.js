@@ -10,41 +10,62 @@
  */
 
 module.exports = {
-  docs:  [{
-    type: 'doc',
-    label: 'Introduction',
-    id: 'introduction'
-  },{
-    type: 'doc',
-    label: 'CLI',
-    id: 'cli'
-  },{
-    type: 'doc',
-    label: 'Getting Started',
-    id: 'getting-started'
-  },{
-    type: 'category',
-    label: 'Features',
-    items: ['features/entities', 'features/active-ids', 'features/ui-entities', 'features/requests', 'features/pagination', 'features/caching', 'features/persist-state', 'features/history', 'features/props', 'features/create-your-own']
-  },{
-    type: 'doc',
-    label: 'Creating the Store',
-    id: 'creating-the-store'
-  },{
-    type: 'doc',
-    label: 'Writing to the Store',
-    id: 'writing-to-the-store'
-  },{
-    type: 'doc',
-    label: 'Querying the Store',
-    id: 'querying-the-store'
-  },{
-    type: 'doc',
-    label: 'DevTools',
-    id: 'dev-tools'
-  },{
-    type: 'doc',
-    label: 'FAQ',
-    id: 'faq'
-  }]
+  docs: [
+    {
+      type: 'doc',
+      label: 'Introduction',
+      id: 'introduction',
+    },
+    {
+      type: 'doc',
+      label: 'CLI',
+      id: 'cli',
+    },
+    {
+      type: 'doc',
+      label: 'Getting Started',
+      id: 'getting-started',
+    },
+    {
+      type: 'category',
+      label: 'Features',
+      items: [
+        'features/entities',
+        'features/active-ids',
+        'features/ui-entities',
+        'features/requests',
+        'features/pagination',
+        'features/caching',
+        'features/persist-state',
+        'features/history',
+        'features/props',
+        'features/create-your-own',
+      ],
+    },
+    {
+      type: 'doc',
+      label: 'Creating the Store',
+      id: 'creating-the-store',
+    },
+    {
+      type: 'doc',
+      label: 'Writing to the Store',
+      id: 'writing-to-the-store',
+    },
+    {
+      type: 'doc',
+      label: 'Querying the Store',
+      id: 'querying-the-store',
+    },
+    {
+      type: 'doc',
+      label: 'DevTools',
+      id: 'dev-tools',
+    },
+    {
+      type: 'doc',
+      label: 'FAQ',
+      id: 'faq',
+    },
+  ],
 };

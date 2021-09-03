@@ -1,4 +1,5 @@
 # Persist State
+
 To add support for persisting the state of your store in between user visit,
 you need to install the package by calling `elf-cli install` and selecting the requests package (`@ngneat/elf-persist-state`).
 Then, call the `persistState` method when you want to saving your state.

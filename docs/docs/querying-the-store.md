@@ -1,4 +1,5 @@
 # Querying the Store
+
 There are several methods of querying the store:
 
 1. To Store extend an RxJS `BehaviorSubject`, so reading from it is as simple as subscribing to it.
@@ -6,6 +7,7 @@ There are several methods of querying the store:
 2. You can call the `store.query()` method and pass a method to return the
 
 3. Alternatively, you can call one or more queries inside a `pipe()`.
+
 ```ts
 store.pipe(selectEntity(id));
 ```

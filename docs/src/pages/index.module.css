@@ -9,9 +9,8 @@
   position: relative;
   overflow: hidden;
   background: transparent;
-  border-bottom: 1px solid rgba(60, 60, 67, .12);
+  border-bottom: 1px solid rgba(60, 60, 67, 0.12);
 }
-
 
 @media screen and (max-width: 966px) {
   .heroBanner {
