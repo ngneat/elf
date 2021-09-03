@@ -14,7 +14,8 @@ import { NavComponent } from './nav/nav.component';
     RouterModule.forRoot([
       {
         path: 'login',
-        loadChildren: () => import('./auth/login/login.module').then((m) => m.LoginModule),
+        loadChildren: () =>
+          import('./auth/login/login.module').then((m) => m.LoginModule),
       },
       {
         path: 'todos',
@@ -32,7 +33,6 @@ import { NavComponent } from './nav/nav.component';
           import('./contacts/contacts.module').then((m) => m.ContactsModule),
       },
     ]),
-
   ],
   providers: [],
   bootstrap: [AppComponent],

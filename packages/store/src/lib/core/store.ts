@@ -91,6 +91,14 @@ export class Store<
   next(_: State) {
     throw new Error(`Using next() isn't allowed`);
   }
+
+  error() {
+    throw new Error(`Using error() isn't allowed`);
+  }
+
+  complete() {
+    throw new Error(`Using complete() isn't allowed`);
+  }
 }
 
 export type StoreValue<T extends Store> = T['state'];
