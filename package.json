@@ -5,6 +5,7 @@
   "scripts": {
     "nx": "nx",
     "start": "nx serve --project ng",
+    "start:docs": "npm start --prefix=docs",
     "build": "nx build",
     "test": "nx test",
     "test:all": "nx run-many --target=test --exclude=ng --all && npm test --prefix tools/cli",
