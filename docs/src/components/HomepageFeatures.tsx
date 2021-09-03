@@ -25,11 +25,29 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
+    title: 'Tree Shakeable',
+    image: '/img/entities.png',
+    description: (
+      <>
+          Anything you don't use won't become part of your bundle
+      </>
+    ),
+  },
+  {
+    title: 'Fully Typed',
+    image: '/img/entities.png',
+    description: (
+      <>
+          All methods are strongly typed for ease of use
+      </>
+    ),
+  },
+  {
     title: 'First Class Entities Support',
     image: '/img/entities.png',
     description: (
       <>
-        Elf hooks into Redux devtools to give you an enhanced development experience
+        Simply and easily manage entities in your store
       </>
     ),
   },
@@ -38,7 +56,7 @@ const FeatureList: FeatureItem[] = [
     image: '/img/requests.png',
     description: (
       <>
-        Elf hooks into Redux devtools to give you an enhanced development experience
+        Monitor server requests and cache them, preventing redundant API calls
       </>
     ),
   },
@@ -47,7 +65,7 @@ const FeatureList: FeatureItem[] = [
     image: '/img/persist.png',
     description: (
       <>
-        Elf hooks into Redux devtools to give you an enhanced development experience
+        Persist the store's state, offering a seamless user experience
       </>
     ),
   },
@@ -56,7 +74,16 @@ const FeatureList: FeatureItem[] = [
     image: '/img/history.png',
     description: (
       <>
-        Elf hooks into Redux devtools to give you an enhanced development experience
+        Save the history fo the store's state, for easy undo/redo functionality
+      </>
+    ),
+  },
+  {
+    title: 'Pagination',
+    image: '/img/devtools.png',
+    description: (
+      <>
+        Get built-in support for managing pagination in the app
       </>
     ),
   },
