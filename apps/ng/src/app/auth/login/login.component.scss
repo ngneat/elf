@@ -3,15 +3,16 @@
   font-size: 20px;
   font-weight: 300;
   box-shadow: none;
-  border: solid #7E3AB7 1px;
+  border: solid #7e3ab7 1px;
   border-radius: 15px;
 
   &:focus {
-    border: solid #7E3AB7 2px;
+    border: solid #7e3ab7 2px;
   }
 }
 
-input[type=email], input[type=password]{
+input[type='email'],
+input[type='password'] {
   padding-left: 45px;
 }
 
@@ -22,6 +23,6 @@ input[type=email], input[type=password]{
 .icon {
   position: absolute;
   padding: 17px 15px;
-  color: #7E3AB7;
+  color: #7e3ab7;
   opacity: 0.7;
 }

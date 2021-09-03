@@ -37,7 +37,7 @@ export class ContactsRepository {
     store.reduce(setCurrentPage(id));
   }
 
-  addContacts(page: number, contacts: PaginationData & { data: Contact[]}) {
+  addContacts(page: number, contacts: PaginationData & { data: Contact[] }) {
     const { data, ...pagination } = contacts;
 
     store.reduce(

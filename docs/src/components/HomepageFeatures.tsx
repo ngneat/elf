@@ -16,40 +16,64 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
-    image: '/img/undraw_docusaurus_mountain.svg',
+    title: 'Modular by design',
+    image: '/img/modular.png',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Build multiple stores and let your bundler code split them automatically
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    image: '/img/undraw_docusaurus_tree.svg',
+    title: 'First Class Entities Support',
+    image: '/img/entities.png',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Elf hooks into Redux devtools to give you an enhanced development experience
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    image: '/img/undraw_docusaurus_react.svg',
+    title: 'Requests Status & Cache',
+    image: '/img/requests.png',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Elf hooks into Redux devtools to give you an enhanced development experience
+      </>
+    ),
+  },
+  {
+    title: 'Persist State',
+    image: '/img/persist.png',
+    description: (
+      <>
+        Elf hooks into Redux devtools to give you an enhanced development experience
+      </>
+    ),
+  },
+  {
+    title: 'State History',
+    image: '/img/history.png',
+    description: (
+      <>
+        Elf hooks into Redux devtools to give you an enhanced development experience
+      </>
+    ),
+  },
+  {
+    title: 'Devtools',
+    image: '/img/devtools.png',
+    description: (
+      <>
+        Elf hooks into Redux devtools to give you an enhanced development experience
       </>
     ),
   },
 ];
 
-function Feature({title, image, description}: FeatureItem) {
+function Feature({ title, image, description }: FeatureItem) {
   return (
-    <div className={clsx('col col--4')}>
+    <div className={clsx('col col--4 feature')}>
       <div className="text--center">
         <img className={styles.featureSvg} alt={title} src={image} />
       </div>

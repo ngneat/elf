@@ -25,3 +25,13 @@ export function getStore<T extends StoreDef>(
 export function getRegistry() {
   return registry;
 }
+
+export function getStoresSnapshot<T extends Record<string, any>>(): T {
+  const stores: T = {} as T;
+
+  registry.forEach((value, key) => {
+    stores[key as keyof T] = value.state;
+  });
+
+  return stores;
+}
