@@ -105,6 +105,7 @@ describe('stateArrayFactory', () => {
 
     const store = new Store({ state, config, name: '' });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     store.pipe(selectActiveIds()).subscribe((v) => {
       //
     });

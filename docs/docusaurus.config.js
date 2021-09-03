@@ -3,15 +3,15 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: 'Elf | A tiny store with magical powers',
-  tagline: 'A tiny store with magical powers',
+  title: 'Elf | A tiny reactive store with magical powers',
+  tagline: 'A Tiny Reactive Store with Magical Powers',
   url: 'https://your-docusaurus-test-site.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'ngneat', // Usually your GitHub org/user name.
-  projectName: 'elf', // Usually your repo name.
+  organizationName: 'ngneat',
+  projectName: 'elf',
   themeConfig: {
     navbar: {
       title: 'Elf',

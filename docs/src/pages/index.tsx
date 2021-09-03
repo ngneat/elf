@@ -14,7 +14,9 @@ function HomepageHeader() {
         <h1 className="hero__title">
           <img src="img/elf.png" alt="elf" width={200} />
         </h1>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p className="hero__subtitle">
+          A Tiny <b><em>Reactive</em></b> Store with Magical Powers
+        </p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
@@ -33,7 +35,7 @@ export default function Home(): JSX.Element {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="Elf - A tiny store with magical powers"
+      description="Elf - A Tiny Reactive Store with Magical Powers"
     >
       <HomepageHeader />
       <main>

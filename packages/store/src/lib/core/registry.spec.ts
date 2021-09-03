@@ -1,4 +1,4 @@
-import { createEntitiesStore } from '@ngneat/elf-mocks';
+import { createEntitiesStore } from '../mocks/stores.mock';
 import { getStoresSnapshot } from './registry';
 
 describe('registry', () => {

@@ -25,14 +25,14 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: 'Tree Shakeable',
+    title: 'Tree Shakeable & Fully Typed',
     image: '/img/entities.png',
     description: <>Anything you don't use won't become part of your bundle</>,
   },
   {
-    title: 'Fully Typed',
+    title: 'CLI',
     image: '/img/entities.png',
-    description: <>All methods are strongly typed for ease of use</>,
+    description: <>A powerful CLI to </>,
   },
   {
     title: 'First Class Entities Support',
