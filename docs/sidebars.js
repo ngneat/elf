@@ -25,7 +25,7 @@ module.exports = {
   },{
     type: 'category',
     label: 'Features',
-    items: ['features/entities', 'features/active-ids', 'features/ui-entities', 'features/requests', 'features/pagination', 'features/caching', 'features/history', 'features/props', 'features/create-your-own']
+    items: ['features/entities', 'features/active-ids', 'features/ui-entities', 'features/requests', 'features/pagination', 'features/caching', 'features/persist-state', 'features/history', 'features/props', 'features/create-your-own']
   },{
     type: 'doc',
     label: 'Creating the Store',
