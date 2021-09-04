@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
+import { createState, Store } from '@ngneat/elf';
+import { withRequestsStatus } from '@ngneat/elf-requests';
 import {
   addEntities,
-  createState,
-  intersectEntities,
   selectAll,
   selectEntities,
-  Store,
   UIEntitiesRef,
   updateEntities,
   withEntities,
   withUIEntities,
-} from '@ngneat/elf';
-import { withRequestsStatus } from '@ngneat/elf-requests';
+  intersectEntities,
+} from '@ngneat/elf-entities';
 
 export interface GalleryItem {
   id: number;

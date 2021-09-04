@@ -30,6 +30,7 @@ export default class Install extends Command {
 
 const packages = [
   '@ngneat/elf',
+  '@ngneat/elf-entities',
   '@ngneat/elf-devtools',
   '@ngneat/elf-requests',
   '@ngneat/elf-state-history',

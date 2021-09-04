@@ -32,8 +32,8 @@ module.exports = {
       items: [
         'features/entities/entities',
         'features/entities/ui-entities',
-        'features/entities/active-ids'
-      ]
+        'features/entities/active-ids',
+      ],
     },
     'features/requests',
     'features/pagination',
@@ -42,6 +42,6 @@ module.exports = {
     'features/history',
     'features/props',
     'dev-tools',
-    'faq'
+    'faq',
   ],
 };

@@ -1,4 +1,7 @@
 {
   "name": "@ngneat/elf-pagination",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@ngneat/elf-entities": ""
+  }
 }

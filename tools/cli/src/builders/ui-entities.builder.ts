@@ -46,9 +46,9 @@ export class UIEntitiesBuilder extends FeatureBuilder {
   }
 
   run() {
-    this.addImport(['withUIEntities']);
+    this.addImport(['withUIEntities'], '@ngneat/elf-entities');
 
-    this.sourceFile.insertInterface(1, {
+    this.sourceFile.insertInterface(this.getLastImportIndex() + 1, {
       name: `${capitalize(this.singularName)}UI`,
       isExported: true,
       properties: [

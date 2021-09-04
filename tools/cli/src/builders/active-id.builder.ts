@@ -18,7 +18,10 @@ export class ActiveIdBuilder extends FeatureBuilder {
   }
 
   run() {
-    this.addImport(['withActiveId', 'selectActiveEntity', 'setActiveId']);
+    this.addImport(
+      ['withActiveId', 'selectActiveEntity', 'setActiveId'],
+      '@ngneat/elf-entities'
+    );
 
     this.repo.insertMember(0, {
       name: `active${capitalize(camelize(this.singularName))}$`,

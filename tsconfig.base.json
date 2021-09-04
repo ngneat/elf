@@ -18,7 +18,8 @@
     "paths": {
       "@ngneat/elf": ["packages/store/src/index.ts"],
       "@ngneat/elf-devtools": ["packages/devtools/src/index.ts"],
-      "@ngneat/elf-mocks": ["packages/store/src/lib/mocks/stores.mock.ts"],
+      "@ngneat/elf-entities": ["packages/entities/src/index.ts"],
+      "@ngneat/elf-mocks": ["packages/mocks/src/index.ts"],
       "@ngneat/elf-pagination": ["packages/pagination/src/index.ts"],
       "@ngneat/elf-persist-state": ["packages/persist-state/src/index.ts"],
       "@ngneat/elf-requests": ["packages/requests/src/index.ts"],

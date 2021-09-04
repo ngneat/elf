@@ -1,4 +1,4 @@
-import { addEntities } from '@ngneat/elf';
+import { addEntities } from '@ngneat/elf-entities';
 import { createEntitiesStore, createTodo } from '@ngneat/elf-mocks';
 import { devTools } from './devtools';
 

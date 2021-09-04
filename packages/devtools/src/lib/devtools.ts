@@ -1,7 +1,6 @@
 import { Observable, Subscription } from 'rxjs';
 import { skip } from 'rxjs/operators';
-import { registry$ } from '@ngneat/elf';
-import { getStoresSnapshot } from 'packages/store/src/lib/core/registry';
+import { capitalize, registry$, getStoresSnapshot } from '@ngneat/elf';
 
 type Action = { type: string } & Record<string, any>;
 type ActionsDispatcher = Observable<Action>;
@@ -31,8 +30,6 @@ declare global {
 }
 
 export function devTools(options: DevtoolsOptions = {}) {
-  const capitalize = (value: string) =>
-    value && value.charAt(0).toUpperCase() + value.slice(1);
   const instance = window.__REDUX_DEVTOOLS_EXTENSION__.connect(options);
   const subscriptions = new Map<string, Subscription>();
 

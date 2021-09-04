@@ -47,9 +47,12 @@ export class EntitiesBuilder extends FeatureBuilder {
   }
 
   run() {
-    this.addImport(['withEntities', 'selectAll', ...this.options.crud]);
+    this.addImport(
+      ['withEntities', 'selectAll', ...this.options.crud],
+      '@ngneat/elf-entities'
+    );
 
-    this.sourceFile.insertInterface(1, {
+    this.sourceFile.insertInterface(this.getLastImportIndex() + 1, {
       name: capitalize(this.singularName),
       isExported: true,
       properties: [

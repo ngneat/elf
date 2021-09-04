@@ -25,6 +25,12 @@
     "devtools": {
       "tags": []
     },
+    "entities": {
+      "tags": []
+    },
+    "mocks": {
+      "tags": []
+    },
     "ng": {
       "tags": []
     },

@@ -36,7 +36,7 @@ export abstract class FeatureBuilder {
     const importDecl = this.sourceFile.getImportDeclaration(moduleSpecifier);
 
     if (!importDecl) {
-      this.sourceFile.addImportDeclaration({
+      this.sourceFile.insertImportDeclaration(this.getLastImportIndex() + 1, {
         moduleSpecifier,
         namedImports: coerceArray(name).map((name) => ({
           kind: StructureKind.ImportSpecifier,
@@ -46,5 +46,11 @@ export abstract class FeatureBuilder {
     } else {
       coerceArray(name).forEach((v) => importDecl.addNamedImport(v));
     }
+  }
+
+  getLastImportIndex() {
+    const imports = this.sourceFile.getImportDeclarations();
+
+    return imports[imports.length - 1].getChildIndex();
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { addEntities, createState, Store, withEntities } from '@ngneat/elf';
+import { createState, Store } from '@ngneat/elf';
 
 import { selectRequestStatus, withRequestsStatus } from '@ngneat/elf-requests';
 import {
@@ -11,6 +11,7 @@ import {
   updatePaginationData,
   withPagination,
 } from '@ngneat/elf-pagination';
+import { addEntities, withEntities } from '@ngneat/elf-entities';
 
 interface Contact {
   id: number;

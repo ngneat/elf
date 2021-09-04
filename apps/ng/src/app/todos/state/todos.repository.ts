@@ -2,16 +2,13 @@ import { Injectable } from '@angular/core';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { write } from '../../store/mutations';
+import { createState, select, Store, withProps } from '@ngneat/elf';
 import {
   addEntities,
-  createState,
-  select,
   selectAll,
-  Store,
   updateEntities,
   withEntities,
-  withProps,
-} from '@ngneat/elf';
+} from '@ngneat/elf-entities';
 
 interface Todo {
   id: number;

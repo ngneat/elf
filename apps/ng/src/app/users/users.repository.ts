@@ -1,12 +1,4 @@
-import {
-  addEntities,
-  createState,
-  selectAll,
-  selectEntity,
-  setEntities,
-  Store,
-  withEntities,
-} from '@ngneat/elf';
+import { createState, Store } from '@ngneat/elf';
 import {
   selectRequestStatus,
   updateRequestCache,
@@ -14,6 +6,13 @@ import {
   withRequestsStatus,
 } from '@ngneat/elf-requests';
 import { Injectable } from '@angular/core';
+import {
+  addEntities,
+  selectAll,
+  selectEntity,
+  setEntities,
+  withEntities,
+} from '@ngneat/elf-entities';
 
 export interface User {
   id: number;

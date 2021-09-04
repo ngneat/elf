@@ -24,7 +24,7 @@ export class PropsBuilder extends FeatureBuilder {
   run() {
     this.addImport(['withProps']);
 
-    this.sourceFile.insertInterface(1, {
+    this.sourceFile.insertInterface(this.getLastImportIndex() + 1, {
       name: `${capitalize(this.storeName)}Props`,
       isExported: true,
     });

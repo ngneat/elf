@@ -1,16 +1,18 @@
 import { EMPTY, Observable, OperatorFunction } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {
-  DefaultEntitiesRef,
-  EmptyConfig,
   EntitiesRef,
   EntitiesState,
   getEntityType,
+  DefaultEntitiesRef,
+  selectMany,
   getIdType,
+} from '@ngneat/elf-entities';
+import {
+  EmptyConfig,
   Query,
   Reducer,
   select,
-  selectMany,
   State,
   StateOf,
   Store,

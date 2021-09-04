@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Repo Builder all: all 1`] = `
-"import { Store, createState, withProps, withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf';
+"import { Store, createState, withProps } from '@ngneat/elf';
+import { withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
 import { withRequestsCache, updateRequestsCache, CacheState, withRequestsStatus, selectRequestStatus, updateRequestsStatus, StatusState } from '@ngneat/elf-requests';
 
 export interface TodoUI {
@@ -56,7 +57,8 @@ export class TodosRepository {
 `;
 
 exports[`Repo Builder withActiveId: withActiveId 1`] = `
-"import { Store, createState, withActiveId, selectActiveEntity, setActiveId } from '@ngneat/elf';
+"import { Store, createState } from '@ngneat/elf';
+import { withActiveId, selectActiveEntity, setActiveId } from '@ngneat/elf-entities';
 
 const { state, config } = createState(withActiveId());
 const store = new Store({ name: 'todos', state, config });
@@ -72,7 +74,8 @@ export class TodosRepository {
 `;
 
 exports[`Repo Builder withActiveIds: withActiveIds 1`] = `
-"import { Store, createState, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf';
+"import { Store, createState } from '@ngneat/elf';
+import { withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
 
 const { state, config } = createState(withActiveIds());
 const store = new Store({ name: 'todos', state, config });
@@ -88,7 +91,8 @@ export class TodosRepository {
 `;
 
 exports[`Repo Builder withEntities idKey: withEntities 1`] = `
-"import { Store, createState, withEntities, selectAll, addEntities, updateEntities, deleteEntities } from '@ngneat/elf';
+"import { Store, createState } from '@ngneat/elf';
+import { withEntities, selectAll, addEntities, updateEntities, deleteEntities } from '@ngneat/elf-entities';
 
 export interface Todo {
   _id: number;
@@ -116,7 +120,8 @@ export class TodosRepository {
 `;
 
 exports[`Repo Builder withEntities: withEntities 1`] = `
-"import { Store, createState, withEntities, selectAll, addEntities, updateEntities, deleteEntities } from '@ngneat/elf';
+"import { Store, createState } from '@ngneat/elf';
+import { withEntities, selectAll, addEntities, updateEntities, deleteEntities } from '@ngneat/elf-entities';
 
 export interface Todo {
   id: number;
@@ -190,7 +195,8 @@ export class TodosRepository {
 `;
 
 exports[`Repo Builder withUIEntities: withUIEntities 1`] = `
-"import { Store, createState, withUIEntities } from '@ngneat/elf';
+"import { Store, createState } from '@ngneat/elf';
+import { withUIEntities } from '@ngneat/elf-entities';
 
 export interface TodoUI {
   id: number;

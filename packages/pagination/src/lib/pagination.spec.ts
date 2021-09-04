@@ -14,11 +14,10 @@ import {
 } from './pagination';
 import {
   addEntities,
-  createState,
-  Store,
   updateEntities,
   withEntities,
-} from '@ngneat/elf';
+} from '@ngneat/elf-entities';
+import { createState, Store } from '@ngneat/elf';
 import { Subject } from 'rxjs';
 
 describe('withPagination', () => {

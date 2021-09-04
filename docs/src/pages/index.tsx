@@ -15,7 +15,11 @@ function HomepageHeader() {
           <img src="img/elf.png" alt="elf" width={200} />
         </h1>
         <p className="hero__subtitle">
-          A Tiny <b><em>Reactive</em></b> Store with Magical Powers
+          A Tiny{' '}
+          <b>
+            <em>Reactive</em>
+          </b>{' '}
+          Store with Magical Powers
         </p>
         <div className={styles.buttons}>
           <Link
