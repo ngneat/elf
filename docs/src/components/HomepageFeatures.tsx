@@ -32,7 +32,7 @@ const FeatureList: FeatureItem[] = [
   {
     title: 'CLI',
     image: '/img/entities.png',
-    description: <>A powerful CLI to </>,
+    description: <>A fast and efficient way to build up your stores</>,
   },
   {
     title: 'First Class Entities Support',

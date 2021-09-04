@@ -28,44 +28,20 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Features',
+      label: 'Entities',
       items: [
-        'features/entities',
-        'features/active-ids',
-        'features/ui-entities',
-        'features/requests',
-        'features/pagination',
-        'features/caching',
-        'features/persist-state',
-        'features/history',
-        'features/props',
-        'features/create-your-own',
-      ],
+        'features/entities/entities',
+        'features/entities/ui-entities',
+        'features/entities/active-ids'
+      ]
     },
-    {
-      type: 'doc',
-      label: 'Creating the Store',
-      id: 'creating-the-store',
-    },
-    {
-      type: 'doc',
-      label: 'Writing to the Store',
-      id: 'writing-to-the-store',
-    },
-    {
-      type: 'doc',
-      label: 'Querying the Store',
-      id: 'querying-the-store',
-    },
-    {
-      type: 'doc',
-      label: 'DevTools',
-      id: 'dev-tools',
-    },
-    {
-      type: 'doc',
-      label: 'FAQ',
-      id: 'faq',
-    },
+    'features/requests',
+    'features/pagination',
+    'features/caching',
+    'features/persist-state',
+    'features/history',
+    'features/props',
+    'dev-tools',
+    'faq'
   ],
 };
