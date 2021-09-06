@@ -1,5 +1,5 @@
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require('prism-react-renderer/themes/nightOwlLight');
+const darkCodeTheme = require('prism-react-renderer/themes/oceanicNext');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/introduction',
+          to: 'docs/store',
           activeBasePath: 'docs',
           label: 'Docs',
           position: 'left',
@@ -41,7 +41,7 @@ module.exports = {
           items: [
             {
               label: 'Docs',
-              to: '/docs/intro',
+              to: '/docs/store',
             },
           ],
         },

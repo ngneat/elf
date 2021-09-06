@@ -13,22 +13,23 @@ module.exports = {
   docs: [
     {
       type: 'doc',
-      label: 'Introduction',
-      id: 'introduction',
+      label: 'Installation',
+      id: 'installation',
     },
     {
       type: 'doc',
-      label: 'CLI',
-      id: 'cli',
+      label: 'The Store',
+      id: 'store',
     },
     {
       type: 'doc',
-      label: 'Getting Started',
-      id: 'getting-started',
+      label: 'The Repository Pattern',
+      id: 'repository',
     },
     {
       type: 'category',
       label: 'Entities',
+      collapsed: false,
       items: [
         'features/entities/entities',
         'features/entities/ui-entities',
@@ -42,6 +43,7 @@ module.exports = {
     'features/history',
     'features/props',
     'dev-tools',
+    'cli',
     'faq',
   ],
 };
