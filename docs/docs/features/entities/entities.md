@@ -12,7 +12,7 @@ To use this feature, provides the `withEntities` props factory function to `crea
 
 ```ts
 import { createState, Store } from '@ngneat/elf';
-import { addEntities } from '@ngneat/elf-entities';
+import { addEntities, withEntities } from '@ngneat/elf-entities';
 
 interface Todo {
   id: number;
@@ -119,7 +119,7 @@ Get an entity by id:
 ```ts
 import { getEntity } from '@ngneat/elf-entities';
 
-const todo = todosStore.pipe(getEntity(id))
+const todo = todosStore.query(getEntity(id))
 ```
 
 #### `hasEntity`
@@ -129,7 +129,7 @@ Returns whether an entity exists:
 ```ts
 import { hasEntity } from '@ngneat/elf-entities';
 
-if(todosStore.pipe(hasEntity(id))) {}
+if(todosStore.query(hasEntity(id))) {}
 ```
 
 ### Mutations
@@ -201,3 +201,19 @@ todosStore.reduce(deleteAllEntities())
 ```
 
 
+## idKey
+By default, Elf takes the `id` key from the entity `id` field. To change it, you can pass the `idKey` option to the `withEntities` function:
+
+```ts
+import { createState, Store } from '@ngneat/elf';
+import { addEntities } from '@ngneat/elf-entities';
+
+interface Todo {
+  _id: number;
+  label: string;
+}
+
+const { state, config } = createState(withEntities<Todo, '_id'>({ idKey: '_id'}));
+
+const todosStore = new Store({ name: 'todos', state, config });
+```

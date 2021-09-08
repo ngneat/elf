@@ -1,25 +1,43 @@
 # UI Entities
 
-This feature allows the store to hold UI-specific entity data, for instance whether the card representing an entity has been opened by the user.  
+This feature allows the store to hold UI-specific entity data, for instance, whether the user has opened the card representing an entity.
 When used in conjunction with `withEntities` this can be used to store additional UI data separately from the entities themselves.
 
 ```ts
-type UIEntity = { id: number; open: boolean };
+import { createState, Store } from '@ngneat/elf';
+import { withEntities, withUIEntities } from '@ngneat/elf-entities';
 
-const { state, config } = createState(withUIEntities<UIEntity>());
+interface TodoUI { id: number; open: boolean };
+interface Todo { id: number; name: string; }
+
+const { state, config } = createState(
+  withEntities<Todo>(),  
+  withUIEntities<TodoUI>()  
+);
+
+const todosStore = new Store({ name: 'todos', state, config });
 ```
 
-The usage is similar to that of entities - you can use the same methods, with the addition of a `ref: UIEntitiesRef`
-in the method's options parameter, e.g.:
+The usage is similar to that of `entities` - you can use the same selectors and mutations, with the addition of passing the
+`UIEntitiesRef` ref in the method's `options` parameter, e.g.:
 
 ```ts
-addEntities(uiItems, { ref: UIEntitiesRef });
+import { addEntities, UIEntitiesRef, selectEntity } from '@ngneat/elf-entities';
+
+todosStore.reduce(
+  addEntities({ id: 1, name: 'foo' }),
+  addEntities({ id: 1, open: true }, { ref: UIEntitiesRef })  
+)
+
+uiEntity$ = todosStore.pipe(selectEntity(1, { ref: UIEntitiesRef } ))
 ```
 
-It's common to have a store with Entities and corresponding UIEntities, in which case they can be easily combined using the `intersectEntities()` method.
+We can use the `intersectEntities()` operator that returns a combined collection of the entities and their corresponding `UIEntities`:
 
 ```ts
-storeItems$ = this.store
+import { intersectEntities, selectAll, selectEntities } from '@ngneat/elf-entities';
+
+todos$ = todosStore
   .combine({
     entities: store.pipe(selectAll()),
     UIEntities: store.pipe(selectEntities({ ref: UIEntitiesRef })),
