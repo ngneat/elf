@@ -48,7 +48,6 @@ module.exports = {
     'features/pagination',
     'features/persist-state',
     'features/history',
-    'features/props',
     'dev-tools',
     'cli',
     'faq',
