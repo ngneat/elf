@@ -2,37 +2,48 @@
 
 The store takes an object that contains three properties - a `state`, a `name`, and `config`.
 
+To create the initial state used by your store call the `createState()` method. This method returns a `state` object and a `config` object. They are then used in the creation of the store:
+
 ```ts
 import { Store, createState, withProps } from '@ngneat/elf';
 
 interface AuthProps {
-  user: { id: string } | null
+  user: { id: string } | null;
 }
 
-const { state, config } = createState(
-  withProps<AuthProps>({ user: null })  
-)
+const { state, config } = createState(withProps<AuthProps>({ user: null }));
 
 const authStore = new Store({ state, name, config });
 ```
 
-// explain createState
-A state is composition of properties. 
-
-### Querying the Store
-A store is a `BehaviorSubject`. Therefore, we can subscribe to it to get its initial value and its subsequent values: 
+The `createState` can accept any number of features which describe the nature of the store. For example:
 
 ```ts
-authStore.subscribe(state => {
-  console.log(state);  
-})
+const { state, config } = createState(
+  withEntities<Todo>(),
+  withUIEntities<UIEntity>(),
+  withProps<{ foo: string }>({ foo: '' })
+);
+```
+
+The features can be either one or more of the available features in Elf, or additional features you can create or add from other sources.
+
+### Querying the Store
+
+A store is a `BehaviorSubject`. Therefore, we can subscribe to it to get its initial value and its subsequent values:
+
+```ts
+authStore.subscribe((state) => {
+  console.log(state);
+});
 ```
 
 #### Using the `select` Operator
+
 Select a slice from the store:
 
 ```ts
-const user$ = authStore.pipe(select(state => state.user));
+const user$ = authStore.pipe(select((state) => state.user));
 ```
 
 The `select()` operator returns an observable that calls `distinctUntilChanged()` internally, meaning it will only fire when the state changes, i.e., when there is a new reference to the selected state.
@@ -44,11 +55,12 @@ const state = authStore.state;
 ```
 
 ### Updating the Store
-To update the store, we can use the `reduce` method which  receives a callback function, which gets the current `state`, and returns a new immutable `state`, which will be the new value of the store:
+
+To update the store, we can use the `reduce` method which receives a callback function, which gets the current `state`, and returns a new immutable `state`, which will be the new value of the store:
 
 ```ts
-authStore.reduce(state => ({
+authStore.reduce((state) => ({
   ...state,
-  user: { id: 'foo' }
-}))
+  user: { id: 'foo' },
+}));
 ```
