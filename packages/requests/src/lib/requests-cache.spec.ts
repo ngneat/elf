@@ -95,7 +95,7 @@ describe('requestsCache', () => {
 
   it('should uphold ttl', () => {
     store.reduce(
-      updateRequestCache(requestKey, 'full', 1000)
+      updateRequestCache(requestKey, 'full', { ttl: 10000 })
     );
 
     expect(
@@ -106,6 +106,6 @@ describe('requestsCache', () => {
       expect(
         store.query(isRequestCached(requestKey, { value: 'full' }))
       ).toBeFalsy();
-    }, 2000);
+    }, 20000);
   });
 });

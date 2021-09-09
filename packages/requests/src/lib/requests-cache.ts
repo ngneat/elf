@@ -11,6 +11,10 @@ import {
 
 import { EMPTY, Observable, OperatorFunction } from 'rxjs';
 
+interface CachingOptions {
+  ttl?: number
+}
+
 type CacheValue = Record<string | number, CacheState>;
 export type CacheState = {
   value: 'none' | 'partial' | 'full';
@@ -37,13 +41,13 @@ export function selectRequestCache<S extends StateOf<typeof withRequestsCache>>(
 export function updateRequestCache<S extends StateOf<typeof withRequestsCache>>(
   key: string | number,
   value: CacheState['value'],
-  ttl?: number
+  cachingOptions: CachingOptions = {}
 ): Reducer<S> {
   const dataToUpdate = {
     value,
   } as CacheState;
-  if (ttl) {
-    dataToUpdate.timeStamp = Date.now() + ttl;
+  if (cachingOptions.ttl) {
+    dataToUpdate.timeStamp = Date.now() + cachingOptions.ttl;
   }
   return updateRequestsCache({
     [key]: dataToUpdate,
