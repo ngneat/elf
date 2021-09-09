@@ -5,8 +5,9 @@ import {
   selectIsRequestCached,
   selectRequestCache,
   skipWhileCached,
+  updateRequestCache,
   updateRequestsCache,
-  withRequestsCache,
+  withRequestsCache
 } from './requests-cache';
 import { Subject } from 'rxjs';
 
@@ -90,5 +91,22 @@ describe('requestsCache', () => {
 
     subject.next({});
     expect(spy).toHaveBeenCalledTimes(0);
+  });
+
+  it('should uphold ttl', () => {
+    store.reduce(
+      updateRequestCache(requestKey, 'full', 1000)
+    );
+
+    expect(
+      store.query(isRequestCached(requestKey, { value: 'full' }))
+    ).toBeTruthy();
+
+    setTimeout(() => {
+      console.log("Time's up -- stop!");
+      expect(
+        store.query(isRequestCached(requestKey, { value: 'full' }))
+      ).toBeFalsy();
+    }, 2000);
   });
 });

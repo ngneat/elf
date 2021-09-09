@@ -14,6 +14,7 @@ import { EMPTY, Observable, OperatorFunction } from 'rxjs';
 type CacheValue = Record<string | number, CacheState>;
 export type CacheState = {
   value: 'none' | 'partial' | 'full';
+  localStorageTimeStamp?: number
 };
 
 export const {
@@ -35,12 +36,17 @@ export function selectRequestCache<S extends StateOf<typeof withRequestsCache>>(
 
 export function updateRequestCache<S extends StateOf<typeof withRequestsCache>>(
   key: string | number,
-  value: CacheState['value']
+  value: CacheState['value'],
+  ttl?: number
 ): Reducer<S> {
+  const dataToUpdate = {
+    value,
+  } as CacheState;
+  if (ttl) {
+    dataToUpdate.localStorageTimeStamp = Date.now() + ttl;
+  }
   return updateRequestsCache({
-    [key]: {
-      value,
-    },
+    [key]: dataToUpdate,
   });
 }
 
@@ -48,12 +54,16 @@ export function getRequestCache<S extends StateOf<typeof withRequestsCache>>(
   key: string | number
 ): Query<S, CacheState> {
   return function (state: S) {
-    return (
-      getRequestsCache(state)[key] ??
-      ({
+    const cacheValue =   getRequestsCache(state)[key] ??
+      {
         value: 'none',
-      } as CacheState)
-    );
+      } as CacheState;
+    if (cacheValue.localStorageTimeStamp && cacheValue.localStorageTimeStamp < Date.now()) {
+      return {
+        value: 'none'
+      };
+    }
+    return cacheValue;
   };
 }
 
@@ -70,10 +80,17 @@ export function isRequestCached<S extends StateOf<typeof withRequestsCache>>(
   key: string | number | string[] | number[],
   options?: { value?: CacheState['value'] }
 ) {
+  const now = Date.now();
+
   return function (state: S) {
     const type = options?.value ?? 'full';
     return coerceArray(key).some(
-      (k) => getRequestCache(k)(state).value === type
+      (k) => {
+        const cachedValue = getRequestCache(k)(state);
+        if (cachedValue.localStorageTimeStamp && cachedValue.localStorageTimeStamp < now) {
+          return false;
+        }
+        return cachedValue.value === type;}
     );
   };
 }
