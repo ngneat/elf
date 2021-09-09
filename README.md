@@ -15,6 +15,18 @@ Elf encourages simplicity. It eases the hassle of creating boilerplate code and 
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e5079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
+## Features
+
+- Modular by design
+- Tree Shakeable & Fully Typed
+- CLI
+- First Class Entities Support
+- Requests Status & Cache
+- Persist State
+- State History
+- Pagination
+- Devtools
+
 ```ts
 import { Store, createState, withProps, select } from '@ngneat/elf';
 
