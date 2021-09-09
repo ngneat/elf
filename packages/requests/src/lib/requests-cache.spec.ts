@@ -103,7 +103,6 @@ describe('requestsCache', () => {
     ).toBeTruthy();
 
     setTimeout(() => {
-      console.log("Time's up -- stop!");
       expect(
         store.query(isRequestCached(requestKey, { value: 'full' }))
       ).toBeFalsy();

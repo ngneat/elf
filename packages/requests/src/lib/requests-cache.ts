@@ -14,7 +14,7 @@ import { EMPTY, Observable, OperatorFunction } from 'rxjs';
 type CacheValue = Record<string | number, CacheState>;
 export type CacheState = {
   value: 'none' | 'partial' | 'full';
-  localStorageTimeStamp?: number
+  timeStamp?: number
 };
 
 export const {
@@ -43,7 +43,7 @@ export function updateRequestCache<S extends StateOf<typeof withRequestsCache>>(
     value,
   } as CacheState;
   if (ttl) {
-    dataToUpdate.localStorageTimeStamp = Date.now() + ttl;
+    dataToUpdate.timeStamp = Date.now() + ttl;
   }
   return updateRequestsCache({
     [key]: dataToUpdate,
@@ -58,7 +58,7 @@ export function getRequestCache<S extends StateOf<typeof withRequestsCache>>(
       {
         value: 'none',
       } as CacheState;
-    if (cacheValue.localStorageTimeStamp && cacheValue.localStorageTimeStamp < Date.now()) {
+    if (cacheValue.timeStamp && cacheValue.timeStamp < Date.now()) {
       return {
         value: 'none'
       };
@@ -87,7 +87,7 @@ export function isRequestCached<S extends StateOf<typeof withRequestsCache>>(
     return coerceArray(key).some(
       (k) => {
         const cachedValue = getRequestCache(k)(state);
-        if (cachedValue.localStorageTimeStamp && cachedValue.localStorageTimeStamp < now) {
+        if (cachedValue.timeStamp && cachedValue.timeStamp < now) {
           return false;
         }
         return cachedValue.value === type;}
