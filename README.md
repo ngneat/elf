@@ -38,10 +38,14 @@ const { state, config } = createState(withProps<AuthProps>({ user: null }));
 
 const authStore = new Store({ state, name, config });
 
-const user$ = authStore.pipe(select((state) => state.user));
+class AuthRepository {
+  user$ = authStore.pipe(select((state) => state.user));
 
-authStore.reduce((state) => ({
-  ...state,
-  user: { id: 'Elf' },
-}));
+  updateUser(user: AuthProps['user']) {
+    authStore.reduce((state) => ({
+      ...state,
+      user: { id: 'Elf' },
+    }));
+  }
+}
 ```
