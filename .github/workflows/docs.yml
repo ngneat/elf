@@ -2,6 +2,9 @@ name: 'docs'
 
 on:
   push:
+    branches:
+      - master
+      - dev
     paths:
       - "docs/**"
 
@@ -14,7 +17,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - uses: webfactory/ssh-agent@v0.5.0
+        with:
+          ssh-private-key: ${{ secrets.Docs }}
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -30,5 +39,8 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Deploy
+      - name: Release to GitHub Pages
+        env:
+          USE_SSH: true
+          GIT_USER: NetanelBasal
         run: yarn deploy
