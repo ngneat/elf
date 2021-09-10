@@ -49,6 +49,12 @@
             "jestConfig": "packages/devtools/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "version": {
+          "executor": "@jscutlery/semver:version",
+          "options": {
+            "syncVersions": false
+          }
         }
       }
     },
@@ -80,6 +86,12 @@
           "options": {
             "jestConfig": "packages/entities/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "version": {
+          "executor": "@jscutlery/semver:version",
+          "options": {
+            "syncVersions": false
           }
         }
       }
@@ -226,6 +238,12 @@
             "jestConfig": "packages/pagination/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "version": {
+          "executor": "@jscutlery/semver:version",
+          "options": {
+            "syncVersions": false
+          }
         }
       }
     },
@@ -257,6 +275,12 @@
           "options": {
             "jestConfig": "packages/persist-state/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "version": {
+          "executor": "@jscutlery/semver:version",
+          "options": {
+            "syncVersions": false
           }
         }
       }
@@ -290,6 +314,12 @@
             "jestConfig": "packages/requests/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "version": {
+          "executor": "@jscutlery/semver:version",
+          "options": {
+            "syncVersions": false
+          }
         }
       }
     },
@@ -322,6 +352,12 @@
             "jestConfig": "packages/state-history/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "version": {
+          "executor": "@jscutlery/semver:version",
+          "options": {
+            "syncVersions": false
+          }
         }
       }
     },
@@ -353,6 +389,12 @@
           "options": {
             "jestConfig": "packages/store/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "version": {
+          "executor": "@jscutlery/semver:version",
+          "options": {
+            "syncVersions": false
           }
         }
       }

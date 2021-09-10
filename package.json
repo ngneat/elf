@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "c": "git-cz",
     "nx": "nx",
     "start": "nx serve --project ng",
     "start:docs": "npm start --prefix=docs",
@@ -19,7 +20,9 @@
     "update": "nx migrate latest",
     "migration": "nx migrate --run-migrations",
     "postinstall": "ngcc --properties es2015 browser module main",
-    "cli": "./tools/cli/bin/run"
+    "cli": "./tools/cli/bin/run",
+    "cz": "cz",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -43,6 +46,8 @@
     "@angular-eslint/template-parser": "12.3.1",
     "@angular/compiler-cli": "12.2.5",
     "@angular/language-service": "12.2.5",
+    "@commitlint/cli": "12.1.4",
+    "@commitlint/config-conventional": "12.1.4",
     "@ngneat/until-destroy": "8.1.1",
     "@nrwl/angular": "12.9.0",
     "@nrwl/cli": "12.9.0",
@@ -57,17 +62,34 @@
     "@types/node": "14.14.37",
     "@typescript-eslint/eslint-plugin": "4.28.5",
     "@typescript-eslint/parser": "4.28.5",
+    "commitizen": "4.2.4",
+    "cz-conventional-changelog": "3.3.0",
     "dotenv": "10.0.0",
     "eslint": "7.23.0",
     "eslint-config-prettier": "8.3.0",
     "faker": "5.5.3",
+    "git-cz": "4.7.6",
+    "husky": "6.0.0",
     "jest": "27.0.4",
     "jest-preset-angular": "9.0.7",
+    "lint-staged": "11.1.2",
     "lodash": "4.17.21",
     "prettier": "2.4.0",
     "ts-jest": "27.0.3",
     "ts-node": "9.1.1",
     "typescript": "4.3.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,json,html}": "npm run format --uncommitted"
   }
 }
-

@@ -61,7 +61,7 @@ describe('requestsCache', () => {
     store.pipe(selectIsRequestCached(requestKey)).subscribe((v) => {
       expect(v).toBeFalsy();
     });
-    
+
     // It's partial not full
     expect(store.query(isRequestCached(requestKey))).toBeFalsy();
     expect(
