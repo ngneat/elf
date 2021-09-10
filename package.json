@@ -90,6 +90,6 @@
     ]
   },
   "lint-staged": {
-    "*.{ts,json,html}": "npm run format --uncommitted"
+    "*.{ts,json,html}": "prettier --write"
   }
 }

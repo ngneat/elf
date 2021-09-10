@@ -44,11 +44,9 @@ export class Store<
 
   combine<O extends Record<string, Observable<any>>>(
     observables: O
-  ): Observable<
-    {
-      [P in keyof O]: O[P] extends Observable<infer R> ? R : never;
-    }
-  > {
+  ): Observable<{
+    [P in keyof O]: O[P] extends Observable<infer R> ? R : never;
+  }> {
     let hasChange = true;
     const buffer: Record<string, any> = {};
 

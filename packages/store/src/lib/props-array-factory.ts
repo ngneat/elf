@@ -37,19 +37,18 @@ export function propsArrayFactory<
         };
       };
     },
-  } as unknown as typeof base &
-    {
-      [P in
-        | `remove${Capitalize<K>}`
-        | `add${Capitalize<K>}`
-        | `toggle${Capitalize<K>}`]: P extends `toggle${Capitalize<K>}`
-        ? <S extends PropState>(value: T[0]) => Reducer<S>
-        : P extends `add${Capitalize<K>}`
-        ? <S extends PropState>(value: T[0]) => Reducer<S>
-        : P extends `remove${Capitalize<K>}`
-        ? <S extends PropState>(value: T[0]) => Reducer<S>
-        : never;
-    };
+  } as unknown as typeof base & {
+    [P in
+      | `remove${Capitalize<K>}`
+      | `add${Capitalize<K>}`
+      | `toggle${Capitalize<K>}`]: P extends `toggle${Capitalize<K>}`
+      ? <S extends PropState>(value: T[0]) => Reducer<S>
+      : P extends `add${Capitalize<K>}`
+      ? <S extends PropState>(value: T[0]) => Reducer<S>
+      : P extends `remove${Capitalize<K>}`
+      ? <S extends PropState>(value: T[0]) => Reducer<S>
+      : never;
+  };
 }
 
 function arrayAdd<T extends any[]>(arr: T, item: T[0]): T {
