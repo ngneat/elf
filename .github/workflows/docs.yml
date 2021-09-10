@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check whether unity activation requests should be done
-        run: echo ${{secrets.dsdsds }}'
+        run: echo ${{secrets.GH_PAGES_DEPLOY }}'
 
 
   # build:
