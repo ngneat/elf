@@ -6,7 +6,7 @@ on:
       - master
       - dev
     paths:
-      - "docs/**"
+      - 'docs/**'
 
 defaults:
   run:
@@ -21,7 +21,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '14.x'
-      - uses: webfactory/ssh-agent@v0.5.0
+      - uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.GH_PAGES_DEPLOY }}
       - name: Get yarn cache directory path
