@@ -5,14 +5,19 @@ const darkCodeTheme = require('prism-react-renderer/themes/oceanicNext');
 module.exports = {
   title: 'Elf | A tiny reactive store with magical powers',
   tagline: 'A Tiny Reactive Store with Magical Powers',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  baseUrl: '/elf/',
+  url: 'https://ngneat.github.io',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'ngneat',
   projectName: 'elf',
   themeConfig: {
+    // algolia: {
+    //   appId: 'BH4D9OD16A',
+    //   apiKey: '0fe261e8a7d089862d9a959da892561f',
+    //   indexName: 'elf'
+    // },
     navbar: {
       title: 'Elf',
       logo: {
@@ -72,7 +77,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Elf, Inc.`,
     },
     prism: {
       theme: lightCodeTheme,
