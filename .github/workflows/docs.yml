@@ -18,10 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check whether unity activation requests should be done
-        id: checksecret_job
-        run:
-          echo "FOO: ${{ secrets.FOO != '' }}"
-       
+        run: echo "FOO: ${{ secrets.FOO != '' }}"
+
   # build:
   #   runs-on: ubuntu-latest
 
