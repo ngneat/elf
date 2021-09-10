@@ -23,7 +23,7 @@ jobs:
           node-version: '14.x'
       - uses: webfactory/ssh-agent@v0.5.0
         with:
-          ssh-private-key: ${{ secrets.Docs }}
+          ssh-private-key: ${{ secrets.GH_PAGES_DEPLOY }}
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
