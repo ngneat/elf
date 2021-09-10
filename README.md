@@ -17,14 +17,14 @@ Elf encourages simplicity. It eases the hassle of creating boilerplate code and 
 
 ## Features
 
-✅ Modular by design
-✅ Tree Shakeable & Fully Typed
-✅ CLI
-✅ First Class Entities Support
-✅ Requests Status & Cache
-✅ Persist State
-✅ State History
-✅ Pagination
+✅ Modular by design <br>
+✅ Tree Shakeable & Fully Typed <br>
+✅ CLI <br>
+✅ First Class Entities Support<br>
+✅ Requests Status & Cache <br>
+✅ Persist State<br>
+✅ State History<br>
+✅ Pagination<br>
 ✅ Devtools
 
 ```ts

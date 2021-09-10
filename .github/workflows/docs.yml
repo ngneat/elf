@@ -39,6 +39,11 @@ jobs:
        - name: Install dependencies
          run: yarn
 
+       - name: Identity
+         run: |
+           git config --global user.email "netanel7799@gmail.com"
+           git config --global user.name "NetanelBasal"
+
        - name: Release to GitHub Pages
          env:
            USE_SSH: true
