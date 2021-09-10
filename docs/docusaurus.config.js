@@ -13,11 +13,10 @@ module.exports = {
   organizationName: 'ngneat',
   projectName: 'elf',
   themeConfig: {
-    // algolia: {
-    //   appId: 'BH4D9OD16A',
-    //   apiKey: '0fe261e8a7d089862d9a959da892561f',
-    //   indexName: 'elf'
-    // },
+    algolia: {
+      apiKey: '129bed74e0b4d728358bf7b123274c18',
+      indexName: 'elf'
+    },
     navbar: {
       title: 'Elf',
       logo: {
@@ -84,7 +83,7 @@ module.exports = {
       darkTheme: darkCodeTheme,
     },
   },
-  
+
   presets: [
     [
       '@docusaurus/preset-classic',

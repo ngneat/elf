@@ -17,15 +17,15 @@ Elf encourages simplicity. It eases the hassle of creating boilerplate code and 
 
 ## Features
 
-- Modular by design
-- Tree Shakeable & Fully Typed
-- CLI
-- First Class Entities Support
-- Requests Status & Cache
-- Persist State
-- State History
-- Pagination
-- Devtools
+✅ Modular by design
+✅ Tree Shakeable & Fully Typed
+✅ CLI
+✅ First Class Entities Support
+✅ Requests Status & Cache
+✅ Persist State
+✅ State History
+✅ Pagination
+✅ Devtools
 
 ```ts
 import { Store, createState, withProps, select } from '@ngneat/elf';

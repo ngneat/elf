@@ -2,11 +2,11 @@ name: 'docs'
 
 on:
   push:
-    # branches:
-    #   - master
-    #   - dev
-    # paths:
-    #   - 'docs/**'
+     branches:
+       - master
+       - dev
+     paths:
+       - 'docs/**'
 
 defaults:
   run:
