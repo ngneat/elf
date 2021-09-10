@@ -11,8 +11,6 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
 
     steps:
       - uses: actions/checkout@v2
