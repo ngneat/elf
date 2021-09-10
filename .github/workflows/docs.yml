@@ -18,7 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check whether unity activation requests should be done
-        run: echo "FOO: ${{ secrets.FOO != '' }}"
+        run: echo "The selected color is ${{ secrets.FOO }}"
+
 
   # build:
   #   runs-on: ubuntu-latest
