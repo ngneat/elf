@@ -14,18 +14,18 @@ defaults:
 
 jobs:
   checksecret:
-    name: check if GH_PAGES_DEPLOY is set in github secrets
+    name: check if FOO is set in github secrets
     runs-on: ubuntu-latest
     outputs:
-      is_GH_PAGES_DEPLOY_set: ${{ steps.checksecret_job.outputs.is_GH_PAGES_DEPLOY_set }}
+      FOO: ${{ steps.checksecret_job.outputs.FOO }}
     steps:
       - name: Check whether unity activation requests should be done
         id: checksecret_job
         env:
-          GH_PAGES_DEPLOY: ${{ secrets.GH_PAGES_DEPLOY }}
+          GH_PAGES_DEPLOY: ${{ secrets.FOO }}
         run: |
-          echo "is_GH_PAGES_DEPLOY_set: ${{ env.GH_PAGES_DEPLOY != '' }}"
-          echo "::set-output name=is_GH_PAGES_DEPLOY_set::${{ env.GH_PAGES_DEPLOY != '' }}"
+          echo "FOO: ${{ env.FOO != '' }}"
+          echo "::set-output name=FOO::${{ env.FOO != '' }}"
   # build:
   #   runs-on: ubuntu-latest
 
