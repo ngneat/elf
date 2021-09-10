@@ -49,6 +49,7 @@ module.exports = {
     'features/persist-state',
     'features/history',
     'dev-tools',
+    'immer',
     'cli',
     'faq',
   ],

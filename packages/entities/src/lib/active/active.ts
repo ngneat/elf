@@ -18,7 +18,7 @@ export const {
   withActiveId,
   resetActiveId,
   getActiveId,
-} = propsFactory('activeId', { initialValue: undefined });
+} = propsFactory('activeId', { initialValue: undefined as any });
 
 export function selectActiveEntity<
   S extends EntitiesState<Ref> & StateOf<typeof withActiveId>,
@@ -44,7 +44,7 @@ export const {
   removeActiveIds,
   addActiveIds,
   getActiveIds,
-} = propsArrayFactory('activeIds', { initialValue: [] });
+} = propsArrayFactory('activeIds', { initialValue: [] as any[] });
 
 export function selectActiveEntities<
   S extends EntitiesState<Ref> & StateOf<typeof withActiveIds>,
