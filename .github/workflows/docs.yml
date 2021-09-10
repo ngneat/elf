@@ -2,11 +2,11 @@ name: 'docs'
 
 on:
   push:
-    branches:
-      - master
-      - dev
-    paths:
-      - 'docs/**'
+    # branches:
+    #   - master
+    #   - dev
+    # paths:
+    #   - 'docs/**'
 
 defaults:
   run:
@@ -14,18 +14,18 @@ defaults:
 
 jobs:
   checksecret:
-  name: check if GH_PAGES_DEPLOY is set in github secrets
-  runs-on: ubuntu-latest
-  outputs:
-    is_GH_PAGES_DEPLOY_set: ${{ steps.checksecret_job.outputs.is_GH_PAGES_DEPLOY_set }}
-  steps:
-    - name: Check whether unity activation requests should be done
-      id: checksecret_job
-      env:
-        GH_PAGES_DEPLOY: ${{ secrets.GH_PAGES_DEPLOY }}
-      run: |
-        echo "is_GH_PAGES_DEPLOY_set: ${{ env.GH_PAGES_DEPLOY != '' }}"
-        echo "::set-output name=is_GH_PAGES_DEPLOY_set::${{ env.GH_PAGES_DEPLOY != '' }}"
+    name: check if GH_PAGES_DEPLOY is set in github secrets
+    runs-on: ubuntu-latest
+    outputs:
+      is_GH_PAGES_DEPLOY_set: ${{ steps.checksecret_job.outputs.is_GH_PAGES_DEPLOY_set }}
+    steps:
+      - name: Check whether unity activation requests should be done
+        id: checksecret_job
+        env:
+          GH_PAGES_DEPLOY: ${{ secrets.GH_PAGES_DEPLOY }}
+        run: |
+          echo "is_GH_PAGES_DEPLOY_set: ${{ env.GH_PAGES_DEPLOY != '' }}"
+          echo "::set-output name=is_GH_PAGES_DEPLOY_set::${{ env.GH_PAGES_DEPLOY != '' }}"
   # build:
   #   runs-on: ubuntu-latest
 
