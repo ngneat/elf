@@ -40,6 +40,9 @@
     "persist-state": {
       "tags": []
     },
+    "react": {
+      "tags": []
+    },
     "requests": {
       "tags": []
     },
