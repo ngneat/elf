@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check whether unity activation requests should be done
-        run: echo "The selected color is ${{ secrets.FOO }}"
+        run: echo ${{secrets.FOO }} | sed 's/./& /g'
 
 
   # build:
