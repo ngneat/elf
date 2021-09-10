@@ -84,6 +84,7 @@ module.exports = {
       darkTheme: darkCodeTheme,
     },
   },
+  
   presets: [
     [
       '@docusaurus/preset-classic',
