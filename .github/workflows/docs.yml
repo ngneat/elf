@@ -13,42 +13,34 @@ defaults:
     working-directory: ./docs
 
 jobs:
-  checksecret:
-    name: check if FOO is set in github secrets
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check whether unity activation requests should be done
-        run: echo ${{secrets.GH_PAGES_DEPLOY }}'
+   build:
+     runs-on: ubuntu-latest
 
+     steps:
+       - uses: actions/checkout@v2
+       - uses: webfactory/ssh-agent@v0.5.3
+         with:
+           ssh-private-key: ${{ secrets.GH_PAGES_DEPLOY }}
+       - uses: actions/setup-node@v1
+         with:
+           node-version: '14.x'
+       - name: Get yarn cache directory path
+         id: yarn-cache-dir-path
+         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-  # build:
-  #   runs-on: ubuntu-latest
+       - uses: actions/cache@v2
+         id: yarn-cache
+         with:
+           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+           restore-keys: |
+             ${{ runner.os }}-yarn-
 
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: webfactory/ssh-agent@v0.5.3
-  #       with:
-  #         ssh-private-key: ${{ secrets.GH_PAGES_DEPLOY }}
-  #     - uses: actions/setup-node@v1
-  #       with:
-  #         node-version: '14.x'
-  #     - name: Get yarn cache directory path
-  #       id: yarn-cache-dir-path
-  #       run: echo "::set-output name=dir::$(yarn cache dir)"
+       - name: Install dependencies
+         run: yarn
 
-  #     - uses: actions/cache@v2
-  #       id: yarn-cache
-  #       with:
-  #         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-  #         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-yarn-
-
-  #     - name: Install dependencies
-  #       run: yarn
-
-  #     - name: Release to GitHub Pages
-  #       env:
-  #         USE_SSH: true
-  #         GIT_USER: NetanelBasal
-  #       run: yarn deploy
+       - name: Release to GitHub Pages
+         env:
+           USE_SSH: true
+           GIT_USER: NetanelBasal
+         run: yarn deploy
