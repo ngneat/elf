@@ -18,7 +18,7 @@ interface CachingOptions {
 type CacheValue = Record<string | number, CacheState>;
 export type CacheState = {
   value: 'none' | 'partial' | 'full';
-  timeStamp?: number
+  timestamp?: number
 };
 
 export const {
@@ -47,7 +47,7 @@ export function updateRequestCache<S extends StateOf<typeof withRequestsCache>>(
     value,
   } as CacheState;
   if (cachingOptions.ttl) {
-    dataToUpdate.timeStamp = Date.now() + cachingOptions.ttl;
+    dataToUpdate.timestamp = Date.now() + cachingOptions.ttl;
   }
   return updateRequestsCache({
     [key]: dataToUpdate,
@@ -62,7 +62,7 @@ export function getRequestCache<S extends StateOf<typeof withRequestsCache>>(
       {
         value: 'none',
       } as CacheState;
-    if (cacheValue.timeStamp && cacheValue.timeStamp < Date.now()) {
+    if (cacheValue.timestamp && cacheValue.timestamp < Date.now()) {
       return {
         value: 'none'
       };
@@ -91,7 +91,7 @@ export function isRequestCached<S extends StateOf<typeof withRequestsCache>>(
     return coerceArray(key).some(
       (k) => {
         const cachedValue = getRequestCache(k)(state);
-        if (cachedValue.timeStamp && cachedValue.timeStamp < now) {
+        if (cachedValue.timestamp && cachedValue.timestamp < now) {
           return false;
         }
         return cachedValue.value === type;}
