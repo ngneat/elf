@@ -45,7 +45,7 @@ import {
   intersectEntities,
   selectAll,
   selectEntities,
-  UIEntitiesRef
+  UIEntitiesRef,
 } from '@ngneat/elf-entities';
 
 todos$ = todosStore

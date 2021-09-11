@@ -2,7 +2,7 @@
 
 The store takes an object that contains three properties - a `state`, a `name`, and `config`.
 
-To create the initial state used by your store call the `createState()` method. This method returns a `state` object and a `config` object. They are then used in the creation of the store:
+A state is a composition of properties. To create the initial state used by your store call the `createState()` method. This method returns a `state` object and a `config` object. They are then used in the creation of the store:
 
 ```ts
 import { Store, createState, withProps } from '@ngneat/elf';

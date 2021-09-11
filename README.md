@@ -46,7 +46,7 @@
 
 [comment]: <> (interface AuthProps {)
 
-[comment]: <> (  user: { id: string } | null;)
+[comment]: <> ( user: { id: string } | null;)
 
 [comment]: <> (})
 
@@ -56,19 +56,19 @@
 
 [comment]: <> (class AuthRepository {)
 
-[comment]: <> (  user$ = authStore.pipe&#40;select&#40;&#40;state&#41; => state.user&#41;&#41;;)
+[comment]: <> ( user$ = authStore.pipe&#40;select&#40;&#40;state&#41; => state.user&#41;&#41;;)
 
-[comment]: <> (  updateUser&#40;user: AuthProps['user']&#41; {)
+[comment]: <> ( updateUser&#40;user: AuthProps['user']&#41; {)
 
-[comment]: <> (    authStore.reduce&#40;&#40;state&#41; => &#40;{)
+[comment]: <> ( authStore.reduce&#40;&#40;state&#41; => &#40;{)
 
-[comment]: <> (      ...state,)
+[comment]: <> ( ...state,)
 
-[comment]: <> (      user: { id: 'Elf' },)
+[comment]: <> ( user: { id: 'Elf' },)
 
-[comment]: <> (    }&#41;&#41;;)
+[comment]: <> ( }&#41;&#41;;)
 
-[comment]: <> (  })
+[comment]: <> ( })
 
 [comment]: <> (})
 

@@ -31,8 +31,13 @@ export function createUITodo(id: number): { id: number; open: boolean } {
   };
 }
 
+export interface UITodo {
+  id: number;
+  open: boolean;
+}
+
 export const createUIEntityStore = (name = 'UIEntityStore') =>
   new Store({
     name,
-    ...createState(withUIEntities<{ id: number; open: boolean }>()),
+    ...createState(withUIEntities<UITodo>()),
   });

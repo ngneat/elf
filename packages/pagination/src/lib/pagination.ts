@@ -13,7 +13,7 @@ import {
   Query,
   Reducer,
   select,
-  State,
+  PropsFactory,
   StateOf,
   Store,
   StoreDef,
@@ -36,9 +36,9 @@ export function withPagination<
   IdType extends number | string = number
 >(options?: {
   initialPage?: IdType;
-}): State<PaginationState<IdType>, EmptyConfig> {
+}): PropsFactory<PaginationState<IdType>, EmptyConfig> {
   return {
-    state: {
+    props: {
       pagination: {
         currentPage: options?.initialPage ?? (1 as IdType),
         pages: {} as Record<IdType, IdType[]>,

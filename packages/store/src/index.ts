@@ -14,7 +14,7 @@ export {
   getStoresSnapshot,
 } from './lib/registry';
 export { withProps } from './lib/props.state';
-export { createState, State, EmptyConfig } from './lib/state';
+export { createState, PropsFactory, EmptyConfig } from './lib/state';
 export {
   isFunction,
   coerceArray,
