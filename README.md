@@ -2,50 +2,74 @@
  <img width="20%" height="20%" src="elf.png">
 </p>
 
-> A Tiny Reactive Store with Magical Powers
+> A Tiny Reactive Store with Magical Powers (wip)
 
-Elf is a reactive immutable state management solution built on top of RxJS. It uses custom RxJS operators to query the state and pure functions to update it.
+[comment]: <> (Elf is a reactive immutable state management solution built on top of RxJS. It uses custom RxJS operators to query the state and pure functions to update it.)
 
-Elf encourages simplicity. It eases the hassle of creating boilerplate code and comes with robust tools, suitable for both experienced and inexperienced developers.
+[comment]: <> (Elf encourages simplicity. It eases the hassle of creating boilerplate code and comes with robust tools, suitable for both experienced and inexperienced developers.)
 
-[![@ngneat/elf](https://github.com/ngneat/elf/actions/workflows/ci.yml/badge.svg)](https://github.com/ngneat/elf/actions/workflows/ci.yml)
-[![commitizen](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square)]()
-[![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)]()
-[![coc-badge](https://img.shields.io/badge/codeof-conduct-ff69b4.svg?style=flat-square)]()
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e5079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
-[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[comment]: <> ([![@ngneat/elf]&#40;https://github.com/ngneat/elf/actions/workflows/ci.yml/badge.svg&#41;]&#40;https://github.com/ngneat/elf/actions/workflows/ci.yml&#41;)
 
-## Features
+[comment]: <> ([![commitizen]&#40;https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square&#41;]&#40;&#41;)
 
-☑️ Modular by design <br>
-☑️ Tree Shakeable & Fully Typed <br>
-☑️ CLI <br>
-☑️ First Class Entities Support<br>
-☑️ Requests Status & Cache <br>
-☑️ Persist State<br>
-☑️ State History<br>
-☑️ Pagination<br>
-☑️ Devtools
+[comment]: <> ([![PRs]&#40;https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square&#41;]&#40;&#41;)
 
-```ts
-import { Store, createState, withProps, select } from '@ngneat/elf';
+[comment]: <> ([![coc-badge]&#40;https://img.shields.io/badge/codeof-conduct-ff69b4.svg?style=flat-square&#41;]&#40;&#41;)
 
-interface AuthProps {
-  user: { id: string } | null;
-}
+[comment]: <> ([![semantic-release]&#40;https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e5079.svg?style=flat-square&#41;]&#40;https://github.com/semantic-release/semantic-release&#41;)
 
-const { state, config } = createState(withProps<AuthProps>({ user: null }));
+[comment]: <> ([![styled with prettier]&#40;https://img.shields.io/badge/styled_with-prettier-ff69b4.svg?style=flat-square&#41;]&#40;https://github.com/prettier/prettier&#41;)
 
-const authStore = new Store({ state, name, config });
+[comment]: <> (## Features)
 
-class AuthRepository {
-  user$ = authStore.pipe(select((state) => state.user));
+[comment]: <> (☑️ Modular by design <br>)
 
-  updateUser(user: AuthProps['user']) {
-    authStore.reduce((state) => ({
-      ...state,
-      user: { id: 'Elf' },
-    }));
-  }
-}
-```
+[comment]: <> (☑️ Tree Shakeable & Fully Typed <br>)
+
+[comment]: <> (☑️ CLI <br>)
+
+[comment]: <> (☑️ First Class Entities Support<br>)
+
+[comment]: <> (☑️ Requests Status & Cache <br>)
+
+[comment]: <> (☑️ Persist State<br>)
+
+[comment]: <> (☑️ State History<br>)
+
+[comment]: <> (☑️ Pagination<br>)
+
+[comment]: <> (☑️ Devtools)
+
+[comment]: <> (```ts)
+
+[comment]: <> (import { Store, createState, withProps, select } from '@ngneat/elf';)
+
+[comment]: <> (interface AuthProps {)
+
+[comment]: <> (  user: { id: string } | null;)
+
+[comment]: <> (})
+
+[comment]: <> (const { state, config } = createState&#40;withProps<AuthProps>&#40;{ user: null }&#41;&#41;;)
+
+[comment]: <> (const authStore = new Store&#40;{ state, name, config }&#41;;)
+
+[comment]: <> (class AuthRepository {)
+
+[comment]: <> (  user$ = authStore.pipe&#40;select&#40;&#40;state&#41; => state.user&#41;&#41;;)
+
+[comment]: <> (  updateUser&#40;user: AuthProps['user']&#41; {)
+
+[comment]: <> (    authStore.reduce&#40;&#40;state&#41; => &#40;{)
+
+[comment]: <> (      ...state,)
+
+[comment]: <> (      user: { id: 'Elf' },)
+
+[comment]: <> (    }&#41;&#41;;)
+
+[comment]: <> (  })
+
+[comment]: <> (})
+
+[comment]: <> (```)
