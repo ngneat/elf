@@ -1,8 +1,8 @@
 import { Store } from '@ngneat/elf';
 
-export const defaultEntitiesKey = 'entities' as const;
-export const defaultIdsKey = 'ids' as const;
-export const defaultIdKeyRef = 'idKey' as const;
+const defaultEntitiesKey = 'entities' as const;
+const defaultIdsKey = 'ids' as const;
+const defaultIdKeyRef = 'idKey' as const;
 
 export class EntitiesRef<
   EntitiesKey extends string = string,
@@ -59,7 +59,7 @@ export function withEntities<
   } = { idKey: 'id' as IdKey }
 ) {
   return {
-    state: withEntitiesFactory<
+    props: withEntitiesFactory<
       EntityState<EntityType, EntityType[IdKey]>,
       typeof defaultEntitiesRef
     >(defaultEntitiesRef),
@@ -78,7 +78,7 @@ export function withUIEntities<
   } = { idKey: 'id' as IdKey }
 ) {
   return {
-    state: withEntitiesFactory<
+    props: withEntitiesFactory<
       UIEntityState<EntityType, EntityType[IdKey]>,
       typeof UIEntitiesRef
     >(UIEntitiesRef),

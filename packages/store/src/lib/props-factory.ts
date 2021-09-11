@@ -1,20 +1,20 @@
 import { select } from './operators';
 import { OperatorFunction } from 'rxjs';
-import { EmptyConfig, State } from './state';
+import { EmptyConfig, PropsFactory } from './state';
 import { Reducer } from './store';
 import { capitalize, isFunction, isObject } from './utils';
 
 export function propsFactory<
   T,
   K extends string,
-  PropState extends { [Key in K]: T }
+  Props extends { [Key in K]: T }
 >(key: K, { initialValue, config = {} }: { initialValue: T; config?: any }) {
   const normalizedKey = capitalize(key as string);
 
   return {
     [`with${normalizedKey}`](value = initialValue) {
       return {
-        state: {
+        props: {
           [key]: value,
         },
         config,
@@ -74,19 +74,19 @@ export function propsFactory<
       | `reset${Capitalize<K>}`
       | `select${Capitalize<K>}`
       | `get${Capitalize<K>}`]: P extends `get${Capitalize<K>}`
-      ? <S extends PropState>(state: S) => T
+      ? <S extends Props>(state: S) => T
       : P extends `select${Capitalize<K>}`
-      ? <S extends PropState>() => OperatorFunction<S, T>
+      ? <S extends Props>() => OperatorFunction<S, T>
       : P extends `reset${Capitalize<K>}`
-      ? <S extends PropState>() => Reducer<S>
+      ? <S extends Props>() => Reducer<S>
       : P extends `set${Capitalize<K>}`
-      ? <S extends PropState>(value: T | ((state: S) => T)) => Reducer<S>
+      ? <S extends Props>(value: T | ((state: S) => T)) => Reducer<S>
       : P extends `update${Capitalize<K>}`
-      ? <S extends PropState>(
+      ? <S extends Props>(
           value: Partial<T> | ((state: S) => Partial<T>)
         ) => Reducer<S>
       : P extends `with${Capitalize<K>}`
-      ? (initialValue?: T) => State<PropState, EmptyConfig>
+      ? (initialValue?: T) => PropsFactory<Props, EmptyConfig>
       : any;
   };
 }

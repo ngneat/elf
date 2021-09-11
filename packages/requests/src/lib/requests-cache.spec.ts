@@ -38,9 +38,11 @@ describe('requestsCache', () => {
         },
       })
     );
+
     expect(store.query(getRequestCache(requestKey))).toStrictEqual({
       value: 'partial',
     });
+
     expect(spy).toHaveBeenCalledWith({
       value: 'partial',
     });
@@ -53,11 +55,12 @@ describe('requestsCache', () => {
       })
     );
 
-    // Updating a different key should not cause emission
+    // // Updating a different key should not cause emission
     expect(spy).toHaveBeenCalledTimes(2);
 
+    // It's partial not full
     store.pipe(selectIsRequestCached(requestKey)).subscribe((v) => {
-      expect(v).toBeTruthy();
+      expect(v).toBeFalsy();
     });
 
     // It's partial not full

@@ -1,17 +1,17 @@
 import { createState, Store } from '@ngneat/elf';
-import { createTodo, Todo } from '@ngneat/elf-mocks';
-import { tap } from 'rxjs/operators';
+import { createTodo, Todo, UITodo } from '@ngneat/elf-mocks';
 import { selectAll, selectEntities } from './all.query';
 import { UIEntitiesRef, withEntities, withUIEntities } from './entity.state';
 import { intersectEntities } from './intersect';
 import { addEntities } from './add.mutation';
 import { updateEntities } from './update.mutation';
+import { expectTypeOf } from 'expect-type';
 
 describe('intersectEntities', () => {
   it('should return intersection of ui and model', () => {
     const { state, config } = createState(
       withEntities<Todo>(),
-      withUIEntities<{ id: Todo['id']; open: boolean }>()
+      withUIEntities<UITodo>()
     );
 
     const store = new Store({ state, name: 'todos', config });
@@ -22,15 +22,10 @@ describe('intersectEntities', () => {
         entities: store.pipe(selectAll()),
         UIEntities: store.pipe(selectEntities({ ref: UIEntitiesRef })),
       })
-      .pipe(
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        tap((v) => {
-          //
-        }),
-        intersectEntities()
-      )
+      .pipe(intersectEntities())
       .subscribe((v) => {
         spy(v);
+        expectTypeOf(v).toEqualTypeOf<Array<Todo & UITodo>>();
       });
 
     expect(spy).toHaveBeenCalledTimes(1);

@@ -5,14 +5,18 @@ const darkCodeTheme = require('prism-react-renderer/themes/oceanicNext');
 module.exports = {
   title: 'Elf | A tiny reactive store with magical powers',
   tagline: 'A Tiny Reactive Store with Magical Powers',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  baseUrl: '/elf/',
+  url: 'https://ngneat.github.io',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'ngneat',
   projectName: 'elf',
   themeConfig: {
+    algolia: {
+      apiKey: '129bed74e0b4d728358bf7b123274c18',
+      indexName: 'elf',
+    },
     navbar: {
       title: 'Elf',
       logo: {
@@ -49,16 +53,12 @@ module.exports = {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              label: 'Discussions',
+              href: 'https://github.com/ngneat/elf/discussions',
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
+              href: 'https://twitter.com/NetanelBasal',
             },
           ],
         },
@@ -67,26 +67,27 @@ module.exports = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/ngneat/elf',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Elf, Inc.`,
     },
     prism: {
       theme: lightCodeTheme,
       darkTheme: darkCodeTheme,
     },
   },
+
   presets: [
     [
       '@docusaurus/preset-classic',
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/',
+          editUrl:
+            'https://github.com/ngneat/elf/docusaurus/edit/main/website/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

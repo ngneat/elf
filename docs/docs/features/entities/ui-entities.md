@@ -7,12 +7,18 @@ When used in conjunction with `withEntities` this can be used to store additiona
 import { createState, Store } from '@ngneat/elf';
 import { withEntities, withUIEntities } from '@ngneat/elf-entities';
 
-interface TodoUI { id: number; open: boolean };
-interface Todo { id: number; name: string; }
+interface TodoUI {
+  id: number;
+  open: boolean;
+}
+interface Todo {
+  id: number;
+  name: string;
+}
 
 const { state, config } = createState(
-  withEntities<Todo>(),  
-  withUIEntities<TodoUI>()  
+  withEntities<Todo>(),
+  withUIEntities<TodoUI>()
 );
 
 const todosStore = new Store({ name: 'todos', state, config });
@@ -26,16 +32,21 @@ import { addEntities, UIEntitiesRef, selectEntity } from '@ngneat/elf-entities';
 
 todosStore.reduce(
   addEntities({ id: 1, name: 'foo' }),
-  addEntities({ id: 1, open: true }, { ref: UIEntitiesRef })  
-)
+  addEntities({ id: 1, open: true }, { ref: UIEntitiesRef })
+);
 
-uiEntity$ = todosStore.pipe(selectEntity(1, { ref: UIEntitiesRef } ))
+uiEntity$ = todosStore.pipe(selectEntity(1, { ref: UIEntitiesRef }));
 ```
 
 We can use the `intersectEntities()` operator that returns a combined collection of the entities and their corresponding `UIEntities`:
 
 ```ts
-import { intersectEntities, selectAll, selectEntities } from '@ngneat/elf-entities';
+import {
+  intersectEntities,
+  selectAll,
+  selectEntities,
+  UIEntitiesRef,
+} from '@ngneat/elf-entities';
 
 todos$ = todosStore
   .combine({

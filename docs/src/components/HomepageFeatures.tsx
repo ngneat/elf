@@ -17,7 +17,7 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     title: 'Modular by design',
-    image: '/img/modular.png',
+    image: 'img/modular.png',
     description: (
       <>
         Build multiple stores and let your bundler code split them automatically
@@ -26,22 +26,22 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'Tree Shakeable & Fully Typed',
-    image: '/img/entities.png',
+    image: 'img/entities.png',
     description: <>Anything you don't use won't become part of your bundle</>,
   },
   {
     title: 'CLI',
-    image: '/img/entities.png',
+    image: 'img/entities.png',
     description: <>A fast and efficient way to build up your stores</>,
   },
   {
     title: 'First Class Entities Support',
-    image: '/img/entities.png',
+    image: 'img/entities.png',
     description: <>Simply and easily manage entities in your store</>,
   },
   {
     title: 'Requests Status & Cache',
-    image: '/img/requests.png',
+    image: 'img/requests.png',
     description: (
       <>
         Monitor server requests and cache them, preventing redundant API calls
@@ -50,14 +50,14 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'Persist State',
-    image: '/img/persist.png',
+    image: 'img/persist.png',
     description: (
       <>Persist the store's state, offering a seamless user experience</>
     ),
   },
   {
     title: 'State History',
-    image: '/img/history.png',
+    image: 'img/history.png',
     description: (
       <>
         Save the history fo the store's state, for easy undo/redo functionality
@@ -66,12 +66,12 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'Pagination',
-    image: '/img/devtools.png',
+    image: 'img/devtools.png',
     description: <>Get built-in support for managing pagination in the app</>,
   },
   {
     title: 'Devtools',
-    image: '/img/devtools.png',
+    image: 'img/devtools.png',
     description: (
       <>
         Elf hooks into Redux devtools to give you an enhanced development

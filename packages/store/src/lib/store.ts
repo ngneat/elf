@@ -44,11 +44,9 @@ export class Store<
 
   combine<O extends Record<string, Observable<any>>>(
     observables: O
-  ): Observable<
-    {
-      [P in keyof O]: O[P] extends Observable<infer R> ? R : never;
-    }
-  > {
+  ): Observable<{
+    [P in keyof O]: O[P] extends Observable<infer R> ? R : never;
+  }> {
     let hasChange = true;
     const buffer: Record<string, any> = {};
 
@@ -83,22 +81,15 @@ export class Store<
     removeStore(this);
   }
 
-  getValue(): State {
-    throw new Error(`Use the state getter`);
+  next(value: State) {
+    this.reduce(() => value);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  next(_: State) {
-    throw new Error(`Using next() isn't allowed`);
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  error() {}
 
-  error() {
-    throw new Error(`Using error() isn't allowed`);
-  }
-
-  complete() {
-    throw new Error(`Using complete() isn't allowed`);
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  complete() {}
 }
 
 export type StoreValue<T extends Store> = T['state'];

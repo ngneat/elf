@@ -6,10 +6,10 @@ import { isObject } from './utils';
 export function propsArrayFactory<
   T extends any[],
   K extends string,
-  PropState extends { [Key in K]: T }
+  Props extends { [Key in K]: T }
 >(key: K, options: { initialValue: T; config?: any; idKey?: keyof T[0] }) {
   const normalizedKey = capitalize(key as string);
-  const base = propsFactory<T, K, PropState>(key, options);
+  const base = propsFactory<T, K, Props>(key, options);
 
   return {
     ...base,
@@ -37,19 +37,18 @@ export function propsArrayFactory<
         };
       };
     },
-  } as unknown as typeof base &
-    {
-      [P in
-        | `remove${Capitalize<K>}`
-        | `add${Capitalize<K>}`
-        | `toggle${Capitalize<K>}`]: P extends `toggle${Capitalize<K>}`
-        ? <S extends PropState>(value: T[0]) => Reducer<S>
-        : P extends `add${Capitalize<K>}`
-        ? <S extends PropState>(value: T[0]) => Reducer<S>
-        : P extends `remove${Capitalize<K>}`
-        ? <S extends PropState>(value: T[0]) => Reducer<S>
-        : never;
-    };
+  } as unknown as typeof base & {
+    [P in
+      | `remove${Capitalize<K>}`
+      | `add${Capitalize<K>}`
+      | `toggle${Capitalize<K>}`]: P extends `toggle${Capitalize<K>}`
+      ? <S extends Props>(value: T[0]) => Reducer<S>
+      : P extends `add${Capitalize<K>}`
+      ? <S extends Props>(value: T[0]) => Reducer<S>
+      : P extends `remove${Capitalize<K>}`
+      ? <S extends Props>(value: T[0]) => Reducer<S>
+      : never;
+  };
 }
 
 function arrayAdd<T extends any[]>(arr: T, item: T[0]): T {

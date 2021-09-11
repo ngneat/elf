@@ -7,26 +7,29 @@ type Merge<State extends any[], Key extends PropertyKey> = UnionToIntersection<
   State[number][Key]
 >;
 
-export type State<State, Config> = { state: State; config: Config };
+export type PropsFactory<Props, Config> = { props: Props; config: Config };
 export type EmptyConfig = Record<string, any>;
 
-export function createState<S extends State<any, any>[]>(
-  ...state: S
-): { state: Merge<S, 'state'>; config: Merge<S, 'config'> } {
-  return state.reduce(
+export function createState<S extends PropsFactory<any, any>[]>(
+  ...propsFactories: S
+): { state: Merge<S, 'props'>; config: Merge<S, 'config'> } {
+  return propsFactories.reduce(
     (acc, current) => {
       acc.config = {
-        ...acc.config,
+        ...(acc.config as Record<any, any>),
         ...current.config,
       };
 
       acc.state = {
-        ...acc.state,
-        ...current.state,
+        ...(acc.state as Record<any, any>),
+        ...current.props,
       };
 
       return acc;
     },
-    { config: {}, state: {} }
+    { config: {}, state: {} } as {
+      state: Merge<S, 'props'>;
+      config: Merge<S, 'config'>;
+    }
   );
 }

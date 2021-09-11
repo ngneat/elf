@@ -34,14 +34,13 @@
     "ng": {
       "tags": []
     },
-    "ng-e2e": {
-      "tags": [],
-      "implicitDependencies": ["ng"]
-    },
     "pagination": {
       "tags": []
     },
     "persist-state": {
+      "tags": []
+    },
+    "react": {
       "tags": []
     },
     "requests": {
