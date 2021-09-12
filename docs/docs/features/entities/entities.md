@@ -13,17 +13,17 @@ npm i @ngneat/elf-entities
 To use this feature, provides the `withEntities` props factory function to `createState`:
 
 ```ts
-import {createState, Store} from '@ngneat/elf';
-import {addEntities, withEntities} from '@ngneat/elf-entities';
+import { createState, Store } from '@ngneat/elf';
+import { addEntities, withEntities } from '@ngneat/elf-entities';
 
 interface Todo {
   id: number;
   label: string;
 }
 
-const {state, config} = createState(withEntities<Todo>());
+const { state, config } = createState(withEntities<Todo>());
 
-const todosStore = new Store({name: 'todos', state, config});
+const todosStore = new Store({ name: 'todos', state, config });
 ```
 
 This will allow you to use the following ready-made mutations and queries:
@@ -35,7 +35,7 @@ This will allow you to use the following ready-made mutations and queries:
 Select the entire store's entity collection:
 
 ```ts
-import {selectAll} from '@ngneat/elf-entities';
+import { selectAll } from '@ngneat/elf-entities';
 
 const todos$ = todosStore.pipe(selectAll());
 ```
@@ -51,7 +51,8 @@ const titles$ = todosStore.pipe(
   selectAllApply({
     mapEntity: (e) => e.title,
     filterEntity: (e) => e.completed,
-  }));
+  })
+);
 ```
 
 In the above example, it'll first apply the `filter` and then the `map` function.
@@ -61,7 +62,7 @@ In the above example, it'll first apply the `filter` and then the `map` function
 Select the entire store's entity collection as object:
 
 ```ts
-import {selectEntities} from '@ngneat/elf-entities';
+import { selectEntities } from '@ngneat/elf-entities';
 
 const todos$ = todosStore.pipe(selectEntities());
 ```
@@ -71,11 +72,11 @@ const todos$ = todosStore.pipe(selectEntities());
 Select an entity or a slice of an entity:
 
 ```ts
-import {selectEntity} from '@ngneat/elf-entities';
+import { selectEntity } from '@ngneat/elf-entities';
 
 const todo$ = todosStore.pipe(selectEntity(id));
-const title$ = todosStore.pipe(selectEntity(id, {pluck: 'title'}));
-const title$ = todosStore.pipe(selectEntity(id, {pluck: (e) => e.title}));
+const title$ = todosStore.pipe(selectEntity(id, { pluck: 'title' }));
+const title$ = todosStore.pipe(selectEntity(id, { pluck: (e) => e.title }));
 ```
 
 #### `selectMany`
@@ -83,11 +84,11 @@ const title$ = todosStore.pipe(selectEntity(id, {pluck: (e) => e.title}));
 Select multiple entities from the store:
 
 ```ts
-import {selectMany} from '@ngneat/elf-entities';
+import { selectMany } from '@ngneat/elf-entities';
 
 const todos$ = todosStore.pipe(selectMany([id, id]));
-const titles$ = todosStore.pipe(selectMany(id, {pluck: 'title'}));
-const titles$ = todosStore.pipe(selectMany(id, {pluck: (e) => e.title}));
+const titles$ = todosStore.pipe(selectMany(id, { pluck: 'title' }));
+const titles$ = todosStore.pipe(selectMany(id, { pluck: (e) => e.title }));
 ```
 
 #### `selectFirst`
@@ -95,7 +96,7 @@ const titles$ = todosStore.pipe(selectMany(id, {pluck: (e) => e.title}));
 Select the first entity from the store:
 
 ```ts
-import {selectFirst} from '@ngneat/elf-entities';
+import { selectFirst } from '@ngneat/elf-entities';
 
 const first$ = todosStore.pipe(selectFirst());
 ```
@@ -105,7 +106,7 @@ const first$ = todosStore.pipe(selectFirst());
 Select the last entity from the store:
 
 ```ts
-import {selectLast} from '@ngneat/elf-entities';
+import { selectLast } from '@ngneat/elf-entities';
 
 const last$ = todosStore.pipe(selectLast());
 ```
@@ -115,7 +116,7 @@ const last$ = todosStore.pipe(selectLast());
 Select the store's entity collection size:
 
 ```ts
-import {selectEntitiesCount} from '@ngneat/elf-entities';
+import { selectEntitiesCount } from '@ngneat/elf-entities';
 
 const count$ = todosStore.pipe(selectEntitiesCount());
 ```
@@ -125,7 +126,7 @@ const count$ = todosStore.pipe(selectEntitiesCount());
 Select the store's entity collection size:
 
 ```ts
-import {selectEntitiesCountByPredicate} from '@ngneat/elf-entities';
+import { selectEntitiesCountByPredicate } from '@ngneat/elf-entities';
 
 const count$ = todosStore.pipe(
   selectEntitiesCountByPredicate((entity) => entity.completed)
@@ -137,7 +138,7 @@ const count$ = todosStore.pipe(
 Get an entity by id:
 
 ```ts
-import {getEntity} from '@ngneat/elf-entities';
+import { getEntity } from '@ngneat/elf-entities';
 
 const todo = todosStore.query(getEntity(id));
 ```
@@ -147,7 +148,7 @@ const todo = todosStore.query(getEntity(id));
 Returns whether an entity exists:
 
 ```ts
-import {hasEntity} from '@ngneat/elf-entities';
+import { hasEntity } from '@ngneat/elf-entities';
 
 if (todosStore.query(hasEntity(id))) {
 }
@@ -160,7 +161,7 @@ if (todosStore.query(hasEntity(id))) {
 Replace current collection with the provided collection:
 
 ```ts
-import {setEntities} from '@ngneat/elf-entities';
+import { setEntities } from '@ngneat/elf-entities';
 
 todosStore.reduce(setEntities([todo, todo]));
 ```
@@ -170,11 +171,11 @@ todosStore.reduce(setEntities([todo, todo]));
 Add an entity or entities to the store:
 
 ```ts
-import {addEntities} from '@ngneat/elf-entities';
+import { addEntities } from '@ngneat/elf-entities';
 
 todosStore.reduce(addEntities(todo));
 todosStore.reduce(addEntities([todo, todo]));
-todosStore.reduce(addEntities([todo, todo], {prepend: true}));
+todosStore.reduce(addEntities([todo, todo], { prepend: true }));
 ```
 
 #### `addEntitiesFifo`
@@ -182,9 +183,9 @@ todosStore.reduce(addEntities([todo, todo], {prepend: true}));
 Add an entity or entities to the store using fifo strategy:
 
 ```ts
-import {addEntitiesFifo} from '@ngneat/elf-entities';
+import { addEntitiesFifo } from '@ngneat/elf-entities';
 
-todosStore.reduce(addEntitiesFifo([entity, entity]), {limit: 3});
+todosStore.reduce(addEntitiesFifo([entity, entity]), { limit: 3 });
 ```
 
 #### `updateEntities`
@@ -192,11 +193,11 @@ todosStore.reduce(addEntitiesFifo([entity, entity]), {limit: 3});
 Update an entity or entities in the store:
 
 ```ts
-import {updateEntities} from '@ngneat/elf-entities';
+import { updateEntities } from '@ngneat/elf-entities';
 
-todosStore.reduce(updateEntities(id, {name}));
-todosStore.reduce(updateEntities(id, (entity) => ({...entity, name})));
-todosStore.reduce(updateEntities([id, id, id], {open: true}));
+todosStore.reduce(updateEntities(id, { name }));
+todosStore.reduce(updateEntities(id, (entity) => ({ ...entity, name })));
+todosStore.reduce(updateEntities([id, id, id], { open: true }));
 ```
 
 #### `deleteEntities`
@@ -204,7 +205,7 @@ todosStore.reduce(updateEntities([id, id, id], {open: true}));
 Delete an entity or entities from the store:
 
 ```ts
-import {deleteEntities} from '@ngneat/elf-entities';
+import { deleteEntities } from '@ngneat/elf-entities';
 
 todosStore.reduce(deleteEntities(id));
 todosStore.reduce(deleteEntities([id, id]));
@@ -215,7 +216,7 @@ todosStore.reduce(deleteEntities([id, id]));
 Delete an entity or entities from the store:
 
 ```ts
-import {deleteEntitiesByPredicate} from '@ngneat/elf-entities';
+import { deleteEntitiesByPredicate } from '@ngneat/elf-entities';
 
 todosStore.reduce(deleteEntitiesByPredicate((e) => !!e.completed));
 ```
@@ -225,7 +226,7 @@ todosStore.reduce(deleteEntitiesByPredicate((e) => !!e.completed));
 Delete all entities from the store:
 
 ```ts
-import {deleteAllEntities} from '@ngneat/elf-entities';
+import { deleteAllEntities } from '@ngneat/elf-entities';
 
 todosStore.reduce(deleteAllEntities());
 ```
@@ -236,17 +237,17 @@ By default, Elf takes the `id` key from the entity `id` field. To change it, you
 the `withEntities` function:
 
 ```ts
-import {createState, Store} from '@ngneat/elf';
-import {addEntities} from '@ngneat/elf-entities';
+import { createState, Store } from '@ngneat/elf';
+import { addEntities } from '@ngneat/elf-entities';
 
 interface Todo {
   _id: number;
   label: string;
 }
 
-const {state, config} = createState(
-  withEntities<Todo, '_id'>({idKey: '_id'})
+const { state, config } = createState(
+  withEntities<Todo, '_id'>({ idKey: '_id' })
 );
 
-const todosStore = new Store({name: 'todos', state, config});
+const todosStore = new Store({ name: 'todos', state, config });
 ```
