@@ -45,7 +45,7 @@ const todos$ = todosStore.pipe(selectAll());
 Select the entire store's entity collection, and apply a `filter/map`:
 
 ```ts
-import {selectAllApply} from '@ngneat/elf-entities';
+import { selectAllApply } from '@ngneat/elf-entities';
 
 const titles$ = todosStore.pipe(
   selectAllApply({
