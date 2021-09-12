@@ -13,23 +13,12 @@ export type EmptyConfig = Record<string, any>;
 export function createState<S extends PropsFactory<any, any>[]>(
   ...propsFactories: S
 ): { state: Merge<S, 'props'>; config: Merge<S, 'config'> } {
-  return propsFactories.reduce(
-    (acc, current) => {
-      acc.config = {
-        ...(acc.config as Record<any, any>),
-        ...current.config,
-      };
+  const result = { config: {}, state: {} };
 
-      acc.state = {
-        ...(acc.state as Record<any, any>),
-        ...current.props,
-      };
+  for (const { config, props } of propsFactories) {
+    Object.assign(result.config, config);
+    Object.assign(result.state, props);
+  }
 
-      return acc;
-    },
-    { config: {}, state: {} } as {
-      state: Merge<S, 'props'>;
-      config: Merge<S, 'config'>;
-    }
-  );
+  return result as { state: Merge<S, 'props'>; config: Merge<S, 'config'> };
 }
