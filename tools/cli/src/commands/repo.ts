@@ -7,7 +7,7 @@ import { dash } from '../utils';
 import chalk from 'chalk';
 
 export default class Repo extends Command {
-  static description = 'describe the command here';
+  static description = 'Create a repository';
 
   static examples = [];
 
