@@ -13,6 +13,7 @@ export interface GlobalConfig {
   cli?: {
     repoTemplate?: Options['template'];
     idKey?: Options['idKey'];
+    repoLibrary?: string;
   };
 }
 

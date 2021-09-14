@@ -2,12 +2,12 @@ import { Command, flags } from '@oclif/command';
 
 import { prompt } from '../prompt';
 import { createRepo } from '../builders/repo-builder';
-import { writeFileSync } from 'fs-extra';
+import { outputFileSync } from 'fs-extra';
 import { dash } from '../utils';
-import chalk from 'chalk';
 import { cosmiconfigSync } from 'cosmiconfig';
 import { DEFAULT_ID_KEY, GlobalConfig } from '../types';
-
+import { resolve } from 'path';
+import chalk from 'chalk';
 export default class Repo extends Command {
   static description = 'Create a repository';
 
@@ -24,12 +24,16 @@ export default class Repo extends Command {
     const { flags } = this.parse(Repo);
 
     const options = await prompt();
-    let mergedOptions = options;
-
-    const path = `${options.path}/${dash(options.storeName)}.repository.ts`;
 
     const globalConfig: GlobalConfig | undefined =
       cosmiconfigSync('elf').search()?.config;
+
+    let mergedOptions = options;
+    const path = resolve(
+      options.path,
+      globalConfig?.cli?.repoLibrary ?? '',
+      `${dash(options.storeName)}.repository.ts`
+    );
 
     if (globalConfig) {
       mergedOptions = {
@@ -56,7 +60,7 @@ export default class Repo extends Command {
       return;
     }
 
-    writeFileSync(path, repo);
+    outputFileSync(path, repo);
     console.log('\n', chalk.greenBright(`CREATED`), `${path}\n`);
   }
 }
