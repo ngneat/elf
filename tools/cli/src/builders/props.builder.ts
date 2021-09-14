@@ -24,9 +24,16 @@ export class PropsBuilder extends FeatureBuilder {
   run() {
     this.addImport(['withProps']);
 
-    this.sourceFile.insertInterface(this.getLastImportIndex() + 1, {
-      name: `${capitalize(this.storeName)}Props`,
-      isExported: true,
-    });
+    const decl = this.sourceFile.insertInterface(
+      this.getLastImportIndex() + 1,
+      {
+        name: `${capitalize(this.storeName)}Props`,
+        isExported: true,
+      }
+    );
+
+    decl.replaceWithText(
+      `// eslint-disable-next-line @typescript-eslint/no-empty-interface\n${decl.getText()}`
+    );
   }
 }

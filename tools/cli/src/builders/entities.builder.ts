@@ -1,5 +1,5 @@
 import { FeatureBuilder } from './feature-builder';
-import { Features } from '../types';
+import { DEFAULT_ID_KEY, Features } from '../types';
 import { StructureKind } from 'ts-morph';
 import { camelize, capitalize } from '../utils';
 import { factory } from 'typescript';
@@ -17,21 +17,25 @@ export class EntitiesBuilder extends FeatureBuilder {
       ),
     ];
 
-    if (this.idKey !== 'id') {
+    const notDefaultId = this.idKey !== DEFAULT_ID_KEY;
+
+    if (notDefaultId) {
       type.push(
-        factory.createLiteralTypeNode(factory.createStringLiteral('_id', true))
+        factory.createLiteralTypeNode(
+          factory.createStringLiteral(this.idKey, true)
+        )
       );
     }
 
     let props: any[] = [];
 
-    if (this.idKey !== 'id') {
+    if (notDefaultId) {
       props = [
         factory.createObjectLiteralExpression(
           [
             factory.createPropertyAssignment(
               factory.createIdentifier('idKey'),
-              factory.createStringLiteral('_id', true)
+              factory.createStringLiteral(this.idKey, true)
             ),
           ],
           false

@@ -4,8 +4,16 @@ export interface Options {
   crud: Array<
     'addEntities' | 'updateEntities' | 'deleteEntities' | 'setEntities'
   >;
-  idKey: string;
   path: string;
+  idKey: string;
+  template?: 'class' | 'functions';
+}
+
+export interface GlobalConfig {
+  cli?: {
+    repoTemplate?: Options['template'];
+    idKey?: Options['idKey'];
+  };
 }
 
 export type Features = typeof baseFeatures[number]['value'];
@@ -34,3 +42,5 @@ export const baseFeatures = [
     value: 'withRequestsStatus',
   },
 ] as const;
+
+export const DEFAULT_ID_KEY = 'id';

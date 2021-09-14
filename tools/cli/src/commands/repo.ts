@@ -5,6 +5,8 @@ import { createRepo } from '../builders/repo-builder';
 import { writeFileSync } from 'fs-extra';
 import { dash } from '../utils';
 import chalk from 'chalk';
+import { cosmiconfigSync } from 'cosmiconfig';
+import { DEFAULT_ID_KEY, GlobalConfig } from '../types';
 
 export default class Repo extends Command {
   static description = 'Create a repository';
@@ -19,12 +21,25 @@ export default class Repo extends Command {
   static args = [];
 
   async run() {
-    const { args, flags } = this.parse(Repo);
+    const { flags } = this.parse(Repo);
 
     const options = await prompt();
+    let mergedOptions = options;
 
     const path = `${options.path}/${dash(options.storeName)}.repository.ts`;
-    const repo = createRepo(options);
+
+    const globalConfig: GlobalConfig | undefined =
+      cosmiconfigSync('elf').search()?.config;
+
+    if (globalConfig) {
+      mergedOptions = {
+        ...options,
+        template: globalConfig.cli?.repoTemplate ?? 'class',
+        idKey: globalConfig.cli?.idKey ?? DEFAULT_ID_KEY,
+      };
+    }
+
+    const repo = createRepo(mergedOptions);
 
     if (flags['dry-run']) {
       console.log('\n');
@@ -42,5 +57,6 @@ export default class Repo extends Command {
     }
 
     writeFileSync(path, repo);
+    console.log('\n', chalk.greenBright(`CREATED`), `${path}\n`);
   }
 }

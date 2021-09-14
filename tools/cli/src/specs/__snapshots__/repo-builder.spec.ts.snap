@@ -13,6 +13,7 @@ export interface Todo {
   id: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TodosProps {
 }
 
@@ -52,6 +53,64 @@ export class TodosRepository {
   updateRequestStatus(state: StatusState) {
     store.reduce(updateRequestsStatus({ key: state }));
   }
+}
+"
+`;
+
+exports[`Repo Builder should support function template: all 1`] = `
+"import { Store, createState, withProps } from '@ngneat/elf';
+import { withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
+import { withRequestsCache, updateRequestsCache, CacheState, withRequestsStatus, selectRequestStatus, updateRequestsStatus, StatusState } from '@ngneat/elf-requests';
+
+export interface TodoUI {
+  id: number;
+}
+
+export interface Todo {
+  id: number;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface TodosProps {
+}
+
+const { state, config } = createState(withProps<TodosProps>({}), withEntities<Todo>(), withUIEntities<TodoUI>(), withActiveId(), withActiveIds(), withRequestsCache(), withRequestsStatus());
+const store = new Store({ name: 'todos', state, config });
+
+export const status$ = store.pipe(selectRequestStatus('key'));
+
+export const activeTodos$ = store.pipe(selectActiveEntities());
+
+export const activeTodo$ = store.pipe(selectActiveEntity());
+
+export const todos$ = store.pipe(selectAll());
+
+export function deleteTodo(id: Todo['id']) {
+  store.reduce(deleteEntities(id));
+}
+
+export function addTodo(todo: Todo) {
+  store.reduce(addEntities(todo));
+}
+
+export function updateTodo(id: Todo['id'], todo: Partial<Todo>) {
+  store.reduce(updateEntities(id, todo));
+}
+
+export function setActiveId(id: Todo['id']) {
+  store.reduce(setActiveId(id));
+}
+
+export function toggleActiveIds(ids: Array<Todo['id']>) {
+  store.reduce(toggleActiveIds(ids));
+}
+
+export function updateRequestCache(state: CacheState) {
+  store.reduce(updateRequestsCache({ key: state }));
+}
+
+export function updateRequestStatus(state: StatusState) {
+  store.reduce(updateRequestsStatus({ key: state }));
 }
 "
 `;
@@ -151,6 +210,7 @@ export class TodosRepository {
 exports[`Repo Builder withProps: withProps 1`] = `
 "import { Store, createState, withProps } from '@ngneat/elf';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TodosProps {
 }
 

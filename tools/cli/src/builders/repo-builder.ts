@@ -1,7 +1,9 @@
 import {
+  ClassDeclaration,
   printNode,
   Project,
   QuoteKind,
+  SourceFile,
   StructureKind,
   VariableDeclarationKind,
 } from 'ts-morph';
@@ -30,7 +32,7 @@ export function createRepo(options: Options) {
 
   const sourceFile = project.createSourceFile(`repo.ts`, ``);
 
-  const repoDecl = sourceFile.addClass({
+  const repoClassDec = sourceFile.addClass({
     name: `${capitalize(storeName)}Repository`,
     isExported: true,
   });
@@ -58,7 +60,7 @@ export function createRepo(options: Options) {
   for (const feature of options.features) {
     for (const builder of builders) {
       if (builder.supports(feature)) {
-        const instance = new builder(sourceFile, repoDecl, options);
+        const instance = new builder(sourceFile, repoClassDec, options);
         instance.run();
         propsFactories.push(instance.getPropsFactory());
       }
@@ -71,7 +73,7 @@ export function createRepo(options: Options) {
     propsFactories
   );
 
-  const repoPosition = repoDecl.getChildIndex();
+  const repoPosition = repoClassDec.getChildIndex();
 
   sourceFile.insertVariableStatement(repoPosition, {
     declarationKind: VariableDeclarationKind.Const,
@@ -95,7 +97,29 @@ export function createRepo(options: Options) {
     ],
   });
 
+  if (options.template === 'functions') {
+    toFunctions(sourceFile, repoClassDec);
+  }
+
   sourceFile.formatText({ indentSize: 2 });
 
   return sourceFile.getText();
+}
+
+function toFunctions(sourceFile: SourceFile, classDec: ClassDeclaration) {
+  const exported: string[] = [];
+
+  classDec?.getProperties().forEach((p) => {
+    exported.push(`export const ${p.getText()}`);
+  });
+
+  classDec?.getMethods().forEach((m) => {
+    exported.push(`export function ${m.getText()}`);
+  });
+
+  classDec?.remove();
+
+  sourceFile.replaceWithText(
+    `${sourceFile.getText()}\n ${exported.join('\n\n')}`
+  );
 }

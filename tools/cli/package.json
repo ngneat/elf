@@ -12,6 +12,7 @@
     "@oclif/config": "1.17.0",
     "@oclif/plugin-help": "3.2.2",
     "chalk": "4.1.2",
+    "cosmiconfig": "7.0.1",
     "detect-package-manager": "1.1.0",
     "fs-extra": "8.1.0",
     "inquirer": "8.1.1",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@oclif/dev-cli": "1.26.0",
     "@types/chalk": "2.2.0",
+    "@types/cosmiconfig": "6.0.0",
     "@types/fs-extra": "9.0.11",
     "@types/inquirer": "7.3.2",
     "@types/jest": "26.0.23",
