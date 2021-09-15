@@ -1,6 +1,6 @@
 export { persistState } from './lib/persist-state';
 export {
   StateStorage,
-  useLocalStorage,
-  useSessionStorage,
+  localStorageStrategy,
+  sessionStorageStrategy,
 } from './lib/storage';

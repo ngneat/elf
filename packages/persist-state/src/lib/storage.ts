@@ -29,5 +29,5 @@ function createStorage(storage: Storage): StateStorage {
   };
 }
 
-export const useLocalStorage = createStorage(localStorage);
-export const useSessionStorage = createStorage(sessionStorage);
+export const localStorageStrategy = createStorage(localStorage);
+export const sessionStorageStrategy = createStorage(sessionStorage);
