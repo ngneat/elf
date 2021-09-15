@@ -1,3 +1,5 @@
+import { SourceFile } from 'ts-morph';
+
 export interface Options {
   storeName: string;
   features: Array<Features>;
@@ -7,6 +9,15 @@ export interface Options {
   path: string;
   idKey: string;
   template?: 'class' | 'functions';
+  hooks?: Array<Hooks>;
+}
+
+export interface Hooks {
+  post?(options: {
+    sourceFile: SourceFile;
+    options: Omit<Options, 'hooks'>;
+    repoName: string;
+  }): void;
 }
 
 export interface GlobalConfig {
@@ -14,6 +25,7 @@ export interface GlobalConfig {
     repoTemplate?: Options['template'];
     idKey?: Options['idKey'];
     repoLibrary?: string;
+    plugins?: string[];
   };
 }
 

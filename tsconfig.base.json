@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@ngneat/elf": ["packages/store/src/index.ts"],
+      "@ngneat/elf-cli-ng": ["packages/cli-ng/src/index.ts"],
       "@ngneat/elf-devtools": ["packages/devtools/src/index.ts"],
       "@ngneat/elf-entities": ["packages/entities/src/index.ts"],
       "@ngneat/elf-mocks": ["packages/mocks/src/index.ts"],

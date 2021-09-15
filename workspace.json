@@ -34,6 +34,30 @@
     }
   },
   "projects": {
+    "cli-ng": {
+      "root": "packages/cli-ng",
+      "sourceRoot": "packages/cli-ng/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/workspace:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/packages/cli-ng",
+            "main": "packages/cli-ng/src/index.ts",
+            "tsConfig": "packages/cli-ng/tsconfig.lib.json",
+            "assets": ["packages/cli-ng/*.md"]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["packages/cli-ng/**/*.ts"]
+          }
+        }
+      }
+    },
     "devtools": {
       "root": "packages/devtools",
       "sourceRoot": "packages/devtools/src",

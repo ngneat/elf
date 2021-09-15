@@ -122,7 +122,9 @@
   },
   "elf": {
     "cli": {
-      "repoTemplate": "functions"
+      "plugins": [
+        "./packages/cli-ng/src"
+      ]
     }
   }
 }

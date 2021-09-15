@@ -7,6 +7,7 @@ import { dash } from '../utils';
 import { cosmiconfigSync } from 'cosmiconfig';
 import { DEFAULT_ID_KEY, GlobalConfig } from '../types';
 import { resolve } from 'path';
+import { register } from 'ts-node';
 import chalk from 'chalk';
 export default class Repo extends Command {
   static description = 'Create a repository';
@@ -23,12 +24,26 @@ export default class Repo extends Command {
   async run() {
     const { flags } = this.parse(Repo);
 
-    const options = await prompt();
-
     const globalConfig: GlobalConfig | undefined =
       cosmiconfigSync('elf').search()?.config;
-
+    const options = await prompt();
     let mergedOptions = options;
+
+    if (globalConfig?.cli?.plugins) {
+      register({
+        transpileOnly: true,
+        compilerOptions: {
+          module: 'commonjs',
+          target: 'es5',
+        },
+      });
+
+      mergedOptions.hooks = globalConfig.cli.plugins.map((path) => {
+        return require(require.resolve(path, { paths: [process.cwd()] }))
+          .default;
+      });
+    }
+
     const path = resolve(
       options.path,
       globalConfig?.cli?.repoLibrary ?? '',

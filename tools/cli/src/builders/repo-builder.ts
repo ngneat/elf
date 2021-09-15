@@ -32,8 +32,9 @@ export function createRepo(options: Options) {
 
   const sourceFile = project.createSourceFile(`repo.ts`, ``);
 
+  const repoName = `${capitalize(storeName)}Repository`;
   const repoClassDec = sourceFile.addClass({
-    name: `${capitalize(storeName)}Repository`,
+    name: repoName,
     isExported: true,
   });
 
@@ -99,6 +100,10 @@ export function createRepo(options: Options) {
 
   if (options.template === 'functions') {
     toFunctions(sourceFile, repoClassDec);
+  }
+
+  if (options.hooks) {
+    options.hooks.forEach((h) => h.post?.({ sourceFile, repoName, options }));
   }
 
   sourceFile.formatText({ indentSize: 2 });

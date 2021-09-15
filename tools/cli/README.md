@@ -38,7 +38,7 @@ USAGE
 <!-- commands -->
 
 - [`elf help [COMMAND]`](#elf-help-command)
-- [`elf install [FILE]`](#elf-install-file)
+- [`elf install`](#elf-install)
 - [`elf repo`](#elf-repo)
 
 ## `elf help [COMMAND]`
@@ -58,25 +58,23 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
-## `elf install [FILE]`
+## `elf install`
 
-describe the command here
+Install Elf packages
 
 ```
 USAGE
-  $ elf install [FILE]
+  $ elf install
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  -h, --help  show CLI help
 ```
 
 _See code: [src/commands/install.ts](https://github.com/ngneat/elf/blob/v1.0.0/src/commands/install.ts)_
 
 ## `elf repo`
 
-describe the command here
+Create a repository
 
 ```
 USAGE
@@ -84,6 +82,7 @@ USAGE
 
 OPTIONS
   -h, --help  show CLI help
+  --dry-run
 ```
 
 _See code: [src/commands/repo.ts](https://github.com/ngneat/elf/blob/v1.0.0/src/commands/repo.ts)_
