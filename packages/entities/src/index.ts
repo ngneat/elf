@@ -10,7 +10,7 @@ export {
   updateEntities,
   updateEntitiesByPredicate,
 } from './lib/update.mutation';
-export { selectAll, selectEntities } from './lib/all.query';
+export { selectAll, selectEntities, selectAllApply } from './lib/all.query';
 export { selectEntity } from './lib/entity.query';
 export { selectFirst } from './lib/first.query';
 export { selectLast } from './lib/last.query';

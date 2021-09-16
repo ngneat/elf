@@ -1,6 +1,5 @@
 import './product.scss';
 
-
 export interface ProductProps {
   product: Product;
 }

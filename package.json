@@ -36,6 +36,7 @@
     "@angular/platform-browser": "12.2.5",
     "@angular/platform-browser-dynamic": "12.2.5",
     "@angular/router": "12.2.5",
+    "@ngneat/use-observable": "1.0.0",
     "core-js": "3.6.5",
     "immer": "9.0.2",
     "react": "17.0.2",
@@ -122,9 +123,7 @@
   },
   "elf": {
     "cli": {
-      "plugins": [
-        "./packages/cli-ng/src"
-      ]
+      "repoTemplate": "functions"
     }
   }
 }
