@@ -1,6 +1,5 @@
 import { FeatureBuilder } from './feature-builder';
 import { DEFAULT_ID_KEY, Features } from '../types';
-import { capitalize } from '../utils';
 import { factory } from 'typescript';
 
 export class UIEntitiesBuilder extends FeatureBuilder {
@@ -11,7 +10,7 @@ export class UIEntitiesBuilder extends FeatureBuilder {
   getPropsFactory() {
     const type: any[] = [
       factory.createTypeReferenceNode(
-        factory.createIdentifier(`${capitalize(this.singularName)}UI`),
+        factory.createIdentifier(`${this.storeSingularNames.className}UI`),
         undefined
       ),
     ];
@@ -53,7 +52,7 @@ export class UIEntitiesBuilder extends FeatureBuilder {
     this.addImport(['withUIEntities'], '@ngneat/elf-entities');
 
     this.sourceFile.insertInterface(this.getLastImportIndex() + 1, {
-      name: `${capitalize(this.singularName)}UI`,
+      name: `${this.storeSingularNames.className}UI`,
       isExported: true,
       properties: [
         {

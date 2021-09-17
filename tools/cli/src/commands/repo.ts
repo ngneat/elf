@@ -3,7 +3,7 @@ import { Command, flags } from '@oclif/command';
 import { prompt } from '../prompt';
 import { createRepo } from '../builders/repo-builder';
 import { outputFileSync } from 'fs-extra';
-import { dash } from '../utils';
+import { names } from '../utils';
 import { cosmiconfigSync } from 'cosmiconfig';
 import { DEFAULT_ID_KEY, GlobalConfig } from '../types';
 import { resolve } from 'path';
@@ -47,7 +47,7 @@ export default class Repo extends Command {
     const path = resolve(
       options.path,
       globalConfig?.cli?.repoLibrary ?? '',
-      `${dash(options.storeName)}.repository.ts`
+      `${names(options.storeName).fileName}.repository.ts`
     );
 
     if (globalConfig) {

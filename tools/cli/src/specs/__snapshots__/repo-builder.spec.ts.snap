@@ -75,7 +75,7 @@ export interface TodosProps {
 }
 
 const { state, config } = createState(withProps<TodosProps>({}), withEntities<Todo>(), withUIEntities<TodoUI>(), withActiveId(), withActiveIds(), withRequestsCache(), withRequestsStatus());
-const store = new Store({ name: 'todos', state, config });
+export const todosStore = new Store({ name: 'todos', state, config });
 
 export const status$ = store.pipe(selectRequestStatus('key'));
 

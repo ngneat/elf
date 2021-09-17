@@ -1,7 +1,6 @@
 import { FeatureBuilder } from './feature-builder';
 import { DEFAULT_ID_KEY, Features } from '../types';
 import { StructureKind } from 'ts-morph';
-import { camelize, capitalize } from '../utils';
 import { factory } from 'typescript';
 
 export class EntitiesBuilder extends FeatureBuilder {
@@ -12,7 +11,7 @@ export class EntitiesBuilder extends FeatureBuilder {
   getPropsFactory() {
     const type: any[] = [
       factory.createTypeReferenceNode(
-        factory.createIdentifier(capitalize(this.singularName)),
+        factory.createIdentifier(this.storeSingularNames.className),
         undefined
       ),
     ];
@@ -57,7 +56,7 @@ export class EntitiesBuilder extends FeatureBuilder {
     );
 
     this.sourceFile.insertInterface(this.getLastImportIndex() + 1, {
-      name: capitalize(this.singularName),
+      name: this.storeSingularNames.className,
       isExported: true,
       properties: [
         {
@@ -68,7 +67,7 @@ export class EntitiesBuilder extends FeatureBuilder {
     });
 
     this.repo.addMember({
-      name: `${camelize(this.storeName)}$`,
+      name: `${this.storeNames.propertyName}$`,
       kind: StructureKind.Property,
       initializer: `store.pipe(selectAll())`,
     });
@@ -79,29 +78,31 @@ export class EntitiesBuilder extends FeatureBuilder {
   setEntities() {
     this.repo.addMember({
       kind: StructureKind.Method,
-      name: `set${capitalize(this.storeName)}`,
+      name: `set${this.storeNames.className}`,
       parameters: [
         {
-          name: camelize(this.storeName),
-          type: `${capitalize(this.singularName)}[]`,
+          name: this.storeNames.propertyName,
+          type: `${this.storeSingularNames.className}[]`,
         },
       ],
-      statements: [`store.reduce(setEntities(${camelize(this.storeName)}));`],
+      statements: [
+        `store.reduce(setEntities(${this.storeNames.propertyName}));`,
+      ],
     });
   }
 
   addEntities() {
     this.repo.addMember({
       kind: StructureKind.Method,
-      name: `add${capitalize(this.singularName)}`,
+      name: `add${this.storeSingularNames.className}`,
       parameters: [
         {
-          name: camelize(this.singularName),
-          type: capitalize(this.singularName),
+          name: this.storeSingularNames.propertyName,
+          type: this.storeSingularNames.className,
         },
       ],
       statements: [
-        `store.reduce(addEntities(${camelize(this.singularName)}));`,
+        `store.reduce(addEntities(${this.storeSingularNames.propertyName}));`,
       ],
     });
   }
@@ -109,19 +110,19 @@ export class EntitiesBuilder extends FeatureBuilder {
   updateEntities() {
     this.repo.addMember({
       kind: StructureKind.Method,
-      name: `update${capitalize(this.singularName)}`,
+      name: `update${this.storeSingularNames.className}`,
       parameters: [
         {
           name: 'id',
-          type: `${capitalize(this.singularName)}['${this.idKey}']`,
+          type: `${this.storeSingularNames.className}['${this.idKey}']`,
         },
         {
-          name: camelize(this.singularName),
-          type: `Partial<${capitalize(this.singularName)}>`,
+          name: this.storeSingularNames.propertyName,
+          type: `Partial<${this.storeSingularNames.className}>`,
         },
       ],
       statements: [
-        `store.reduce(updateEntities(id, ${camelize(this.singularName)}));`,
+        `store.reduce(updateEntities(id, ${this.storeSingularNames.propertyName}));`,
       ],
     });
   }
@@ -129,11 +130,11 @@ export class EntitiesBuilder extends FeatureBuilder {
   deleteEntities() {
     this.repo.addMember({
       kind: StructureKind.Method,
-      name: `delete${capitalize(this.singularName)}`,
+      name: `delete${this.storeSingularNames.className}`,
       parameters: [
         {
           name: 'id',
-          type: `${capitalize(this.singularName)}['${this.idKey}']`,
+          type: `${this.storeSingularNames.className}['${this.idKey}']`,
         },
       ],
       statements: [`store.reduce(deleteEntities(id));`],

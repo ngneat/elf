@@ -36,6 +36,7 @@ const packages = [
   '@ngneat/elf-state-history',
   '@ngneat/elf-persist-state',
   '@ngneat/elf-pagination',
+  '@ngneat/elf-cli-ng',
 ];
 
 export async function prompt() {

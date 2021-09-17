@@ -15,11 +15,13 @@ import { UIEntitiesBuilder } from './ui-entities.builder';
 import { RequestsStatusBuilder } from './requests-status.builder';
 import { ActiveIdBuilder } from './active-id.builder';
 import { PropsBuilder } from './props.builder';
-import { camelize, capitalize } from '../utils';
 import { Options } from '../types';
+import { names } from '../utils';
 
 export function createRepo(options: Options) {
   const { storeName } = options;
+  const storeNames = names(storeName);
+  const isFunctionTpl = options.template === 'functions';
 
   const project = new Project({
     manipulationSettings: {
@@ -32,7 +34,7 @@ export function createRepo(options: Options) {
 
   const sourceFile = project.createSourceFile(`repo.ts`, ``);
 
-  const repoName = `${capitalize(storeName)}Repository`;
+  const repoName = `${storeNames.className}Repository`;
   const repoClassDec = sourceFile.addClass({
     name: repoName,
     isExported: true,
@@ -59,9 +61,9 @@ export function createRepo(options: Options) {
   const propsFactories: CallExpression[] = [];
 
   for (const feature of options.features) {
-    for (const builder of builders) {
-      if (builder.supports(feature)) {
-        const instance = new builder(sourceFile, repoClassDec, options);
+    for (const Builder of builders) {
+      if (Builder.supports(feature)) {
+        const instance = new Builder(sourceFile, repoClassDec, options);
         instance.run();
         propsFactories.push(instance.getPropsFactory());
       }
@@ -78,12 +80,11 @@ export function createRepo(options: Options) {
 
   sourceFile.insertVariableStatement(repoPosition, {
     declarationKind: VariableDeclarationKind.Const,
+    isExported: isFunctionTpl,
     declarations: [
       {
-        name: 'store',
-        initializer: `new Store({ name: '${camelize(
-          storeName
-        )}', state, config })`,
+        name: isFunctionTpl ? `${storeNames.propertyName}Store` : 'store',
+        initializer: `new Store({ name: '${storeNames.propertyName}', state, config })`,
       },
     ],
   });
@@ -98,7 +99,7 @@ export function createRepo(options: Options) {
     ],
   });
 
-  if (options.template === 'functions') {
+  if (isFunctionTpl) {
     toFunctions(sourceFile, repoClassDec);
   }
 

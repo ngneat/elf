@@ -1,6 +1,5 @@
 import { FeatureBuilder } from './feature-builder';
 import { Features } from '../types';
-import { capitalize } from '../utils';
 import { factory } from 'typescript';
 
 export class PropsBuilder extends FeatureBuilder {
@@ -13,7 +12,7 @@ export class PropsBuilder extends FeatureBuilder {
       factory.createIdentifier('withProps'),
       [
         factory.createTypeReferenceNode(
-          factory.createIdentifier(`${capitalize(this.storeName)}Props`),
+          factory.createIdentifier(`${this.storeNames.className}Props`),
           undefined
         ),
       ],
@@ -27,7 +26,7 @@ export class PropsBuilder extends FeatureBuilder {
     const decl = this.sourceFile.insertInterface(
       this.getLastImportIndex() + 1,
       {
-        name: `${capitalize(this.storeName)}Props`,
+        name: `${this.storeNames.className}Props`,
         isExported: true,
       }
     );

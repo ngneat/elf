@@ -1,7 +1,6 @@
 import { FeatureBuilder } from './feature-builder';
 import { Features } from '../types';
 import { StructureKind } from 'ts-morph';
-import { camelize, capitalize } from '../utils';
 import { factory } from 'typescript';
 
 export class ActiveIdsBuilder extends FeatureBuilder {
@@ -24,7 +23,7 @@ export class ActiveIdsBuilder extends FeatureBuilder {
     );
 
     this.repo.insertMember(0, {
-      name: `active${capitalize(camelize(this.storeName))}$`,
+      name: `active${this.storeNames.className}$`,
       kind: StructureKind.Property,
       initializer: `store.pipe(selectActiveEntities())`,
     });
@@ -35,7 +34,7 @@ export class ActiveIdsBuilder extends FeatureBuilder {
       parameters: [
         {
           name: 'ids',
-          type: `Array<${capitalize(this.singularName)}['${this.idKey}']>`,
+          type: `Array<${this.storeSingularNames.className}['${this.idKey}']>`,
         },
       ],
       statements: [`store.reduce(toggleActiveIds(ids));`],
