@@ -17,7 +17,11 @@ export function createTodo(id: number): Todo {
   };
 }
 
-export function toMatchSnapshot(expect: any, store: Store, label: string) {
+export function toMatchSnapshot(
+  expect: jest.Expect,
+  store: Store,
+  label: string
+) {
   return expect(store.state).toMatchSnapshot(label);
 }
 

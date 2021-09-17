@@ -10,6 +10,8 @@ import {
 } from './entity.state';
 import { Reducer, Store, OrArray, coerceArray, isFunction } from '@ngneat/elf';
 import { findIdsByPredicate } from './entity.utils';
+import { hasEntity } from './queries';
+import { addEntities, AddEntitiesOptions } from './add.mutation';
 
 export type UpdateFn<Entity> = Partial<Entity> | ((entity: Entity) => Entity);
 
@@ -83,7 +85,7 @@ export function updateEntitiesByPredicate<
   updater: U,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state: S, store: Store) {
+  return function reducer(state: S, store: Store) {
     const ids = findIdsByPredicate(
       state,
       options.ref || (defaultEntitiesRef as Ref),
@@ -117,5 +119,54 @@ export function updateAllEntities<
     const { ref: { idsKey } = defaultEntitiesRef } = options;
 
     return updateEntities(state[idsKey], updater, options)(state, store) as S;
+  };
+}
+
+type CreateFn<Entity, ID> = (id: ID) => Entity;
+
+/**
+ *
+ * Update entities that exists, add those who don't
+ *
+ * @example
+ *
+ */
+export function upsertEntities<
+  S extends EntitiesState<Ref>,
+  U extends UpdateFn<EntityType>,
+  C extends CreateFn<EntityType, getIdType<S, Ref>>,
+  Ref extends EntitiesRef = DefaultEntitiesRef,
+  EntityType = getEntityType<S, Ref>
+>(
+  ids: OrArray<getIdType<S, Ref>>,
+  {
+    updater,
+    creator,
+    ...options
+  }: {
+    updater: U;
+    creator: C;
+    mergeUpdaterWithCreator?: boolean;
+  } & AddEntitiesOptions &
+    BaseEntityOptions<Ref>
+): Reducer<S> {
+  return function reducer(state: S, store: Store) {
+    const update = [];
+    const newEntities = [];
+
+    for (const id of coerceArray(ids)) {
+      if (hasEntity(id, options)(state)) {
+        update.push(id);
+      } else {
+        let newEntity = creator(id);
+        if (options.mergeUpdaterWithCreator) {
+          newEntity = toModel(updater, newEntity);
+        }
+        newEntities.push(newEntity);
+      }
+    }
+    const newState = updateEntities(update, updater, options)(state, store);
+
+    return addEntities(newEntities, options)(newState, store) as S;
   };
 }

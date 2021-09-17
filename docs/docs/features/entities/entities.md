@@ -200,6 +200,51 @@ todosStore.reduce(updateEntities(id, (entity) => ({ ...entity, name })));
 todosStore.reduce(updateEntities([id, id, id], { open: true }));
 ```
 
+#### `updateEntitiesByPredicate`
+
+Update an entity or entities in the store:
+
+```ts
+import { updateEntitiesByPredicate } from '@ngneat/elf-entities';
+
+todosStore.reduce(updateEntitiesByPredicate((entity) => entity.count === 0), { open: false });
+todosStore.reduce(updateEntitiesByPredicate((entity) => entity.count === 0), (entity) => ({ ...entity, open: false }));
+```
+
+#### `updateAllEntities`
+
+Update all entities in the store:
+
+```ts
+import { updateAllEntities } from '@ngneat/elf-entities';
+
+todosStore.reduce(updateAllEntities({ name }));
+todosStore.reduce(updateAllEntities((entity) => ({ ...entity, name })));
+```
+
+#### `upsertEntities`
+
+Insert or update an entity. Creates a new entity when no entity matches the id; otherwise, it performs an update:
+
+```ts
+import { upsertEntities } from '@ngneat/elf-entities';
+
+const creator = (id) => createTodo(id); 
+todosStore.reduce(upsertEntities(1, { 
+  updater: { name }, 
+  creator  
+}));
+todosStore.reduce(upsertEntities([1, 2], {
+  updater: (entity) => ({ ...entity, name }),
+  creator
+}));
+todosStore.reduce(upsertEntities([1, 2], {
+  updater: (entity) => ({ ...entity, name }),
+  creator,
+  mergeUpdaterWithCreator: true // Will perform the update operation on the new entity
+}));
+```
+
 #### `deleteEntities`
 
 Delete an entity or entities from the store:

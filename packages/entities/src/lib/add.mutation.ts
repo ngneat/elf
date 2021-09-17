@@ -12,6 +12,10 @@ import { OrArray, Reducer, Store, coerceArray } from '@ngneat/elf';
 import { buildEntities } from './entity.utils';
 import { deleteEntities } from './delete.mutation';
 
+export interface AddEntitiesOptions {
+  prepend?: boolean;
+}
+
 /**
  *
  * Add entities
@@ -30,9 +34,7 @@ export function addEntities<
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
   entities: OrArray<getEntityType<S, Ref>>,
-  options: {
-    prepend?: boolean;
-  } & BaseEntityOptions<Ref> = {}
+  options: AddEntitiesOptions & BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
   return function reducer(state: S, store: Store) {
     const { prepend = false, ref = defaultEntitiesRef } = options;
