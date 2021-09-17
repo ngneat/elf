@@ -43,6 +43,7 @@ module.exports = {
       items: [
         'features/requests/requests-status',
         'features/requests/requests-cache',
+        'features/requests/requests-data-source',
       ],
     },
     'features/pagination',

@@ -1,4 +1,5 @@
 import { createState, Store } from '@ngneat/elf';
+import { updateRequestStatus } from '..';
 import {
   getRequestStatus,
   selectIsRequestPending,
@@ -67,5 +68,28 @@ describe('requestsStatus', () => {
       value: 'error',
       error: { message: '' },
     });
+  });
+
+  it('should updateRequestStatus', () => {
+    const spy = jest.fn();
+
+    store.reduce(updateRequestStatus(requestKey, 'success'));
+
+    store.pipe(selectRequestStatus(requestKey)).subscribe((v) => {
+      spy(v);
+    });
+
+    expect(spy).toHaveBeenCalledWith({ value: 'success' });
+
+    store.reduce(updateRequestStatus(requestKey, 'error', { type: 'boo' }));
+
+    expect(spy).toHaveBeenCalledWith({
+      value: 'error',
+      error: { type: 'boo' },
+    });
+
+    store.reduce(updateRequestStatus(requestKey, 'pending'));
+
+    expect(spy).toHaveBeenCalledWith({ value: 'pending' });
   });
 });

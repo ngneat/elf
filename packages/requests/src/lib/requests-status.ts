@@ -62,11 +62,27 @@ export function selectRequestStatus<
 
 export function updateRequestStatus<
   S extends StateOf<typeof withRequestsStatus>
->(key: string | number, value: StatusState['value']): Reducer<S> {
+>(key: string | number, value: 'error', error: any): Reducer<S>;
+export function updateRequestStatus<
+  S extends StateOf<typeof withRequestsStatus>
+>(
+  key: string | number,
+  value: Exclude<StatusState['value'], 'error'>,
+  error?: any
+): Reducer<S>;
+export function updateRequestStatus<
+  S extends StateOf<typeof withRequestsStatus>
+>(key: string | number, value: any, error?: any): Reducer<S> {
+  const base = {
+    value,
+  } as StatusState;
+
+  if (value === 'error') {
+    (base as ErrorState).error = error;
+  }
+
   return updateRequestsStatus({
-    [key]: {
-      value,
-    } as StatusState,
+    [key]: base,
   });
 }
 
@@ -99,33 +115,20 @@ export function setRequestStatus<
 ): MonoTypeOperatorFunction<T> {
   return function (source: Observable<T>) {
     return defer(() => {
-      store.reduce(
-        updateRequestsStatus({
-          [key]: {
-            value: 'pending',
-          },
-        })
-      );
+      store.reduce(updateRequestStatus(key, 'pending'));
 
       return source.pipe(
         tap({
           next() {
-            store.reduce(
-              updateRequestsStatus({
-                [key]: {
-                  value: 'success',
-                } as SuccessState,
-              })
-            );
+            store.reduce(updateRequestStatus(key, 'success'));
           },
           error(error) {
             store.reduce(
-              updateRequestsStatus({
-                [key]: {
-                  value: 'error',
-                  error: options?.mapError ? options?.mapError(error) : error,
-                } as ErrorState,
-              })
+              updateRequestStatus(
+                key,
+                'error',
+                options?.mapError ? options?.mapError(error) : error
+              )
             );
           },
         })
