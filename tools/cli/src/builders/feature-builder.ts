@@ -1,6 +1,6 @@
 import { ClassDeclaration, SourceFile, StructureKind } from 'ts-morph';
 import { Features, Options } from '../types';
-import { coerceArray, names } from '../utils';
+import { coerceArray, names, resolveStoreVariableName } from '../utils';
 // @ts-ignore
 import * as pluralize from 'pluralize';
 import { CallExpression } from 'typescript';
@@ -10,8 +10,14 @@ export abstract class FeatureBuilder {
     return false;
   }
 
-  storeNames = names(this.storeName);
+  storeName = this.options.storeName;
+  idKey = this.options.idKey;
   storeSingularNames = names(pluralize.singular(this.storeName));
+  storeNames = names(this.storeName);
+  storeVariableName = resolveStoreVariableName(
+    this.options.template,
+    this.storeNames
+  );
 
   constructor(
     protected sourceFile: SourceFile,
@@ -22,14 +28,6 @@ export abstract class FeatureBuilder {
   abstract run(): void;
 
   abstract getPropsFactory(): CallExpression;
-
-  get storeName() {
-    return this.options.storeName;
-  }
-
-  get idKey() {
-    return this.options.idKey;
-  }
 
   addImport(name: string | string[], moduleSpecifier = '@ngneat/elf') {
     const importDecl = this.sourceFile.getImportDeclaration(moduleSpecifier);

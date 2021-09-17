@@ -30,14 +30,14 @@ export class RequestsStatusBuilder extends FeatureBuilder {
     this.repo.insertMember(0, {
       name: `status$`,
       kind: StructureKind.Property,
-      initializer: `store.pipe(selectRequestStatus('key'))`,
+      initializer: `${this.storeVariableName}.pipe(selectRequestStatus('key'))`,
     });
 
     this.repo.addMember({
       name: `updateRequestStatus`,
       kind: StructureKind.Method,
       parameters: [{ name: 'state', type: 'StatusState' }],
-      statements: `store.reduce(updateRequestsStatus({ key: state }));`,
+      statements: `${this.storeVariableName}.reduce(updateRequestsStatus({ key: state }));`,
     });
   }
 }

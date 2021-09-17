@@ -16,7 +16,7 @@ import { RequestsStatusBuilder } from './requests-status.builder';
 import { ActiveIdBuilder } from './active-id.builder';
 import { PropsBuilder } from './props.builder';
 import { Options } from '../types';
-import { names } from '../utils';
+import { names, resolveStoreVariableName } from '../utils';
 
 export function createRepo(options: Options) {
   const { storeName } = options;
@@ -83,7 +83,7 @@ export function createRepo(options: Options) {
     isExported: isFunctionTpl,
     declarations: [
       {
-        name: isFunctionTpl ? `${storeNames.propertyName}Store` : 'store',
+        name: resolveStoreVariableName(options.template, storeNames),
         initializer: `new Store({ name: '${storeNames.propertyName}', state, config })`,
       },
     ],

@@ -77,40 +77,40 @@ export interface TodosProps {
 const { state, config } = createState(withProps<TodosProps>({}), withEntities<Todo>(), withUIEntities<TodoUI>(), withActiveId(), withActiveIds(), withRequestsCache(), withRequestsStatus());
 export const todosStore = new Store({ name: 'todos', state, config });
 
-export const status$ = store.pipe(selectRequestStatus('key'));
+export const status$ = todosStore.pipe(selectRequestStatus('key'));
 
-export const activeTodos$ = store.pipe(selectActiveEntities());
+export const activeTodos$ = todosStore.pipe(selectActiveEntities());
 
-export const activeTodo$ = store.pipe(selectActiveEntity());
+export const activeTodo$ = todosStore.pipe(selectActiveEntity());
 
-export const todos$ = store.pipe(selectAll());
+export const todos$ = todosStore.pipe(selectAll());
 
 export function deleteTodo(id: Todo['id']) {
-  store.reduce(deleteEntities(id));
+  todosStore.reduce(deleteEntities(id));
 }
 
 export function addTodo(todo: Todo) {
-  store.reduce(addEntities(todo));
+  todosStore.reduce(addEntities(todo));
 }
 
 export function updateTodo(id: Todo['id'], todo: Partial<Todo>) {
-  store.reduce(updateEntities(id, todo));
+  todosStore.reduce(updateEntities(id, todo));
 }
 
 export function setActiveId(id: Todo['id']) {
-  store.reduce(setActiveId(id));
+  todosStore.reduce(setActiveId(id));
 }
 
 export function toggleActiveIds(ids: Array<Todo['id']>) {
-  store.reduce(toggleActiveIds(ids));
+  todosStore.reduce(toggleActiveIds(ids));
 }
 
 export function updateRequestCache(state: CacheState) {
-  store.reduce(updateRequestsCache({ key: state }));
+  todosStore.reduce(updateRequestsCache({ key: state }));
 }
 
 export function updateRequestStatus(state: StatusState) {
-  store.reduce(updateRequestsStatus({ key: state }));
+  todosStore.reduce(updateRequestsStatus({ key: state }));
 }
 "
 `;

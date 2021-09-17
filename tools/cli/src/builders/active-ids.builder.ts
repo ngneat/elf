@@ -25,7 +25,7 @@ export class ActiveIdsBuilder extends FeatureBuilder {
     this.repo.insertMember(0, {
       name: `active${this.storeNames.className}$`,
       kind: StructureKind.Property,
-      initializer: `store.pipe(selectActiveEntities())`,
+      initializer: `${this.storeVariableName}.pipe(selectActiveEntities())`,
     });
 
     this.repo.addMember({
@@ -37,7 +37,7 @@ export class ActiveIdsBuilder extends FeatureBuilder {
           type: `Array<${this.storeSingularNames.className}['${this.idKey}']>`,
         },
       ],
-      statements: [`store.reduce(toggleActiveIds(ids));`],
+      statements: [`${this.storeVariableName}.reduce(toggleActiveIds(ids));`],
     });
   }
 }

@@ -8,6 +8,13 @@ export function coerceArray<T>(value: T[] | T): T[] {
   return Array.isArray(value) ? value : [value];
 }
 
+export function resolveStoreVariableName(
+  template: Options['template'],
+  { propertyName }: ReturnType<typeof names>
+) {
+  return template === 'functions' ? `${propertyName}Store` : 'store';
+}
+
 /**
  * Util function to generate different strings based off the provided name.
  *

@@ -69,7 +69,7 @@ export class EntitiesBuilder extends FeatureBuilder {
     this.repo.addMember({
       name: `${this.storeNames.propertyName}$`,
       kind: StructureKind.Property,
-      initializer: `store.pipe(selectAll())`,
+      initializer: `${this.storeVariableName}.pipe(selectAll())`,
     });
 
     this.options.crud.forEach((op) => this[op]?.());
@@ -86,7 +86,7 @@ export class EntitiesBuilder extends FeatureBuilder {
         },
       ],
       statements: [
-        `store.reduce(setEntities(${this.storeNames.propertyName}));`,
+        `${this.storeVariableName}.reduce(setEntities(${this.storeNames.propertyName}));`,
       ],
     });
   }
@@ -102,7 +102,7 @@ export class EntitiesBuilder extends FeatureBuilder {
         },
       ],
       statements: [
-        `store.reduce(addEntities(${this.storeSingularNames.propertyName}));`,
+        `${this.storeVariableName}.reduce(addEntities(${this.storeSingularNames.propertyName}));`,
       ],
     });
   }
@@ -122,7 +122,7 @@ export class EntitiesBuilder extends FeatureBuilder {
         },
       ],
       statements: [
-        `store.reduce(updateEntities(id, ${this.storeSingularNames.propertyName}));`,
+        `${this.storeVariableName}.reduce(updateEntities(id, ${this.storeSingularNames.propertyName}));`,
       ],
     });
   }
@@ -137,7 +137,7 @@ export class EntitiesBuilder extends FeatureBuilder {
           type: `${this.storeSingularNames.className}['${this.idKey}']`,
         },
       ],
-      statements: [`store.reduce(deleteEntities(id));`],
+      statements: [`${this.storeVariableName}.reduce(deleteEntities(id));`],
     });
   }
 }
