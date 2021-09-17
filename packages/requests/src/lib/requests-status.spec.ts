@@ -71,6 +71,10 @@ describe('requestsStatus', () => {
   });
 
   it('should updateRequestStatus', () => {
+    const { state, config } = createState(withRequestsStatus());
+    const store = new Store({ state, config, name: '' });
+    const requestKey = 'foo';
+
     const spy = jest.fn();
 
     store.reduce(updateRequestStatus(requestKey, 'success'));
