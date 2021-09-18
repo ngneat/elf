@@ -117,8 +117,8 @@ describe('propsFactory Types', () => {
     store.reduce(setVersion('2'));
     store.reduce(setVersion(2));
 
-    // @ts-expect-error - Should be number
     store.reduce(
+      // @ts-expect-error - Should be number
       setVersion(() => {
         return '1';
       })
@@ -139,8 +139,8 @@ describe('propsFactory Types', () => {
     store.reduce(updateVersion('1'));
     store.reduce(updateVersion(1));
 
-    // @ts-expect-error - Should be number
     store.reduce(
+      // @ts-expect-error - Should be number
       updateVersion(() => {
         return '1';
       })
