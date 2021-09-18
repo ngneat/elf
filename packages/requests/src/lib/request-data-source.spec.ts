@@ -32,7 +32,7 @@ describe('createRequestDataSource', () => {
     todosDataSource$.subscribe((v) => {
       expectTypeOf(v).toEqualTypeOf<{
         loading: boolean;
-        error: any;
+        error: unknown;
         todos: Todo[];
       }>();
 
