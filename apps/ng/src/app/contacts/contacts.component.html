@@ -1,17 +1,71 @@
-<p>contacts works!</p>
+<section class="padding">
+  <h1 class="d-flex justify-content-center mb-4">Contacts</h1>
 
-<ng-container *ngIf="data$ | async as data">
-  <h1>{{ data.status }}</h1>
+  <section class="d-flex justify-content-between fw-light">
+    <div class="col-2 d-flex align-items-center">
+      <p>Show</p>
+      <select
+        class="mx-2 form-select form-select-sm w-25"
+        [formControl]="perPageControl"
+      >
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+      </select>
+      <p>entries</p>
+    </div>
 
-  <ul>
-    <li *ngFor="let contact of data.contacts">
-      {{ contact.name }}
-    </li>
-  </ul>
+    <div class="col-4 d-flex align-items-center justify-content-end">
+      <p class="me-2">Sort by:</p>
+      <select
+        class="form-select form-select-sm w-25"
+        [formControl]="sortByControl"
+      >
+        <option value="name">Name</option>
+        <option value="email">Email</option>
+      </select>
+    </div>
+  </section>
 
-  <ul class="flex">
-    <li *ngFor="let page of data.indicators" (click)="updateActivePage(page)">
-      {{ page }}
-    </li>
-  </ul>
-</ng-container>
+  <section *ngIf="data$ | async as data">
+    <table class="table table-striped mb-4">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Address</th>
+          <th scope="col">Email</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let contact of data.contacts">
+          <td>{{ contact.name }}</td>
+          <td>{{ contact.address }}</td>
+          <td>@{{ contact.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ul class="pagination d-flex justify-content-center">
+      <li class="page-item page-link">
+        <i class="bi bi-chevron-double-left"></i>
+      </li>
+      <li class="page-item page-link">
+        <i class="bi bi-chevron-left"></i>
+      </li>
+      <li
+        *ngFor="let page of data.contacts; index as i"
+        class="page-item page-link"
+      >
+        {{ i + 1 }}
+      </li>
+      <li class="page-item page-link">
+        <i class="bi bi-chevron-right"></i>
+      </li>
+      <li class="page-item page-link">
+        <i class="bi bi-chevron-double-right"></i>
+      </li>
+    </ul>
+  </section>
+</section>
