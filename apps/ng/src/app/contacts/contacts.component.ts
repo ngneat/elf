@@ -9,7 +9,7 @@ import { FormControl } from '@angular/forms';
 @Component({
   selector: 'elf-contacts',
   templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.css'],
+  styleUrls: ['./contacts.component.scss'],
 })
 export class ContactsComponent implements OnInit {
   data$ = combineLatest({
