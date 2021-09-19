@@ -26,7 +26,7 @@ export class RequestsCacheBuilder extends FeatureBuilder {
       name: `updateRequestCache`,
       kind: StructureKind.Method,
       parameters: [{ name: 'state', type: 'CacheState' }],
-      statements: `store.reduce(updateRequestsCache({ key: state }));`,
+      statements: `${this.storeVariableName}.reduce(updateRequestsCache({ key: state }));`,
     });
   }
 }

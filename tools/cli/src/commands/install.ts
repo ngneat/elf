@@ -2,7 +2,7 @@ import { Command, flags } from '@oclif/command';
 import * as inquirer from 'inquirer';
 
 export default class Install extends Command {
-  static description = 'Installer';
+  static description = 'Install Elf packages';
 
   static flags = {
     help: flags.help({ char: 'h' }),
@@ -36,6 +36,7 @@ const packages = [
   '@ngneat/elf-state-history',
   '@ngneat/elf-persist-state',
   '@ngneat/elf-pagination',
+  '@ngneat/elf-cli-ng',
 ];
 
 export async function prompt() {

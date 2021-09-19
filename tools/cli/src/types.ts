@@ -1,11 +1,32 @@
+import { SourceFile } from 'ts-morph';
+
 export interface Options {
   storeName: string;
   features: Array<Features>;
   crud: Array<
     'addEntities' | 'updateEntities' | 'deleteEntities' | 'setEntities'
   >;
-  idKey: string;
   path: string;
+  idKey: string;
+  template?: 'class' | 'functions';
+  hooks?: Array<Hooks>;
+}
+
+export interface Hooks {
+  post?(options: {
+    sourceFile: SourceFile;
+    options: Omit<Options, 'hooks'>;
+    repoName: string;
+  }): void;
+}
+
+export interface GlobalConfig {
+  cli?: {
+    repoTemplate?: Options['template'];
+    idKey?: Options['idKey'];
+    repoLibrary?: string;
+    plugins?: string[];
+  };
 }
 
 export type Features = typeof baseFeatures[number]['value'];
@@ -34,3 +55,5 @@ export const baseFeatures = [
     value: 'withRequestsStatus',
   },
 ] as const;
+
+export const DEFAULT_ID_KEY = 'id';

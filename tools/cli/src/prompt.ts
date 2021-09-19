@@ -1,5 +1,5 @@
 import * as inquirer from 'inquirer';
-import { baseFeatures, Options } from './types';
+import { baseFeatures, DEFAULT_ID_KEY, Options } from './types';
 import { has } from './utils';
 
 inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'));
@@ -52,7 +52,7 @@ export async function prompt() {
     },
     {
       name: 'idKey',
-      default: 'id',
+      default: DEFAULT_ID_KEY,
       type: 'input',
       when(answers: Options) {
         return has(answers, 'withEntities');

@@ -1,7 +1,9 @@
 import {
+  ClassDeclaration,
   printNode,
   Project,
   QuoteKind,
+  SourceFile,
   StructureKind,
   VariableDeclarationKind,
 } from 'ts-morph';
@@ -13,11 +15,13 @@ import { UIEntitiesBuilder } from './ui-entities.builder';
 import { RequestsStatusBuilder } from './requests-status.builder';
 import { ActiveIdBuilder } from './active-id.builder';
 import { PropsBuilder } from './props.builder';
-import { camelize, capitalize } from '../utils';
 import { Options } from '../types';
+import { names, resolveStoreVariableName } from '../utils';
 
 export function createRepo(options: Options) {
   const { storeName } = options;
+  const storeNames = names(storeName);
+  const isFunctionTpl = options.template === 'functions';
 
   const project = new Project({
     manipulationSettings: {
@@ -30,8 +34,9 @@ export function createRepo(options: Options) {
 
   const sourceFile = project.createSourceFile(`repo.ts`, ``);
 
-  const repoDecl = sourceFile.addClass({
-    name: `${capitalize(storeName)}Repository`,
+  const repoName = `${storeNames.className}Repository`;
+  const repoClassDec = sourceFile.addClass({
+    name: repoName,
     isExported: true,
   });
 
@@ -56,9 +61,9 @@ export function createRepo(options: Options) {
   const propsFactories: CallExpression[] = [];
 
   for (const feature of options.features) {
-    for (const builder of builders) {
-      if (builder.supports(feature)) {
-        const instance = new builder(sourceFile, repoDecl, options);
+    for (const Builder of builders) {
+      if (Builder.supports(feature)) {
+        const instance = new Builder(sourceFile, repoClassDec, options);
         instance.run();
         propsFactories.push(instance.getPropsFactory());
       }
@@ -71,16 +76,15 @@ export function createRepo(options: Options) {
     propsFactories
   );
 
-  const repoPosition = repoDecl.getChildIndex();
+  const repoPosition = repoClassDec.getChildIndex();
 
   sourceFile.insertVariableStatement(repoPosition, {
     declarationKind: VariableDeclarationKind.Const,
+    isExported: isFunctionTpl,
     declarations: [
       {
-        name: 'store',
-        initializer: `new Store({ name: '${camelize(
-          storeName
-        )}', state, config })`,
+        name: resolveStoreVariableName(options.template, storeNames),
+        initializer: `new Store({ name: '${storeNames.propertyName}', state, config })`,
       },
     ],
   });
@@ -95,7 +99,33 @@ export function createRepo(options: Options) {
     ],
   });
 
+  if (isFunctionTpl) {
+    toFunctions(sourceFile, repoClassDec);
+  }
+
+  if (options.hooks) {
+    options.hooks.forEach((h) => h.post?.({ sourceFile, repoName, options }));
+  }
+
   sourceFile.formatText({ indentSize: 2 });
 
   return sourceFile.getText();
+}
+
+function toFunctions(sourceFile: SourceFile, classDec: ClassDeclaration) {
+  const exported: string[] = [];
+
+  classDec?.getProperties().forEach((p) => {
+    exported.push(`export const ${p.getText()}`);
+  });
+
+  classDec?.getMethods().forEach((m) => {
+    exported.push(`export function ${m.getText()}`);
+  });
+
+  classDec?.remove();
+
+  sourceFile.replaceWithText(
+    `${sourceFile.getText()}\n ${exported.join('\n\n')}`
+  );
 }

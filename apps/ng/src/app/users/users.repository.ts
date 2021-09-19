@@ -36,8 +36,6 @@ export class UsersRepository {
   users$ = store.pipe(selectAll());
   status$ = store.pipe(selectRequestStatus(UsersRequests.default));
 
-  // ps = persistState(store, { storage: useLocalStorage })
-
   user$(id: User['id']) {
     return store.pipe(selectEntity(id));
   }

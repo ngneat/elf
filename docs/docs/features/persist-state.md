@@ -14,8 +14,8 @@ To use it you should call the `persistState()` function, passing the store and t
 import { Store, createState, withProps } from '@ngneat/elf';
 import {
   persistState,
-  useLocalStorage,
-  useSessionStorage,
+  localStorageStrategy,
+  sessionStorageStrategy,
 } from '@ngneat/elf-persist-state';
 
 interface AuthProps {
@@ -29,7 +29,7 @@ const authStore = new Store({ state, name, config });
 class AuthRepository {
   private persist = persistState(authStore, {
     key: 'auth',
-    storage: useLocalStorage,
+    storage: localStorageStrategy,
   });
 
   user$ = authStore.pipe(select((state) => state.user));
@@ -46,11 +46,11 @@ As the second parameter you should pass a `Options` object, which can be used to
 Elf also exposes the `initialized$` observable. This observable emits after Elf initialized the stores based on the storage's value. For example:
 
 ```ts
-import { persistState, useLocalStorage } from '@ngneat/elf-persist-state';
+import { persistState, localStorageStrategy } from '@ngneat/elf-persist-state';
 
 const instance = persistState(todoStore, {
   key: 'todos',
-  storage: useLocalStorage,
+  storage: localStorageStrategy,
 });
 
 instance.initialized$.subscribe(console.log);

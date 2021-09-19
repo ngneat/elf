@@ -68,3 +68,49 @@ export function selectEntities<
 
   return select((state) => state[entitiesKey]);
 }
+
+/**
+ *
+ * Observe entities and apply filter/map
+ *
+ * @example
+ *
+ * store.pipe(selectAllApply({
+ *   map: (entity) => new Todo(entity),
+ *   filter: entity => entity.completed
+ * }))
+ *
+ *
+ */
+export function selectAllApply<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef,
+  R = getEntityType<S, Ref>
+>(
+  options: {
+    mapEntity?(entity: getEntityType<S, Ref>): R;
+    filterEntity?(entity: getEntityType<S, Ref>): boolean;
+  } & BaseEntityOptions<Ref>
+): OperatorFunction<S, R[]> {
+  const {
+    ref: { entitiesKey, idsKey } = defaultEntitiesRef,
+    filterEntity = () => true,
+    mapEntity = (e) => e,
+  } = options;
+
+  return pipe(
+    untilEntitiesChanges(entitiesKey),
+    map((state) => {
+      const result = [];
+
+      for (const id of state[idsKey]) {
+        const entity = state[entitiesKey][id];
+        if (filterEntity(entity)) {
+          result.push(mapEntity(entity));
+        }
+      }
+
+      return result;
+    })
+  );
+}

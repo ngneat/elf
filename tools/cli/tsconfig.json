@@ -5,6 +5,7 @@
     "module": "commonjs",
     "outDir": "lib",
     "rootDir": "src",
+    "esModuleInterop": true,
     "strict": true,
     "target": "es2017"
   },

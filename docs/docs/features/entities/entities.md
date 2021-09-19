@@ -1,6 +1,8 @@
 # Entities
 
-This feature enables the store to act as an entities store. You can think of `entities` state as a table in a database, where each table represents a flat collection of entities. Elf's entities state simplifies the process, giving you everything you need to manage it.
+This feature enables the store to act as an entities store. You can think of `entities` state as a table in a database,
+where each table represents a flat collection of entities. Elf's entities state simplifies the process, giving you
+everything you need to manage it.
 
 First, you need to install the package by using the CLI command or npm:
 
@@ -37,6 +39,23 @@ import { selectAll } from '@ngneat/elf-entities';
 
 const todos$ = todosStore.pipe(selectAll());
 ```
+
+#### `selectAllApply`
+
+Select the entire store's entity collection, and apply a `filter/map`:
+
+```ts
+import { selectAllApply } from '@ngneat/elf-entities';
+
+const titles$ = todosStore.pipe(
+  selectAllApply({
+    mapEntity: (e) => e.title,
+    filterEntity: (e) => e.completed,
+  })
+);
+```
+
+In the above example, it'll first apply the `filter` and then the `map` function.
 
 #### `selectEntities`
 
@@ -144,7 +163,9 @@ Replace current collection with the provided collection:
 ```ts
 import { setEntities } from '@ngneat/elf-entities';
 
-todosStore.reduce(setEntities([todo, todo]));
+todosStore.reduce(
+  setEntities([todo, todo])
+);
 ```
 
 #### `addEntities`
@@ -154,9 +175,17 @@ Add an entity or entities to the store:
 ```ts
 import { addEntities } from '@ngneat/elf-entities';
 
-todosStore.reduce(addEntities(todo));
-todosStore.reduce(addEntities([todo, todo]));
-todosStore.reduce(addEntities([todo, todo], { prepend: true }));
+todosStore.reduce(
+  addEntities(todo)
+);
+
+todosStore.reduce(
+  addEntities([todo, todo])
+);
+
+todosStore.reduce(
+  addEntities([todo, todo], { prepend: true })
+);
 ```
 
 #### `addEntitiesFifo`
@@ -166,7 +195,9 @@ Add an entity or entities to the store using fifo strategy:
 ```ts
 import { addEntitiesFifo } from '@ngneat/elf-entities';
 
-todosStore.reduce(addEntitiesFifo([entity, entity]), { limit: 3 });
+todosStore.reduce(
+  addEntitiesFifo([entity, entity]), { limit: 3 }
+);
 ```
 
 #### `updateEntities`
@@ -176,10 +207,95 @@ Update an entity or entities in the store:
 ```ts
 import { updateEntities } from '@ngneat/elf-entities';
 
-todosStore.reduce(updateEntities(id, { name }));
-todosStore.reduce(updateEntities(id, (entity) => ({ ...entity, name })));
-todosStore.reduce(updateEntities([id, id, id], { open: true }));
+todosStore.reduce(
+  updateEntities(id, { name })
+);
+
+todosStore.reduce(
+  updateEntities(id, (entity) => ({ ...entity, name }))
+);
+
+todosStore.reduce(
+  updateEntities([id, id, id], { open: true })
+);
 ```
+
+#### `updateEntitiesByPredicate`
+
+Update an entity or entities in the store:
+
+```ts
+import { updateEntitiesByPredicate } from '@ngneat/elf-entities';
+
+todosStore.reduce(
+  updateEntitiesByPredicate(
+    ({ count }) => count === 0, 
+    { open: false }
+  )
+);
+
+todosStore.reduce(
+  updateEntitiesByPredicate(
+   ({ count }) => count === 0), 
+   (entity) => ({ ...entity, open: false }
+  )
+);
+```
+
+#### `updateAllEntities`
+
+Update all entities in the store:
+
+```ts
+import { updateAllEntities } from '@ngneat/elf-entities';
+
+todosStore.reduce(
+  updateAllEntities({ name: 'elf' })
+);
+
+todosStore.reduce(
+  updateAllEntities((entity) => ({ ...entity, count: entity.count + 1 }))
+);
+```
+
+#### `upsertEntities`
+
+Insert or update an entity. When the id isn't found, it creates a new entity; otherwise, it performs an update:
+
+```ts
+import { upsertEntities } from '@ngneat/elf-entities';
+
+const creator = (id) => createTodo(id); 
+
+todosStore.reduce(
+  upsertEntities(1, { 
+    updater: { name: 'elf' }, 
+    creator  
+  })
+);
+
+todosStore.reduce(
+  upsertEntities([1, 2], {
+    updater: (entity) => ({ ...entity, count: entity.count + 1 }),
+    creator
+  })
+);
+```
+
+To perform a merge between a new entity and an `updater` result, use the `mergeUpdaterWithCreator` option:
+
+```ts
+todosStore.reduce(
+  upsertEntities([1, 2], {
+    updater: (entity) => ({ ...entity, name }),
+    creator,
+    // highlight-next-line
+    mergeUpdaterWithCreator: true
+  })
+);
+```
+
+The above example will first create the entity using the *creator* method, then pass the result to the *updater* method, and merge both.
 
 #### `deleteEntities`
 
@@ -199,7 +315,9 @@ Delete an entity or entities from the store:
 ```ts
 import { deleteEntitiesByPredicate } from '@ngneat/elf-entities';
 
-todosStore.reduce(deleteEntitiesByPredicate((e) => !!e.completed));
+todosStore.reduce(
+  deleteEntitiesByPredicate(({ completed }) => completed)
+);
 ```
 
 #### `deleteAllEntities`
@@ -214,7 +332,8 @@ todosStore.reduce(deleteAllEntities());
 
 ## idKey
 
-By default, Elf takes the `id` key from the entity `id` field. To change it, you can pass the `idKey` option to the `withEntities` function:
+By default, Elf takes the `id` key from the entity `id` field. To change it, you can pass the `idKey` option to
+the `withEntities` function:
 
 ```ts
 import { createState, Store } from '@ngneat/elf';

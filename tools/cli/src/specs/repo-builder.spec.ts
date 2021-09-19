@@ -109,4 +109,17 @@ describe('Repo Builder', () => {
 
     expect(output).toMatchSnapshot('all');
   });
+
+  it('should support function template', () => {
+    const output = createRepo({
+      idKey: 'id',
+      features: baseFeatures.map(({ value }) => value),
+      crud: ['deleteEntities', 'addEntities', 'updateEntities'],
+      storeName: 'todos',
+      path: '',
+      template: 'functions',
+    });
+
+    expect(output).toMatchSnapshot('all');
+  });
 });
