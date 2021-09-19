@@ -36,7 +36,7 @@ The `todosDataSource$` will return an observable with the following type:
 {
   data: Todo[];
   loading: boolean;
-  error: any;
+  error: unknown;
 }
 ```
 
@@ -55,6 +55,6 @@ export const todosDataSource$ = createRequestDataSource({
   // highlight-next-line
   todos: Todo[];
   loading: boolean;
-  error: any;
+  error: unknown;
 }
 ```

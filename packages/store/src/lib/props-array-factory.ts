@@ -2,14 +2,20 @@ import { capitalize } from './utils';
 import { propsFactory } from './props-factory';
 import { Reducer } from './store';
 import { isObject } from './utils';
+import { EmptyConfig } from './state';
 
 export function propsArrayFactory<
   T extends any[],
   K extends string,
-  Props extends { [Key in K]: T }
->(key: K, options: { initialValue: T; config?: any; idKey?: keyof T[0] }) {
+  Props extends { [Key in K]: T },
+  Config = EmptyConfig
+>(key: K, options: { initialValue: T; config?: Config; idKey?: keyof T[0] }) {
   const normalizedKey = capitalize(key as string);
-  const base = propsFactory<T, K, Props>(key, options);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { idKey, ...baseOptions } = options;
+
+  const base = propsFactory<T, K, Props, Config>(key, baseOptions);
+  const arrayOptions = { idKey: options?.idKey ?? 'id' };
 
   return {
     ...base,
@@ -25,7 +31,7 @@ export function propsArrayFactory<
       return function (state: any) {
         return {
           ...state,
-          [key]: arrayRemove(state[key], id),
+          [key]: arrayRemove(state[key], id, arrayOptions),
         };
       };
     },
@@ -33,7 +39,7 @@ export function propsArrayFactory<
       return function (state: any) {
         return {
           ...state,
-          [key]: arrayToggle(state[key], id, { idKey: options?.idKey ?? 'id' }),
+          [key]: arrayToggle(state[key], id, arrayOptions),
         };
       };
     },
@@ -51,11 +57,11 @@ export function propsArrayFactory<
   };
 }
 
-function arrayAdd<T extends any[]>(arr: T, item: T[0]): T {
+export function arrayAdd<T extends any[]>(arr: T, item: T[0]): T {
   return [...arr, item] as T;
 }
 
-function arrayRemove<T extends any[], IdKey extends keyof T[0]>(
+export function arrayRemove<T extends any[], IdKey extends keyof T[0]>(
   arr: T,
   id: T[0] extends Record<any, any> ? T[0][IdKey] : T[0],
   options?: T[0] extends Record<any, any> ? { idKey: IdKey } : never
@@ -72,7 +78,7 @@ function arrayRemove<T extends any[], IdKey extends keyof T[0]>(
   }) as T;
 }
 
-function arrayToggle<T extends any[], IdKey extends keyof T[0]>(
+export function arrayToggle<T extends any[], IdKey extends keyof T[0]>(
   arr: T,
   item: T[0],
   options?: T[0] extends Record<any, any> ? { idKey: IdKey } : never

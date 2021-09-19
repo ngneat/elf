@@ -7,15 +7,15 @@
     "start:ng": "nx serve --project ng",
     "start:react": "nx serve --project react",
     "start:docs": "npm start --prefix=docs",
-    "test": "nx test",
+    "test": "npm run affected:test",
     "test:cli": "npm test --prefix tools/cli",
-    "test:all": "nx run-many --target=test --exclude=ng --all && npm run test:cli",
+    "test:all": "nx run-many --target=test --exclude=ng,react --all && npm run test:cli",
     "lint:all": "nx run-many --target=lint --all",
     "affected:apps": "nx affected:apps",
     "affected:libs": "nx affected:libs",
     "affected:build": "nx affected:build",
-    "affected:test": "nx affected:test",
-    "affected:lint": "nx affected:lint",
+    "affected:test": "nx affected:test --base=dev --exclude=ng,react",
+    "affected:lint": "nx affected:lint --base=dev --exclude=ng,react",
     "affected:dep-graph": "nx affected:dep-graph",
     "affected": "nx affected",
     "format": "nx format:write",
@@ -88,14 +88,14 @@
     "eslint-plugin-react-hooks": "4.2.0",
     "expect-type": "0.12.0",
     "faker": "5.5.3",
-    "git-cz": "4.7.6",
+    "git-cz": "4.7.1",
     "husky": "6.0.0",
     "jest": "27.0.4",
     "jest-preset-angular": "9.0.7",
     "lint-staged": "11.1.2",
     "lodash": "4.17.21",
     "mini-css-extract-plugin": "2.1.0",
-    "prettier": "2.4.0",
+    "prettier": "2.4.1",
     "react-refresh": "0.10.0",
     "source-map-loader": "3.0.0",
     "terser-webpack-plugin": "5.1.1",
@@ -110,7 +110,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog"
+      "path": "git-cz"
     }
   },
   "commitlint": {

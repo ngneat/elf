@@ -51,7 +51,7 @@ export function withEntitiesFactory<
 }
 
 export function withEntities<
-  EntityType extends { [P in IdKey]: string | number },
+  EntityType extends { [P in IdKey]: PropertyKey },
   IdKey extends string = 'id'
 >(
   config: {
@@ -70,7 +70,7 @@ export function withEntities<
 }
 
 export function withUIEntities<
-  EntityType extends { [P in IdKey]: string | number },
+  EntityType extends { [P in IdKey]: PropertyKey },
   IdKey extends string = 'id'
 >(
   config: {
