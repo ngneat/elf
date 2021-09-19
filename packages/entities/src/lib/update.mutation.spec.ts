@@ -93,25 +93,22 @@ describe('update', () => {
 
     it(`should add the entity if it doesn't exists`, () => {
       const store = createEntitiesStore();
-      store.reduce(addEntities([createTodo(1)]));
-      toMatchSnapshot(expect, store, 'one entity');
-      store.reduce(upsertEntities(2, options));
+      store.reduce(addEntities([createTodo(1)]), upsertEntities(2, options));
       toMatchSnapshot(expect, store, 'two entities');
     });
 
     it('should update an entity if exists', () => {
       const store = createEntitiesStore();
-      store.reduce(addEntities([createTodo(1)]));
-      toMatchSnapshot(expect, store, 'one entity, title "todo 1"');
-      store.reduce(upsertEntities(1, options));
+      store.reduce(addEntities([createTodo(1)]), upsertEntities(1, options));
       toMatchSnapshot(expect, store, 'one entity, title "elf"');
     });
 
     it('should update add the missing entities and update existing', () => {
       const store = createEntitiesStore();
-      store.reduce(addEntities([createTodo(1)]));
-      toMatchSnapshot(expect, store, 'one entity, title "todo 1"');
-      store.reduce(upsertEntities([1, 2], options));
+      store.reduce(
+        addEntities([createTodo(1)]),
+        upsertEntities([1, 2], options)
+      );
       toMatchSnapshot(
         expect,
         store,
@@ -121,9 +118,8 @@ describe('update', () => {
 
     it('should merge updater with creator', () => {
       const store = createEntitiesStore();
-      store.reduce(addEntities([createTodo(1)]));
-      toMatchSnapshot(expect, store, 'one entity, title "todo 1"');
       store.reduce(
+        addEntities([createTodo(1)]),
         upsertEntities([1, 2], { ...options, mergeUpdaterWithCreator: true })
       );
       toMatchSnapshot(expect, store, 'two entities, title "elf"');
@@ -131,9 +127,8 @@ describe('update', () => {
 
     it('should work with ref', () => {
       const store = createUIEntityStore();
-      store.reduce(addEntities([createUITodo(1)], { ref: UIEntitiesRef }));
-      toMatchSnapshot(expect, store, 'one entity, open false');
       store.reduce(
+        addEntities([createUITodo(1)], { ref: UIEntitiesRef }),
         upsertEntities([1, 2], {
           updater: (e) => ({ ...e, open: false }),
           creator: (id) => createUITodo(id),

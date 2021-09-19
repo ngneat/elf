@@ -1,20 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`update Upsert should add the entity if it doesn't exists: one entity 1`] = `
-Object {
-  "entities": Object {
-    "1": Object {
-      "completed": false,
-      "id": 1,
-      "title": "todo 1",
-    },
-  },
-  "ids": Array [
-    1,
-  ],
-}
-`;
-
 exports[`update Upsert should add the entity if it doesn't exists: two entities 1`] = `
 Object {
   "entities": Object {
@@ -36,21 +21,6 @@ Object {
 }
 `;
 
-exports[`update Upsert should merge updater with creator: one entity, title "todo 1" 1`] = `
-Object {
-  "entities": Object {
-    "1": Object {
-      "completed": false,
-      "id": 1,
-      "title": "todo 1",
-    },
-  },
-  "ids": Array [
-    1,
-  ],
-}
-`;
-
 exports[`update Upsert should merge updater with creator: two entities, title "elf" 1`] = `
 Object {
   "entities": Object {
@@ -68,21 +38,6 @@ Object {
   "ids": Array [
     1,
     2,
-  ],
-}
-`;
-
-exports[`update Upsert should update add the missing entities and update existing: one entity, title "todo 1" 1`] = `
-Object {
-  "entities": Object {
-    "1": Object {
-      "completed": false,
-      "id": 1,
-      "title": "todo 1",
-    },
-  },
-  "ids": Array [
-    1,
   ],
 }
 `;
@@ -118,35 +73,6 @@ Object {
     },
   },
   "ids": Array [
-    1,
-  ],
-}
-`;
-
-exports[`update Upsert should update an entity if exists: one entity, title "todo 1" 1`] = `
-Object {
-  "entities": Object {
-    "1": Object {
-      "completed": false,
-      "id": 1,
-      "title": "todo 1",
-    },
-  },
-  "ids": Array [
-    1,
-  ],
-}
-`;
-
-exports[`update Upsert should work with ref: one entity, open false 1`] = `
-Object {
-  "UIEntities": Object {
-    "1": Object {
-      "id": 1,
-      "open": false,
-    },
-  },
-  "UIIds": Array [
     1,
   ],
 }

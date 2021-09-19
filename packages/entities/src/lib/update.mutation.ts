@@ -151,12 +151,12 @@ export function upsertEntities<
     BaseEntityOptions<Ref>
 ): Reducer<S> {
   return function reducer(state: S, store: Store) {
-    const update = [];
+    const updatedEntitiesIds = [];
     const newEntities = [];
 
     for (const id of coerceArray(ids)) {
       if (hasEntity(id, options)(state)) {
-        update.push(id);
+        updatedEntitiesIds.push(id);
       } else {
         let newEntity = creator(id);
         if (options.mergeUpdaterWithCreator) {
@@ -165,7 +165,11 @@ export function upsertEntities<
         newEntities.push(newEntity);
       }
     }
-    const newState = updateEntities(update, updater, options)(state, store);
+    const newState = updateEntities(
+      updatedEntitiesIds,
+      updater,
+      options
+    )(state, store);
 
     return addEntities(newEntities, options)(newState, store) as S;
   };
