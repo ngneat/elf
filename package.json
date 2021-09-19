@@ -7,7 +7,7 @@
     "start:ng": "nx serve --project ng",
     "start:react": "nx serve --project react",
     "start:docs": "npm start --prefix=docs",
-    "test": "nx test",
+    "test": "npm run affected:test",
     "test:cli": "npm test --prefix tools/cli",
     "test:all": "nx run-many --target=test --exclude=ng,react --all && npm run test:cli",
     "lint:all": "nx run-many --target=lint --all",

@@ -9,10 +9,7 @@ export function propsFactory<
   K extends string,
   Props extends { [Key in K]: T },
   Config = EmptyConfig
->(
-  key: K,
-  { initialValue, config = undefined }: { initialValue: T; config?: Config }
-) {
+>(key: K, { initialValue, config }: { initialValue: T; config?: Config }) {
   const normalizedKey = capitalize(key as string);
 
   return {

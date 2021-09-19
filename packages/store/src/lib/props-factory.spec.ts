@@ -3,7 +3,12 @@ import { take } from 'rxjs/operators';
 import { createState } from './state';
 import { Store } from './store';
 import { propsFactory } from './props-factory';
-import { propsArrayFactory } from './props-array-factory';
+import {
+  arrayAdd,
+  arrayRemove,
+  arrayToggle,
+  propsArrayFactory,
+} from './props-array-factory';
 import { expectTypeOf } from 'expect-type';
 
 type StatusValue = Record<string | number, StatusState>;
@@ -239,6 +244,70 @@ describe('stateArrayFactory Types', () => {
 
     store.pipe(selectSkills()).subscribe((v) => {
       expectTypeOf(v).toEqualTypeOf<string[]>();
+    });
+  });
+});
+
+describe('Arrays', () => {
+  describe('add', () => {
+    it('should add', () => {
+      const arr = [1];
+      expect(arrayAdd(arr, 2)).toEqual([1, 2]);
+    });
+  });
+
+  describe('remove', () => {
+    it('should remove', () => {
+      const arr = [1, 2, 3];
+      expect(arrayRemove(arr, 2)).toEqual([1, 3]);
+    });
+
+    it('should remove by id', () => {
+      const arr = [{ id: 1 }, { id: 2 }, { id: 3 }];
+      expect(arrayRemove(arr, 1)).toEqual([{ id: 2 }, { id: 3 }]);
+    });
+
+    it('should remove by id with a different key', () => {
+      const arr = [{ _id: 1 }, { _id: 2 }, { _id: 3 }];
+      expect(arrayRemove(arr, 1, { idKey: '_id' })).toEqual([
+        { _id: 2 },
+        { _id: 3 },
+      ]);
+    });
+  });
+
+  describe('toggle', () => {
+    it('should toggle', () => {
+      const arr = [1, 2, 3];
+      const toggled = arrayToggle(arr, 4);
+
+      expect(toggled).toEqual([1, 2, 3, 4]);
+
+      expect(arrayToggle(toggled, 4)).toEqual([1, 2, 3]);
+    });
+
+    it('should toggle by id', () => {
+      const arr = [{ id: 1 }, { id: 2 }, { id: 3 }];
+      const toggled = arrayToggle(arr, { id: 4 });
+      expect(toggled).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]);
+
+      expect(arrayToggle(toggled, { id: 4 })).toEqual([
+        { id: 1 },
+        { id: 2 },
+        { id: 3 },
+      ]);
+    });
+
+    it('should remove by id with a different key', () => {
+      const arr = [{ _id: 1 }, { _id: 2 }, { _id: 3 }];
+      const toggled = arrayToggle(arr, { _id: 4 }, { idKey: '_id' });
+      expect(toggled).toEqual([{ _id: 1 }, { _id: 2 }, { _id: 3 }, { _id: 4 }]);
+
+      expect(arrayToggle(toggled, { _id: 4 }, { idKey: '_id' })).toEqual([
+        { _id: 1 },
+        { _id: 2 },
+        { _id: 3 },
+      ]);
     });
   });
 });
