@@ -3,6 +3,7 @@ import {
   createTodo,
   createUIEntityStore,
   createUITodo,
+  Todo,
   toMatchSnapshot,
 } from '@ngneat/elf-mocks';
 import { addEntities } from './add.mutation';
@@ -10,6 +11,7 @@ import {
   updateAllEntities,
   updateEntities,
   updateEntitiesByPredicate,
+  upsertEntities,
 } from './update.mutation';
 import { UIEntitiesRef } from './entity.state';
 
@@ -79,5 +81,62 @@ describe('update', () => {
     toMatchSnapshot(expect, store, 'open false');
     store.reduce(updateAllEntities({ open: true }, { ref: UIEntitiesRef }));
     toMatchSnapshot(expect, store, 'open true');
+  });
+
+  describe('Upsert', () => {
+    const updater = (e: Todo) => ({ ...e, title: 'elf' });
+    const creator = (id: number) => createTodo(id);
+    const options = {
+      updater,
+      creator,
+    };
+
+    it(`should add the entity if it doesn't exists`, () => {
+      const store = createEntitiesStore();
+      store.reduce(addEntities([createTodo(1)]), upsertEntities(2, options));
+      toMatchSnapshot(expect, store, 'two entities');
+    });
+
+    it('should update an entity if exists', () => {
+      const store = createEntitiesStore();
+      store.reduce(addEntities([createTodo(1)]), upsertEntities(1, options));
+      toMatchSnapshot(expect, store, 'one entity, title "elf"');
+    });
+
+    it('should update add the missing entities and update existing', () => {
+      const store = createEntitiesStore();
+      store.reduce(
+        addEntities([createTodo(1)]),
+        upsertEntities([1, 2], options)
+      );
+      toMatchSnapshot(
+        expect,
+        store,
+        'two entities, 1: title "elf", 2: title "todo 2"'
+      );
+    });
+
+    it('should merge updater with creator', () => {
+      const store = createEntitiesStore();
+      store.reduce(
+        addEntities([createTodo(1)]),
+        upsertEntities([1, 2], { ...options, mergeUpdaterWithCreator: true })
+      );
+      toMatchSnapshot(expect, store, 'two entities, title "elf"');
+    });
+
+    it('should work with ref', () => {
+      const store = createUIEntityStore();
+      store.reduce(
+        addEntities([createUITodo(1)], { ref: UIEntitiesRef }),
+        upsertEntities([1, 2], {
+          updater: (e) => ({ ...e, open: false }),
+          creator: (id) => createUITodo(id),
+          mergeUpdaterWithCreator: true,
+          ref: UIEntitiesRef,
+        })
+      );
+      toMatchSnapshot(expect, store, 'two entities, open true');
+    });
   });
 });

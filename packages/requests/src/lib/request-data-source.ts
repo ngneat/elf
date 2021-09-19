@@ -4,7 +4,7 @@ import { StatusState } from '..';
 export function createRequestDataSource<
   Data,
   DataKey extends string = 'data',
-  Error = any
+  Error = unknown
 >({
   data$,
   status$,

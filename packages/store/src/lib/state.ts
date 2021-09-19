@@ -8,7 +8,7 @@ type Merge<State extends any[], Key extends PropertyKey> = UnionToIntersection<
 >;
 
 export type PropsFactory<Props, Config> = { props: Props; config: Config };
-export type EmptyConfig = Record<string, any>;
+export type EmptyConfig = undefined;
 
 export function createState<S extends PropsFactory<any, any>[]>(
   ...propsFactories: S
