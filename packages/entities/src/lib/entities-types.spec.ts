@@ -14,10 +14,42 @@ import {
   selectLast,
   selectMany,
   UIEntitiesRef,
+  withEntities,
 } from '@ngneat/elf-entities';
 import { expectTypeOf } from 'expect-type';
+import { createState, Store, withProps } from '@ngneat/elf';
 
 describe('Entities Types', () => {
+  it('should assert createState', () => {
+    const { state, config } = createState(
+      withProps<{ foo: string }>({ foo: '' })
+    );
+    const store = new Store({ state, config, name: '' });
+
+    // @ts-expect-error - We didn't provide withEntities
+    store.pipe(selectAll());
+
+    // @ts-expect-error - We didn't provide withUIEntities
+    store.pipe(selectAll({ ref: UIEntitiesRef }));
+  });
+
+  it('should assert createState with withEntities', () => {
+    const { state, config } = createState(withEntities());
+    const store = new Store({ state, config, name: '' });
+
+    store.pipe(selectAll());
+
+    // @ts-expect-error - We didn't provide withUIEntities
+    store.pipe(selectAll({ ref: UIEntitiesRef }));
+  });
+
+  it('should assert idKey', () => {
+    // @ts-expect-error - The default idKey is `id` and we didn't have it in our type
+    createState(withEntities<{ _id: string }>());
+
+    createState(withEntities<{ _id: string }, '_id'>({ idKey: '_id' }));
+  });
+
   describe('entities', () => {
     const store = createEntitiesStore();
 

@@ -23,7 +23,7 @@ function withFoo(): PropsFactory<FooProps, EmptyConfig> {
     props: {
       foo: '',
     },
-    config: {},
+    config: undefined,
   };
 }
 

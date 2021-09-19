@@ -7,8 +7,9 @@ import { capitalize, isFunction, isObject } from './utils';
 export function propsFactory<
   T,
   K extends string,
-  Props extends { [Key in K]: T }
->(key: K, { initialValue, config = {} }: { initialValue: T; config?: any }) {
+  Props extends { [Key in K]: T },
+  Config = EmptyConfig
+>(key: K, { initialValue, config }: { initialValue: T; config?: Config }) {
   const normalizedKey = capitalize(key as string);
 
   return {
@@ -86,7 +87,7 @@ export function propsFactory<
           value: Partial<T> | ((state: S) => Partial<T>)
         ) => Reducer<S>
       : P extends `with${Capitalize<K>}`
-      ? (initialValue?: T) => PropsFactory<Props, EmptyConfig>
+      ? (initialValue?: T) => PropsFactory<Props, Config>
       : any;
   };
 }

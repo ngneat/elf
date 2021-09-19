@@ -47,7 +47,7 @@ export function withPagination<
         total: 0,
       },
     },
-    config: {},
+    config: undefined,
   };
 }
 
