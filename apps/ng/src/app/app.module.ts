@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { NavComponent } from './nav/nav.component';
@@ -10,6 +11,7 @@ import { NavComponent } from './nav/nav.component';
   declarations: [AppComponent, NavComponent],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot([
       {
