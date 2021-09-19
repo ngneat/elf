@@ -97,18 +97,20 @@ describe('requestsCache', () => {
   });
 
   it('should uphold ttl', () => {
+    jest.useFakeTimers();
+
     store.reduce(
-      updateRequestCache(requestKey, 'full', { ttl: 10000 })
+      updateRequestCache(requestKey, 'full', { ttl: 1000 })
     );
 
     expect(
       store.query(isRequestCached(requestKey, { value: 'full' }))
     ).toBeTruthy();
 
-    setTimeout(() => {
-      expect(
-        store.query(isRequestCached(requestKey, { value: 'full' }))
-      ).toBeFalsy();
-    }, 20000);
+    jest.advanceTimersByTime(2000);
+
+    expect(
+      store.query(isRequestCached(requestKey, { value: 'full' }))
+    ).toBeFalsy();
   });
 });
