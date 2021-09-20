@@ -8,7 +8,7 @@ import {
   getIdType,
   ItemPredicate,
 } from './entity.state';
-import { OrArray, Reducer, Store, coerceArray } from '@ngneat/elf';
+import { OrArray, Reducer, coerceArray } from '@ngneat/elf';
 import { findIdsByPredicate } from './entity.utils';
 
 /**
@@ -29,7 +29,7 @@ export function deleteEntities<
   ids: OrArray<getIdType<S, Ref>>,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function reducer(state: S) {
+  return function (state) {
     const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
 
     const idsToRemove = coerceArray(ids);
@@ -66,7 +66,7 @@ export function deleteEntitiesByPredicate<
   predicate: ItemPredicate<getEntityType<S, Ref>>,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function reducer(state: S, store: Store) {
+  return function reducer(state, context) {
     const ids = findIdsByPredicate(
       state,
       options.ref || (defaultEntitiesRef as Ref),
@@ -74,7 +74,7 @@ export function deleteEntitiesByPredicate<
     );
 
     if (ids.length) {
-      return deleteEntities(ids, options)(state, store) as S;
+      return deleteEntities(ids, options)(state, context) as S;
     }
 
     return state;

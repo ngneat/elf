@@ -8,7 +8,7 @@ import {
   getIdType,
   ItemPredicate,
 } from './entity.state';
-import { Reducer, Store, OrArray, coerceArray, isFunction } from '@ngneat/elf';
+import { Reducer, OrArray, coerceArray, isFunction } from '@ngneat/elf';
 import { findIdsByPredicate } from './entity.utils';
 import { hasEntity } from './queries';
 import { addEntities, AddEntitiesOptions } from './add.mutation';
@@ -46,7 +46,7 @@ export function updateEntities<
   updater: U,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function reducer(state: S) {
+  return function (state) {
     const { ref: { entitiesKey } = defaultEntitiesRef } = options;
     const updatedEntities = {} as Record<
       getIdType<S, Ref>,
@@ -85,7 +85,7 @@ export function updateEntitiesByPredicate<
   updater: U,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function reducer(state: S, store: Store) {
+  return function (state, context) {
     const ids = findIdsByPredicate(
       state,
       options.ref || (defaultEntitiesRef as Ref),
@@ -93,7 +93,7 @@ export function updateEntitiesByPredicate<
     );
 
     if (ids.length) {
-      return updateEntities(ids, updater, options)(state, store) as S;
+      return updateEntities(ids, updater, options)(state, context) as S;
     }
 
     return state;
@@ -115,10 +115,10 @@ export function updateAllEntities<
   U extends UpdateFn<getEntityType<S, Ref>>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(updater: U, options: BaseEntityOptions<Ref> = {}): Reducer<S> {
-  return function reducer(state: S, store: Store) {
+  return function (state, context) {
     const { ref: { idsKey } = defaultEntitiesRef } = options;
 
-    return updateEntities(state[idsKey], updater, options)(state, store) as S;
+    return updateEntities(state[idsKey], updater, options)(state, context) as S;
   };
 }
 
@@ -150,7 +150,7 @@ export function upsertEntities<
   } & AddEntitiesOptions &
     BaseEntityOptions<Ref>
 ): Reducer<S> {
-  return function reducer(state: S, store: Store) {
+  return function (state, context) {
     const updatedEntitiesIds = [];
     const newEntities = [];
 
@@ -169,8 +169,8 @@ export function upsertEntities<
       updatedEntitiesIds,
       updater,
       options
-    )(state, store);
+    )(state, context);
 
-    return addEntities(newEntities, options)(newState, store) as S;
+    return addEntities(newEntities, options)(newState, context) as S;
   };
 }

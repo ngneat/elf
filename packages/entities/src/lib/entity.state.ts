@@ -1,4 +1,4 @@
-import { Store } from '@ngneat/elf';
+import { ReducerContext } from '@ngneat/elf';
 
 const defaultEntitiesKey = 'entities' as const;
 const defaultIdsKey = 'ids' as const;
@@ -88,8 +88,8 @@ export function withUIEntities<
   };
 }
 
-export function getIdKey<T>(store: Store, ref: EntitiesRef): T {
-  return store.getConfig()[ref.idKeyRef] as T;
+export function getIdKey<T>(context: ReducerContext, ref: EntitiesRef): T {
+  return context.config[ref.idKeyRef];
 }
 
 interface EntityState<EntityType, IdType extends PropertyKey> {

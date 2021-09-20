@@ -8,7 +8,7 @@ import {
   getIdKey,
   getIdType,
 } from './entity.state';
-import { OrArray, Reducer, Store, coerceArray } from '@ngneat/elf';
+import { OrArray, Reducer, coerceArray } from '@ngneat/elf';
 import { buildEntities } from './entity.utils';
 import { deleteEntities } from './delete.mutation';
 
@@ -36,7 +36,7 @@ export function addEntities<
   entities: OrArray<getEntityType<S, Ref>>,
   options: AddEntitiesOptions & BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function reducer(state: S, store: Store) {
+  return function (state, context) {
     const { prepend = false, ref = defaultEntitiesRef } = options;
 
     const { entitiesKey, idsKey } = ref!;
@@ -44,7 +44,7 @@ export function addEntities<
     const { ids, asObject } = buildEntities<S, Ref>(
       ref as Ref,
       entities,
-      getIdKey(store, ref)
+      getIdKey(context, ref)
     );
 
     return {
@@ -76,7 +76,7 @@ export function addEntitiesFifo<
     limit: number;
   } & BaseEntityOptions<Ref>
 ): Reducer<S> {
-  return function (state: S, store: Store) {
+  return function (state, context) {
     const { ref = defaultEntitiesRef, limit } = options;
 
     const { entitiesKey, idsKey } = ref!;
@@ -97,13 +97,13 @@ export function addEntitiesFifo<
     // Remove exiting entities that passes the limit
     if (total > limit) {
       const idsRemove = currentIds.slice(0, total - limit);
-      newState = deleteEntities<S, Ref>(idsRemove)(state, store);
+      newState = deleteEntities<S, Ref>(idsRemove)(state, context);
     }
 
     const { ids, asObject } = buildEntities<S, Ref>(
       ref as Ref,
       normalizedEntities,
-      getIdKey(store, ref)
+      getIdKey(context, ref)
     );
 
     return {
