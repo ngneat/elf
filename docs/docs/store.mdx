@@ -61,7 +61,7 @@ const state = authStore.state;
 
 ### Updating the Store
 
-To update the store, we can use the `reduce` method which receives a callback function, which gets the current `state`, and returns a new immutable `state`, which will be the new value of the store:
+To update the store, we can use the `reduce` method which receives a callback function, which gets the current `state`, and returns a new **immutable** `state`, which will be the new value of the store:
 
 ```ts
 authStore.reduce((state) => ({
