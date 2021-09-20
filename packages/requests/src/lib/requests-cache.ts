@@ -43,14 +43,14 @@ export function updateRequestCache<S extends StateOf<typeof withRequestsCache>>(
   value: CacheState['value'],
   cachingOptions: CachingOptions = {}
 ): Reducer<S> {
-  const dataToUpdate = {
+  const data = {
     value,
   } as CacheState;
   if (cachingOptions.ttl) {
-    dataToUpdate.timestamp = Date.now() + cachingOptions.ttl;
+    data.timestamp = Date.now() + cachingOptions.ttl;
   }
   return updateRequestsCache({
-    [key]: dataToUpdate,
+    [key]: data,
   });
 }
 
@@ -62,11 +62,12 @@ export function getRequestCache<S extends StateOf<typeof withRequestsCache>>(
       {
         value: 'none',
       } as CacheState;
-    if (cacheValue.timestamp && (cacheValue.timestamp <= Date.now())) {
+    if (cacheValue.timestamp && (cacheValue.timestamp > Date.now())) {
       return {
         value: 'none'
       };
     }
+
     return cacheValue;
   };
 }
