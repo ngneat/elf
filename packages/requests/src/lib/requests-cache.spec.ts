@@ -108,8 +108,6 @@ describe('requestsCache', () => {
       updateRequestCache("requestKey", 'full', { ttl: 1000 })
     );
 
-    console.error(store.value)
-
     expect(
       store.query(isRequestCached("requestKey", { value: 'full' }))
     ).toBeTruthy();
