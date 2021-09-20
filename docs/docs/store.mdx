@@ -1,3 +1,6 @@
+import index from '!!raw-loader!./examples/store.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
 # The Store
 
 The store takes an object that contains three properties - a `state`, a `name`, and `config`.
@@ -13,7 +16,7 @@ interface AuthProps {
 
 const { state, config } = createState(withProps<AuthProps>({ user: null }));
 
-const authStore = new Store({ state, name, config });
+const authStore = new Store({ state, name: 'auth', config });
 ```
 
 The `createState` can accept any number of features which describe the nature of the store. For example:
@@ -43,6 +46,8 @@ authStore.subscribe((state) => {
 Select a slice from the store:
 
 ```ts
+import { select } from '@ngneat/elf';
+
 const user$ = authStore.pipe(select((state) => state.user));
 ```
 
@@ -64,3 +69,6 @@ authStore.reduce((state) => ({
   user: { id: 'foo' },
 }));
 ```
+
+
+<LiveDemo src={index} />
