@@ -62,7 +62,7 @@ export function getRequestCache<S extends StateOf<typeof withRequestsCache>>(
       {
         value: 'none',
       } as CacheState;
-    if (cacheValue.timestamp && (cacheValue.timestamp > Date.now())) {
+    if (cacheValue.timestamp && (cacheValue.timestamp < Date.now())) {
       return {
         value: 'none'
       };
