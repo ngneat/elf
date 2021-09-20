@@ -5,7 +5,7 @@ for monitoring which entities the user is interacting with.
 
 ## Active Id
 
-To use this feature, provides the `withActiveId` props factory function to `createState`:
+To use this feature, provide the `withActiveId` props factory function in the `createState` call:
 
 ```ts
 import { createState, Store } from '@ngneat/elf';
@@ -69,7 +69,7 @@ todosStore.reduce(setActiveId(id));
 
 ## Active Ids
 
-To use this feature, provides the `withActiveIds` props factory function to `createState`:
+To use this feature, provide the `withActiveIds` props factory function in the `createState` call:
 
 ```ts
 import { createState, Store } from '@ngneat/elf';

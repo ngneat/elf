@@ -1,6 +1,7 @@
 # Pagination
 
-In many cases - for example, when working with very large data-sets - we don't want to work with the full collection in memory. Instead server-side paging is used, where the server sends just a single page at a time.
+In many cases - for example, when working with very large data-sets - we don't want to work with the full collection in memory. 
+Instead, server-side pagination is used, where the server sends just a single page of data at a time.
 
 Usually, we also want to cache pages that already have been fetched, in order to spare the need for an additional request.
 
@@ -8,13 +9,14 @@ Usually, we also want to cache pages that already have been fetched, in order to
 This feature requires `@ngneat/elf-entities`
 :::
 
-Using this feature, you can manage pagination by using the store. First, you need to install the package by using the CLI command or npm:
+Using this feature, you can manage pagination by using the store. First, you need to install the package by using 
+the CLI command `elf-cli install` and selecting the pagination package, or via npm:
 
 ```bash
 npm i @ngneat/elf-pagination
 ```
 
-To use this feature, provides the `withPagination` props factory function to `createState`:
+To use this feature, provide the `withPagination` props factory function in the `createState` call:
 
 ```ts
 import { createState, Store } from '@ngneat/elf';

@@ -2,7 +2,7 @@
 
 The `persistState()` function gives you the ability to persist some of the app’s state, by saving it to `localStorage/sessionStorage` or anything that implements the `StorageEngine` API, and restore it after a refresh.
 
-First, you need to install the package by using the CLI command or npm:
+First, you need to install the package by using the CLI command `elf-cli install` and selecting the persist-state package, or via npm:
 
 ```bash
 npm i @ngneat/elf-persist-state
