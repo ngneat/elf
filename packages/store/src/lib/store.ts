@@ -7,6 +7,10 @@ export class Store<
 > extends BehaviorSubject<State> {
   private currentValue: State;
 
+  private context: ReducerContext = {
+    config: this.getConfig(),
+  };
+
   constructor(public storeDef: SDef) {
     super(storeDef.state);
     this.currentValue = storeDef.state;
@@ -31,7 +35,7 @@ export class Store<
 
   reduce(...reducers: Array<Reducer<State>>) {
     const nextState = reducers.reduce((value, reducer) => {
-      value = reducer(value, this);
+      value = reducer(value, this.context);
 
       return value;
     }, this.currentValue);
@@ -92,8 +96,9 @@ export class Store<
   complete() {}
 }
 
+export type ReducerContext = { config: Record<PropertyKey, any> };
 export type StoreValue<T extends Store> = T['state'];
-export type Reducer<State> = (state: State, store: Store) => State;
+export type Reducer<State> = (state: State, context: ReducerContext) => State;
 
 export interface StoreDef<State = any> {
   name: string;

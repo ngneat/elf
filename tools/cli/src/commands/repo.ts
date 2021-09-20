@@ -53,7 +53,7 @@ export default class Repo extends Command {
     if (globalConfig) {
       mergedOptions = {
         ...options,
-        template: globalConfig.cli?.repoTemplate ?? 'class',
+        template: globalConfig.cli?.repoTemplate ?? 'functions',
         idKey: globalConfig.cli?.idKey ?? DEFAULT_ID_KEY,
       };
     }

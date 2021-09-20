@@ -6,9 +6,10 @@ Create a mutation function:
 
 ```ts title="store/mutations.ts"
 import { produce } from 'immer';
+import { Reducer } from '@ngneat/elf';
 
-export function write<S>(updater: (state: S) => void): (state: S) => S {
-  return function (state: S) {
+export function write<S>(updater: (state: S) => void): Reducer<S> {
+  return function (state) {
     return produce(state, (draft) => {
       updater(draft as S);
     });

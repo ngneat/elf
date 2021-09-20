@@ -1,5 +1,8 @@
 # The Store
 
+import index from '!!raw-loader!./examples/store.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
 The store takes an object that contains three properties - a `state`, a `name`, and `config`.
 
 A state is a composition of properties. To create the initial state used by your store call the `createState()` method. This method returns a `state` object and a `config` object. They are then used in the creation of the store:
@@ -13,7 +16,7 @@ interface AuthProps {
 
 const { state, config } = createState(withProps<AuthProps>({ user: null }));
 
-const authStore = new Store({ state, name, config });
+const authStore = new Store({ state, name: 'auth', config });
 ```
 
 The `createState` can accept any number of features which describe the nature of the store. For example:
@@ -43,6 +46,8 @@ authStore.subscribe((state) => {
 Select a slice from the store:
 
 ```ts
+import { select } from '@ngneat/elf';
+
 const user$ = authStore.pipe(select((state) => state.user));
 ```
 
@@ -56,7 +61,7 @@ const state = authStore.state;
 
 ### Updating the Store
 
-To update the store, we can use the `reduce` method which receives a callback function, which gets the current `state`, and returns a new immutable `state`, which will be the new value of the store:
+To update the store, we can use the `reduce` method which receives a callback function, which gets the current `state`, and returns a new **immutable** `state`, which will be the new value of the store:
 
 ```ts
 authStore.reduce((state) => ({
@@ -64,3 +69,6 @@ authStore.reduce((state) => ({
   user: { id: 'foo' },
 }));
 ```
+
+
+<LiveDemo src={index} />

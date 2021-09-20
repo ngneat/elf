@@ -1,7 +1,4 @@
-# state-history
+# @ngneat/elf-state-history
 
-This library was generated with [Nx](https://nx.dev).
+[Docs](https://ngneat.github.io/elf/docs/features/history)
 
-## Running unit tests
-
-Run `nx test state-history` to execute the unit tests via [Jest](https://jestjs.io).

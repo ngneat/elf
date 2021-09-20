@@ -25,7 +25,7 @@ This will allow you to use the following ready-made mutations and queries:
 
 ### Queries
 
-#### `selectActiveEntity`
+### `selectActiveEntity`
 
 Select the active entity:
 
@@ -35,7 +35,7 @@ import { selectActiveEntity } from '@ngneat/elf-entities';
 const active$ = todosStore.pipe(selectActiveEntity());
 ```
 
-#### `selectActiveId`
+### `selectActiveId`
 
 Select the active id:
 
@@ -45,7 +45,7 @@ import { selectActiveId } from '@ngneat/elf-entities';
 const activeId$ = todosStore.pipe(selectActiveId());
 ```
 
-#### `getActiveId`
+### `getActiveId`
 
 Get the active id:
 
@@ -55,9 +55,9 @@ import { getActiveId } from '@ngneat/elf-entities';
 const active = todosStore.query(getActiveId);
 ```
 
-### Mutations
+## Mutations
 
-#### `setActiveId`
+### `setActiveId`
 
 Set the active id:
 
@@ -87,9 +87,9 @@ const todosStore = new Store({ name: 'todos', state, config });
 
 This will allow you to use the following ready-made mutations and queries:
 
-### Queries
+## Queries
 
-#### `selectActiveEntities`
+### `selectActiveEntities`
 
 Select the active entities:
 
@@ -99,7 +99,7 @@ import { selectActiveEntities } from '@ngneat/elf-entities';
 const actives$ = todosStore.pipe(selectActiveEntities());
 ```
 
-#### `selectActiveIds`
+### `selectActiveIds`
 
 Select the active ids:
 
@@ -109,7 +109,7 @@ import { selectActiveIds } from '@ngneat/elf-entities';
 const activeIds$ = todosStore.pipe(selectActiveIds());
 ```
 
-#### `getActiveIds`
+### `getActiveIds`
 
 Get active ids:
 
@@ -121,7 +121,7 @@ const actives = todosStore.query(getActiveIds);
 
 ### Mutations
 
-#### `setActiveIds`
+### `setActiveIds`
 
 Set the active ids:
 
@@ -131,7 +131,7 @@ import { setActiveIds } from '@ngneat/elf-entities';
 todosStore.reduce(setActiveIds([id, id]));
 ```
 
-#### `addActiveIds`
+### `addActiveIds`
 
 Add active ids:
 
@@ -141,7 +141,7 @@ import { addActiveIds } from '@ngneat/elf-entities';
 todosStore.reduce(addActiveIds([id, id]));
 ```
 
-#### `toggleActiveIds`
+### `toggleActiveIds`
 
 Toggle active ids:
 
@@ -151,7 +151,7 @@ import { toggleActiveIds } from '@ngneat/elf-entities';
 todosStore.reduce(toggleActiveIds([id, id]));
 ```
 
-#### `removeActiveIds`
+### `removeActiveIds`
 
 Remove active ids:
 

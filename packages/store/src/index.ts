@@ -1,4 +1,10 @@
-export { Store, Reducer, StoreValue, StoreDef } from './lib/store';
+export {
+  Store,
+  Reducer,
+  StoreValue,
+  StoreDef,
+  ReducerContext,
+} from './lib/store';
 export { propsFactory } from './lib/props-factory';
 export { propsArrayFactory } from './lib/props-array-factory';
 export {

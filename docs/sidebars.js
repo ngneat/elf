@@ -11,21 +11,9 @@
 
 module.exports = {
   docs: [
-    {
-      type: 'doc',
-      label: 'Installation',
-      id: 'installation',
-    },
-    {
-      type: 'doc',
-      label: 'The Store',
-      id: 'store',
-    },
-    {
-      type: 'doc',
-      label: 'The Repository Pattern',
-      id: 'repository',
-    },
+    'installation',
+    'store',
+    'repository',
     {
       type: 'category',
       label: 'Entities',
