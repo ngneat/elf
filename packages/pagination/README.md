@@ -1,7 +1,3 @@
-# pagination
+# @ngneat/elf-pagination
 
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test pagination` to execute the unit tests via [Jest](https://jestjs.io).
+[Docs](https://ngneat.github.io/elf/docs/features/pagination)

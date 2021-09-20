@@ -1,12 +1,12 @@
 {
   "name": "@ngneat/elf-cli",
-  "description": "elf cli",
-  "version": "1.0.0",
+  "description": "A CLI for elf store",
+  "version": "1.0.0-beta.0",
   "author": "Netanel Basal @NetanelBasal",
   "bin": {
     "elf": "./bin/run"
   },
-  "bugs": "https://github.com/https://github.com/ngneat/elf/https://github.com/ngneat/elf/issues",
+  "bugs": "https://github.com/ngneat/elf/issues",
   "dependencies": {
     "@oclif/command": "1.8.0",
     "@oclif/config": "1.17.0",
@@ -46,7 +46,11 @@
   ],
   "homepage": "https://github.com/ngneat/elf",
   "keywords": [
-    "oclif"
+    "oclif",
+    "elf cli",
+    "elf store",
+    "elf",
+    "elf bolierplate"
   ],
   "license": "MIT",
   "main": "lib/index.js",

@@ -1,3 +1,4 @@
-# cli-ng
+# @ngneat/elf-cli-ng
 
-This library was generated with [Nx](https://nx.dev).
+[Docs](https://ngneat.github.io/elf/docs/cli)
+

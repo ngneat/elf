@@ -1,7 +1,4 @@
-# store
+# @ngneat/elf
 
-This library was generated with [Nx](https://nx.dev).
+[Docs](https://ngneat.github.io/elf/)
 
-## Running unit tests
-
-Run `nx test store` to execute the unit tests via [Jest](https://jestjs.io).
