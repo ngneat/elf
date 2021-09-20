@@ -62,7 +62,7 @@ export function getRequestCache<S extends StateOf<typeof withRequestsCache>>(
       {
         value: 'none',
       } as CacheState;
-    if (cacheValue.timestamp && cacheValue.timestamp < Date.now()) {
+    if (cacheValue.timestamp && (cacheValue.timestamp <= Date.now())) {
       return {
         value: 'none'
       };
@@ -84,18 +84,10 @@ export function isRequestCached<S extends StateOf<typeof withRequestsCache>>(
   key: string | number | string[] | number[],
   options?: { value?: CacheState['value'] }
 ) {
-
   return function (state: S) {
     const type = options?.value ?? 'full';
-    const now = Date.now();
-
     return coerceArray(key).some(
-      (k) => {
-        const cachedValue = getRequestCache(k)(state);
-        if (cachedValue.timestamp && cachedValue.timestamp < now) {
-          return false;
-        }
-        return cachedValue.value === type;}
+      (k) => getRequestCache(k)(state).value === type
     );
   };
 }
