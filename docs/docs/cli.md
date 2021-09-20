@@ -1,8 +1,64 @@
-# Elf CLI
+# CLI
 
 Elf comes with a CLI that enables a fast and easy setup of your store. It offers the following commands:
 
-```
+## Install
+
+```bash
 $ npx @ngneat/elf-cli install
-$ npx @ngneat/elf-cli repo
 ```
+
+Using the above command, you can choose which packages to install. Your package manager will be detected and used for installation.
+
+## Repo
+
+```bash
+$ npx @ngneat/elf-cli repo
+$ npx @ngneat/elf-cli repo --dry-run
+```
+
+Using the above command, you can create a `repository` file. All the boilerplate will be created for you based on which *features* you select.
+
+### Config
+You can set the configuration by providing the `package.json` file:
+
+```json title="package.json"
+{
+  "elf": {
+    "cli": {
+      "repoTemplate": "class",
+      "idKey": "_id",
+      "repoLibrary": "state",
+      "plugins": []
+    }
+  }
+}
+```
+
+### `repoTemplate`
+By default, the `repository` file generates exported functions. If you prefer to use a class, for instance, when working with Angular, you can set this option to `class`.
+
+### `idKey`
+The default `idKey` for the package `@ngenat/elf-entities` is `id`. By setting this option, you can change it globally.
+
+### `repoLibrary`
+The `repository` file is created by default at the root path you specify (i.e., `flat`). If you set this option, you can specify the `directory` you want.
+### `plugins`
+Specify which plugins you want to use. 
+
+#### `@ngneat/elf-cli-ng`
+
+Install the package, and add the following code:
+
+```json title="package.json"
+{
+  "elf": {
+    "cli": {
+      "repoTemplate": "class",
+      "plugins": ["@ngneat/elf-cli-ng"]
+    }
+  }
+}
+```
+
+The plugin will add the `Injectable` decorator to the `repository` class.

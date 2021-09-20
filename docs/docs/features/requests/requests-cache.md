@@ -50,9 +50,9 @@ http.get(todosUrl).pipe(
 
 You can monitor and change the request cache status for your APIs using the following queries and mutations:
 
-### Queries
+## Queries
 
-#### `selectRequestStatus`
+### `selectRequestStatus`
 
 Select the cache status of the provided request key:
 
@@ -62,7 +62,7 @@ import { selectRequestCache } from '@ngneat/elf-requests';
 todosCacheStatus$ = store.pipe(selectRequestCache('todos'));
 ```
 
-#### `getRequestCache`
+### `getRequestCache`
 
 Get the cache status of the provided request key:
 
@@ -72,7 +72,7 @@ import { getRequestCache } from '@ngneat/elf-requests';
 todosCacheStatus = store.query(getRequestCache('todos'));
 ```
 
-#### `selectIsRequestCached`
+### `selectIsRequestCached`
 
 Select whether the cache status of the provided request key isn't `none`:
 
@@ -90,9 +90,9 @@ import { isRequestCached } from '@ngneat/elf-requests';
 isCached = store.query(isRequestCached('todos'));
 ```
 
-### Mutations
+## Mutations
 
-#### `updateRequestStatus`
+### `updateRequestStatus`
 
 ```ts
 import { updateRequestCache } from '@ngneat/elf-requests';

@@ -42,9 +42,9 @@ at which point it changes to either `success` or `error`.
 
 You can monitor and change the request status for your APIs using the following queries and mutations:
 
-### Queries
+## Queries
 
-#### `selectRequestStatus`
+### `selectRequestStatus`
 
 Select the status of the provided request key:
 
@@ -57,7 +57,7 @@ todosStatus$ = store.pipe(selectRequestStatus('todos'));
 todoStatus$ = store.pipe(selectRequestStatus('todo-1', { groupKey: 'todos' }));
 ```
 
-#### `getRequestStatus`
+### `getRequestStatus`
 
 Get the status of the provided request key:
 
@@ -67,7 +67,7 @@ import { getRequestStatus } from '@ngneat/elf-requests';
 todosStatus = store.query(getRequestStatus('todos'));
 ```
 
-#### `selectIsRequestPending`
+### `selectIsRequestPending`
 
 Select whether the status of the provided request key is `pending`:
 
@@ -77,9 +77,9 @@ import { selectIsRequestPending } from '@ngneat/elf-requests';
 pending$ = store.pipe(selectIsRequestPending('todos'));
 ```
 
-### Mutations
+## Mutations
 
-#### `updateRequestStatus`
+### `updateRequestStatus`
 
 ```ts
 import { updateRequestCache } from '@ngneat/elf-requests';

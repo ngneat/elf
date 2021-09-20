@@ -28,9 +28,9 @@ const todosStore = new Store({ name: 'todos', state, config });
 
 This will allow you to use the following ready-made mutations and queries:
 
-### Queries
+## Queries
 
-#### `selectAll`
+### `selectAll`
 
 Select the entire store's entity collection:
 
@@ -40,7 +40,7 @@ import { selectAll } from '@ngneat/elf-entities';
 const todos$ = todosStore.pipe(selectAll());
 ```
 
-#### `selectAllApply`
+### `selectAllApply`
 
 Select the entire store's entity collection, and apply a `filter/map`:
 
@@ -57,7 +57,7 @@ const titles$ = todosStore.pipe(
 
 In the above example, it'll first apply the `filter` and then the `map` function.
 
-#### `selectEntities`
+### `selectEntities`
 
 Select the entire store's entity collection as object:
 
@@ -67,7 +67,7 @@ import { selectEntities } from '@ngneat/elf-entities';
 const todos$ = todosStore.pipe(selectEntities());
 ```
 
-#### `selectEntity`
+### `selectEntity`
 
 Select an entity or a slice of an entity:
 
@@ -79,7 +79,7 @@ const title$ = todosStore.pipe(selectEntity(id, { pluck: 'title' }));
 const title$ = todosStore.pipe(selectEntity(id, { pluck: (e) => e.title }));
 ```
 
-#### `selectMany`
+### `selectMany`
 
 Select multiple entities from the store:
 
@@ -91,7 +91,7 @@ const titles$ = todosStore.pipe(selectMany(id, { pluck: 'title' }));
 const titles$ = todosStore.pipe(selectMany(id, { pluck: (e) => e.title }));
 ```
 
-#### `selectFirst`
+### `selectFirst`
 
 Select the first entity from the store:
 
@@ -101,7 +101,7 @@ import { selectFirst } from '@ngneat/elf-entities';
 const first$ = todosStore.pipe(selectFirst());
 ```
 
-#### `selectLast`
+### `selectLast`
 
 Select the last entity from the store:
 
@@ -111,7 +111,7 @@ import { selectLast } from '@ngneat/elf-entities';
 const last$ = todosStore.pipe(selectLast());
 ```
 
-#### `selectEntitiesCount`
+### `selectEntitiesCount`
 
 Select the store's entity collection size:
 
@@ -121,7 +121,7 @@ import { selectEntitiesCount } from '@ngneat/elf-entities';
 const count$ = todosStore.pipe(selectEntitiesCount());
 ```
 
-#### `selectEntitiesCountByPredicate`
+### `selectEntitiesCountByPredicate`
 
 Select the store's entity collection size:
 
@@ -133,7 +133,7 @@ const count$ = todosStore.pipe(
 );
 ```
 
-#### `getEntity`
+### `getEntity`
 
 Get an entity by id:
 
@@ -143,7 +143,7 @@ import { getEntity } from '@ngneat/elf-entities';
 const todo = todosStore.query(getEntity(id));
 ```
 
-#### `hasEntity`
+### `hasEntity`
 
 Returns whether an entity exists:
 
@@ -154,9 +154,9 @@ if (todosStore.query(hasEntity(id))) {
 }
 ```
 
-### Mutations
+## Mutations
 
-#### `setEntities`
+### `setEntities`
 
 Replace current collection with the provided collection:
 
@@ -168,7 +168,7 @@ todosStore.reduce(
 );
 ```
 
-#### `addEntities`
+### `addEntities`
 
 Add an entity or entities to the store:
 
@@ -188,7 +188,7 @@ todosStore.reduce(
 );
 ```
 
-#### `addEntitiesFifo`
+### `addEntitiesFifo`
 
 Add an entity or entities to the store using fifo strategy:
 
@@ -200,7 +200,7 @@ todosStore.reduce(
 );
 ```
 
-#### `updateEntities`
+### `updateEntities`
 
 Update an entity or entities in the store:
 
@@ -220,7 +220,7 @@ todosStore.reduce(
 );
 ```
 
-#### `updateEntitiesByPredicate`
+### `updateEntitiesByPredicate`
 
 Update an entity or entities in the store:
 
@@ -242,7 +242,7 @@ todosStore.reduce(
 );
 ```
 
-#### `updateAllEntities`
+### `updateAllEntities`
 
 Update all entities in the store:
 
@@ -258,7 +258,7 @@ todosStore.reduce(
 );
 ```
 
-#### `upsertEntities`
+### `upsertEntities`
 
 Insert or update an entity. When the id isn't found, it creates a new entity; otherwise, it performs an update:
 
@@ -297,7 +297,7 @@ todosStore.reduce(
 
 The above example will first create the entity using the *creator* method, then pass the result to the *updater* method, and merge both.
 
-#### `deleteEntities`
+### `deleteEntities`
 
 Delete an entity or entities from the store:
 
@@ -308,7 +308,7 @@ todosStore.reduce(deleteEntities(id));
 todosStore.reduce(deleteEntities([id, id]));
 ```
 
-#### `deleteEntitiesByPredicate`
+### `deleteEntitiesByPredicate`
 
 Delete an entity or entities from the store:
 
@@ -320,7 +320,7 @@ todosStore.reduce(
 );
 ```
 
-#### `deleteAllEntities`
+### `deleteAllEntities`
 
 Delete all entities from the store:
 

@@ -7,6 +7,7 @@ describe('Repo Builder', () => {
       idKey: 'id',
       features: ['withProps'],
       crud: [],
+      template: 'class',
       storeName: 'todos',
       path: '',
     });
@@ -21,6 +22,7 @@ describe('Repo Builder', () => {
       crud: [],
       storeName: 'todos',
       path: '',
+      template: 'class',
     });
 
     expect(output).toMatchSnapshot('withRequestsCache');
@@ -33,6 +35,7 @@ describe('Repo Builder', () => {
       crud: [],
       storeName: 'todos',
       path: '',
+      template: 'class',
     });
 
     expect(output).toMatchSnapshot('withRequestsStatus');
@@ -45,6 +48,7 @@ describe('Repo Builder', () => {
       crud: [],
       storeName: 'todos',
       path: '',
+      template: 'class',
     });
 
     expect(output).toMatchSnapshot('withActiveId');
@@ -57,6 +61,7 @@ describe('Repo Builder', () => {
       crud: [],
       storeName: 'todos',
       path: '',
+      template: 'class',
     });
 
     expect(output).toMatchSnapshot('withActiveIds');
@@ -69,6 +74,7 @@ describe('Repo Builder', () => {
       crud: ['addEntities', 'updateEntities', 'deleteEntities'],
       storeName: 'todos',
       path: '',
+      template: 'class',
     });
 
     expect(output).toMatchSnapshot('withEntities');
@@ -81,6 +87,7 @@ describe('Repo Builder', () => {
       crud: ['addEntities', 'updateEntities', 'deleteEntities'],
       storeName: 'todos',
       path: '',
+      template: 'class',
     });
 
     expect(output).toMatchSnapshot('withEntities');
@@ -93,6 +100,7 @@ describe('Repo Builder', () => {
       crud: [],
       storeName: 'todos',
       path: '',
+      template: 'class',
     });
 
     expect(output).toMatchSnapshot('withUIEntities');
@@ -105,6 +113,7 @@ describe('Repo Builder', () => {
       crud: ['deleteEntities', 'addEntities', 'updateEntities'],
       storeName: 'todos',
       path: '',
+      template: 'class',
     });
 
     expect(output).toMatchSnapshot('all');
