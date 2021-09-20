@@ -118,5 +118,13 @@ describe('requestsCache', () => {
     expect(
       store.query(isRequestCached(ttlRequestKey, { value: 'full' }))
     ).toBeFalsy();
+
+    store.reduce(
+      updateRequestCache(ttlRequestKey, 'full', { ttl: 1000 })
+    );
+
+    expect(
+      store.query(isRequestCached(ttlRequestKey, { value: 'full' }))
+    ).toBeTruthy();
   });
 });
