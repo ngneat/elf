@@ -103,19 +103,20 @@ describe('requestsCache', () => {
 
   it('should uphold ttl', () => {
     jest.useFakeTimers();
+    const ttlRequestKey = 'foo_ttl';
 
     store.reduce(
-      updateRequestCache("requestKey", 'full', { ttl: 1000 })
+      updateRequestCache(ttlRequestKey, 'full', { ttl: 1000 })
     );
 
     expect(
-      store.query(isRequestCached("requestKey", { value: 'full' }))
+      store.query(isRequestCached(ttlRequestKey, { value: 'full' }))
     ).toBeTruthy();
 
     jest.advanceTimersByTime(2000);
 
     expect(
-      store.query(isRequestCached("requestKey", { value: 'full' }))
+      store.query(isRequestCached(ttlRequestKey, { value: 'full' }))
     ).toBeFalsy();
   });
 });
