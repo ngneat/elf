@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'devtools',
+  displayName: 'cli-ng',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {

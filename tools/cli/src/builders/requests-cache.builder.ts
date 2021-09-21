@@ -18,7 +18,7 @@ export class RequestsCacheBuilder extends FeatureBuilder {
 
   run() {
     this.addImport(
-      ['withRequestsCache', 'updateRequestsCache', 'CacheState'],
+      ['withRequestsCache', 'updateRequestCache', 'CacheState'],
       '@ngneat/elf-requests'
     );
 
@@ -26,7 +26,7 @@ export class RequestsCacheBuilder extends FeatureBuilder {
       name: `updateRequestCache`,
       kind: StructureKind.Method,
       parameters: [{ name: 'state', type: 'CacheState' }],
-      statements: `${this.storeVariableName}.reduce(updateRequestsCache({ key: state }));`,
+      statements: `${this.storeVariableName}.reduce(updateRequestCache(key));`,
     });
   }
 }

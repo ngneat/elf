@@ -56,6 +56,14 @@
             "lintFilePatterns": ["packages/cli-ng/**/*.ts"]
           }
         },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/packages/cli-ng"],
+          "options": {
+            "jestConfig": "packages/cli-ng/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
         "version": {
           "executor": "@jscutlery/semver:version",
           "options": {

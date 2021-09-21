@@ -1,6 +1,6 @@
 # Cache
 
-Using this feature, you can manage the cache status of API calls in your store. First, you need to install the package 
+Using this feature, you can manage the cache status of API calls in your store. First, you need to install the package
 by using the CLI command `elf-cli install` and selecting the requests package, or via npm:
 
 ```bash
@@ -27,33 +27,69 @@ const { state, config } = createState(
 const todosStore = new Store({ name: 'todos', state, config });
 ```
 
-In your server call, you can use the `skipWhileCached` operator and pass a unique key to identify the request. 
-This enables skipping the API call if the passed key is located in the store cache. 
+In your server call, you can use the `skipWhileCached` operator and pass a unique key to identify the request.
+This enables skipping the API call if the passed key is located in the store cache.
 Use it in tandem with `updateRequestsCache`:
 
-```ts
-import { setRequestStatus } from '@ngneat/elf-requests';
+```ts title="todos.repository.ts"
+import { updateRequestCache } from '@ngneat/elf-requests';
+
+export function setEntities(todos: Todo[]) {
+ store.reduce(
+   // highlight-next-line
+   updateRequestCache('todos'),
+   setEntities(todos)
+ )
+}
+```
+
+```ts title="todos.service.ts"
+import { skipWhileCached } from '@ngneat/elf-requests';
 
 http.get(todosUrl).pipe(
-  tap((todos) => todosRepo.setEntities(todos)), // calls updateRequestsCache with the 'todos' key
+  tap((todos) => todosRepo.setEntities(todos))
+  // highlight-next-line
   skipWhileCached(todosRepo.store, 'todos')
 );
 ```
 
-Passing a value as the third parameter ensures the `store` will only skip the API call if the value matches the 
+Passing a value as the third parameter ensures the `store` will only skip the API call if the value matches the
 one passed. Values can be status can be 'none', 'partial' or 'full':
 
-```ts
-import { setRequestStatus } from '@ngneat/elf-requests';
+```ts title="todos.repository.ts"
+import { updateRequestCache } from '@ngneat/elf-requests';
+
+export function setEntities(todos: Todo[]) {
+ store.reduce(
+   // highlight-next-line
+   updateRequestCache('todos', { value: 'partial' }),
+   setEntities(todos)
+ )
+}
+```
+
+```ts title="todos.service.ts"
+import { skipWhileCached } from '@ngneat/elf-requests';
 
 http.get(todosUrl).pipe(
-  tap((todos) => todosRepo.setEntities(todos)), // calls updateRequestsCache with the 'todos' key
+  tap((todos) => todosRepo.setEntities(todos)),
+  // highlight-next-line
   skipWhileCached(todosRepo.store, 'todos', { value: 'partial' })
 );
 ```
 
-In addition to value, you can pass in the same object a returnSource which will be returned by the operator if the 
-request is cached. 
+In addition to value, you can pass in the same object a `returnSource` which will be returned by the operator if the
+request is cached. The default return value is `EMPTY` observable.
+
+```ts title="todos.service.ts"
+import { skipWhileCached } from '@ngneat/elf-requests';
+
+http.get(todosUrl).pipe(
+  tap((todos) => todosRepo.setEntities(todos)),
+  // highlight-next-line
+  skipWhileCached(todosRepo.store, 'todos', { returnSource: of([]) })
+);
+```
 
 You can monitor and change the request cache status for your APIs using the following queries and mutations:
 
@@ -86,7 +122,8 @@ Select whether the cache status of the provided request key isn't `none`:
 ```ts
 import { selectIsRequestCached } from '@ngneat/elf-requests';
 
-isCached$ = store.pipe(selectIsRequestCached('todos'));
+const isCached$ = store.pipe(selectIsRequestCached('todos'));
+const isPartialCached$ = store.pipe(selectIsRequestCached('todos', { value: 'partial' }));
 ```
 
 Get whether the cache status of the provided request key isn't `none`:
@@ -94,24 +131,27 @@ Get whether the cache status of the provided request key isn't `none`:
 ```ts
 import { isRequestCached } from '@ngneat/elf-requests';
 
-isCached = store.query(isRequestCached('todos'));
+const isCached = store.query(isRequestCached('todos'));
+const isPartialCached = store.query(isRequestCached('todos', { value: 'partial' }));
 ```
 
 ## Mutations
 
-### `updateRequestStatus`
+### `updateRequestCache`
 
 ```ts
 import { updateRequestCache } from '@ngneat/elf-requests';
 
 store.reduce(updateRequestCache('todos'));
-store.reduce(updateRequestCache('todos', 'partial'));
-store.reduce(updateRequestCache('todos', 'none'));
-store.reduce(updateRequestCache('todos', 'full', { ttl: 1000 }));
+store.reduce(updateRequestCache('todos', { value: 'partial' }));
+store.reduce(updateRequestCache('todos', { value: 'none' }));
+store.reduce(updateRequestCache('todos', { ttl: 1000 }));
 ```
+
+If you pass `ttl` (time to live) when updating a cache record, that represents the time (in milliseconds) that `key` will
+have the value that was set (afterward, it reverts to 'none').
 
 And more:
 `updateRequestsCache`, `resetRequestsCache`, `getRequestsCache`, `setRequestsCache`
 
-If you pass ttl (time to live) when updating a cache record, that represents the time (in milliseconds) that key will 
-have the value that was set (afterwards it reverts to 'none').
+

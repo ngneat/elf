@@ -11,14 +11,10 @@ import {
 
 import { EMPTY, Observable, OperatorFunction } from 'rxjs';
 
-interface CachingOptions {
-  ttl?: number
-}
-
 type CacheValue = Record<string | number, CacheState>;
 export type CacheState = {
   value: 'none' | 'partial' | 'full';
-  timestamp?: number
+  timestamp?: number;
 };
 
 export const {
@@ -40,15 +36,15 @@ export function selectRequestCache<S extends StateOf<typeof withRequestsCache>>(
 
 export function updateRequestCache<S extends StateOf<typeof withRequestsCache>>(
   key: string | number,
-  value: CacheState['value'],
-  cachingOptions: CachingOptions = {}
+  { ttl, value: v }: { ttl?: number; value?: CacheState['value'] } = {}
 ): Reducer<S> {
   const data = {
-    value,
+    value: v ?? 'full',
   } as CacheState;
-  if (cachingOptions.ttl) {
-    data.timestamp = Date.now() + cachingOptions.ttl;
+  if (ttl) {
+    data.timestamp = Date.now() + ttl;
   }
+
   return updateRequestsCache({
     [key]: data,
   });
@@ -58,13 +54,15 @@ export function getRequestCache<S extends StateOf<typeof withRequestsCache>>(
   key: string | number
 ): Query<S, CacheState> {
   return function (state: S) {
-    const cacheValue =   getRequestsCache(state)[key] ??
-      {
+    const cacheValue =
+      getRequestsCache(state)[key] ??
+      ({
         value: 'none',
-      } as CacheState;
-    if (cacheValue.timestamp && (cacheValue.timestamp < Date.now())) {
+      } as CacheState);
+
+    if (cacheValue.timestamp && cacheValue.timestamp < Date.now()) {
       return {
-        value: 'none'
+        value: 'none',
       };
     }
 

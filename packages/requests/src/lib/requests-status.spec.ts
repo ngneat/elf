@@ -1,5 +1,5 @@
 import { createState, Store } from '@ngneat/elf';
-import { updateRequestStatus } from '..';
+import { StatusState, updateRequestStatus } from '..';
 import {
   getRequestStatus,
   selectIsRequestPending,
@@ -7,6 +7,7 @@ import {
   updateRequestsStatus,
   withRequestsStatus,
 } from './requests-status';
+import { expectTypeOf } from 'expect-type';
 
 describe('requestsStatus', () => {
   const { state, config } = createState(withRequestsStatus());
@@ -17,6 +18,7 @@ describe('requestsStatus', () => {
     const spy = jest.fn();
 
     store.pipe(selectRequestStatus(requestKey)).subscribe((v) => {
+      expectTypeOf(v).toEqualTypeOf<StatusState>();
       spy(v);
     });
 
@@ -50,6 +52,7 @@ describe('requestsStatus', () => {
     expect(spy).toHaveBeenCalledTimes(2);
 
     store.pipe(selectIsRequestPending(requestKey)).subscribe((v) => {
+      expectTypeOf(v).toEqualTypeOf<boolean>();
       expect(v).toBeFalsy();
     });
   });
@@ -95,5 +98,17 @@ describe('requestsStatus', () => {
     store.reduce(updateRequestStatus(requestKey, 'pending'));
 
     expect(spy).toHaveBeenCalledWith({ value: 'pending' });
+  });
+
+  it('should infer', () => {
+    const { state, config } = createState(withRequestsStatus());
+    const store = new Store({ state, config, name: '' });
+
+    store.reduce(updateRequestStatus(requestKey, 'success'));
+
+    // @ts-expect-error - Not valid status
+    store.reduce(updateRequestStatus(requestKey, 'foo'));
+    // @ts-expect-error - Should pass the error as third param
+    store.reduce(updateRequestStatus(requestKey, 'error'));
   });
 });
