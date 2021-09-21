@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --primary: #7e3ab7;
+}
+
+.padding {
+  padding: 2em;
+}
+
+.pagination {
+  li {
+    color: var(--primary);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--primary);
+      color: #fff;
+      transform: scale(1.1);
+    }
+  }
+}
