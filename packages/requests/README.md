@@ -1,7 +1,4 @@
-# requests
+# @ngneat/elf-requests
 
-This library was generated with [Nx](https://nx.dev).
+[Docs](https://ngneat.github.io/elf/docs/features/requests/requests-status)
 
-## Running unit tests
-
-Run `nx test requests` to execute the unit tests via [Jest](https://jestjs.io).

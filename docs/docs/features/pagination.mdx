@@ -63,9 +63,9 @@ http.get(todosUrl).pipe(
 
 Additional queries and mutations available are:
 
-### Queries
+## Queries
 
-#### `selectCurrentPageEntities`
+### `selectCurrentPageEntities`
 
 Select the current page entities:
 
@@ -75,7 +75,7 @@ import { selectCurrentPageEntities } from '@ngneat/elf-pagination';
 todos$ = store.pipe(selectCurrentPageEntities());
 ```
 
-#### `selectCurrentPageEntities`
+### `selectCurrentPageEntities`
 
 Select the current page number (by default it's page 1):
 
@@ -85,7 +85,7 @@ import { selectCurrentPage } from '@ngneat/elf-pagination';
 currentPage$ = store.pipe(selectCurrentPage());
 ```
 
-#### `selectHasPage`
+### `selectHasPage`
 
 Select whether the page exists:
 
@@ -95,7 +95,7 @@ import { selectHasPage } from '@ngneat/elf-pagination';
 hasPage$ = store.pipe(selectHasPage(1));
 ```
 
-#### `hasPage`
+### `hasPage`
 
 Get whether the page exists:
 
@@ -105,7 +105,7 @@ import { hasPage } from '@ngneat/elf-pagination';
 hasPage = store.query(hasPage(1));
 ```
 
-#### `selectPaginationData`
+### `selectPaginationData`
 
 Select the pagination data:
 
@@ -115,7 +115,7 @@ import { selectPaginationData } from '@ngneat/elf-pagination';
 data$ = store.pipe(selectPaginationData());
 ```
 
-#### `getPaginationData`
+### `getPaginationData`
 
 Get pagination data:
 
@@ -125,9 +125,9 @@ import { getPaginationData } from '@ngneat/elf-pagination';
 data = store.query(getPaginationData());
 ```
 
-### Mutations
+## Mutations
 
-#### `setCurrentPage`
+### `setCurrentPage`
 
 Set the current page:
 
@@ -137,7 +137,7 @@ import { setCurrentPage } from '@ngneat/elf-pagination';
 store.reduce(setCurrentPage(2));
 ```
 
-#### `setPage`
+### `setPage`
 
 Set the ids belongs to a page:
 
@@ -147,7 +147,7 @@ import { setPage } from '@ngneat/elf-pagination';
 store.reduce(setPage(2, [id, id, id]));
 ```
 
-#### `updatePaginationData`
+### `updatePaginationData`
 
 Set the current page:
 
@@ -164,7 +164,7 @@ store.reduce(
 );
 ```
 
-#### `deletePage`
+### `deletePage`
 
 Delete a page:
 
@@ -174,7 +174,7 @@ import { deletePage } from '@ngneat/elf-pagination';
 store.reduce(deletePage(2));
 ```
 
-#### `deleteAllPages`
+### `deleteAllPages`
 
 Delete all pages:
 

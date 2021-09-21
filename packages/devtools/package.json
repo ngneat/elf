@@ -1,4 +1,32 @@
 {
   "name": "@ngneat/elf-devtools",
-  "version": "0.0.1"
+  "version": "1.0.0-beta.0",
+  "description": "Redux devtools for elf store",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/ngneat/elf/issues"
+  },
+  "homepage": "https://github.com/ngneat/elf#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ngneat/elf"
+  },
+  "keywords": [
+    "rxjs",
+    "state management",
+    "reactive state management",
+    "js state management",
+    "reactive store",
+    "elf",
+    "devtools",
+    "redux devtools"
+  ],
+  "author": {
+    "name": "Netanel Basal",
+    "email": "netanel7799@gmail.com",
+    "url": "https://netbasal.com"
+  },
+  "license": "MIT"
 }

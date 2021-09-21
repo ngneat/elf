@@ -55,6 +55,12 @@
           "options": {
             "lintFilePatterns": ["packages/cli-ng/**/*.ts"]
           }
+        },
+        "version": {
+          "executor": "@jscutlery/semver:version",
+          "options": {
+            "syncVersions": false
+          }
         }
       }
     },

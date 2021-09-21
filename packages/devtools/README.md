@@ -1,7 +1,4 @@
-# devtools
+# @ngneat/elf-devtools
 
-This library was generated with [Nx](https://nx.dev).
+[Docs](https://ngneat.github.io/elf/docs/dev-tools)
 
-## Running unit tests
-
-Run `nx test devtools` to execute the unit tests via [Jest](https://jestjs.io).

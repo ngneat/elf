@@ -21,7 +21,7 @@ import { names, resolveStoreVariableName } from '../utils';
 export function createRepo(options: Options) {
   const { storeName } = options;
   const storeNames = names(storeName);
-  const isFunctionTpl = options.template === 'functions';
+  const isFunctionTpl = !options.template || options.template === 'functions';
 
   const project = new Project({
     manipulationSettings: {
