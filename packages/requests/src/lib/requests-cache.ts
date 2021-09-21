@@ -11,9 +11,14 @@ import {
 
 import { EMPTY, Observable, OperatorFunction } from 'rxjs';
 
+interface CachingOptions {
+  ttl?: number
+}
+
 type CacheValue = Record<string | number, CacheState>;
 export type CacheState = {
   value: 'none' | 'partial' | 'full';
+  timestamp?: number
 };
 
 export const {
@@ -35,12 +40,17 @@ export function selectRequestCache<S extends StateOf<typeof withRequestsCache>>(
 
 export function updateRequestCache<S extends StateOf<typeof withRequestsCache>>(
   key: string | number,
-  value: CacheState['value']
+  value: CacheState['value'],
+  cachingOptions: CachingOptions = {}
 ): Reducer<S> {
+  const data = {
+    value,
+  } as CacheState;
+  if (cachingOptions.ttl) {
+    data.timestamp = Date.now() + cachingOptions.ttl;
+  }
   return updateRequestsCache({
-    [key]: {
-      value,
-    },
+    [key]: data,
   });
 }
 
@@ -48,12 +58,17 @@ export function getRequestCache<S extends StateOf<typeof withRequestsCache>>(
   key: string | number
 ): Query<S, CacheState> {
   return function (state: S) {
-    return (
-      getRequestsCache(state)[key] ??
-      ({
+    const cacheValue =   getRequestsCache(state)[key] ??
+      {
         value: 'none',
-      } as CacheState)
-    );
+      } as CacheState;
+    if (cacheValue.timestamp && (cacheValue.timestamp < Date.now())) {
+      return {
+        value: 'none'
+      };
+    }
+
+    return cacheValue;
   };
 }
 

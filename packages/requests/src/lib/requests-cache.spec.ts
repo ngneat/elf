@@ -5,8 +5,9 @@ import {
   selectIsRequestCached,
   selectRequestCache,
   skipWhileCached,
+  updateRequestCache,
   updateRequestsCache,
-  withRequestsCache,
+  withRequestsCache
 } from './requests-cache';
 import { Subject } from 'rxjs';
 
@@ -14,6 +15,11 @@ describe('requestsCache', () => {
   const { state, config } = createState(withRequestsCache());
   const store = new Store({ state, config, name: '' });
   const requestKey = 'foo';
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
 
   it('should work', () => {
     const spy = jest.fn();
@@ -93,5 +99,32 @@ describe('requestsCache', () => {
 
     subject.next({});
     expect(spy).toHaveBeenCalledTimes(0);
+  });
+
+  it('should uphold ttl', () => {
+    jest.useFakeTimers();
+    const ttlRequestKey = 'foo_ttl';
+
+    store.reduce(
+      updateRequestCache(ttlRequestKey, 'full', { ttl: 1000 })
+    );
+
+    expect(
+      store.query(isRequestCached(ttlRequestKey, { value: 'full' }))
+    ).toBeTruthy();
+
+    jest.advanceTimersByTime(2000);
+
+    expect(
+      store.query(isRequestCached(ttlRequestKey, { value: 'full' }))
+    ).toBeFalsy();
+
+    store.reduce(
+      updateRequestCache(ttlRequestKey, 'full', { ttl: 1000 })
+    );
+
+    expect(
+      store.query(isRequestCached(ttlRequestKey, { value: 'full' }))
+    ).toBeTruthy();
   });
 });

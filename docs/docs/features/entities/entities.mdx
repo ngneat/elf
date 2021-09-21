@@ -1,16 +1,17 @@
 # Entities
 
-This feature enables the store to act as an entities store. You can think of `entities` state as a table in a database,
-where each table represents a flat collection of entities. Elf's entities state simplifies the process, giving you
+This feature enables the store to act as an entities store. You can think of an `entities` state as a table in a database,
+where each table represents a flat collection of similar entities. Elf's entities state simplifies the process, giving you
 everything you need to manage it.
 
-First, you need to install the package by using the CLI command or npm:
+First, you need to install the package by using the CLI command `elf-cli install` and selecting the entities package, 
+or via npm:
 
 ```bash
 npm i @ngneat/elf-entities
 ```
 
-To use this feature, provides the `withEntities` props factory function to `createState`:
+To use this feature, provide the `withEntities` props factory function in the `createState` call:
 
 ```ts
 import { createState, Store } from '@ngneat/elf';

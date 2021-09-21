@@ -1,12 +1,13 @@
 # Status
 
-Using this feature, you can manage the status of API calls in your store. First, you need to install the package by using the CLI command or npm:
+Using this feature, you can manage the status of API calls in your store. First, you need to install the package by 
+using the CLI command `elf-cli install` and selecting the requests package, or via npm:
 
 ```bash
 npm i @ngneat/elf-requests
 ```
 
-To use this feature, provides the `withRequestsStatus` props factory function to `createState`:
+To use this feature, provide the `withRequestsStatus` props factory function in the `createState` call:
 
 ```ts
 import { createState, Store } from '@ngneat/elf';

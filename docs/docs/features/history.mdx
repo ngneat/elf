@@ -2,7 +2,8 @@
 
 The `stateHistory` function provides a convenient way for `undo` and `redo` functionality, saving you the trouble of maintaining a history in the app yourself.
 
-First, you need to install the package by using the CLI command or npm:
+First, you need to install the package by using the CLI command `elf-cli install` and selecting the stat-history 
+package, or via npm:
 
 ```bash
 npm i @ngneat/elf-state-history

@@ -1,12 +1,13 @@
 # Cache
 
-Using this feature, you can manage the cache status of API calls in your store. First, you need to install the package by using the CLI command or npm:
+Using this feature, you can manage the cache status of API calls in your store. First, you need to install the package 
+by using the CLI command `elf-cli install` and selecting the requests package, or via npm:
 
 ```bash
 npm i @ngneat/elf-requests
 ```
 
-To use this feature, provides the `withRequestsCache` props factory function to `createState`:
+To use this feature, provide the `withRequestsCache` props factory function in the `createState` call:
 
 ```ts
 import { createState, Store } from '@ngneat/elf';
@@ -26,27 +27,33 @@ const { state, config } = createState(
 const todosStore = new Store({ name: 'todos', state, config });
 ```
 
-In your server call, you can use the `skipWhileCached` operator and pass a unique key to identify the request:
+In your server call, you can use the `skipWhileCached` operator and pass a unique key to identify the request. 
+This enables skipping the API call if the passed key is located in the store cache. 
+Use it in tandem with `updateRequestsCache`:
 
 ```ts
 import { setRequestStatus } from '@ngneat/elf-requests';
 
 http.get(todosUrl).pipe(
-  tap((todos) => todosRepo.setEntities(todos)),
+  tap((todos) => todosRepo.setEntities(todos)), // calls updateRequestsCache with the 'todos' key
   skipWhileCached(todosRepo.store, 'todos')
 );
 ```
 
-This will ensure the `store` will have the cache status of the `todos` call listed as `full` in the store. You can also pass the `partial` status:
+Passing a value as the third parameter ensures the `store` will only skip the API call if the value matches the 
+one passed. Values can be status can be 'none', 'partial' or 'full':
 
 ```ts
 import { setRequestStatus } from '@ngneat/elf-requests';
 
 http.get(todosUrl).pipe(
-  tap((todos) => todosRepo.setEntities(todos)),
+  tap((todos) => todosRepo.setEntities(todos)), // calls updateRequestsCache with the 'todos' key
   skipWhileCached(todosRepo.store, 'todos', { value: 'partial' })
 );
 ```
+
+In addition to value, you can pass in the same object a returnSource which will be returned by the operator if the 
+request is cached. 
 
 You can monitor and change the request cache status for your APIs using the following queries and mutations:
 
@@ -100,7 +107,11 @@ import { updateRequestCache } from '@ngneat/elf-requests';
 store.reduce(updateRequestCache('todos'));
 store.reduce(updateRequestCache('todos', 'partial'));
 store.reduce(updateRequestCache('todos', 'none'));
+store.reduce(updateRequestCache('todos', 'full', { ttl: 1000 }));
 ```
 
 And more:
 `updateRequestsCache`, `resetRequestsCache`, `getRequestsCache`, `setRequestsCache`
+
+If you pass ttl (time to live) when updating a cache record, that represents the time (in milliseconds) that key will 
+have the value that was set (afterwards it reverts to 'none').
