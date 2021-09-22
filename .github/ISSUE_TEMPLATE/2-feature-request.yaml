@@ -38,3 +38,13 @@ body:
       label: Alternatives considered
     validations:
       required: true
+  
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Do you want to create a pull request?
+      options:
+        - 'Yes'
+        - 'No'
+    validations:
+      required: true
