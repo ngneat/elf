@@ -2,7 +2,7 @@ import { stateHistory } from './state-history';
 import { createState, propsFactory, Store } from '@ngneat/elf';
 
 function eq(store: Store, value: number) {
-  expect(store.state).toEqual({ prop: value });
+  expect(store.getValue()).toEqual({ prop: value });
 }
 
 describe('state history', () => {

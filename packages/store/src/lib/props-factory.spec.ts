@@ -30,12 +30,12 @@ describe('propsFactory', () => {
   const store = new Store({ state, config, name: '' });
 
   it('should work', () => {
-    expect(store.state).toEqual({ requestsStatus: {} });
+    expect(store.getValue()).toEqual({ requestsStatus: {} });
   });
 
   it('should update', () => {
     store.reduce(updateRequestsStatus({ 1: 'success' }));
-    expect(store.state).toEqual({
+    expect(store.getValue()).toEqual({
       requestsStatus: { 1: 'success' },
     });
   });
@@ -49,14 +49,14 @@ describe('propsFactory', () => {
       })
     );
 
-    expect(store.state).toEqual({
+    expect(store.getValue()).toEqual({
       requestsStatus: { 1: 'success', 2: 'error' },
     });
   });
 
   it('should set', () => {
     store.reduce(setRequestsStatus({ 10: 'success' }));
-    expect(store.state).toEqual({ requestsStatus: { 10: 'success' } });
+    expect(store.getValue()).toEqual({ requestsStatus: { 10: 'success' } });
   });
 
   it('should set by callback', () => {
@@ -66,14 +66,14 @@ describe('propsFactory', () => {
         2: 'success',
       }))
     );
-    expect(store.state).toEqual({
+    expect(store.getValue()).toEqual({
       requestsStatus: { 10: 'success', 2: 'success' },
     });
   });
 
   it('should reset', () => {
     store.reduce(resetRequestsStatus());
-    expect(store.state).toEqual({ requestsStatus: {} });
+    expect(store.getValue()).toEqual({ requestsStatus: {} });
   });
 
   it('should query', () => {
@@ -178,23 +178,23 @@ describe('stateArrayFactory', () => {
 
     store.reduce(setActiveIds([1]));
 
-    expect(store.state).toEqual({ activeIds: [1] });
+    expect(store.getValue()).toEqual({ activeIds: [1] });
 
     store.reduce(addActiveIds(2));
 
-    expect(store.state).toEqual({ activeIds: [1, 2] });
+    expect(store.getValue()).toEqual({ activeIds: [1, 2] });
 
     store.reduce(removeActiveIds(1));
 
-    expect(store.state).toEqual({ activeIds: [2] });
+    expect(store.getValue()).toEqual({ activeIds: [2] });
 
     store.reduce(toggleActiveIds(2));
 
-    expect(store.state).toEqual({ activeIds: [] });
+    expect(store.getValue()).toEqual({ activeIds: [] });
 
     store.reduce(toggleActiveIds(3));
 
-    expect(store.state).toEqual({ activeIds: [3] });
+    expect(store.getValue()).toEqual({ activeIds: [3] });
   });
 });
 

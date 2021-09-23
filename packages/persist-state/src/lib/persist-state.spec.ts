@@ -19,7 +19,10 @@ describe('persist state', () => {
 
     store.reduce(addEntities(createTodo(1)));
     expect(storage.setItem).toHaveBeenCalledTimes(1);
-    expect(storage.setItem).toHaveBeenCalledWith(`todos@store`, store.state);
+    expect(storage.setItem).toHaveBeenCalledWith(
+      `todos@store`,
+      store.getValue()
+    );
   });
 
   it('should initialize the store from storage', () => {
@@ -35,7 +38,7 @@ describe('persist state', () => {
     const instance = persistState(store, { storage });
     const spy = jest.fn();
     instance.initialized$.subscribe(spy);
-    expect(store.state).toEqual(value);
+    expect(store.getValue()).toEqual(value);
     expect(spy).toHaveBeenCalledTimes(1);
   });
 

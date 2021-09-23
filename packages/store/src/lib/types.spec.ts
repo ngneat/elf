@@ -39,7 +39,7 @@ describe('Store types', () => {
 
     const store = new Store({ state, config, name: 'foo' });
 
-    expectTypeOf(store.state).toEqualTypeOf<Props & FooProps>();
+    expectTypeOf(store.getValue()).toEqualTypeOf<Props & FooProps>();
 
     expectTypeOf(store.reduce)
       .parameter(0)

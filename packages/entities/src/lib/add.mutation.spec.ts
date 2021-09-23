@@ -52,7 +52,7 @@ describe('add', () => {
       addEntities({ _id: '1', name: 'foo' }, { ref: UIEntitiesRef })
     );
     store.reduce(addEntities({ id: 1 }));
-    expect(store.state).toMatchSnapshot();
+    expect(store.getValue()).toMatchSnapshot();
   });
 
   describe('addEntitiesFifo', () => {
@@ -65,17 +65,17 @@ describe('add', () => {
       );
       store.reduce(addEntitiesFifo([createTodo(4)], { limit }));
 
-      expect(store.state).toMatchSnapshot('should be 4 3 2');
+      expect(store.getValue()).toMatchSnapshot('should be 4 3 2');
 
       store.reduce(addEntitiesFifo([createTodo(5), createTodo(6)], { limit }));
-      expect(store.state).toMatchSnapshot('should be 6 5 4');
+      expect(store.getValue()).toMatchSnapshot('should be 6 5 4');
 
       store.reduce(
         addEntitiesFifo([createTodo(1), createTodo(2), createTodo(3)], {
           limit,
         })
       );
-      expect(store.state).toMatchSnapshot('should be 3 2 1');
+      expect(store.getValue()).toMatchSnapshot('should be 3 2 1');
 
       store.reduce(
         addEntitiesFifo(
@@ -83,10 +83,10 @@ describe('add', () => {
           { limit }
         )
       );
-      expect(store.state).toMatchSnapshot('should be 7 6 5');
+      expect(store.getValue()).toMatchSnapshot('should be 7 6 5');
 
       store.reduce(addEntitiesFifo([], { limit }));
-      expect(store.state).toMatchSnapshot('should be 7 6 5 empty array');
+      expect(store.getValue()).toMatchSnapshot('should be 7 6 5 empty array');
     });
   });
 });

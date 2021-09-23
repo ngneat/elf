@@ -35,7 +35,7 @@ describe('store', () => {
 
       expect(spy).toHaveBeenCalledTimes(1);
 
-      expect(store.state).toMatchSnapshot();
+      expect(store.getValue()).toMatchSnapshot();
 
       store.reduce(
         addEntities(createTodo(1)),
@@ -43,7 +43,7 @@ describe('store', () => {
       );
 
       expect(spy).toHaveBeenCalledTimes(2);
-      expect(store.state).toMatchSnapshot();
+      expect(store.getValue()).toMatchSnapshot();
 
       store.reduce((state) => ({ ...state, filter: 'foo' }));
 
@@ -55,7 +55,7 @@ describe('store', () => {
         filter: 'hello',
       }));
 
-      expect(store.state).toMatchSnapshot();
+      expect(store.getValue()).toMatchSnapshot();
       expect(spy).toHaveBeenCalledTimes(3);
     });
   });

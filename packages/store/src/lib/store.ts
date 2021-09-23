@@ -5,20 +5,13 @@ export class Store<
   SDef extends StoreDef = any,
   State = SDef['state']
 > extends BehaviorSubject<State> {
-  private currentValue: State;
-
   private context: ReducerContext = {
     config: this.getConfig(),
   };
 
   constructor(public storeDef: SDef) {
     super(storeDef.state);
-    this.currentValue = storeDef.state;
     addStore(this);
-  }
-
-  get state() {
-    return this.currentValue;
   }
 
   get name() {
@@ -30,19 +23,20 @@ export class Store<
   }
 
   query<R>(selector: (state: State) => R) {
-    return selector(this.currentValue);
+    return selector(this.getValue());
   }
 
   reduce(...reducers: Array<Reducer<State>>) {
+    const currentState = this.getValue();
+
     const nextState = reducers.reduce((value, reducer) => {
       value = reducer(value, this.context);
 
       return value;
-    }, this.currentValue);
+    }, currentState);
 
-    if (nextState !== this.currentValue) {
-      this.currentValue = nextState;
-      super.next(this.currentValue);
+    if (nextState !== currentState) {
+      super.next(nextState);
     }
   }
 
@@ -97,7 +91,7 @@ export class Store<
 }
 
 export type ReducerContext = { config: Record<PropertyKey, any> };
-export type StoreValue<T extends Store> = T['state'];
+export type StoreValue<T extends Store> = ReturnType<T['getValue']>;
 export type Reducer<State> = (state: State, context: ReducerContext) => State;
 
 export interface StoreDef<State = any> {

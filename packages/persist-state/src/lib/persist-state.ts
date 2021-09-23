@@ -39,7 +39,7 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
   const subscription = merged.source!(store)
     .pipe(
       skip(1),
-      switchMap((value: StoreValue<S>) => setItem(merged.key!, value))
+      switchMap((value) => setItem(merged.key!, value))
     )
     .subscribe();
 

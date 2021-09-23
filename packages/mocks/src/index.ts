@@ -22,7 +22,7 @@ export function toMatchSnapshot(
   store: Store,
   label: string
 ) {
-  return expect(store.state).toMatchSnapshot(label);
+  return expect(store.getValue()).toMatchSnapshot(label);
 }
 
 export const createEntitiesStore = (name = 'todos') =>

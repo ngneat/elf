@@ -53,10 +53,10 @@ const user$ = authStore.pipe(select((state) => state.user));
 
 The `select()` operator returns an observable that calls `distinctUntilChanged()` internally, meaning it will only fire when the state changes, i.e., when there is a new reference to the selected state.
 
-We can also query its value once without the need to subscribe:
+We can also query its value **once** without the need to subscribe:
 
 ```ts
-const state = authStore.state;
+const state = authstore.getValue();
 ```
 
 ### Updating the Store
