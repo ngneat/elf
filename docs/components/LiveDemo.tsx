@@ -2,8 +2,26 @@ import React, { useEffect, useRef } from 'react';
 import sdk from '@stackblitz/sdk';
 import useThemeContext from '@theme/hooks/useThemeContext';
 
-export function LiveDemo({ src }) {
+const allPackages = {
+  core: { '@ngneat/elf': 'latest' },
+  entities: { '@ngneat/elf-entities': 'latest' },
+  requests: { '@ngneat/elf-requests': 'latest' },
+  pagination: { '@ngneat/elf-pagination': 'latest' },
+  devtools: { '@ngneat/elf-devtools': 'latest' },
+  perist: { '@ngneat/elf-perist-state': 'latest' },
+  history: { '@ngneat/elf-state-history': 'latest' },
+  rxjs: { rxjs: 'latest' },
+};
+
+interface Props {
+  src: string;
+  packages: Array<Exclude<keyof typeof allPackages, 'core' | 'devtools'>>;
+}
+
+export function LiveDemo({ src, packages = [] }: Props) {
   const ref = useRef<HTMLDivElement>();
+
+  const include = ['core', 'devtools', 'rxjs', ...packages];
 
   const { isDarkTheme } = useThemeContext();
 
@@ -18,9 +36,11 @@ export function LiveDemo({ src }) {
           'index.ts': src,
         },
         template: 'typescript',
-        dependencies: {
-          lodash: 'latest',
-        },
+        dependencies: packages.reduce((acc, p) => {
+          Object.assign(acc, allPackages[p]);
+
+          return acc;
+        }, {}),
         settings: {
           compile: {
             clearConsole: true,

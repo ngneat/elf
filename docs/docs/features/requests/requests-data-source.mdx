@@ -1,5 +1,8 @@
 # Data Source
 
+import index from '!!raw-loader!@site/docs/examples/data-source.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
 With the `createRequestDataSource` function, we can easily select the state of an async request from our store:
 
 ```ts
@@ -39,6 +42,8 @@ The `todosDataSource$` will return an observable with the following type:
   error: unknown;
 }
 ```
+
+<LiveDemo src={index} packages={['entities', 'requests']} />
 
 We can also pass the `dataKey` option to change the default `data` property name:
 

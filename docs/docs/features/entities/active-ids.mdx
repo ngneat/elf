@@ -1,7 +1,14 @@
 # Active ID(s)
 
+import index from '!!raw-loader!@site/docs/examples/active-ids.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
 This feature requires the `withEntities` to be used in the `Store`. It lets you hold one or more IDs indicating the entities that are currently active. It is often useful
 for monitoring which entities the user is interacting with.
+
+:::info
+This feature requires `@ngneat/elf-entities`
+:::
 
 ## Active Id
 
@@ -20,6 +27,8 @@ const { state, config } = createState(withEntities<Todo>(), withActiveId());
 
 const todosStore = new Store({ name: 'todos', state, config });
 ```
+
+<LiveDemo src={index} packages={['entities']} />
 
 This will allow you to use the following ready-made mutations and queries:
 

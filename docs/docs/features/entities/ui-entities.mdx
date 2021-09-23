@@ -1,5 +1,8 @@
 # UI Entities
 
+import index from '!!raw-loader!@site/docs/examples/ui-entities.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
 This feature allows the store to hold UI-specific entity data, for instance, whether the user has opened the card representing an entity.
 When used in conjunction with `withEntities` this can be used to store additional UI data separately from the entities themselves.
 
@@ -50,8 +53,10 @@ import {
 
 todos$ = todosStore
   .combine({
-    entities: store.pipe(selectAll()),
-    UIEntities: store.pipe(selectEntities({ ref: UIEntitiesRef })),
+    entities: todosStore.pipe(selectAll()),
+    UIEntities: todosStore.pipe(selectEntities({ ref: UIEntitiesRef })),
   })
   .pipe(intersectEntities());
 ```
+
+<LiveDemo src={index} packages={['entities']} />

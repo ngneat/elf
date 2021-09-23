@@ -26,5 +26,8 @@
     "email": "netanel7799@gmail.com",
     "url": "https://netbasal.com"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "peerDependencies": {
+    "rxjs": "*"
+  }
 }
