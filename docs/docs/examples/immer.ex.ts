@@ -1,15 +1,7 @@
-# Using Immer
-
-import index from '!!raw-loader!@site/docs/examples/immer.ex';
-import { LiveDemo } from '@site/components/LiveDemo';
-
-When working with immutable objects, we often get to what’s called a “spread hell” situation. If you prefer working with immutable objects in a mutable fashion, you can use immer with Elf.
-
-Create a mutation function:
-
-```ts title="store/mutations.ts"
 import { produce } from 'immer';
 import { Reducer } from '@ngneat/elf';
+import { withProps, Store, createState } from '@ngneat/elf';
+import { withEntities, selectAll, updateEntities } from '@ngneat/elf-entities';
 
 export function write<S>(updater: (state: S) => void): Reducer<S> {
   return function (state) {
@@ -18,13 +10,6 @@ export function write<S>(updater: (state: S) => void): Reducer<S> {
     });
   };
 }
-```
-
-Now you can use it in the store's `reducer` function:
-
-```ts title="todos.respository.ts"
-import { withProps, Store, createState } from '@ngneat/elf';
-import { withEntities, selectAll, updateEntities } from '@ngneat/elf-entities';
 
 interface Todo {
   id: number;
@@ -47,23 +32,17 @@ export const todos$ = store.pipe(selectAll());
 
 export function updateFilter(filter: TodosProps['filter']) {
   store.reduce(
-    // highlight-start
     write((state) => {
       state.filter = filter;
     })
-    // highlight-end
   );
 }
 
- export function updateCompleted(id: Todo['id']) {
+export function updateCompleted(id: Todo['id']) {
   store.reduce(
     updateEntities(
       id,
-      // highlight-next-line
       write<Todo>((entity) => (entity.completed = !entity.completed))
     )
   );
 }
-```
-
-<LiveDemo src={index} packages={['entities', 'immer']} />

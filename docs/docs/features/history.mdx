@@ -1,5 +1,8 @@
 # State History
 
+import index from '!!raw-loader!@site/docs/examples/state-history.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
 The `stateHistory` function provides a convenient way for `undo` and `redo` functionality, saving you the trouble of maintaining a history in the app yourself.
 
 First, you need to install the package by using the CLI command `elf-cli install` and selecting the stat-history 
@@ -19,9 +22,7 @@ const { state, config } = createState(withEntities<Todo>());
 
 const todosStore = new Store({ state, name, config });
 
-class TodosRepository {
-  private persist = stateHistory(todosStore);
-}
+export const todosPersistState = stateHistory(todosStore);
 ```
 
 This allows you to use the following methods and queries to jump to points in the store's history timeline:
@@ -31,3 +32,5 @@ This allows you to use the following methods and queries to jump to points in th
 You can also call the `pause` and `resume` methods to toggle the monitoring of the state changes.
 
 As the second parameter you can pass a `StateHistoryOptions` object, which can be used to define the store's maximum age and state comparator function.
+
+<LiveDemo src={index} packages={['history']} />

@@ -1,5 +1,8 @@
 # Pagination
 
+import index from '!!raw-loader!@site/docs/examples/pagination.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
 In many cases - for example, when working with very large data-sets - we don't want to work with the full collection in memory. 
 Instead, server-side pagination is used, where the server sends just a single page of data at a time.
 
@@ -35,20 +38,21 @@ const todosStore = new Store({ name: 'todos', state, config });
 
 Call `updatePaginationData()` with a configuration object that determines the various pagination settings, and call `setPage()` whenever you want to define the `ids` that belong to a certain page number.
 
-```ts
-todosStore.reduce(
-  addEntities(todos),
-  updatePaginationData({
-    currentPage: 1,
-    perPage: 10,
-    total: 96,
-    lastPage: 10,
-  }),
-  setPage(
-    1,
-    data.map((c) => c.id)
-  )
-);
+```ts title="todos.repository"
+import { PaginationData } from '@ngneat/elf-pagination';
+
+export function addTodos(response: PaginationData & { data: Todo[] }) {
+  const { data, ...paginationData } = response;
+
+  todosStore.reduce(
+    addEntities(todos),
+    updatePaginationData(paginationData),
+    setPage(
+      1,
+      data.map((c) => c.id)
+    )
+  );
+}
 ```
 
 In your server calls, you can use the `skipWhilePageExists` operator, which enables you to skip server calls
@@ -57,11 +61,17 @@ if the page exists in the store:
 ```ts
 import { skipWhilePageExists } from '@ngneat/elf-pagination';
 
-http.get(todosUrl).pipe(
-  tap((todos) => todosRepo.setEntities(todos)),
-  skipWhilePageExists(1)
-);
+export function getTodosPage(page: number) {
+  return http.get(todosUrl).pipe(
+    tap((todos) => addTodos(todos)),
+    skipWhilePageExists(page)
+  );
+}
 ```
+
+<LiveDemo src={index} packages={['entities', 'pagination']} />
+
+<br />
 
 Additional queries and mutations available are:
 

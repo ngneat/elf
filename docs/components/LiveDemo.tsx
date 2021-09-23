@@ -8,9 +8,10 @@ const allPackages = {
   requests: { '@ngneat/elf-requests': 'latest' },
   pagination: { '@ngneat/elf-pagination': 'latest' },
   devtools: { '@ngneat/elf-devtools': 'latest' },
-  perist: { '@ngneat/elf-perist-state': 'latest' },
+  persist: { '@ngneat/elf-perist-state': 'latest' },
   history: { '@ngneat/elf-state-history': 'latest' },
   rxjs: { rxjs: 'latest' },
+  immer: { immer: 'latest' },
 };
 
 interface Props {
