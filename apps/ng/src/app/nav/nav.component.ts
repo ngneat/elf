@@ -11,5 +11,6 @@ export class NavComponent {
     { label: 'Users', link: 'users' },
     { label: 'Contacts', link: 'contacts' },
     { label: 'Gallery', link: 'gallery' },
+    { label: 'Movies', link: 'movies' },
   ];
 }

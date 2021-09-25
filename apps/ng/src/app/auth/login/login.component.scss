@@ -17,7 +17,13 @@ input[type='password'] {
 }
 
 .btn {
-  border-radius: 5px;
+  border-color: inherit;
+  box-shadow: none;
+  background-color: var(--primary);
+
+  &:hover {
+    opacity: 0.9;
+  }
 }
 
 .icon {
@@ -26,3 +32,4 @@ input[type='password'] {
   color: #7e3ab7;
   opacity: 0.7;
 }
+

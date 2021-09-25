@@ -39,6 +39,11 @@ import { NavComponent } from './nav/nav.component';
         loadChildren: () =>
           import('./gallery/gallery.module').then((m) => m.GalleryModule),
       },
+      {
+        path: 'movies',
+        loadChildren: () =>
+          import('./movies/movies.module').then((m) => m.MoviesModule),
+      },
     ]),
   ],
   providers: [],
