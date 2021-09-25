@@ -1,6 +1,6 @@
 import { createState, Store } from '@ngneat/elf';
 import { expectTypeOf } from 'expect-type';
-import { withEntities } from '..';
+import { selectAll, selectEntities, withEntities } from '..';
 import { addEntities } from './add.mutation';
 import { entitiesPropsFactory } from './entity.state';
 
@@ -125,6 +125,26 @@ describe('entities props factory', () => {
 
     expect(store.getValue()).toMatchSnapshot();
 
+    const spy = jest.fn();
+
+    store
+      .combine({
+        movies: store.pipe(selectAll()),
+        generes: store.pipe(selectEntities({ ref: genresEntitiesRef })),
+        actors: store.pipe(selectEntities({ ref: actorsEntitiesRef })),
+      })
+      .subscribe((v) => {
+        spy(v);
+
+        expectTypeOf(v).toEqualTypeOf<{
+          movies: Movie[];
+          generes: Record<string, Genre>;
+          actors: Record<string, Actor>;
+        }>();
+      });
+
+    expect(spy).toHaveBeenCalledTimes(1);
+
     store.reduce(
       addEntities({ id: '1', name: 'foo' }, { ref: actorsEntitiesRef }),
       addEntities({ id: '1', name: 'foo' }, { ref: genresEntitiesRef }),
@@ -132,5 +152,7 @@ describe('entities props factory', () => {
     );
 
     expect(store.getValue()).toMatchSnapshot();
+
+    expect(spy).toHaveBeenCalledTimes(2);
   });
 });
