@@ -22,6 +22,7 @@ module.exports = {
         'features/entities/entities',
         'features/entities/ui-entities',
         'features/entities/active-ids',
+        'features/entities/custom-entities-props',
       ],
     },
     {
