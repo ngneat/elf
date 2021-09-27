@@ -20,6 +20,10 @@
   color: #0008;
 }
 
+html[data-theme='dark'] .hero__subtitle {
+  color: #fff;
+}
+
 .feature {
   margin-bottom: 40px;
 }
