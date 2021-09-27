@@ -6,11 +6,13 @@ const registryActions = new Subject<{ type: 'add' | 'remove'; store: Store }>();
 
 export const registry$ = registryActions.asObservable();
 
+// @internal
 export function addStore(store: Store) {
   registry.set(store.name, store);
   registryActions.next({ type: 'add', store });
 }
 
+// @internal
 export function removeStore(store: Store) {
   registry.delete(store.name);
   registryActions.next({ type: 'remove', store });

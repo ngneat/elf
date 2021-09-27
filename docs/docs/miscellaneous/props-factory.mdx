@@ -1,0 +1,57 @@
+# Props Factory
+
+Using `propsFactory` is ideal when there are a number of stores that need the same properties. For example, let's say we want to have a `version` property for each of our stores:
+
+```ts title="store-props.ts"
+import { propsFactory } from '@ngneat/elf';
+
+export const {
+  withVersion,
+  updateVersion,
+  selectVersion,
+  resetVersion,
+  getVersion,
+  setVersion,
+} = propsFactory('version', {
+  initialValue: 1,
+});
+```
+
+The `propsFactory` function takes the `name` of a property and the initial value and returns everything we need to add, query, and mutate that property. The `type` of a property is inferred based on the `initialValue`.
+
+```ts title="todos.repository.ts"
+import { withVersion, updateVersion, selectVersion } from '@app/store-props.ts';
+
+const { state, config } = createState(withVersion());
+
+const store = new Store({ state, config, name: 'todos' });
+
+store.reduce(updateVersion(2));
+store.select(selectVersion());
+store.query(getVersion);
+```
+
+If you need to use a complex type you can use `initialValue: {} as MyInterface`.
+
+
+## Props Array Factory
+
+`propsArrayFactory` is similar to `propsFactory` but for properties of type `array`:
+
+```ts title="store-props.ts"
+import { propsArrayFactory } from '@ngneat/elf';
+
+export const {
+  withSkills,
+  addSkills,
+  removeSkills,
+  toggleSkills,
+  updateSkills,
+  getSkills,
+  resetSkills,
+  selectSkills,
+  setSkills,
+} = propsFactory('skills', {
+  initialValue: [] as string[],
+});
+```

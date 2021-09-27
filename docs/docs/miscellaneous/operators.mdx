@@ -1,0 +1,31 @@
+# Operators
+
+Elf provides the following operators:
+
+## filterNil
+Filters `undefined` or `null` values:
+
+```ts
+import { filterNil } from '@ngneat/elf';
+
+foo$.pipe(filterNil());
+```
+
+## head
+Get the the first item from an array:
+
+```ts
+import { head } from '@ngneat/elf';
+
+skills$.pipe(head());
+```
+
+## distinctUntilArrayItemChanged
+
+A `distinctUntillChanged` implementation for arrays:
+
+```ts
+import { distinctUntilArrayItemChanged } from '@ngneat/elf';
+
+skills$.pipe(distinctUntilArrayItemChanged());
+```
