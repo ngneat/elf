@@ -6,7 +6,7 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #b49cdc;
+  --ifm-color-primary: rgb(91 87 138);
   --ifm-color-primary-dark: rgb(33, 175, 144);
   --ifm-color-primary-darker: rgb(31, 165, 136);
   --ifm-color-primary-darkest: rgb(26, 136, 112);
@@ -33,4 +33,17 @@
 
 html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme='dark'] {
+  --ifm-color-primary: rgb(216 212 255);
+}
+
+html[data-theme='dark'] code {
+  color: #000;
+}
+
+code {
+  background-color: rgb(240 248 255);
+  padding: 2px 6px;
 }

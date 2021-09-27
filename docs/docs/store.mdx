@@ -5,7 +5,13 @@ import { LiveDemo } from '@site/components/LiveDemo';
 
 The store takes an object that contains three properties - a `state`, a `name`, and `config`.
 
-A state is a composition of properties. To create the initial state used by your store call the `createState()` method. This method returns a `state` object and a `config` object. They are then used in the creation of the store:
+:::info
+
+A state is a composition of properties
+
+:::
+
+To create the initial state used by your store call the `createState()` method. This method returns a `state` object and a `config` object. They are then used in the creation of the store:
 
 ```ts
 import { Store, createState, withProps } from '@ngneat/elf';
@@ -31,7 +37,7 @@ const { state, config } = createState(
 
 The features can be either one or more of the available features in Elf, or additional features you can create or add from other sources.
 
-### Querying the Store
+## Querying the Store
 
 A store is a `BehaviorSubject`. Therefore, we can subscribe to it to get its initial value and its subsequent values:
 
@@ -41,7 +47,7 @@ authStore.subscribe((state) => {
 });
 ```
 
-#### Using the `select` Operator
+### The `select` Operator
 
 Select a slice from the store:
 
@@ -59,7 +65,7 @@ We can also query its value **once** without the need to subscribe:
 const state = authstore.getValue();
 ```
 
-### Updating the Store
+## Updating the Store
 
 To update the store, we can use the `reduce` method which receives a callback function, which gets the current `state`, and returns a new **immutable** `state`, which will be the new value of the store:
 
