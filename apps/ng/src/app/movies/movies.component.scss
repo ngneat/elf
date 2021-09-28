@@ -1,0 +1,38 @@
+button {
+  &:focus {
+    border-color: inherit;
+    box-shadow: none;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.action-buttons{
+  visibility: hidden;
+}
+
+td {
+  &:hover {
+    .action-buttons {
+      visibility: visible;
+    }
+  }
+}
+
+.actor-input {
+  background-color: inherit;
+  width: 100%;
+  outline: none;
+  border-color: inherit;
+  box-shadow: none;
+
+  &:focus {
+    border-bottom: 1px solid var(--primary);
+  }
+}
+
+.actor-input.view {
+  pointer-events: none;
+}

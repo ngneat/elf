@@ -1,0 +1,86 @@
+<section class="padding">
+  <div class="text-center" *ngIf="isLoading">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+  <h2 class="mb-2">Movies</h2>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 25%">Title</th>
+            <th scope="col" style="width: 50%">Actors</th>
+            <th scope="col" style="width: 25%">Genres</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let movie of movies">
+            <td>{{ movie.title }}</td>
+            <td>
+              <span *ngFor="let actor of movie.actors">{{ actor }}</span>
+            </td>
+            <td>
+              <span *ngFor="let genre of movie.genres">{{ genre }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h2 class="my-4">Actors</h2>
+
+  <div class="row">
+    <div class="col-4">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let actor of actors">
+            <td class="row align-items-center me-0">
+              <div class="col-8">
+                <input
+                  #actorName
+                  [value]="actor.name"
+                  class="actor-input"
+                  [class.view]="!inEditMode(actor.id)"
+                />
+              </div>
+              <div class="col-4">
+                <div class="action-buttons float-end">
+                  <button
+                    *ngIf="!inEditMode(actor.id)"
+                    class="btn btn-light me-2"
+                    (click)="toggleView(actor.id, actorName)"
+                  >
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                  <button
+                    *ngIf="inEditMode(actor.id)"
+                    class="btn btn-light me-2 bg-success text-light"
+                    (click)="edit(actor.id, actorName.value)"
+                  >
+                    <i class="fas fa-check"></i>
+                  </button>
+                  <button
+                    class="btn btn-danger"
+                    (click)="deleteActor(actor.id)"
+                  >
+                    X
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
