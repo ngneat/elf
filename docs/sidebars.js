@@ -22,6 +22,7 @@ module.exports = {
         'features/entities/entities',
         'features/entities/ui-entities',
         'features/entities/active-ids',
+        'features/entities/entities-props-factory',
       ],
     },
     {
@@ -40,6 +41,17 @@ module.exports = {
     'dev-tools',
     'immer',
     'cli',
+    {
+      type: 'category',
+      label: 'Miscellaneous',
+      collapsed: true,
+      items: [
+        'miscellaneous/props-factory',
+        'miscellaneous/operators',
+        'miscellaneous/registry',
+      ]
+    },
+    'recipes',
     'faq',
   ],
 };

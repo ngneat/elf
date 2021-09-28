@@ -1,105 +1,7 @@
-import { ReducerContext } from '@ngneat/elf';
-
-const defaultEntitiesKey = 'entities' as const;
-const defaultIdsKey = 'ids' as const;
-const defaultIdKeyRef = 'idKey' as const;
-
-export class EntitiesRef<
-  EntitiesKey extends string = string,
-  IdsKey extends string = string,
-  IdKey extends string = string
-> {
-  entitiesKey: EntitiesKey;
-  idsKey: IdsKey;
-  idKeyRef = 'idKey';
-
-  constructor(
-    private config: {
-      entitiesKey: EntitiesKey;
-      idsKey: IdsKey;
-      idKeyRef: IdKey;
-    }
-  ) {
-    this.entitiesKey = config.entitiesKey ?? defaultEntitiesKey;
-    this.idsKey = config.idsKey ?? defaultIdsKey;
-    this.idKeyRef = config.idKeyRef ?? defaultIdKeyRef;
-  }
-}
-
-export const defaultEntitiesRef = new EntitiesRef({
-  entitiesKey: defaultEntitiesKey,
-  idsKey: defaultIdsKey,
-  idKeyRef: defaultIdKeyRef,
-});
-
-export const UIEntitiesRef = new EntitiesRef({
-  entitiesKey: 'UIEntities',
-  idsKey: 'UIIds',
-  idKeyRef: 'idKeyUI',
-});
-
-export function withEntitiesFactory<
-  S extends EntitiesRecord,
-  Ref extends EntitiesRef
->(ref: Ref) {
-  return {
-    [ref.entitiesKey]: {},
-    [ref.idsKey]: [],
-  } as unknown as {
-    [P in Ref['entitiesKey'] | Ref['idsKey']]: S[P];
-  };
-}
-
-export function withEntities<
-  EntityType extends { [P in IdKey]: PropertyKey },
-  IdKey extends string = 'id'
->(
-  config: {
-    idKey: IdKey;
-  } = { idKey: 'id' as IdKey }
-) {
-  return {
-    props: withEntitiesFactory<
-      EntityState<EntityType, EntityType[IdKey]>,
-      typeof defaultEntitiesRef
-    >(defaultEntitiesRef),
-    config: {
-      idKey: config.idKey,
-    },
-  };
-}
-
-export function withUIEntities<
-  EntityType extends { [P in IdKey]: PropertyKey },
-  IdKey extends string = 'id'
->(
-  config: {
-    idKey: IdKey;
-  } = { idKey: 'id' as IdKey }
-) {
-  return {
-    props: withEntitiesFactory<
-      UIEntityState<EntityType, EntityType[IdKey]>,
-      typeof UIEntitiesRef
-    >(UIEntitiesRef),
-    config: {
-      idKeyUI: config.idKey,
-    },
-  };
-}
+import { ReducerContext, capitalize } from '@ngneat/elf';
 
 export function getIdKey<T>(context: ReducerContext, ref: EntitiesRef): T {
   return context.config[ref.idKeyRef];
-}
-
-interface EntityState<EntityType, IdType extends PropertyKey> {
-  entities: Record<IdType, EntityType>;
-  ids: Array<IdType>;
-}
-
-interface UIEntityState<EntityType, IdType extends PropertyKey> {
-  UIEntities: Record<IdType, EntityType>;
-  UIIds: Array<IdType>;
 }
 
 export type getEntityType<
@@ -135,3 +37,99 @@ export type EntitiesState<T extends EntitiesRecord> = {
 export interface BaseEntityOptions<Ref extends EntitiesRef> {
   ref?: Ref;
 }
+
+export class EntitiesRef<
+  EntitiesKey extends string = string,
+  IdsKey extends string = string,
+  IdKey extends string = string
+> {
+  entitiesKey: EntitiesKey;
+  idsKey: IdsKey;
+  idKeyRef = 'idKey';
+
+  constructor(config: {
+    entitiesKey: EntitiesKey;
+    idsKey: IdsKey;
+    idKeyRef: IdKey;
+  }) {
+    this.entitiesKey = config.entitiesKey;
+    this.idsKey = config.idsKey;
+    this.idKeyRef = config.idKeyRef;
+  }
+}
+
+function withEntitiesFactory<S extends EntitiesRecord, Ref extends EntitiesRef>(
+  ref: Ref
+) {
+  return {
+    [ref.entitiesKey]: {},
+    [ref.idsKey]: [],
+  } as unknown as {
+    [P in Ref['entitiesKey'] | Ref['idsKey']]: S[P];
+  };
+}
+
+export function entitiesPropsFactory<
+  Feature extends string,
+  IdKeyRef extends `idKey${Capitalize<Feature>}`,
+  EntitiesKey extends string = Feature extends ''
+    ? `entities`
+    : `${Feature}Entities`,
+  IdsKey extends string = Feature extends '' ? `ids` : `${Feature}Ids`
+>(feature: Feature) {
+  const idKeyRef = feature ? `idKey${capitalize(feature)}` : 'idKey';
+
+  const ref = new EntitiesRef<
+    Feature extends '' ? 'entities' : `${Feature}Entities`,
+    Feature extends '' ? 'ids' : `${Feature}Ids`,
+    Feature extends '' ? `idKey` : IdKeyRef
+  >({
+    entitiesKey: feature ? `${feature}Entities` : ('entities' as any),
+    idsKey: feature ? `${feature}Ids` : ('ids' as any),
+    idKeyRef: idKeyRef as unknown as IdKeyRef as any,
+  });
+
+  function propsFactory<
+    EntityType extends { [P in IdKey]: PropertyKey },
+    IdKey extends string = 'id'
+  >(
+    config: {
+      idKey: IdKey;
+    } = { idKey: 'id' as IdKey }
+  ) {
+    return {
+      props: withEntitiesFactory<
+        {
+          [K in EntitiesKey | IdsKey]: K extends EntitiesKey
+            ? Record<EntityType[IdKey], EntityType>
+            : K extends IdsKey
+            ? Array<EntityType[IdKey]>
+            : never;
+        },
+        typeof ref
+      >(ref),
+      config: {
+        [idKeyRef]: config.idKey,
+      } as {
+        [K in IdKeyRef]: typeof config['idKey'];
+      },
+    };
+  }
+
+  return {
+    [`${feature}EntitiesRef`]: ref,
+    [`with${capitalize(feature)}Entities`]: propsFactory,
+  } as {
+    [K in
+      | `${Feature}EntitiesRef`
+      | `with${Capitalize<Feature>}Entities`]: K extends `${Feature}EntitiesRef`
+      ? typeof ref
+      : K extends `with${Capitalize<Feature>}Entities`
+      ? typeof propsFactory
+      : never;
+  };
+}
+
+export const { withEntities, EntitiesRef: defaultEntitiesRef } =
+  entitiesPropsFactory('');
+export const { UIEntitiesRef, withUIEntities } = entitiesPropsFactory('UI');

@@ -28,5 +28,6 @@ export {
   EntitiesRef,
   EntitiesState,
   UIEntitiesRef,
+  entitiesPropsFactory,
 } from './lib/entity.state';
 export { intersectEntities } from './lib/intersect';

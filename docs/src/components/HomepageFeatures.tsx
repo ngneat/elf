@@ -26,12 +26,12 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'Tree Shakeable & Fully Typed',
-    image: 'img/entities.png',
+    image: 'img/tree.png',
     description: <>Anything you don't use won't become part of your bundle</>,
   },
   {
     title: 'CLI',
-    image: 'img/entities.png',
+    image: 'img/cli.png',
     description: <>A fast and efficient way to build up your stores</>,
   },
   {
@@ -66,7 +66,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'Pagination',
-    image: 'img/devtools.png',
+    image: 'img/pagination.png',
     description: <>Get built-in support for managing pagination in the app</>,
   },
   {

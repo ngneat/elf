@@ -1,0 +1,127 @@
+# Entities Props Factory
+
+There are two built-in entities props included in Elf - [`withEntities`](./entities) and [`UIEntities`](./ui-entities). In addition to that, we can create our own entities props for our stores.
+
+Let's say we have a products page with a shopping cart. As well as managing a store for products, we must also maintain a shopping cart. We can create a new `Store` for our `cart` or a `cart` entity props in the same `products` store.
+
+First, let's create the `products` store:
+
+```ts title="products.repository.ts"
+import { createState, Store } from '@ngneat/elf';
+import { withEntities } from '@ngneat/elf-entities';
+
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+}
+
+const { state, config } = createState(
+  withEntities<Product>()
+)
+
+export const productsStore = new Store({ name: 'products', config, state });
+```
+
+Now we can add a `cart` entities props to the same `store`:
+
+```ts title="products.repository.ts"
+import { createState, Store } from '@ngneat/elf';
+import { withEntities, entitiesPropsFactory } from '@ngneat/elf-entities';
+
+// highlight-next-line
+const { cartEntitiesRef, withCartEntities } = entitiesPropsFactory('cart');
+
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+}
+
+interface CartItem {
+  id: Product['id'];
+  quantity: number;
+}
+
+const { state, config } = createState(
+  withEntities<Product>(),
+  withCartEntities<CartItem>()
+)
+
+export const productsStore = new Store({ name: 'products', config, state });
+```
+
+The `entitiesPropsFactory` function takes the name of the `feature` and returns `entitiesRef` and `entitiesProps` we can use in our store.
+
+In the above example, our final `state` shape will be:
+
+```ts
+{
+  entities: Record<number, Product>;
+  ids: number[];
+  // highlight-next-line
+  cartEntities: Record<number, CartItem>;
+  // highlight-next-line
+  cartIds: number[];
+}
+```
+
+We can pass the `cartEntitiesRef` to each one of the built-in [queries](./entities#queries) and [mutations](./entities#mutations):
+
+```ts title="products.repository.ts"
+import { upsertEntities } from '@ngneat/elf-entities';
+
+export function updateCart(id: Product['id']) {
+  productsStore.reduce(
+    upsertEntities(id, {
+      updater: e => ({ ...e, quantity: entity.quantity + 1 }),
+      creator: id => ({ id, quantity: 1 }),
+      // highlight-next-line
+      ref: cartEntitiesRef
+    })
+  )
+}
+```
+
+One more use case for custom entities props is when we work with a normalized state. For example, we might have a `movies` page, with `actors` and `genres`:
+
+```ts title="movies.repository.ts"
+interface Actor {
+  id: string;
+  name: string;
+}
+
+interface Genre {
+  id: string;
+  name: string;
+}
+
+interface Movie {
+  id: string;
+  title: string;
+  genres: Array<Genre['id']>;
+  actors: Array<Actor['id']>;
+}
+
+const { actorsEntitiesRef, withActorsEntities } =
+  entitiesPropsFactory('actors');
+
+const { genresEntitiesRef, withGenresEntities } =
+  entitiesPropsFactory('genres');
+
+const { state, config } = createState(
+  withEntities<Movie>(),
+  withGenresEntities<Genre>(),
+  withActorsEntities<Actor>()
+);
+
+const store = new Store({ name: 'movies', state, config });
+
+store.reduce(
+  addEntities({ id: '1', name: 'Nicolas cage' }, { ref: actorsEntitiesRef }),
+  addEntities({ id: '1', name: 'Action' }, { ref: genresEntitiesRef }),
+  addEntities({ id: '1', title: 'Gone in 60 Seconds', genres: ['1'], actors: ['1'] })
+)
+```
+
+

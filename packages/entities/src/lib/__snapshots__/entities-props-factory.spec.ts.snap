@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`entities props factory should create entities 1`] = `
+Object {
+  "cartEntities": Object {
+    "1": Object {
+      "id": 1,
+      "title": "foo",
+    },
+  },
+  "cartIds": Array [
+    1,
+  ],
+}
+`;
+
+exports[`entities props factory should work with multiple 1`] = `
+Object {
+  "actorsEntities": Object {},
+  "actorsIds": Array [],
+  "entities": Object {},
+  "genresEntities": Object {},
+  "genresIds": Array [],
+  "ids": Array [],
+}
+`;
+
+exports[`entities props factory should work with multiple 2`] = `
+Object {
+  "actorsEntities": Object {
+    "1": Object {
+      "id": "1",
+      "name": "foo",
+    },
+  },
+  "actorsIds": Array [
+    "1",
+  ],
+  "entities": Object {
+    "1": Object {
+      "actors": Array [
+        "1",
+      ],
+      "genres": Array [
+        "1",
+      ],
+      "id": "1",
+      "title": "one",
+    },
+  },
+  "genresEntities": Object {
+    "1": Object {
+      "id": "1",
+      "name": "foo",
+    },
+  },
+  "genresIds": Array [
+    "1",
+  ],
+  "ids": Array [
+    "1",
+  ],
+}
+`;
+
+exports[`entities props factory should work with the default entities 1`] = `
+Object {
+  "cartEntities": Object {
+    "1": Object {
+      "id": 1,
+      "title": "foo",
+    },
+  },
+  "cartIds": Array [
+    1,
+  ],
+  "entities": Object {
+    "1": Object {
+      "id": "1",
+      "label": "foo",
+    },
+  },
+  "ids": Array [
+    "1",
+  ],
+}
+`;
