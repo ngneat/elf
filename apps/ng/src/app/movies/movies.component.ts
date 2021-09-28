@@ -112,7 +112,11 @@ export class MoviesComponent implements OnInit {
   edit(id: number | string, name: string) {
     //updateActorName
     console.log(name);
-
     this.edits.delete(id);
+  }
+
+  deleteActor(id: number | string) {
+    //delete actor
+    console.log(id, 'actor deleted');
   }
 }

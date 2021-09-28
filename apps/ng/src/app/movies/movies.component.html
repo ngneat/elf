@@ -69,7 +69,12 @@
                   >
                     <i class="fas fa-check"></i>
                   </button>
-                  <button class="btn btn-danger">X</button>
+                  <button
+                    class="btn btn-danger"
+                    (click)="deleteActor(actor.id)"
+                  >
+                    X
+                  </button>
                 </div>
               </div>
             </td>
