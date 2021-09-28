@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./movies.component.scss'],
 })
 export class MoviesComponent implements OnInit {
+  isLoading = false;
+  private edits = new Set();
+
   movies = [
     {
       id: 468569,
@@ -83,16 +86,33 @@ export class MoviesComponent implements OnInit {
     },
   ];
 
-  isLoading = false;
-
   constructor() {
     console.log('');
   }
 
   ngOnInit(): void {
     this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1000);
+    //fetch
+    this.isLoading = false;
+  }
+
+  toggleView(id: number | string, actorName: HTMLInputElement) {
+    if (this.edits.has(id)) {
+      this.edits.delete(id);
+    } else {
+      this.edits.add(id);
+      actorName.focus();
+    }
+  }
+
+  inEditMode(id: number | string) {
+    return this.edits.has(id);
+  }
+
+  edit(id: number | string, name: string) {
+    //updateActorName
+    console.log(name);
+
+    this.edits.delete(id);
   }
 }
