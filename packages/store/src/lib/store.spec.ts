@@ -14,7 +14,27 @@ import { createState } from './state';
 type UIEntity = { id: number; open: boolean };
 
 describe('store', () => {
-  describe('combine', () => {
+  it('should reset store', () => {
+    const { state, config } = createState(
+      withEntities<Todo>(),
+      withProps<{ filter: string }>({ filter: '' })
+    );
+
+    const store = new Store({ state, name: 'todos', config });
+
+    store.reduce(addEntities(createTodo(1)), (state) => ({
+      ...state,
+      filter: 'foo',
+    }));
+
+    expect(store.getValue()).toMatchSnapshot();
+
+    store.reset();
+
+    expect(store.getValue()).toMatchSnapshot();
+  });
+
+  it('should combine and fire only once', () => {
     const { state, config } = createState(
       withEntities<Todo>(),
       withUIEntities<UIEntity>(),
@@ -23,40 +43,38 @@ describe('store', () => {
 
     const store = new Store({ state, name: 'todos', config });
 
-    it('should fire only once', () => {
-      const spy = jest.fn();
+    const spy = jest.fn();
 
-      store
-        .combine({
-          todos: store.pipe(selectAll()),
-          ui: store.pipe(selectAll({ ref: UIEntitiesRef })),
-        })
-        .subscribe(spy);
+    store
+      .combine({
+        todos: store.pipe(selectAll()),
+        ui: store.pipe(selectAll({ ref: UIEntitiesRef })),
+      })
+      .subscribe(spy);
 
-      expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(1);
 
-      expect(store.getValue()).toMatchSnapshot();
+    expect(store.getValue()).toMatchSnapshot();
 
-      store.reduce(
-        addEntities(createTodo(1)),
-        addEntities(createUITodo(1), { ref: UIEntitiesRef })
-      );
+    store.reduce(
+      addEntities(createTodo(1)),
+      addEntities(createUITodo(1), { ref: UIEntitiesRef })
+    );
 
-      expect(spy).toHaveBeenCalledTimes(2);
-      expect(store.getValue()).toMatchSnapshot();
+    expect(spy).toHaveBeenCalledTimes(2);
+    expect(store.getValue()).toMatchSnapshot();
 
-      store.reduce((state) => ({ ...state, filter: 'foo' }));
+    store.reduce((state) => ({ ...state, filter: 'foo' }));
 
-      // Update non related value should not call `next`
-      expect(spy).toHaveBeenCalledTimes(2);
+    // Update non related value should not call `next`
+    expect(spy).toHaveBeenCalledTimes(2);
 
-      store.reduce(updateEntities(1, { title: 'foo' }), (state) => ({
-        ...state,
-        filter: 'hello',
-      }));
+    store.reduce(updateEntities(1, { title: 'foo' }), (state) => ({
+      ...state,
+      filter: 'hello',
+    }));
 
-      expect(store.getValue()).toMatchSnapshot();
-      expect(spy).toHaveBeenCalledTimes(3);
-    });
+    expect(store.getValue()).toMatchSnapshot();
+    expect(spy).toHaveBeenCalledTimes(3);
   });
 });

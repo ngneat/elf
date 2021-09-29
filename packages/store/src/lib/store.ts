@@ -5,12 +5,15 @@ export class Store<
   SDef extends StoreDef = any,
   State = SDef['state']
 > extends BehaviorSubject<State> {
+  initialState!: State;
+
   private context: ReducerContext = {
     config: this.getConfig(),
   };
 
   constructor(public storeDef: SDef) {
     super(storeDef.state);
+    this.initialState = this.getValue();
     addStore(this);
   }
 
@@ -38,6 +41,10 @@ export class Store<
     if (nextState !== currentState) {
       super.next(nextState);
     }
+  }
+
+  reset() {
+    this.reduce(() => this.initialState);
   }
 
   combine<O extends Record<string, Observable<any>>>(

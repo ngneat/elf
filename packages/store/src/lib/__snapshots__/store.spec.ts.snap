@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`store combine should fire only once 1`] = `
+exports[`store should combine and fire only once 1`] = `
 Object {
   "UIEntities": Object {},
   "UIIds": Array [],
@@ -10,7 +10,7 @@ Object {
 }
 `;
 
-exports[`store combine should fire only once 2`] = `
+exports[`store should combine and fire only once 2`] = `
 Object {
   "UIEntities": Object {
     "1": Object {
@@ -35,7 +35,7 @@ Object {
 }
 `;
 
-exports[`store combine should fire only once 3`] = `
+exports[`store should combine and fire only once 3`] = `
 Object {
   "UIEntities": Object {
     "1": Object {
@@ -57,5 +57,29 @@ Object {
   "ids": Array [
     1,
   ],
+}
+`;
+
+exports[`store should reset store 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+  },
+  "filter": "foo",
+  "ids": Array [
+    1,
+  ],
+}
+`;
+
+exports[`store should reset store 2`] = `
+Object {
+  "entities": Object {},
+  "filter": "",
+  "ids": Array [],
 }
 `;

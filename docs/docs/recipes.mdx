@@ -1,3 +1,13 @@
 # Recipes
 
 ## Reset Stores
+
+Resetting your stores can be useful when you want to clean the store's data upon user logout. We can combine the `registry` and `store.reset()` to create a `resetStores` function:
+
+```ts
+import { getRegistry } from '@ngneat/elf';
+
+export function resetStores() {
+  getRegistry().forEach(store => store.reset())
+}
+```
