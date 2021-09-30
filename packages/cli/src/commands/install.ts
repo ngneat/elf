@@ -10,7 +10,7 @@ export default class Install extends Command {
 
   async run() {
     this.parse(Install);
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+
     const detectPackageManager = require('detect-package-manager');
 
     const pm = await detectPackageManager();

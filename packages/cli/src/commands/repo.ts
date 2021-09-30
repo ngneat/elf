@@ -40,7 +40,6 @@ export default class Repo extends Command {
       });
 
       mergedOptions.hooks = globalConfig.cli.plugins.map((path) => {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
         return require(require.resolve(path, { paths: [process.cwd()] }))
           .default;
       });

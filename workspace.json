@@ -40,20 +40,15 @@
       "projectType": "library",
       "targets": {
         "build": {
-          "executor": "@nrwl/workspace:tsc",
-          "outputs": ["{options.outputPath}"],
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "outputPath": "dist/packages/cli",
-            "main": "packages/cli/src/index.ts",
-            "tsConfig": "packages/cli/tsconfig.lib.json",
-            "assets": ["packages/cli/*.md"]
+            "command": "npm run prepack --prefix packages/cli"
           }
         },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+        "test": {
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "lintFilePatterns": ["packages/cli/**/*.ts"]
+            "command": "npm run test --prefix packages/cli"
           }
         }
       }

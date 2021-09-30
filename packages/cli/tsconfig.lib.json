@@ -3,13 +3,14 @@
   "compilerOptions": {
     "declaration": true,
     "types": [],
-    "esModuleInterop": true,
-    "importHelpers": true,
     "module": "commonjs",
-    "outDir": "lib",
-    "rootDir": "src",
+    "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "target": "es2017"
+    "noImplicitReturns": true,
+    "allowSyntheticDefaultImports": true,
+    "noFallthroughCasesInSwitch": true,
+    "outDir": "lib",
+    "rootDir": "src"
   },
   "include": ["**/*.ts"],
   "exclude": ["**/*.spec.ts"]

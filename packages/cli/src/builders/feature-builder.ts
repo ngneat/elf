@@ -1,7 +1,7 @@
 import { ClassDeclaration, SourceFile, StructureKind } from 'ts-morph';
 import { Features, Options } from '../types';
 import { coerceArray, names, resolveStoreVariableName } from '../utils';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
 // @ts-ignore
 import * as pluralize from 'pluralize';
 import { CallExpression } from 'typescript';
