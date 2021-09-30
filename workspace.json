@@ -113,6 +113,16 @@
             "project": "packages/devtools/package.json",
             "entryFile": "packages/devtools/src/index.ts",
             "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "globals": [
+              {
+                "global": "Rx",
+                "moduleId": "rxjs"
+              },
+              {
+                "global": "Rx",
+                "moduleId": "rxjs/operators"
+              }
+            ],
             "assets": [
               {
                 "glob": "packages/devtools/*.md",
@@ -159,6 +169,16 @@
             "project": "packages/entities/package.json",
             "entryFile": "packages/entities/src/index.ts",
             "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "globals": [
+              {
+                "global": "Rx",
+                "moduleId": "rxjs"
+              },
+              {
+                "global": "Rx",
+                "moduleId": "rxjs/operators"
+              }
+            ],
             "assets": [
               {
                 "glob": "packages/entities/*.md",
@@ -315,6 +335,16 @@
             "project": "packages/pagination/package.json",
             "entryFile": "packages/pagination/src/index.ts",
             "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "globals": [
+              {
+                "global": "Rx",
+                "moduleId": "rxjs"
+              },
+              {
+                "global": "Rx",
+                "moduleId": "rxjs/operators"
+              }
+            ],
             "assets": [
               {
                 "glob": "packages/pagination/*.md",
@@ -361,6 +391,16 @@
             "project": "packages/persist-state/package.json",
             "entryFile": "packages/persist-state/src/index.ts",
             "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "globals": [
+              {
+                "global": "Rx",
+                "moduleId": "rxjs"
+              },
+              {
+                "global": "Rx",
+                "moduleId": "rxjs/operators"
+              }
+            ],
             "assets": [
               {
                 "glob": "packages/persist-state/*.md",
@@ -473,6 +513,16 @@
             "project": "packages/requests/package.json",
             "entryFile": "packages/requests/src/index.ts",
             "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "globals": [
+              {
+                "global": "Rx",
+                "moduleId": "rxjs"
+              },
+              {
+                "global": "Rx",
+                "moduleId": "rxjs/operators"
+              }
+            ],
             "assets": [
               {
                 "glob": "packages/requests/*.md",
@@ -519,6 +569,16 @@
             "project": "packages/state-history/package.json",
             "entryFile": "packages/state-history/src/index.ts",
             "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "globals": [
+              {
+                "global": "Rx",
+                "moduleId": "rxjs"
+              },
+              {
+                "global": "Rx",
+                "moduleId": "rxjs/operators"
+              }
+            ],
             "assets": [
               {
                 "glob": "packages/state-history/*.md",
@@ -564,7 +624,16 @@
             "tsConfig": "packages/store/tsconfig.lib.json",
             "project": "packages/store/package.json",
             "entryFile": "packages/store/src/index.ts",
-            "external": ["rxjs"],
+            "globals": [
+              {
+                "global": "Rx",
+                "moduleId": "rxjs"
+              },
+              {
+                "global": "Rx",
+                "moduleId": "rxjs/operators"
+              }
+            ],
             "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
             "assets": [
               {
