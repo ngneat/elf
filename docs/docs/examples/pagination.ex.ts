@@ -30,3 +30,7 @@ export function addTodos(todos: Todo[]) {
     )
   );
 }
+
+todosStore.subscribe(console.log);
+
+addTodos([{ id: 1, label: 'one' }]);

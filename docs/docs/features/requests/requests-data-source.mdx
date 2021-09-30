@@ -29,6 +29,7 @@ const status$ = store.pipe(selectRequestStatus('todos'));
 export const todosDataSource$ = createRequestDataSource({
   data$: todos$,
   status$,
+  store
 });
 // highlight-end
 ```
@@ -53,6 +54,7 @@ export const todosDataSource$ = createRequestDataSource({
   dataKey: 'todos',
   data$: todos$,
   status$,
+  store
 });
 
 // Now the response will be typed as:

@@ -3,8 +3,9 @@ import {
   withRequestsStatus,
   selectRequestStatus,
   createRequestDataSource,
+  updateRequestStatus,
 } from '@ngneat/elf-requests';
-import { selectAll, withEntities } from '@ngneat/elf-entities';
+import { selectAll, withEntities, addEntities } from '@ngneat/elf-entities';
 
 interface Todo {
   id: number;
@@ -24,8 +25,16 @@ const status$ = store.pipe(selectRequestStatus('todos'));
 export const todosDataSource$ = createRequestDataSource({
   data$: todos$,
   status$,
+  store,
 });
 
 todosDataSource$.subscribe((value) => {
   console.log(value);
 });
+
+setTimeout(() => {
+  store.reduce(
+    updateRequestStatus('todos', 'success'),
+    addEntities({ id: 1, label: 'one' })
+  );
+}, 1000);

@@ -3,6 +3,7 @@
   "files": [],
   "include": [],
   "compilerOptions": {
+    "target": "ES2015",
     "esModuleInterop": true
   },
   "references": [

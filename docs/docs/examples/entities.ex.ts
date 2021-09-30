@@ -17,6 +17,6 @@ todosStore.pipe(selectAll()).subscribe((todos) => {
 todosStore.reduce(
   setEntities([
     { id: 1, label: 'one ' },
-    { id: 1, label: 'two' },
+    { id: 2, label: 'two' },
   ])
 );

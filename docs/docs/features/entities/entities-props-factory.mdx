@@ -1,5 +1,8 @@
 # Entities Props Factory
 
+import index from '!!raw-loader!@site/docs/examples/entities-props.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
 There are two built-in entities props included in Elf - [`withEntities`](./entities) and [`UIEntities`](./ui-entities). In addition to that, we can create our own entities props for our stores.
 
 Let's say we have a products page with a shopping cart. As well as managing a store for products, we must also maintain a shopping cart. We can create a new `Store` for our `cart` or a `cart` entity props in the same `products` store.
@@ -65,6 +68,10 @@ In the above example, our final `state` shape will be:
   cartIds: number[];
 }
 ```
+
+<LiveDemo src={index} packages={['entities']} /> 
+<br />
+
 
 We can pass the `cartEntitiesRef` to each one of the built-in [queries](./entities#queries) and [mutations](./entities#mutations):
 

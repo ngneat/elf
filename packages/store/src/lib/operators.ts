@@ -4,7 +4,12 @@ import {
   OperatorFunction,
   pipe,
 } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+} from 'rxjs/operators';
 
 export function select<T, R>(mapFn: (state: T) => R): OperatorFunction<T, R> {
   return pipe(map(mapFn), distinctUntilChanged());
@@ -40,3 +45,9 @@ export function distinctUntilArrayItemChanged<T>(): MonoTypeOperatorFunction<
 
 export const asap = <T>(): MonoTypeOperatorFunction<T> =>
   debounceTime(0, asapScheduler);
+
+export function filterNil<T>(): OperatorFunction<T, NonNullable<T>> {
+  return filter(
+    (value: T): value is NonNullable<T> => value !== null && value !== undefined
+  );
+}

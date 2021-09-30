@@ -1,4 +1,4 @@
-export { addEntities } from './lib/add.mutation';
+export { addEntities, addEntitiesFifo } from './lib/add.mutation';
 export {
   deleteAllEntities,
   deleteEntities,
@@ -9,6 +9,7 @@ export {
   updateAllEntities,
   updateEntities,
   updateEntitiesByPredicate,
+  upsertEntities,
 } from './lib/update.mutation';
 export { selectAll, selectEntities, selectAllApply } from './lib/all.query';
 export { selectEntity } from './lib/entity.query';
@@ -31,3 +32,4 @@ export {
   entitiesPropsFactory,
 } from './lib/entity.state';
 export { intersectEntities } from './lib/intersect';
+export * from './lib/active/active';

@@ -11,6 +11,7 @@ export {
   select,
   head,
   asap,
+  filterNil,
   distinctUntilArrayItemChanged,
 } from './lib/operators';
 export {

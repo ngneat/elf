@@ -3,6 +3,9 @@
   "description": "A CLI for elf store",
   "version": "1.0.0-beta.0",
   "author": "Netanel Basal @NetanelBasal",
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "elf": "./bin/run"
   },

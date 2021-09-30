@@ -3,7 +3,7 @@
 exports[`Repo Builder all: all 1`] = `
 "import { Store, createState, withProps } from '@ngneat/elf';
 import { withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
-import { withRequestsCache, updateRequestCache, CacheState, withRequestsStatus, selectRequestStatus, updateRequestsStatus, StatusState } from '@ngneat/elf-requests';
+import { withRequestsCache, updateRequestCache, CacheState, withRequestsStatus, selectRequestStatus, updateRequestStatus, StatusState } from '@ngneat/elf-requests';
 
 export interface TodoUI {
   id: number;
@@ -49,10 +49,6 @@ export class TodosRepository {
   updateRequestCache(state: CacheState) {
     store.reduce(updateRequestCache(key));
   }
-
-  updateRequestStatus(state: StatusState) {
-    store.reduce(updateRequestsStatus({ key: state }));
-  }
 }
 "
 `;
@@ -60,7 +56,7 @@ export class TodosRepository {
 exports[`Repo Builder should support function template: all 1`] = `
 "import { Store, createState, withProps } from '@ngneat/elf';
 import { withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
-import { withRequestsCache, updateRequestCache, CacheState, withRequestsStatus, selectRequestStatus, updateRequestsStatus, StatusState } from '@ngneat/elf-requests';
+import { withRequestsCache, updateRequestCache, CacheState, withRequestsStatus, selectRequestStatus, updateRequestStatus, StatusState } from '@ngneat/elf-requests';
 
 export interface TodoUI {
   id: number;
@@ -107,10 +103,6 @@ export function toggleActiveIds(ids: Array<Todo['id']>) {
 
 export function updateRequestCache(state: CacheState) {
   todosStore.reduce(updateRequestCache(key));
-}
-
-export function updateRequestStatus(state: StatusState) {
-  todosStore.reduce(updateRequestsStatus({ key: state }));
 }
 "
 `;
@@ -239,17 +231,13 @@ export class TodosRepository {
 
 exports[`Repo Builder withRequestsStatus: withRequestsStatus 1`] = `
 "import { Store, createState } from '@ngneat/elf';
-import { withRequestsStatus, selectRequestStatus, updateRequestsStatus, StatusState } from '@ngneat/elf-requests';
+import { withRequestsStatus, selectRequestStatus, updateRequestStatus, StatusState } from '@ngneat/elf-requests';
 
 const { state, config } = createState(withRequestsStatus());
 const store = new Store({ name: 'todos', state, config });
 
 export class TodosRepository {
   status$ = store.pipe(selectRequestStatus('key'));
-
-  updateRequestStatus(state: StatusState) {
-    store.reduce(updateRequestsStatus({ key: state }));
-  }
 }
 "
 `;

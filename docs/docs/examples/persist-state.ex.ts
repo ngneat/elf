@@ -7,11 +7,21 @@ interface AuthProps {
 
 const { state, config } = createState(withProps<AuthProps>({ user: null }));
 
-const authStore = new Store({ state, name, config });
+const authStore = new Store({ state, name: 'auth', config });
 
 export const persist = persistState(authStore, {
   key: 'auth',
   storage: localStorageStrategy,
 });
 
-export const user$ = authStore.pipe(select((state) => state.user));
+const user$ = authStore.pipe(select((state) => state.user));
+
+user$.subscribe(console.log);
+
+// Should be the value after a refresh
+setTimeout(() => {
+  authStore.reduce((state) => ({
+    ...state,
+    user: { id: '1' },
+  }));
+}, 1000);

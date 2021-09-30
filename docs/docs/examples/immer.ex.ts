@@ -1,9 +1,8 @@
 import { produce } from 'immer';
-import { Reducer } from '@ngneat/elf';
 import { withProps, Store, createState } from '@ngneat/elf';
 import { withEntities, selectAll, updateEntities } from '@ngneat/elf-entities';
 
-export function write<S>(updater: (state: S) => void): Reducer<S> {
+export function write<S>(updater: (state: S) => void): (state: S) => S {
   return function (state) {
     return produce(state, (draft) => {
       updater(draft as S);

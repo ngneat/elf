@@ -8,7 +8,7 @@ const allPackages = {
   requests: { '@ngneat/elf-requests': 'latest' },
   pagination: { '@ngneat/elf-pagination': 'latest' },
   devtools: { '@ngneat/elf-devtools': 'latest' },
-  persist: { '@ngneat/elf-perist-state': 'latest' },
+  persist: { '@ngneat/elf-persist-state': 'latest' },
   history: { '@ngneat/elf-state-history': 'latest' },
   rxjs: { rxjs: 'latest' },
   immer: { immer: 'latest' },
@@ -22,11 +22,17 @@ interface Props {
 export function LiveDemo({ src, packages = [] }: Props) {
   const ref = useRef<HTMLDivElement>();
 
-  const include = ['core', 'devtools', 'rxjs', ...packages];
+  const include = ['core', 'rxjs', ...packages];
 
   const { isDarkTheme } = useThemeContext();
 
   useEffect(() => {
+    const deps = include.reduce((acc, p) => {
+      Object.assign(acc, allPackages[p]);
+
+      return acc;
+    }, {});
+
     sdk.embedProject(
       ref.current,
       {
@@ -37,11 +43,7 @@ export function LiveDemo({ src, packages = [] }: Props) {
           'index.ts': src,
         },
         template: 'typescript',
-        dependencies: packages.reduce((acc, p) => {
-          Object.assign(acc, allPackages[p]);
-
-          return acc;
-        }, {}),
+        dependencies: deps,
         settings: {
           compile: {
             clearConsole: true,
@@ -50,7 +52,7 @@ export function LiveDemo({ src, packages = [] }: Props) {
       },
       {
         hideDevTools: false,
-        devToolsHeight: 1000,
+        devToolsHeight: 99,
         theme: isDarkTheme ? 'dark' : 'light',
         height: '500px',
       }
@@ -58,7 +60,7 @@ export function LiveDemo({ src, packages = [] }: Props) {
   }, []);
 
   return (
-    <section>
+    <section style={{ height: '500px' }}>
       <div ref={ref}></div>
     </section>
   );

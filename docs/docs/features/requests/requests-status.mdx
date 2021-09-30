@@ -94,9 +94,9 @@ pending$ = store.pipe(selectIsRequestPending('todos'));
 ```ts
 import { updateRequestCache } from '@ngneat/elf-requests';
 
-store.reduce(updateRequestStatus('todos', { value: 'pending' }));
-store.reduce(updateRequestStatus('todos', { value: 'success' }));
-store.reduce(updateRequestStatus('todos', { value: 'error', error }));
+store.reduce(updateRequestStatus('todos', 'pending'));
+store.reduce(updateRequestStatus('todos', 'success'));
+store.reduce(updateRequestStatus('todos', 'error', error));
 ```
 
 And more:

@@ -1,3 +1,4 @@
+import { Store } from '@ngneat/elf';
 import { combineLatest, map, Observable } from 'rxjs';
 import { StatusState } from '..';
 
@@ -7,12 +8,14 @@ export function createRequestDataSource<
   Error = unknown
 >({
   data$,
+  store,
   status$,
   dataKey,
 }: {
   dataKey?: DataKey;
   data$: Observable<Data>;
   status$: Observable<StatusState>;
+  store: Store;
 }): Observable<{
   [K in 'loading' | 'error' | DataKey]: K extends DataKey
     ? Data
@@ -22,16 +25,18 @@ export function createRequestDataSource<
     ? Error
     : never;
 }> {
-  return combineLatest({
-    data: data$,
-    status: status$,
-  }).pipe(
-    map(({ data, status }) => {
-      return {
-        [dataKey ?? 'data']: data,
-        loading: status.value === 'pending',
-        error: status.value === 'error' ? status.error : undefined,
-      } as any;
+  return store
+    .combine({
+      data: data$,
+      status: status$,
     })
-  );
+    .pipe(
+      map(({ data, status }) => {
+        return {
+          [dataKey ?? 'data']: data,
+          loading: status.value === 'pending',
+          error: status.value === 'error' ? status.error : undefined,
+        } as any;
+      })
+    );
 }

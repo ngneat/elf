@@ -7,7 +7,7 @@ const { state, config } = createState(
   })
 );
 
-const todosStore = new Store({ state, name, config });
+const todosStore = new Store({ state, name: 'auth', config });
 
 export const todosStateHistory = stateHistory(todosStore);
 

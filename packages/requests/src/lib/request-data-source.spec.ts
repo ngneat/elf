@@ -22,6 +22,7 @@ describe('createRequestDataSource', () => {
     const status$ = store.pipe(selectRequestStatus('todos'));
 
     const todosDataSource$ = createRequestDataSource({
+      store: store,
       dataKey: 'todos',
       data$: todos$,
       status$,

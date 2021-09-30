@@ -41,6 +41,4 @@ todosStore
     UIEntities: todosStore.pipe(selectEntities({ ref: UIEntitiesRef })),
   })
   .pipe(intersectEntities())
-  .subcribe((todos) => {
-    console.log(todos);
-  });
+  .subscribe(console.log);

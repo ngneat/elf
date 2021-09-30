@@ -26,7 +26,9 @@ todosStore.pipe(selectRequestStatus('todos')).subscribe((status) => {
 
 fromFetch<Todo[]>('https://jsonplaceholder.typicode.com/todos', {
   selector: (response) => response.json(),
-}).pipe(
-  tap((todos) => setEntities(todos)),
-  setRequestStatus(todosStore, 'todos')
-);
+})
+  .pipe(
+    tap((todos) => setEntities(todos)),
+    setRequestStatus(todosStore, 'todos')
+  )
+  .subscribe();

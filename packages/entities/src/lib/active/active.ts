@@ -10,7 +10,7 @@ import {
 import { switchMap } from 'rxjs/operators';
 import { propsArrayFactory, propsFactory, StateOf } from '@ngneat/elf';
 import { selectEntity } from '../entity.query';
-import { selectMany } from '@ngneat/elf-entities';
+import { selectMany } from '../many.query';
 
 export const {
   selectActiveId,
