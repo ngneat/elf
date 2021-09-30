@@ -2,7 +2,7 @@
  <img width="20%" height="20%" src="elf.png">
 </p>
 
-> A Tiny Reactive Store with Magical Powers (wip)
+> A Reactive Store with Magical Powers (wip)
 
 [comment]: <> (Elf is a reactive immutable state management solution built on top of RxJS. It uses custom RxJS operators to query the state and pure functions to update it.)
 

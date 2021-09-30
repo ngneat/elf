@@ -15,7 +15,7 @@ function HomepageHeader() {
           <img src="img/elf.png" alt="elf" width={200} />
         </h1>
         <p className="hero__subtitle">
-          A Tiny{' '}
+          A{' '}
           <b>
             <em>Reactive</em>
           </b>{' '}
