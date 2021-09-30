@@ -8,7 +8,7 @@
     "start:react": "nx serve --project react",
     "start:docs": "npm start --prefix=docs",
     "test": "npm run affected:test",
-    "test:cli": "npm test --prefix tools/cli",
+    "test:cli": "npm test --prefix packages/cli",
     "test:all": "nx run-many --target=test --exclude=ng,react --all && npm run test:cli",
     "lint:all": "nx run-many --target=lint --all",
     "affected:apps": "nx affected:apps",
@@ -22,7 +22,7 @@
     "update": "nx migrate latest",
     "migration": "nx migrate --run-migrations",
     "postinstall": "ngcc --properties es2015 browser module main",
-    "cli": "./tools/cli/bin/run",
+    "cli": "./packages/cli/bin/run",
     "cz": "cz",
     "prepare": "husky install"
   },

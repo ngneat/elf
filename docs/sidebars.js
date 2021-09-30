@@ -41,6 +41,7 @@ module.exports = {
     'dev-tools',
     'immer',
     'cli',
+    'side-effects',
     {
       type: 'category',
       label: 'Miscellaneous',

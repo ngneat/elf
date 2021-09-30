@@ -34,19 +34,51 @@
     }
   },
   "projects": {
-    "cli-ng": {
-      "root": "packages/cli-ng",
-      "sourceRoot": "packages/cli-ng/src",
+    "cli": {
+      "root": "packages/cli",
+      "sourceRoot": "packages/cli/src",
       "projectType": "library",
       "targets": {
         "build": {
           "executor": "@nrwl/workspace:tsc",
           "outputs": ["{options.outputPath}"],
           "options": {
+            "outputPath": "dist/packages/cli",
+            "main": "packages/cli/src/index.ts",
+            "tsConfig": "packages/cli/tsconfig.lib.json",
+            "assets": ["packages/cli/*.md"]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["packages/cli/**/*.ts"]
+          }
+        }
+      }
+    },
+    "cli-ng": {
+      "root": "packages/cli-ng",
+      "sourceRoot": "packages/cli-ng/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
             "outputPath": "dist/packages/cli-ng",
-            "main": "packages/cli-ng/src/index.ts",
             "tsConfig": "packages/cli-ng/tsconfig.lib.json",
-            "assets": ["packages/cli-ng/*.md"]
+            "project": "packages/cli-ng/package.json",
+            "entryFile": "packages/cli-ng/src/index.ts",
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "assets": [
+              {
+                "glob": "packages/cli-ng/*.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
           }
         },
         "lint": {
@@ -78,13 +110,21 @@
       "projectType": "library",
       "targets": {
         "build": {
-          "executor": "@nrwl/workspace:tsc",
+          "executor": "@nrwl/web:package",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/packages/devtools",
-            "main": "packages/devtools/src/index.ts",
             "tsConfig": "packages/devtools/tsconfig.lib.json",
-            "assets": ["packages/devtools/*.md"]
+            "project": "packages/devtools/package.json",
+            "entryFile": "packages/devtools/src/index.ts",
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "assets": [
+              {
+                "glob": "packages/devtools/*.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
           }
         },
         "lint": {
@@ -116,13 +156,21 @@
       "projectType": "library",
       "targets": {
         "build": {
-          "executor": "@nrwl/workspace:tsc",
+          "executor": "@nrwl/web:package",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/packages/entities",
-            "main": "packages/entities/src/index.ts",
             "tsConfig": "packages/entities/tsconfig.lib.json",
-            "assets": ["packages/entities/*.md"]
+            "project": "packages/entities/package.json",
+            "entryFile": "packages/entities/src/index.ts",
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "assets": [
+              {
+                "glob": "packages/entities/*.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
           }
         },
         "lint": {
@@ -264,13 +312,21 @@
       "projectType": "library",
       "targets": {
         "build": {
-          "executor": "@nrwl/workspace:tsc",
+          "executor": "@nrwl/web:package",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/packages/pagination",
-            "main": "packages/pagination/src/index.ts",
             "tsConfig": "packages/pagination/tsconfig.lib.json",
-            "assets": ["packages/pagination/*.md"]
+            "project": "packages/pagination/package.json",
+            "entryFile": "packages/pagination/src/index.ts",
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "assets": [
+              {
+                "glob": "packages/pagination/*.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
           }
         },
         "lint": {
@@ -302,13 +358,21 @@
       "projectType": "library",
       "targets": {
         "build": {
-          "executor": "@nrwl/workspace:tsc",
+          "executor": "@nrwl/web:package",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/packages/persist-state",
-            "main": "packages/persist-state/src/index.ts",
             "tsConfig": "packages/persist-state/tsconfig.lib.json",
-            "assets": ["packages/persist-state/*.md"]
+            "project": "packages/persist-state/package.json",
+            "entryFile": "packages/persist-state/src/index.ts",
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "assets": [
+              {
+                "glob": "packages/persist-state/*.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
           }
         },
         "lint": {
@@ -406,13 +470,21 @@
       "projectType": "library",
       "targets": {
         "build": {
-          "executor": "@nrwl/workspace:tsc",
+          "executor": "@nrwl/web:package",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/packages/requests",
-            "main": "packages/requests/src/index.ts",
             "tsConfig": "packages/requests/tsconfig.lib.json",
-            "assets": ["packages/requests/*.md"]
+            "project": "packages/requests/package.json",
+            "entryFile": "packages/requests/src/index.ts",
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "assets": [
+              {
+                "glob": "packages/requests/*.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
           }
         },
         "lint": {
@@ -444,13 +516,21 @@
       "projectType": "library",
       "targets": {
         "build": {
-          "executor": "@nrwl/workspace:tsc",
+          "executor": "@nrwl/web:package",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/packages/state-history",
-            "main": "packages/state-history/src/index.ts",
             "tsConfig": "packages/state-history/tsconfig.lib.json",
-            "assets": ["packages/state-history/*.md"]
+            "project": "packages/state-history/package.json",
+            "entryFile": "packages/state-history/src/index.ts",
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "assets": [
+              {
+                "glob": "packages/state-history/*.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
           }
         },
         "lint": {
@@ -482,13 +562,22 @@
       "projectType": "library",
       "targets": {
         "build": {
-          "executor": "@nrwl/workspace:tsc",
+          "executor": "@nrwl/web:package",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/packages/store",
-            "main": "packages/store/src/index.ts",
             "tsConfig": "packages/store/tsconfig.lib.json",
-            "assets": ["packages/store/*.md"]
+            "project": "packages/store/package.json",
+            "entryFile": "packages/store/src/index.ts",
+            "external": ["rxjs"],
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "assets": [
+              {
+                "glob": "README.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
           }
         },
         "lint": {

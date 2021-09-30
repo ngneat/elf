@@ -11,7 +11,7 @@ export class Store<
     config: this.getConfig(),
   };
 
-  constructor(public storeDef: SDef) {
+  constructor(private storeDef: SDef) {
     super(storeDef.state);
     this.initialState = this.getValue();
     addStore(this);

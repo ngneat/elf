@@ -27,6 +27,7 @@
     "url": "https://netbasal.com"
   },
   "license": "MIT",
+  "sideEffects": false,
   "peerDependencies": {
     "rxjs": "*"
   }

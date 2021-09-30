@@ -9,7 +9,8 @@ export default class Install extends Command {
   };
 
   async run() {
-    const { args, flags } = this.parse(Install);
+    this.parse(Install);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const detectPackageManager = require('detect-package-manager');
 
     const pm = await detectPackageManager();
@@ -21,6 +22,7 @@ export default class Install extends Command {
         ' '
       )}`;
 
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('child_process').execSync(shell, {
         stdio: 'inherit',
       });

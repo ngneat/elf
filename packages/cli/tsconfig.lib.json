@@ -1,13 +1,16 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "declaration": true,
+    "types": [],
+    "esModuleInterop": true,
     "importHelpers": true,
     "module": "commonjs",
     "outDir": "lib",
     "rootDir": "src",
-    "esModuleInterop": true,
     "strict": true,
     "target": "es2017"
   },
-  "include": ["src/**/*"]
+  "include": ["**/*.ts"],
+  "exclude": ["**/*.spec.ts"]
 }

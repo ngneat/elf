@@ -22,6 +22,9 @@
     }
   },
   "projects": {
+    "cli": {
+      "tags": []
+    },
     "cli-ng": {
       "tags": []
     },
