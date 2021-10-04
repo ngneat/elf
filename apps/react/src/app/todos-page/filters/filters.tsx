@@ -26,13 +26,13 @@ export function Filters({ onChange }: FiltersProps) {
   return (
     <div className="my-2">
       <span>Show: </span>
-      <Filter id="SHOW_ALL" onChange={onChange}>
+      <Filter id="ALL" onChange={onChange}>
         All
       </Filter>
-      <Filter id="SHOW_ACTIVE" onChange={onChange}>
+      <Filter id="ACTIVE" onChange={onChange}>
         Active
       </Filter>
-      <Filter id="SHOW_COMPLETED" onChange={onChange}>
+      <Filter id="COMPLETED" onChange={onChange}>
         Completed
       </Filter>
     </div>

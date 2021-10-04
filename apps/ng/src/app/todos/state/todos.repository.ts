@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { write } from '../../store/mutations';
 import { createState, select, Store, withProps } from '@ngneat/elf';
 import {
   addEntities,
   selectAll,
+  selectAllApply,
   updateEntities,
   withEntities,
 } from '@ngneat/elf-entities';
@@ -32,8 +32,17 @@ export class TodosRepository {
   todos$ = store.pipe(selectAll());
   filter$ = store.pipe(select((state) => state.filter));
 
-  visibleTodos$ = combineLatest([this.filter$, this.todos$]).pipe(
-    map((data) => filterTodos(...data))
+  visibleTodos$ = this.filter$.pipe(
+    switchMap((filter) => {
+      return store.pipe(
+        selectAllApply({
+          filterEntity({ completed }) {
+            if (filter === 'ALL') return true;
+            return filter === 'COMPLETED' ? completed : !completed;
+          },
+        })
+      );
+    })
   );
 
   addTodo(title: Todo['title']) {
@@ -55,16 +64,5 @@ export class TodosRepository {
         completed: !entity.completed,
       }))
     );
-  }
-}
-
-function filterTodos(filter: TodosProps['filter'], todos: Todo[]) {
-  switch (filter) {
-    case 'COMPLETED':
-      return todos.filter((t) => t.completed);
-    case 'ACTIVE':
-      return todos.filter((t) => !t.completed);
-    default:
-      return todos;
   }
 }

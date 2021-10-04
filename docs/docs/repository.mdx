@@ -3,7 +3,7 @@
 The recommended way to use Elf is following the Repository Design Pattern. Implementing the Repository pattern is relatively simple. It's a file that encapsulates the store queries and mutations:
 
 ```ts title="auth.repository.ts"
-import { Store, createState, withProps } from '@ngneat/elf';
+import { Store, createState, withProps, select } from '@ngneat/elf';
 
 interface AuthProps {
   user: { id: string } | null;

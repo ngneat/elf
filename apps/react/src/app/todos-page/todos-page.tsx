@@ -22,7 +22,7 @@ export function TodosPage() {
       <Filters onChange={updateTodosFilter} />
 
       <section>
-        {todos?.map((todo) => (
+        {todos.map((todo) => (
           <TodoItem
             {...todo}
             key={todo.id}

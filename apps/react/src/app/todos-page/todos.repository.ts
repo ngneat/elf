@@ -1,15 +1,13 @@
 import { Store, createState, withProps, select } from '@ngneat/elf';
 import {
   withEntities,
-  selectAll,
   setEntities,
   addEntities,
   updateEntities,
   deleteEntities,
   selectAllApply,
 } from '@ngneat/elf-entities';
-import { combineLatest } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 export interface Todo {
   id: string;
@@ -18,11 +16,11 @@ export interface Todo {
 }
 
 export interface TodosProps {
-  filter: 'SHOW_ALL' | 'SHOW_ACTIVE' | 'SHOW_COMPLETED';
+  filter: 'ALL' | 'ACTIVE' | 'COMPLETED';
 }
 
 const { state, config } = createState(
-  withProps<TodosProps>({ filter: 'SHOW_ALL' }),
+  withProps<TodosProps>({ filter: 'ALL' }),
   withEntities<Todo>()
 );
 const store = new Store({ name: 'todos', state, config });
@@ -34,28 +32,13 @@ export const visibleTodos$ = filter$.pipe(
     return store.pipe(
       selectAllApply({
         filterEntity({ completed }) {
-          if (filter === 'SHOW_ALL') return true;
-          return filter === 'SHOW_COMPLETED' ? completed : !completed;
+          if (filter === 'ALL') return true;
+          return filter === 'COMPLETED' ? completed : !completed;
         },
       })
     );
   })
 );
-
-// const todos$ = store.pipe(selectAll());
-
-// export const visibleTodos$ = combineLatest([todos$, filter$]).pipe(
-//   map(([todos, filter]) => {
-//     switch (filter) {
-//       case 'SHOW_COMPLETED':
-//         return todos.filter(t => t.completed);
-//       case 'SHOW_ACTIVE':
-//         return todos.filter(t => !t.completed);
-//       default:
-//         return todos;
-//     }
-//   })
-// )
 
 export function updateTodosFilter(filter: TodosProps['filter']) {
   store.reduce((state) => ({
