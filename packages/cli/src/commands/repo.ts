@@ -40,8 +40,8 @@ export default class Repo extends Command {
       });
 
       mergedOptions.hooks = globalConfig.cli.plugins.map((path) => {
-        return require(require.resolve(path, { paths: [process.cwd()] }))
-          .default;
+        const lib = require(require.resolve(path, { paths: [process.cwd()] }));
+        return lib.default || lib;
       });
     }
 

@@ -1,7 +1,7 @@
 {
   "name": "@ngneat/elf-cli",
   "description": "A CLI for elf store",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "author": "Netanel Basal @NetanelBasal",
   "publishConfig": {
     "access": "public"
@@ -66,8 +66,9 @@
   },
   "repository": "https://github.com/ngneat/elf",
   "scripts": {
+    "copy:cli": "mkdir -p ../../dist/packages && rsync -r --exclude 'node_modules' . ../../dist/packages/cli",
     "postpack": "rm -f oclif.manifest.json",
-    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "build": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme && npm run copy:cli",
     "test": "jest",
     "version": "oclif-dev readme && git add README.md"
   },

@@ -1,0 +1,41 @@
+{
+  "version": "1.0.0-beta.1",
+  "commands": {
+    "install": {
+      "id": "install",
+      "description": "Install Elf packages",
+      "pluginName": "@ngneat/elf-cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "show CLI help",
+          "allowNo": false
+        }
+      },
+      "args": []
+    },
+    "repo": {
+      "id": "repo",
+      "description": "Create a repository",
+      "pluginName": "@ngneat/elf-cli",
+      "pluginType": "core",
+      "aliases": [],
+      "examples": [],
+      "flags": {
+        "dry-run": { "name": "dry-run", "type": "boolean", "allowNo": false },
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "show CLI help",
+          "allowNo": false
+        }
+      },
+      "args": []
+    }
+  }
+}

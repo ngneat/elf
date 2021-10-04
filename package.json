@@ -11,7 +11,7 @@
     "test:cli": "npm test --prefix packages/cli",
     "test:all": "nx run-many --target=test --exclude=ng,react --all",
     "lint:all": "nx run-many --target=lint --all --exclude=ng,react",
-    "build:all": "nx run-many --target=build --all --exclude=ng,react,cli-ng",
+    "build:all": "nx run-many --target=build --all --exclude=ng,react",
     "affected:apps": "nx affected:apps",
     "affected:libs": "nx affected:libs",
     "affected:build": "nx affected:build",
