@@ -31,5 +31,5 @@ export {
   UIEntitiesRef,
   entitiesPropsFactory,
 } from './lib/entity.state';
-export { intersectEntities } from './lib/intersect';
+export { unionEntities as unionEntities } from './lib/union-entities';
 export * from './lib/active/active';

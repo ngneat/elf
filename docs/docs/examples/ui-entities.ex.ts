@@ -7,7 +7,7 @@ import {
   selectEntity,
   selectAll,
   selectEntities,
-  intersectEntities,
+  unionEntities,
 } from '@ngneat/elf-entities';
 
 interface TodoUI {
@@ -40,5 +40,5 @@ todosStore
     entities: todosStore.pipe(selectAll()),
     UIEntities: todosStore.pipe(selectEntities({ ref: UIEntitiesRef })),
   })
-  .pipe(intersectEntities())
+  .pipe(unionEntities())
   .subscribe(console.log);

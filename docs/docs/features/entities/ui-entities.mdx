@@ -41,11 +41,11 @@ todosStore.reduce(
 uiEntity$ = todosStore.pipe(selectEntity(1, { ref: UIEntitiesRef }));
 ```
 
-We can use the `intersectEntities()` operator that returns a combined collection of the entities and their corresponding `UIEntities`:
+We can use the `unionEntities()` operator that returns a combined collection of the entities and their corresponding `UIEntities`:
 
 ```ts
 import {
-  intersectEntities,
+  unionEntities,
   selectAll,
   selectEntities,
   UIEntitiesRef,
@@ -56,7 +56,7 @@ todos$ = todosStore
     entities: todosStore.pipe(selectAll()),
     UIEntities: todosStore.pipe(selectEntities({ ref: UIEntitiesRef })),
   })
-  .pipe(intersectEntities());
+  .pipe(unionEntities());
 ```
 
 <LiveDemo src={index} packages={['entities']} />

@@ -9,7 +9,7 @@ import {
   updateEntities,
   withEntities,
   withUIEntities,
-  intersectEntities,
+  unionEntities,
 } from '@ngneat/elf-entities';
 
 export interface GalleryItem {
@@ -39,7 +39,7 @@ export class GalleryRepository {
       entities: store.pipe(selectAll()),
       UIEntities: store.pipe(selectEntities({ ref: UIEntitiesRef })),
     })
-    .pipe(intersectEntities());
+    .pipe(unionEntities());
 
   addGalleryItems(galleryItems: GalleryItem[]) {
     const uiGalleryItems = galleryItems.map(({ id }) => ({ id, open: false }));

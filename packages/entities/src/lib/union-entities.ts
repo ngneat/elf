@@ -1,7 +1,7 @@
 import { OperatorFunction } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export function intersectEntities<
+export function unionEntities<
   T extends {
     entities: Record<string, any>[];
     UIEntities: Record<string | number, Record<string, any>>;

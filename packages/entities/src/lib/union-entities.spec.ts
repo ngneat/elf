@@ -2,12 +2,12 @@ import { createState, Store } from '@ngneat/elf';
 import { createTodo, Todo, UITodo } from '@ngneat/elf-mocks';
 import { selectAll, selectEntities } from './all.query';
 import { UIEntitiesRef, withEntities, withUIEntities } from './entity.state';
-import { intersectEntities } from './intersect';
+import { unionEntities } from './union-entities';
 import { addEntities } from './add.mutation';
 import { updateEntities } from './update.mutation';
 import { expectTypeOf } from 'expect-type';
 
-describe('intersectEntities', () => {
+describe('unionEntities', () => {
   it('should return intersection of ui and model', () => {
     const { state, config } = createState(
       withEntities<Todo>(),
@@ -22,7 +22,7 @@ describe('intersectEntities', () => {
         entities: store.pipe(selectAll()),
         UIEntities: store.pipe(selectEntities({ ref: UIEntitiesRef })),
       })
-      .pipe(intersectEntities())
+      .pipe(unionEntities())
       .subscribe((v) => {
         spy(v);
         expectTypeOf(v).toEqualTypeOf<Array<Todo & UITodo>>();
