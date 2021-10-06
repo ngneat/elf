@@ -1,0 +1,57 @@
+{
+  "root": "packages/devtools",
+  "sourceRoot": "packages/devtools/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/devtools",
+        "tsConfig": "packages/devtools/tsconfig.lib.json",
+        "project": "packages/devtools/package.json",
+        "entryFile": "packages/devtools/src/index.ts",
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "globals": [
+          {
+            "global": "Rx",
+            "moduleId": "rxjs"
+          },
+          {
+            "global": "Rx",
+            "moduleId": "rxjs/operators"
+          }
+        ],
+        "assets": [
+          {
+            "glob": "packages/devtools/*.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["packages/devtools/**/*.ts"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/devtools"],
+      "options": {
+        "jestConfig": "packages/devtools/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "syncVersions": false
+      }
+    }
+  },
+  "tags": []
+}

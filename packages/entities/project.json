@@ -1,0 +1,57 @@
+{
+  "root": "packages/entities",
+  "sourceRoot": "packages/entities/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/entities",
+        "tsConfig": "packages/entities/tsconfig.lib.json",
+        "project": "packages/entities/package.json",
+        "entryFile": "packages/entities/src/index.ts",
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "globals": [
+          {
+            "global": "Rx",
+            "moduleId": "rxjs"
+          },
+          {
+            "global": "Rx",
+            "moduleId": "rxjs/operators"
+          }
+        ],
+        "assets": [
+          {
+            "glob": "packages/entities/*.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["packages/entities/**/*.ts"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/entities"],
+      "options": {
+        "jestConfig": "packages/entities/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "syncVersions": false
+      }
+    }
+  },
+  "tags": []
+}

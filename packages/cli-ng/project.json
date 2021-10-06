@@ -1,0 +1,47 @@
+{
+  "root": "packages/cli-ng",
+  "sourceRoot": "packages/cli-ng/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/cli-ng",
+        "tsConfig": "packages/cli-ng/tsconfig.lib.json",
+        "project": "packages/cli-ng/package.json",
+        "entryFile": "packages/cli-ng/src/index.ts",
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "assets": [
+          {
+            "glob": "packages/cli-ng/*.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/cli-ng/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/cli-ng"],
+      "options": {
+        "jestConfig": "packages/cli-ng/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "syncVersions": false
+      }
+    }
+  },
+  "tags": []
+}

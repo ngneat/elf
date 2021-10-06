@@ -1,0 +1,89 @@
+{
+  "projectType": "application",
+  "root": "apps/ng",
+  "sourceRoot": "apps/ng/src",
+  "prefix": "elf",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/ng",
+        "index": "apps/ng/src/index.html",
+        "main": "apps/ng/src/main.ts",
+        "polyfills": "apps/ng/src/polyfills.ts",
+        "tsConfig": "apps/ng/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/ng/src/favicon.ico", "apps/ng/src/assets"],
+        "styles": ["apps/ng/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/ng/src/environments/environment.ts",
+              "with": "apps/ng/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "ng:build:production"
+        },
+        "development": {
+          "browserTarget": "ng:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "ng:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/ng/src/**/*.ts", "apps/ng/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/ng"],
+      "options": {
+        "jestConfig": "apps/ng/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

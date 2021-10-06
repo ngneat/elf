@@ -21,44 +21,7 @@
       }
     }
   },
-  "projects": {
-    "cli": {
-      "tags": []
-    },
-    "cli-ng": {
-      "tags": []
-    },
-    "devtools": {
-      "tags": []
-    },
-    "entities": {
-      "tags": []
-    },
-    "mocks": {
-      "tags": []
-    },
-    "ng": {
-      "tags": []
-    },
-    "pagination": {
-      "tags": []
-    },
-    "persist-state": {
-      "tags": []
-    },
-    "react": {
-      "tags": []
-    },
-    "requests": {
-      "tags": []
-    },
-    "state-history": {
-      "tags": []
-    },
-    "store": {
-      "tags": []
-    }
-  },
+  "projects": {},
   "targetDependencies": {
     "build": [
       {
