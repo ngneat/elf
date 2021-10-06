@@ -39,11 +39,11 @@ import { updateRequestCache } from '@ngneat/elf-requests';
 import { setEntities } from '@ngneat/elf-entities';
 
 export function setTodos(todos: Todo[]) {
- store.reduce(
-   // highlight-next-line
-   updateRequestCache('todos'),
-   setEntities(todos)
- )
+  store.reduce(
+    // highlight-next-line
+    updateRequestCache('todos'),
+    setEntities(todos)
+  );
 }
 ```
 
@@ -67,11 +67,11 @@ one passed. Values can be status can be 'none', 'partial' or 'full':
 import { updateRequestCache } from '@ngneat/elf-requests';
 
 export function setTodos(todos: Todo[]) {
- store.reduce(
-   // highlight-next-line
-   updateRequestCache('todos', { value: 'partial' }),
-   setEntities(todos)
- )
+  store.reduce(
+    // highlight-next-line
+    updateRequestCache('todos', { value: 'partial' }),
+    setEntities(todos)
+  );
 }
 ```
 
@@ -111,7 +111,7 @@ You can monitor and change the request cache status for your APIs using the foll
 
 ## Queries
 
-### `selectRequestStatus`
+### `selectRequestCache`
 
 Select the cache status of the provided request key:
 
@@ -139,7 +139,9 @@ Select whether the cache status of the provided request key isn't `none`:
 import { selectIsRequestCached } from '@ngneat/elf-requests';
 
 const isCached$ = store.pipe(selectIsRequestCached('todos'));
-const isPartialCached$ = store.pipe(selectIsRequestCached('todos', { value: 'partial' }));
+const isPartialCached$ = store.pipe(
+  selectIsRequestCached('todos', { value: 'partial' })
+);
 ```
 
 Get whether the cache status of the provided request key isn't `none`:
@@ -148,7 +150,9 @@ Get whether the cache status of the provided request key isn't `none`:
 import { isRequestCached } from '@ngneat/elf-requests';
 
 const isCached = store.query(isRequestCached('todos'));
-const isPartialCached = store.query(isRequestCached('todos', { value: 'partial' }));
+const isPartialCached = store.query(
+  isRequestCached('todos', { value: 'partial' })
+);
 ```
 
 ## Mutations
@@ -169,5 +173,3 @@ have the value that was set (afterward, it reverts to 'none').
 
 And more:
 `updateRequestsCache`, `resetRequestsCache`, `getRequestsCache`, `setRequestsCache`
-
-

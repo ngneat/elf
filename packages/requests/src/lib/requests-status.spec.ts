@@ -1,4 +1,5 @@
 import { createState, Store } from '@ngneat/elf';
+import { expectTypeOf } from 'expect-type';
 import { StatusState, updateRequestStatus } from '..';
 import {
   getRequestStatus,
@@ -7,7 +8,6 @@ import {
   updateRequestsStatus,
   withRequestsStatus,
 } from './requests-status';
-import { expectTypeOf } from 'expect-type';
 
 describe('requestsStatus', () => {
   const { state, config } = createState(withRequestsStatus());
@@ -98,6 +98,10 @@ describe('requestsStatus', () => {
     store.reduce(updateRequestStatus(requestKey, 'pending'));
 
     expect(spy).toHaveBeenCalledWith({ value: 'pending' });
+
+    store.reduce(updateRequestStatus(requestKey, 'idle'));
+
+    expect(spy).toHaveBeenCalledWith({ value: 'idle' });
   });
 
   it('should infer', () => {
