@@ -59,9 +59,7 @@ const FeatureList: FeatureItem[] = [
     title: 'State History',
     image: 'img/history.png',
     description: (
-      <>
-        Save the history fo the store's state, for easy undo/redo functionality
-      </>
+      <>Save the store's state history, for easy undo/redo functionality</>
     ),
   },
   {
