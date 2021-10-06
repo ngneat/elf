@@ -17,7 +17,7 @@ import { tap } from 'rxjs/operators';
 
 type StatusValue = Record<string | number, StatusState>;
 
-export type StatusState = SuccessState | ErrorState | PendingState;
+export type StatusState = SuccessState | ErrorState | PendingState | IdleState;
 
 export interface SuccessState {
   value: 'success';
@@ -30,6 +30,10 @@ export interface ErrorState {
 
 export interface PendingState {
   value: 'pending';
+}
+
+export interface IdleState {
+  value: 'idle';
 }
 
 export const {

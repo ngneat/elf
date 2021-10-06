@@ -3,7 +3,7 @@
 import index from '!!raw-loader!@site/docs/examples/requests-status.ex';
 import { LiveDemo } from '@site/components/LiveDemo';
 
-Using this feature, you can manage the status of API calls in your store. First, you need to install the package by 
+Using this feature, you can manage the status of API calls in your store. First, you need to install the package by
 using the CLI command `elf-cli install` and selecting the requests package, or via npm:
 
 ```bash
@@ -50,7 +50,8 @@ at which point it changes to either `success` or `error`.
 
 <LiveDemo src={index} packages={['entities', 'requests']} />
 <br />
-You can monitor and change the request status for your APIs using the following queries and mutations:
+You can monitor and change the request status for your APIs using the following
+queries and mutations:
 
 ## Queries
 
@@ -94,6 +95,7 @@ pending$ = store.pipe(selectIsRequestPending('todos'));
 ```ts
 import { updateRequestCache } from '@ngneat/elf-requests';
 
+store.reduce(updateRequestStatus('todos', 'idle'));
 store.reduce(updateRequestStatus('todos', 'pending'));
 store.reduce(updateRequestStatus('todos', 'success'));
 store.reduce(updateRequestStatus('todos', 'error', error));
