@@ -52,7 +52,7 @@ const { state, config } = createState(
   withEntities<Todo>()
 );
 
-const store = new Store({ state, name, config });
+const store = new Store({ name: 'todos', state, config });
 
 export const filter$ = store.pipe(select(({ filter }) => filter));
 export const todos$ = store.pipe(selectAll());
