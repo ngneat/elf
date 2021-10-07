@@ -28,6 +28,7 @@
     "email": "netanel7799@gmail.com",
     "url": "https://netbasal.com"
   },
+  "sideEffects": false,
   "license": "MIT",
   "peerDependencies": {
     "@ngneat/elf-cli": "*"

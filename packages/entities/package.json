@@ -1,6 +1,6 @@
 {
   "name": "@ngneat/elf-entities",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "Entities management for elf store",
   "publishConfig": {
     "access": "public"
@@ -28,5 +28,6 @@
     "email": "netanel7799@gmail.com",
     "url": "https://netbasal.com"
   },
+  "sideEffects": false,
   "license": "MIT"
 }

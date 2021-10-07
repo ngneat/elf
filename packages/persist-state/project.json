@@ -8,6 +8,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/persist-state",
+        "updateBuildableProjectDepsInPackageJson": false,
         "tsConfig": "packages/persist-state/tsconfig.lib.json",
         "project": "packages/persist-state/package.json",
         "entryFile": "packages/persist-state/src/index.ts",

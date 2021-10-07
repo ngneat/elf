@@ -7,6 +7,7 @@
       "executor": "@nrwl/web:package",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "updateBuildableProjectDepsInPackageJson": false,
         "outputPath": "dist/packages/entities",
         "tsConfig": "packages/entities/tsconfig.lib.json",
         "project": "packages/entities/package.json",

@@ -8,6 +8,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/state-history",
+        "updateBuildableProjectDepsInPackageJson": false,
         "tsConfig": "packages/state-history/tsconfig.lib.json",
         "project": "packages/state-history/package.json",
         "entryFile": "packages/state-history/src/index.ts",
