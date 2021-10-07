@@ -41,10 +41,16 @@ Elf encourages simplicity. It eases the hassle of creating boilerplate code and 
 
 ```ts
 import { Store, createState, withProps, select } from '@ngneat/elf';
-import { withEntities, selectAll } from '@ngneat/elf-entities';
+import { withEntities, selectAll, setEntities } from '@ngneat/elf-entities';
 
 interface TodosProps {
   filter: 'ALL' | 'ACTIVE' | 'COMPLETED';
+}
+
+interface Todo {
+  id: string;
+  title: string;
+  status: string;
 }
 
 const { state, config } = createState(
