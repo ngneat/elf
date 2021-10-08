@@ -35,7 +35,7 @@ Elf encourages simplicity. It eases the hassle of creating boilerplate code and 
 
 ## 🤓 Learn about it on the [docs site](https://ngneat.github.io/elf/)
 ## 👩‍🎓 Check out the React Todos [example](https://stackblitz.com/edit/react-ts-jidhej?file=todos/todos.tsx)
-## 😋 Check out the Angular Todos [example](https://stackblitz.com/edit/angular-ivy-sky1gb?file=src/app/todos/state/todos.repository.ts)
+## 😋 Check out the Angular Todos [example](https://stackblitz.com/edit/angular-ivy-sky1gb?file=src/app/todos/state/todos.repository.ts) or Books [example](https://stackblitz.com/edit/angular-ivy-j9azue?file=src/app/state/books.repository.ts)
 
 <br >
 
