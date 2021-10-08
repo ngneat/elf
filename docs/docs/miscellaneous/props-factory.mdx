@@ -51,7 +51,14 @@ export const {
   resetSkills,
   selectSkills,
   setSkills,
+  inSkills
 } = propsFactory('skills', {
   initialValue: [] as string[],
 });
 ```
+
+`propsArrayFactory` is designed to handle `primitive` arrays. For managing collections of `objects`, it's recommended to use [entitiesPropsFactory](/docs/features/entities/entities-props-factory).
+
+:::tip
+In addition, it's useful for managing a collection of `primitives` in one store. Consider the case of a `books` store, and a `userCollectionIds` that contains `book` ids.
+:::

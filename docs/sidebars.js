@@ -45,7 +45,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Miscellaneous',
-      collapsed: true,
+      collapsed: false,
       items: [
         'miscellaneous/props-factory',
         'miscellaneous/operators',
