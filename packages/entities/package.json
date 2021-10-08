@@ -1,6 +1,6 @@
 {
   "name": "@ngneat/elf-entities",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "description": "Entities management for elf store",
   "publishConfig": {
     "access": "public"
