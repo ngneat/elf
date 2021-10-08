@@ -29,7 +29,7 @@ export class Store<
     return selector(this.getValue());
   }
 
-  reduce(...reducers: Array<Reducer<State>>) {
+  update(...reducers: Array<Reducer<State>>) {
     const currentState = this.getValue();
 
     const nextState = reducers.reduce((value, reducer) => {
@@ -44,7 +44,7 @@ export class Store<
   }
 
   reset() {
-    this.reduce(() => this.initialState);
+    this.update(() => this.initialState);
   }
 
   combine<O extends Record<string, Observable<any>>>(
@@ -87,7 +87,7 @@ export class Store<
   }
 
   next(value: State) {
-    this.reduce(() => value);
+    this.update(() => value);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

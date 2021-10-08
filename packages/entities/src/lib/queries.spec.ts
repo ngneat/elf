@@ -15,7 +15,7 @@ describe('queries', () => {
 
       expect(store.query(getEntity(1))).toEqual(undefined);
       const todo = createTodo(1);
-      store.reduce(addEntities(todo));
+      store.update(addEntities(todo));
       expect(store.query(getEntity(1))).toEqual(todo);
     });
   });
@@ -26,7 +26,7 @@ describe('queries', () => {
 
       expect(store.query(hasEntity(1))).toEqual(false);
 
-      store.reduce(addEntities(createTodo(1)));
+      store.update(addEntities(createTodo(1)));
       expect(store.query(hasEntity(1))).toEqual(true);
     });
 
@@ -34,7 +34,7 @@ describe('queries', () => {
       const store = createUIEntityStore();
       expect(store.query(hasEntity(1, { ref: UIEntitiesRef }))).toEqual(false);
 
-      store.reduce(addEntities(createUITodo(1), { ref: UIEntitiesRef }));
+      store.update(addEntities(createUITodo(1), { ref: UIEntitiesRef }));
       expect(store.query(hasEntity(1, { ref: UIEntitiesRef }))).toEqual(true);
     });
   });

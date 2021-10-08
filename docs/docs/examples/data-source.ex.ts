@@ -33,7 +33,7 @@ todosDataSource$.subscribe((value) => {
 });
 
 setTimeout(() => {
-  store.reduce(
+  store.update(
     updateRequestStatus('todos', 'success'),
     addEntities({ id: 1, label: 'one' })
   );

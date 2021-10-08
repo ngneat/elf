@@ -7,7 +7,7 @@ This feature enables the store to act as an entities store. You can think of an 
 where each table represents a flat collection of similar entities. Elf's entities state simplifies the process, giving you
 everything you need to manage it.
 
-First, you need to install the package by using the CLI command `elf-cli install` and selecting the entities package, 
+First, you need to install the package by using the CLI command `elf-cli install` and selecting the entities package,
 or via npm:
 
 ```bash
@@ -170,7 +170,7 @@ Replace current collection with the provided collection:
 ```ts
 import { setEntities } from '@ngneat/elf-entities';
 
-todosStore.reduce(
+todosStore.update(
   setEntities([todo, todo])
 );
 ```
@@ -182,15 +182,15 @@ Add an entity or entities to the store:
 ```ts
 import { addEntities } from '@ngneat/elf-entities';
 
-todosStore.reduce(
+todosStore.update(
   addEntities(todo)
 );
 
-todosStore.reduce(
+todosStore.update(
   addEntities([todo, todo])
 );
 
-todosStore.reduce(
+todosStore.update(
   addEntities([todo, todo], { prepend: true })
 );
 ```
@@ -202,7 +202,7 @@ Add an entity or entities to the store using fifo strategy:
 ```ts
 import { addEntitiesFifo } from '@ngneat/elf-entities';
 
-todosStore.reduce(
+todosStore.update(
   addEntitiesFifo([entity, entity]), { limit: 3 }
 );
 ```
@@ -214,15 +214,15 @@ Update an entity or entities in the store:
 ```ts
 import { updateEntities } from '@ngneat/elf-entities';
 
-todosStore.reduce(
+todosStore.update(
   updateEntities(id, { name })
 );
 
-todosStore.reduce(
+todosStore.update(
   updateEntities(id, (entity) => ({ ...entity, name }))
 );
 
-todosStore.reduce(
+todosStore.update(
   updateEntities([id, id, id], { open: true })
 );
 ```
@@ -234,16 +234,16 @@ Update an entity or entities in the store:
 ```ts
 import { updateEntitiesByPredicate } from '@ngneat/elf-entities';
 
-todosStore.reduce(
+todosStore.update(
   updateEntitiesByPredicate(
-    ({ count }) => count === 0, 
+    ({ count }) => count === 0,
     { open: false }
   )
 );
 
-todosStore.reduce(
+todosStore.update(
   updateEntitiesByPredicate(
-   ({ count }) => count === 0), 
+   ({ count }) => count === 0),
    (entity) => ({ ...entity, open: false }
   )
 );
@@ -256,11 +256,11 @@ Update all entities in the store:
 ```ts
 import { updateAllEntities } from '@ngneat/elf-entities';
 
-todosStore.reduce(
+todosStore.update(
   updateAllEntities({ name: 'elf' })
 );
 
-todosStore.reduce(
+todosStore.update(
   updateAllEntities((entity) => ({ ...entity, count: entity.count + 1 }))
 );
 ```
@@ -272,16 +272,16 @@ Insert or update an entity. When the id isn't found, it creates a new entity; ot
 ```ts
 import { upsertEntities } from '@ngneat/elf-entities';
 
-const creator = (id) => createTodo(id); 
+const creator = (id) => createTodo(id);
 
-todosStore.reduce(
-  upsertEntities(1, { 
-    updater: { name: 'elf' }, 
-    creator  
+todosStore.update(
+  upsertEntities(1, {
+    updater: { name: 'elf' },
+    creator
   })
 );
 
-todosStore.reduce(
+todosStore.update(
   upsertEntities([1, 2], {
     updater: (entity) => ({ ...entity, count: entity.count + 1 }),
     creator
@@ -292,7 +292,7 @@ todosStore.reduce(
 To perform a merge between a new entity and an `updater` result, use the `mergeUpdaterWithCreator` option:
 
 ```ts
-todosStore.reduce(
+todosStore.update(
   upsertEntities([1, 2], {
     updater: (entity) => ({ ...entity, name }),
     creator,
@@ -311,8 +311,8 @@ Delete an entity or entities from the store:
 ```ts
 import { deleteEntities } from '@ngneat/elf-entities';
 
-todosStore.reduce(deleteEntities(id));
-todosStore.reduce(deleteEntities([id, id]));
+todosStore.update(deleteEntities(id));
+todosStore.update(deleteEntities([id, id]));
 ```
 
 ### `deleteEntitiesByPredicate`
@@ -322,7 +322,7 @@ Delete an entity or entities from the store:
 ```ts
 import { deleteEntitiesByPredicate } from '@ngneat/elf-entities';
 
-todosStore.reduce(
+todosStore.update(
   deleteEntitiesByPredicate(({ completed }) => completed)
 );
 ```
@@ -334,7 +334,7 @@ Delete all entities from the store:
 ```ts
 import { deleteAllEntities } from '@ngneat/elf-entities';
 
-todosStore.reduce(deleteAllEntities());
+todosStore.update(deleteAllEntities());
 ```
 
 ## idKey

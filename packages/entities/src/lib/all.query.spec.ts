@@ -25,7 +25,7 @@ describe('selectAll', () => {
       expect(value).toMatchSnapshot(`calls: ${count++}`);
     });
 
-    store.reduce(addEntities(createTodo(2)));
+    store.update(addEntities(createTodo(2)));
   });
 
   it('should work with ref', () => {
@@ -37,7 +37,7 @@ describe('selectAll', () => {
       expect(value).toMatchSnapshot(`calls: ${count++}`);
     });
 
-    store.reduce(
+    store.update(
       addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
     );
   });
@@ -47,13 +47,13 @@ describe('selectAll', () => {
       expect(v).toMatchSnapshot('should be an object');
     });
 
-    store.reduce(addEntities(createTodo(1)));
+    store.update(addEntities(createTodo(1)));
   });
 
   describe('selectAllApply', () => {
     const store = createEntitiesStore();
 
-    store.reduce(
+    store.update(
       addEntities(createTodo(1)),
       addEntities(createTodo(2)),
       updateEntities(1, { completed: true })
@@ -96,7 +96,7 @@ describe('selectAll', () => {
     it('should filter and then map entities ref', () => {
       const store = createUIEntityStore();
 
-      store.reduce(
+      store.update(
         addEntities(createUITodo(1), { ref: UIEntitiesRef }),
         addEntities(createUITodo(2), { ref: UIEntitiesRef }),
         updateEntities(1, { open: true }, { ref: UIEntitiesRef })

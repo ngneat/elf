@@ -30,7 +30,7 @@ productsStore.subscribe((value) => {
   console.log(value);
 });
 
-productsStore.reduce(
+productsStore.update(
   addEntities({ id: 1, title: 'one', price: 55 }),
   upsertEntities(1, {
     updater: (e) => ({ ...e, quantity: e.quantity + 1 }),

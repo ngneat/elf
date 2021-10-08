@@ -32,9 +32,9 @@ function toModel<Entity>(updater: UpdateFn<Entity>, entity: Entity): Entity {
  *
  * @example
  *
- * store.reduce(updateEntities(id, { name }))
- * store.reduce(updateEntities(id, entity => ({ ...entity, name })))
- * store.reduce(updateEntities([id, id, id], { open: true }))
+ * store.update(updateEntities(id, { name }))
+ * store.update(updateEntities(id, entity => ({ ...entity, name })))
+ * store.update(updateEntities([id, id, id], { open: true }))
  *
  */
 export function updateEntities<
@@ -73,7 +73,7 @@ export function updateEntities<
  *
  * @example
  *
- * store.reduce(updateEntitiesByPredicate(entity => entity.count === 0))
+ * store.update(updateEntitiesByPredicate(entity => entity.count === 0))
  *
  */
 export function updateEntitiesByPredicate<
@@ -106,8 +106,8 @@ export function updateEntitiesByPredicate<
  *
  * @example
  *
- * store.reduce(updateAllEntities({ name }))
- * store.reduce(updateAllEntities(entity => ({ ...entity, name })))
+ * store.update(updateAllEntities({ name }))
+ * store.update(updateAllEntities(entity => ({ ...entity, name })))
  *
  */
 export function updateAllEntities<

@@ -41,18 +41,18 @@ export const visibleTodos$ = filter$.pipe(
 );
 
 export function updateTodosFilter(filter: TodosProps['filter']) {
-  store.reduce((state) => ({
+  store.update((state) => ({
     ...state,
     filter,
   }));
 }
 
 export function setTodos(todos: Todo[]) {
-  store.reduce(setEntities(todos));
+  store.update(setEntities(todos));
 }
 
 export function addTodo(text: Todo['text']) {
-  store.reduce(
+  store.update(
     addEntities({
       id: Math.random().toFixed(5),
       text,
@@ -62,7 +62,7 @@ export function addTodo(text: Todo['text']) {
 }
 
 export function updateTodoCompleted(id: Todo['id']) {
-  store.reduce(
+  store.update(
     updateEntities(id, (todo) => ({
       ...todo,
       completed: !todo.completed,
@@ -71,5 +71,5 @@ export function updateTodoCompleted(id: Todo['id']) {
 }
 
 export function deleteTodo(id: Todo['id']) {
-  store.reduce(deleteEntities(id));
+  store.update(deleteEntities(id));
 }

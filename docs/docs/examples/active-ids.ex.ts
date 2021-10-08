@@ -20,4 +20,4 @@ todosStore.pipe(selectActiveEntity()).subscribe((active) => {
   console.log(active);
 });
 
-todosStore.reduce(addEntities({ id: 1, label: 'one' }), setActiveId(1));
+todosStore.update(addEntities({ id: 1, label: 'one' }), setActiveId(1));

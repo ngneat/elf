@@ -17,7 +17,7 @@ import { buildEntities } from './entity.utils';
  *
  * @example
  *
- * store.reduce(setEntities([entity, entity]))
+ * store.update(setEntities([entity, entity]))
  *
  */
 export function setEntities<

@@ -30,7 +30,7 @@ const store = new Store({ name: 'todos', state, config });
 export const todos$ = store.pipe(selectAll());
 
 export function updateFilter(filter: TodosProps['filter']) {
-  store.reduce(
+  store.update(
     write((state) => {
       state.filter = filter;
     })
@@ -38,7 +38,7 @@ export function updateFilter(filter: TodosProps['filter']) {
 }
 
 export function updateCompleted(id: Todo['id']) {
-  store.reduce(
+  store.update(
     updateEntities(
       id,
       write<Todo>((entity) => (entity.completed = !entity.completed))

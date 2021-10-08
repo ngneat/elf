@@ -3,7 +3,7 @@
 import index from '!!raw-loader!@site/docs/examples/pagination.ex';
 import { LiveDemo } from '@site/components/LiveDemo';
 
-In many cases - for example, when working with very large data-sets - we don't want to work with the full collection in memory. 
+In many cases - for example, when working with very large data-sets - we don't want to work with the full collection in memory.
 Instead, server-side pagination is used, where the server sends just a single page of data at a time.
 
 Usually, we also want to cache pages that already have been fetched, in order to spare the need for an additional request.
@@ -12,7 +12,7 @@ Usually, we also want to cache pages that already have been fetched, in order to
 This feature requires `@ngneat/elf-entities`
 :::
 
-Using this feature, you can manage pagination by using the store. First, you need to install the package by using 
+Using this feature, you can manage pagination by using the store. First, you need to install the package by using
 the CLI command `elf-cli install` and selecting the pagination package, or via npm:
 
 ```bash
@@ -44,7 +44,7 @@ import { PaginationData } from '@ngneat/elf-pagination';
 export function addTodos(response: PaginationData & { data: Todo[] }) {
   const { data, ...paginationData } = response;
 
-  todosStore.reduce(
+  todosStore.update(
     addEntities(todos),
     updatePaginationData(paginationData),
     setPage(
@@ -146,7 +146,7 @@ Set the current page:
 ```ts
 import { setCurrentPage } from '@ngneat/elf-pagination';
 
-store.reduce(setCurrentPage(2));
+store.update(setCurrentPage(2));
 ```
 
 ### `setPage`
@@ -156,7 +156,7 @@ Set the ids belongs to a page:
 ```ts
 import { setPage } from '@ngneat/elf-pagination';
 
-store.reduce(setPage(2, [id, id, id]));
+store.update(setPage(2, [id, id, id]));
 ```
 
 ### `updatePaginationData`
@@ -166,7 +166,7 @@ Set the current page:
 ```ts
 import { updatePaginationData } from '@ngneat/elf-pagination';
 
-store.reduce(
+store.update(
   updatePaginationData({
     currentPage: 1,
     perPage: 10,
@@ -183,7 +183,7 @@ Delete a page:
 ```ts
 import { deletePage } from '@ngneat/elf-pagination';
 
-store.reduce(deletePage(2));
+store.update(deletePage(2));
 ```
 
 ### `deleteAllPages`
@@ -193,5 +193,5 @@ Delete all pages:
 ```ts
 import { deleteAllPages } from '@ngneat/elf-pagination';
 
-store.reduce(deleteAllPages(2));
+store.update(deleteAllPages(2));
 ```

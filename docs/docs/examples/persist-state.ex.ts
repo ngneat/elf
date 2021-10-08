@@ -20,7 +20,7 @@ user$.subscribe(console.log);
 
 // Should be the value after a refresh
 setTimeout(() => {
-  authStore.reduce((state) => ({
+  authStore.update((state) => ({
     ...state,
     user: { id: '1' },
   }));

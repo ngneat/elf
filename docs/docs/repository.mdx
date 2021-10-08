@@ -16,7 +16,7 @@ const authStore = new Store({ state, name, config });
 export const user$ = authStore.pipe(select((state) => state.user));
 
 export function updateUser(user: AuthProps['user']) {
-  authStore.reduce((state) => ({
+  authStore.update((state) => ({
     ...state,
     user,
   }));
@@ -39,7 +39,7 @@ export class AuthRepository {
   user$ = authStore.pipe(select((state) => state.user));
 
   updateUser(user: AuthProps['user']) {
-    authStore.reduce((state) => ({
+    authStore.update((state) => ({
       ...state,
       user,
     }));

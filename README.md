@@ -64,11 +64,11 @@ export const filter$ = store.pipe(select(({ filter }) => filter));
 export const todos$ = store.pipe(selectAll());
 
 export function setTodos(todos: Todo[]) {
-  store.reduce(setEntities(todos));
+  store.update(setEntities(todos));
 }
 
 export function updateFilter(filter: TodosProps['filter']) {
-  store.reduce(state => ({
+  store.update(state => ({
     ...state,
     filter
   }));

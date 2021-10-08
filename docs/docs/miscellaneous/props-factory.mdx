@@ -26,7 +26,7 @@ const { state, config } = createState(withVersion());
 
 const store = new Store({ state, config, name: 'todos' });
 
-store.reduce(updateVersion(2));
+store.update(updateVersion(2));
 store.select(selectVersion());
 store.query(getVersion);
 ```

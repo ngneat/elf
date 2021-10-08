@@ -13,7 +13,7 @@ export const todosStateHistory = stateHistory(todosStore);
 
 todosStore.subscribe(console.log);
 
-todosStore.reduce((state) => ({
+todosStore.update((state) => ({
   ...state,
   user: 'Elf',
 }));

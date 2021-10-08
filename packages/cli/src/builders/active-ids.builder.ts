@@ -37,7 +37,7 @@ export class ActiveIdsBuilder extends FeatureBuilder {
           type: `Array<${this.storeSingularNames.className}['${this.idKey}']>`,
         },
       ],
-      statements: [`${this.storeVariableName}.reduce(toggleActiveIds(ids));`],
+      statements: [`${this.storeVariableName}.update(toggleActiveIds(ids));`],
     });
   }
 }

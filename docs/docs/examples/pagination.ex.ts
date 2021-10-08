@@ -16,7 +16,7 @@ const { state, config } = createState(withEntities<Todo>(), withPagination());
 const todosStore = new Store({ name: 'todos', state, config });
 
 export function addTodos(todos: Todo[]) {
-  todosStore.reduce(
+  todosStore.update(
     addEntities(todos),
     updatePaginationData({
       currentPage: 1,

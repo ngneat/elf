@@ -14,7 +14,7 @@ authStore.subscribe((state) => {
 
 const user$ = authStore.pipe(select((state) => state.user));
 
-authStore.reduce((state) => ({
+authStore.update((state) => ({
   ...state,
   user: { id: 'foo' },
 }));

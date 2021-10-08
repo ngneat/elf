@@ -28,7 +28,7 @@ describe('requestsStatus', () => {
       value: 'pending',
     });
 
-    store.reduce(
+    store.update(
       updateRequestsStatus({
         [requestKey]: {
           value: 'success',
@@ -40,7 +40,7 @@ describe('requestsStatus', () => {
     });
     expect(spy).toHaveBeenCalledWith({ value: 'success' });
 
-    store.reduce(
+    store.update(
       updateRequestsStatus({
         bar: {
           value: 'success',
@@ -58,7 +58,7 @@ describe('requestsStatus', () => {
   });
 
   it('should set the error', () => {
-    store.reduce(
+    store.update(
       updateRequestsStatus({
         baz: {
           value: 'error',
@@ -80,7 +80,7 @@ describe('requestsStatus', () => {
 
     const spy = jest.fn();
 
-    store.reduce(updateRequestStatus(requestKey, 'success'));
+    store.update(updateRequestStatus(requestKey, 'success'));
 
     store.pipe(selectRequestStatus(requestKey)).subscribe((v) => {
       spy(v);
@@ -88,18 +88,18 @@ describe('requestsStatus', () => {
 
     expect(spy).toHaveBeenCalledWith({ value: 'success' });
 
-    store.reduce(updateRequestStatus(requestKey, 'error', { type: 'boo' }));
+    store.update(updateRequestStatus(requestKey, 'error', { type: 'boo' }));
 
     expect(spy).toHaveBeenCalledWith({
       value: 'error',
       error: { type: 'boo' },
     });
 
-    store.reduce(updateRequestStatus(requestKey, 'pending'));
+    store.update(updateRequestStatus(requestKey, 'pending'));
 
     expect(spy).toHaveBeenCalledWith({ value: 'pending' });
 
-    store.reduce(updateRequestStatus(requestKey, 'idle'));
+    store.update(updateRequestStatus(requestKey, 'idle'));
 
     expect(spy).toHaveBeenCalledWith({ value: 'idle' });
   });
@@ -108,11 +108,11 @@ describe('requestsStatus', () => {
     const { state, config } = createState(withRequestsStatus());
     const store = new Store({ state, config, name: '' });
 
-    store.reduce(updateRequestStatus(requestKey, 'success'));
+    store.update(updateRequestStatus(requestKey, 'success'));
 
     // @ts-expect-error - Not valid status
-    store.reduce(updateRequestStatus(requestKey, 'foo'));
+    store.update(updateRequestStatus(requestKey, 'foo'));
     // @ts-expect-error - Should pass the error as third param
-    store.reduce(updateRequestStatus(requestKey, 'error'));
+    store.update(updateRequestStatus(requestKey, 'error'));
   });
 });

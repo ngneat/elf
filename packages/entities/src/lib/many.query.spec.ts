@@ -24,11 +24,11 @@ describe('selectMany', () => {
       expect(value).toMatchSnapshot(`calls: ${count++}`);
     });
 
-    store.reduce(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
-    store.reduce(addEntities(createTodo(4)));
+    store.update(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
+    store.update(addEntities(createTodo(4)));
 
-    store.reduce(updateEntities(1, { title: '' }));
-    store.reduce(deleteEntities(2));
+    store.update(updateEntities(1, { title: '' }));
+    store.update(deleteEntities(2));
   });
 
   it('should work with ref', () => {
@@ -42,14 +42,14 @@ describe('selectMany', () => {
         expect(value).toMatchSnapshot(`calls: ${count++}`);
       });
 
-    store.reduce(
+    store.update(
       addEntities([createUITodo(1), createUITodo(2), createUITodo(3)], {
         ref: UIEntitiesRef,
       })
     );
-    store.reduce(addEntities(createUITodo(4), { ref: UIEntitiesRef }));
+    store.update(addEntities(createUITodo(4), { ref: UIEntitiesRef }));
 
-    store.reduce(updateEntities(1, { open: true }, { ref: UIEntitiesRef }));
-    store.reduce(deleteEntities(2, { ref: UIEntitiesRef }));
+    store.update(updateEntities(1, { open: true }, { ref: UIEntitiesRef }));
+    store.update(deleteEntities(2, { ref: UIEntitiesRef }));
   });
 });

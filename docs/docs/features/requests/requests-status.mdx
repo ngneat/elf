@@ -95,10 +95,10 @@ pending$ = store.pipe(selectIsRequestPending('todos'));
 ```ts
 import { updateRequestCache } from '@ngneat/elf-requests';
 
-store.reduce(updateRequestStatus('todos', 'idle'));
-store.reduce(updateRequestStatus('todos', 'pending'));
-store.reduce(updateRequestStatus('todos', 'success'));
-store.reduce(updateRequestStatus('todos', 'error', error));
+store.update(updateRequestStatus('todos', 'idle'));
+store.update(updateRequestStatus('todos', 'pending'));
+store.update(updateRequestStatus('todos', 'success'));
+store.update(updateRequestStatus('todos', 'error', error));
 ```
 
 And more:

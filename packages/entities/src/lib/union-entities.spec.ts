@@ -31,7 +31,7 @@ describe('unionEntities', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith([]);
 
-    store.reduce(
+    store.update(
       addEntities(createTodo(1)),
       addEntities({ id: 1, open: false }, { ref: UIEntitiesRef })
     );
@@ -45,7 +45,7 @@ describe('unionEntities', () => {
       },
     ]);
 
-    store.reduce(updateEntities(1, { open: true }, { ref: UIEntitiesRef }));
+    store.update(updateEntities(1, { open: true }, { ref: UIEntitiesRef }));
 
     expect(spy).toHaveBeenCalledTimes(3);
 
@@ -56,7 +56,7 @@ describe('unionEntities', () => {
       },
     ]);
 
-    store.reduce(
+    store.update(
       addEntities(createTodo(2)),
       addEntities({ id: 2, open: false }, { ref: UIEntitiesRef })
     );
@@ -73,7 +73,7 @@ describe('unionEntities', () => {
       },
     ]);
 
-    store.reduce(updateEntities(1, { title: 'baz' }));
+    store.update(updateEntities(1, { title: 'baz' }));
 
     expect(spy).toHaveBeenCalledTimes(5);
     expect(spy).toHaveBeenCalledWith([

@@ -27,7 +27,7 @@ export function LiveDemo({ src, packages = [] }: Props) {
   const { isDarkTheme } = useThemeContext();
 
   useEffect(() => {
-    const deps = include.reduce((acc, p) => {
+    const deps = include.update((acc, p) => {
       Object.assign(acc, allPackages[p]);
 
       return acc;

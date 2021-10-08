@@ -22,7 +22,7 @@ const { state, config } = createState(
 const todosStore = new Store({ name: 'todos', state, config });
 
 export function setTodos(todos: Todo[]) {
-  todosStore.reduce(updateRequestCache('todos'), setEntities(todos));
+  todosStore.update(updateRequestCache('todos'), setEntities(todos));
 }
 
 todosStore.pipe(selectRequestCache('todos')).subscribe((status) => {

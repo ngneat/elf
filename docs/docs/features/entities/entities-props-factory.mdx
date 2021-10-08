@@ -69,7 +69,7 @@ In the above example, our final `state` shape will be:
 }
 ```
 
-<LiveDemo src={index} packages={['entities']} /> 
+<LiveDemo src={index} packages={['entities']} />
 <br />
 
 
@@ -79,7 +79,7 @@ We can pass the `cartEntitiesRef` to each one of the built-in [queries](./entiti
 import { upsertEntities } from '@ngneat/elf-entities';
 
 export function updateCart(id: Product['id']) {
-  productsStore.reduce(
+  productsStore.update(
     upsertEntities(id, {
       updater: e => ({ ...e, quantity: entity.quantity + 1 }),
       creator: id => ({ id, quantity: 1 }),
@@ -124,7 +124,7 @@ const { state, config } = createState(
 
 const store = new Store({ name: 'movies', state, config });
 
-store.reduce(
+store.update(
   addEntities({ id: '1', name: 'Nicolas cage' }, { ref: actorsEntitiesRef }),
   addEntities({ id: '1', name: 'Action' }, { ref: genresEntitiesRef }),
   addEntities({ id: '1', title: 'Gone in 60 Seconds', genres: ['1'], actors: ['1'] })

@@ -41,7 +41,7 @@ describe('Store types', () => {
 
     expectTypeOf(store.getValue()).toEqualTypeOf<Props & FooProps>();
 
-    expectTypeOf(store.reduce)
+    expectTypeOf(store.update)
       .parameter(0)
       .toEqualTypeOf<Reducer<Props & FooProps>>();
 

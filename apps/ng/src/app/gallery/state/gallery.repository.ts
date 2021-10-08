@@ -43,7 +43,7 @@ export class GalleryRepository {
 
   addGalleryItems(galleryItems: GalleryItem[]) {
     const uiGalleryItems = galleryItems.map(({ id }) => ({ id, open: false }));
-    store.reduce(
+    store.update(
       addEntities(galleryItems),
       addEntities(uiGalleryItems, { ref: UIEntitiesRef })
     );
@@ -54,7 +54,7 @@ export class GalleryRepository {
   }
 
   toggleItemOpen(galleryItemId: number) {
-    this.store.reduce(
+    this.store.update(
       updateEntities(galleryItemId, (item) => ({ ...item, open: !item.open }), {
         ref: UIEntitiesRef,
       })

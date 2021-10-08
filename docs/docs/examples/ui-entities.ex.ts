@@ -26,7 +26,7 @@ const { state, config } = createState(
 
 const todosStore = new Store({ name: 'todos', state, config });
 
-todosStore.reduce(
+todosStore.update(
   addEntities({ id: 1, name: 'foo' }),
   addEntities({ id: 1, open: true }, { ref: UIEntitiesRef })
 );

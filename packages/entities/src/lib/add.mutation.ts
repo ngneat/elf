@@ -22,11 +22,11 @@ export interface AddEntitiesOptions {
  *
  * @example
  *
- * store.reduce(addEntities(entity))
+ * store.update(addEntities(entity))
  *
- * store.reduce(addEntities([entity, entity]))
+ * store.update(addEntities([entity, entity]))
  *
- * store.reduce(addEntities([entity, entity]), { prepend: true })
+ * store.update(addEntities([entity, entity]), { prepend: true })
  *
  */
 export function addEntities<
@@ -64,7 +64,7 @@ export function addEntities<
  * @example
  *
  *
- * store.reduce(addEntitiesFifo([entity, entity]), { limit: 3 })
+ * store.update(addEntitiesFifo([entity, entity]), { limit: 3 })
  *
  */
 export function addEntitiesFifo<

@@ -101,7 +101,7 @@ describe('Entities Types', () => {
         });
 
       try {
-        store.reduce(
+        store.update(
           // @ts-expect-error - We don't have withUIEntities
           addEntities(
             { id: 1, title: '', completed: true },
@@ -110,9 +110,9 @@ describe('Entities Types', () => {
         );
 
         // @ts-expect-error - We didn't provide the complete entity
-        store.reduce(addEntities({ id: 1 }));
+        store.update(addEntities({ id: 1 }));
 
-        store.reduce(
+        store.update(
           // @ts-expect-error - We provide an additional property that doesn't exists
           addEntities({ id: 1, title: '', completed: true, foo: 1 })
         );
@@ -184,9 +184,9 @@ describe('Entities Types', () => {
 
       try {
         // @ts-expect-error - We didn't provide the complete entity
-        store.reduce(addEntities({ id: 1 }, { ref: UIEntitiesRef }));
+        store.update(addEntities({ id: 1 }, { ref: UIEntitiesRef }));
 
-        store.reduce(
+        store.update(
           // @ts-expect-error - We provide an additional property that doesn't exists
           addEntities({ id: 1, open: true, foo: 1 }, { ref: UIEntitiesRef })
         );

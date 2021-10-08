@@ -35,13 +35,13 @@ export class ContactsRepository {
   status$ = store.pipe(selectRequestStatus('contacts'));
 
   setActivePage(id: Contact['id']) {
-    store.reduce(setCurrentPage(id));
+    store.update(setCurrentPage(id));
   }
 
   addContacts(page: number, contacts: PaginationData & { data: Contact[] }) {
     const { data, ...pagination } = contacts;
 
-    store.reduce(
+    store.update(
       addEntities(data),
       updatePaginationData(pagination),
       setPage(

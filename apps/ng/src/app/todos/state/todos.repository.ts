@@ -46,11 +46,11 @@ export class TodosRepository {
   );
 
   addTodo(title: Todo['title']) {
-    store.reduce(addEntities({ id: Math.random(), title, completed: false }));
+    store.update(addEntities({ id: Math.random(), title, completed: false }));
   }
 
   updateFilter(filter: TodosProps['filter']) {
-    store.reduce(
+    store.update(
       write((state) => {
         state.filter = filter;
       })
@@ -58,7 +58,7 @@ export class TodosRepository {
   }
 
   updateCompleted(id: Todo['id']) {
-    store.reduce(
+    store.update(
       updateEntities(id, (entity) => ({
         ...entity,
         completed: !entity.completed,

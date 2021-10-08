@@ -27,27 +27,27 @@ export class TodosRepository {
   todos$ = store.pipe(selectAll());
 
   deleteTodo(id: Todo['id']) {
-    store.reduce(deleteEntities(id));
+    store.update(deleteEntities(id));
   }
 
   addTodo(todo: Todo) {
-    store.reduce(addEntities(todo));
+    store.update(addEntities(todo));
   }
 
   updateTodo(id: Todo['id'], todo: Partial<Todo>) {
-    store.reduce(updateEntities(id, todo));
+    store.update(updateEntities(id, todo));
   }
 
   setActiveId(id: Todo['id']) {
-    store.reduce(setActiveId(id));
+    store.update(setActiveId(id));
   }
 
   toggleActiveIds(ids: Array<Todo['id']>) {
-    store.reduce(toggleActiveIds(ids));
+    store.update(toggleActiveIds(ids));
   }
 
   updateRequestCache(state: CacheState) {
-    store.reduce(updateRequestCache(key));
+    store.update(updateRequestCache(key));
   }
 }
 "
@@ -82,27 +82,27 @@ export const activeTodo$ = todosStore.pipe(selectActiveEntity());
 export const todos$ = todosStore.pipe(selectAll());
 
 export function deleteTodo(id: Todo['id']) {
-  todosStore.reduce(deleteEntities(id));
+  todosStore.update(deleteEntities(id));
 }
 
 export function addTodo(todo: Todo) {
-  todosStore.reduce(addEntities(todo));
+  todosStore.update(addEntities(todo));
 }
 
 export function updateTodo(id: Todo['id'], todo: Partial<Todo>) {
-  todosStore.reduce(updateEntities(id, todo));
+  todosStore.update(updateEntities(id, todo));
 }
 
 export function setActiveId(id: Todo['id']) {
-  todosStore.reduce(setActiveId(id));
+  todosStore.update(setActiveId(id));
 }
 
 export function toggleActiveIds(ids: Array<Todo['id']>) {
-  todosStore.reduce(toggleActiveIds(ids));
+  todosStore.update(toggleActiveIds(ids));
 }
 
 export function updateRequestCache(state: CacheState) {
-  todosStore.reduce(updateRequestCache(key));
+  todosStore.update(updateRequestCache(key));
 }
 "
 `;
@@ -118,7 +118,7 @@ export class TodosRepository {
   activeTodo$ = store.pipe(selectActiveEntity());
 
   setActiveId(id: Todo['id']) {
-    store.reduce(setActiveId(id));
+    store.update(setActiveId(id));
   }
 }
 "
@@ -135,7 +135,7 @@ export class TodosRepository {
   activeTodos$ = store.pipe(selectActiveEntities());
 
   toggleActiveIds(ids: Array<Todo['id']>) {
-    store.reduce(toggleActiveIds(ids));
+    store.update(toggleActiveIds(ids));
   }
 }
 "
@@ -156,15 +156,15 @@ export class TodosRepository {
   todos$ = store.pipe(selectAll());
 
   addTodo(todo: Todo) {
-    store.reduce(addEntities(todo));
+    store.update(addEntities(todo));
   }
 
   updateTodo(id: Todo['_id'], todo: Partial<Todo>) {
-    store.reduce(updateEntities(id, todo));
+    store.update(updateEntities(id, todo));
   }
 
   deleteTodo(id: Todo['_id']) {
-    store.reduce(deleteEntities(id));
+    store.update(deleteEntities(id));
   }
 }
 "
@@ -185,15 +185,15 @@ export class TodosRepository {
   todos$ = store.pipe(selectAll());
 
   addTodo(todo: Todo) {
-    store.reduce(addEntities(todo));
+    store.update(addEntities(todo));
   }
 
   updateTodo(id: Todo['id'], todo: Partial<Todo>) {
-    store.reduce(updateEntities(id, todo));
+    store.update(updateEntities(id, todo));
   }
 
   deleteTodo(id: Todo['id']) {
-    store.reduce(deleteEntities(id));
+    store.update(deleteEntities(id));
   }
 }
 "
@@ -223,7 +223,7 @@ const store = new Store({ name: 'todos', state, config });
 
 export class TodosRepository {
   updateRequestCache(state: CacheState) {
-    store.reduce(updateRequestCache(key));
+    store.update(updateRequestCache(key));
   }
 }
 "

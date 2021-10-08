@@ -34,14 +34,14 @@ describe('propsFactory', () => {
   });
 
   it('should update', () => {
-    store.reduce(updateRequestsStatus({ 1: 'success' }));
+    store.update(updateRequestsStatus({ 1: 'success' }));
     expect(store.getValue()).toEqual({
       requestsStatus: { 1: 'success' },
     });
   });
 
   it('should update by callback', () => {
-    store.reduce(
+    store.update(
       updateRequestsStatus(() => {
         return {
           2: 'error',
@@ -55,12 +55,12 @@ describe('propsFactory', () => {
   });
 
   it('should set', () => {
-    store.reduce(setRequestsStatus({ 10: 'success' }));
+    store.update(setRequestsStatus({ 10: 'success' }));
     expect(store.getValue()).toEqual({ requestsStatus: { 10: 'success' } });
   });
 
   it('should set by callback', () => {
-    store.reduce(
+    store.update(
       setRequestsStatus((state) => ({
         ...state.requestsStatus,
         2: 'success',
@@ -72,7 +72,7 @@ describe('propsFactory', () => {
   });
 
   it('should reset', () => {
-    store.reduce(resetRequestsStatus());
+    store.update(resetRequestsStatus());
     expect(store.getValue()).toEqual({ requestsStatus: {} });
   });
 
@@ -92,7 +92,7 @@ describe('propsFactory', () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
 
-    store.reduce(setRequestsStatus((state) => state.requestsStatus));
+    store.update(setRequestsStatus((state) => state.requestsStatus));
 
     expect(spy).toHaveBeenCalledTimes(1);
   });
@@ -119,17 +119,17 @@ describe('propsFactory Types', () => {
     expectTypeOf(version).toEqualTypeOf<number>();
 
     // @ts-expect-error - Should be number
-    store.reduce(setVersion('2'));
-    store.reduce(setVersion(2));
+    store.update(setVersion('2'));
+    store.update(setVersion(2));
 
-    store.reduce(
+    store.update(
       // @ts-expect-error - Should be number
       setVersion(() => {
         return '1';
       })
     );
 
-    store.reduce(
+    store.update(
       setVersion((state) => {
         expectTypeOf(state).toEqualTypeOf<{ version: number }>();
         return 2;
@@ -141,24 +141,24 @@ describe('propsFactory Types', () => {
     });
 
     // @ts-expect-error - Should be number
-    store.reduce(updateVersion('1'));
-    store.reduce(updateVersion(1));
+    store.update(updateVersion('1'));
+    store.update(updateVersion(1));
 
-    store.reduce(
+    store.update(
       // @ts-expect-error - Should be number
       updateVersion(() => {
         return '1';
       })
     );
 
-    store.reduce(
+    store.update(
       updateVersion((state) => {
         expectTypeOf(state).toEqualTypeOf<{ version: number }>();
         return 2;
       })
     );
 
-    store.reduce(resetVersion());
+    store.update(resetVersion());
   });
 });
 
@@ -176,23 +176,23 @@ describe('stateArrayFactory', () => {
 
     const store = new Store({ state, config, name: '' });
 
-    store.reduce(setActiveIds([1]));
+    store.update(setActiveIds([1]));
 
     expect(store.getValue()).toEqual({ activeIds: [1] });
 
-    store.reduce(addActiveIds(2));
+    store.update(addActiveIds(2));
 
     expect(store.getValue()).toEqual({ activeIds: [1, 2] });
 
-    store.reduce(removeActiveIds(1));
+    store.update(removeActiveIds(1));
 
     expect(store.getValue()).toEqual({ activeIds: [2] });
 
-    store.reduce(toggleActiveIds(2));
+    store.update(toggleActiveIds(2));
 
     expect(store.getValue()).toEqual({ activeIds: [] });
 
-    store.reduce(toggleActiveIds(3));
+    store.update(toggleActiveIds(3));
 
     expect(store.getValue()).toEqual({ activeIds: [3] });
   });
@@ -221,26 +221,26 @@ describe('stateArrayFactory Types', () => {
     expectTypeOf(store.query(getSkills)).toEqualTypeOf<string[]>();
 
     // @ts-expect-error - Should be a string
-    store.reduce(addSkills(1));
-    store.reduce(addSkills('1'));
+    store.update(addSkills(1));
+    store.update(addSkills('1'));
 
     // @ts-expect-error - Should be a string
-    store.reduce(toggleSkills(1));
-    store.reduce(toggleSkills('1'));
+    store.update(toggleSkills(1));
+    store.update(toggleSkills('1'));
 
     // @ts-expect-error - Should be a string
-    store.reduce(removeSkills(1));
-    store.reduce(removeSkills('1'));
+    store.update(removeSkills(1));
+    store.update(removeSkills('1'));
 
     // @ts-expect-error - Should be a string
-    store.reduce(setSkills([1]));
-    store.reduce(setSkills(['1']));
+    store.update(setSkills([1]));
+    store.update(setSkills(['1']));
 
     // @ts-expect-error - Should be a string
-    store.reduce(updateSkills([1]));
-    store.reduce(updateSkills(['1']));
+    store.update(updateSkills([1]));
+    store.update(updateSkills(['1']));
 
-    store.reduce(resetSkills());
+    store.update(resetSkills());
 
     store.pipe(selectSkills()).subscribe((v) => {
       expectTypeOf(v).toEqualTypeOf<string[]>();

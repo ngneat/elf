@@ -24,7 +24,7 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
 
   from(getItem(merged.key!)).subscribe((value) => {
     if (value) {
-      store.reduce((state) => {
+      store.update((state) => {
         return merged.preStoreInit!({
           ...state,
           ...value,

@@ -51,13 +51,13 @@ export class UsersRepository {
   }
 
   setUsers(users: User[]) {
-    store.reduce(
+    store.update(
       setEntities(users),
       updateRequestCache(UsersRequests.default, 'full')
     );
   }
 
   addUser(user: User) {
-    this.store.reduce(addEntities(user), updateRequestCache(user.id, 'full'));
+    this.store.update(addEntities(user), updateRequestCache(user.id, 'full'));
   }
 }

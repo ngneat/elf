@@ -20,11 +20,11 @@ describe('last', () => {
       expect(value).toMatchSnapshot('2 calls');
     });
 
-    store.reduce(addEntities(createTodo(2)));
+    store.update(addEntities(createTodo(2)));
 
-    store.reduce(addEntities(createTodo(21), { prepend: true }));
+    store.update(addEntities(createTodo(21), { prepend: true }));
 
-    store.reduce(addEntities(createTodo(3)));
+    store.update(addEntities(createTodo(3)));
   });
 
   it('should support ref', () => {
@@ -34,7 +34,7 @@ describe('last', () => {
       expect(value).toMatchSnapshot('2 calls');
     });
 
-    store.reduce(
+    store.update(
       addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
     );
   });

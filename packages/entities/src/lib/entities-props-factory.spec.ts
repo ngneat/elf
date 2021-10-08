@@ -14,7 +14,7 @@ describe('entities props factory', () => {
 
     const store = new Store({ name: 'todos', config, state });
 
-    store.reduce(
+    store.update(
       addEntities({ id: 1, title: 'foo' }, { ref: cartEntitiesRef })
     );
 
@@ -29,7 +29,7 @@ describe('entities props factory', () => {
 
     const store = new Store({ name: 'todos', config, state });
 
-    store.reduce(
+    store.update(
       addEntities({ id: '1', label: 'foo' }),
       addEntities({ id: 1, title: 'foo' }, { ref: cartEntitiesRef })
     );
@@ -75,7 +75,7 @@ describe('entities props factory', () => {
     }>();
 
     try {
-      store.reduce(
+      store.update(
         // @ts-expect-error - The deault entities isn't declared
         addEntities({ id: '1', label: 'foo' }),
         addEntities({ id: 1, title: 'foo' }, { ref: cartEntitiesRef })
@@ -84,7 +84,7 @@ describe('entities props factory', () => {
       //
     }
 
-    store.reduce(
+    store.update(
       // @ts-expect-error - id should be a number
       addEntities({ id: '1', title: 'foo' }, { ref: cartEntitiesRef }),
       // @ts-expect-error - nope isn't exists on type of cart entity
@@ -145,7 +145,7 @@ describe('entities props factory', () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
 
-    store.reduce(
+    store.update(
       addEntities({ id: '1', name: 'foo' }, { ref: actorsEntitiesRef }),
       addEntities({ id: '1', name: 'foo' }, { ref: genresEntitiesRef }),
       addEntities({ id: '1', title: 'one', genres: ['1'], actors: ['1'] })

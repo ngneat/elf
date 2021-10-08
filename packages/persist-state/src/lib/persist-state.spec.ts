@@ -17,7 +17,7 @@ describe('persist state', () => {
     persistState(store, { storage });
     expect(storage.setItem).not.toHaveBeenCalled();
 
-    store.reduce(addEntities(createTodo(1)));
+    store.update(addEntities(createTodo(1)));
     expect(storage.setItem).toHaveBeenCalledTimes(1);
     expect(storage.setItem).toHaveBeenCalledWith(
       `todos@store`,
@@ -56,7 +56,7 @@ describe('persist state', () => {
     });
     expect(storage.setItem).not.toHaveBeenCalled();
 
-    store.reduce(addEntities(createTodo(1)));
+    store.update(addEntities(createTodo(1)));
     expect(storage.setItem).toHaveBeenCalledTimes(1);
     expect(storage.setItem).toHaveBeenCalledWith(`todos@store`, {
       ids: [1, 2],

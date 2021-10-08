@@ -22,7 +22,7 @@ describe('store', () => {
 
     const store = new Store({ state, name: 'todos', config });
 
-    store.reduce(addEntities(createTodo(1)), (state) => ({
+    store.update(addEntities(createTodo(1)), (state) => ({
       ...state,
       filter: 'foo',
     }));
@@ -56,7 +56,7 @@ describe('store', () => {
 
     expect(store.getValue()).toMatchSnapshot();
 
-    store.reduce(
+    store.update(
       addEntities(createTodo(1)),
       addEntities(createUITodo(1), { ref: UIEntitiesRef })
     );
@@ -64,12 +64,12 @@ describe('store', () => {
     expect(spy).toHaveBeenCalledTimes(2);
     expect(store.getValue()).toMatchSnapshot();
 
-    store.reduce((state) => ({ ...state, filter: 'foo' }));
+    store.update((state) => ({ ...state, filter: 'foo' }));
 
     // Update non related value should not call `next`
     expect(spy).toHaveBeenCalledTimes(2);
 
-    store.reduce(updateEntities(1, { title: 'foo' }), (state) => ({
+    store.update(updateEntities(1, { title: 'foo' }), (state) => ({
       ...state,
       filter: 'hello',
     }));

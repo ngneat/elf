@@ -33,7 +33,7 @@ The usage is similar to that of `entities` - you can use the same selectors and 
 ```ts
 import { addEntities, UIEntitiesRef, selectEntity } from '@ngneat/elf-entities';
 
-todosStore.reduce(
+todosStore.update(
   addEntities({ id: 1, name: 'foo' }),
   addEntities({ id: 1, open: true }, { ref: UIEntitiesRef })
 );

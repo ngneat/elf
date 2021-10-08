@@ -34,7 +34,7 @@ describe('requestsCache', () => {
       value: 'none',
     });
 
-    store.reduce(
+    store.update(
       updateRequestsCache({
         [requestKey]: {
           value: 'partial',
@@ -50,7 +50,7 @@ describe('requestsCache', () => {
       value: 'partial',
     });
 
-    store.reduce(
+    store.update(
       updateRequestsCache({
         bar: {
           value: 'partial',
@@ -79,17 +79,17 @@ describe('requestsCache', () => {
     const store = new Store({ state, config, name: '' });
     const key = 'baz';
 
-    store.reduce(updateRequestCache(key));
+    store.update(updateRequestCache(key));
 
     expect(store.query(isRequestCached(key))).toBeTruthy();
 
-    store.reduce(updateRequestCache(key, { value: 'partial' }));
+    store.update(updateRequestCache(key, { value: 'partial' }));
     expect(store.query(isRequestCached(key))).toBeFalsy();
     expect(
       store.query(isRequestCached(key, { value: 'partial' }))
     ).toBeTruthy();
 
-    store.reduce(updateRequestCache(key, { value: 'none' }));
+    store.update(updateRequestCache(key, { value: 'none' }));
     expect(store.query(isRequestCached(key))).toBeFalsy();
     expect(store.query(isRequestCached(key, { value: 'partial' }))).toBeFalsy();
   });
@@ -104,7 +104,7 @@ describe('requestsCache', () => {
     subject.next({});
     expect(spy).toHaveBeenCalledTimes(1);
 
-    store.reduce(
+    store.update(
       updateRequestsCache({
         bar: {
           value: 'full',
@@ -124,7 +124,7 @@ describe('requestsCache', () => {
     jest.useFakeTimers();
     const ttlRequestKey = 'fooTTL';
 
-    store.reduce(updateRequestCache(ttlRequestKey, { ttl: 1000 }));
+    store.update(updateRequestCache(ttlRequestKey, { ttl: 1000 }));
 
     expect(
       store.query(isRequestCached(ttlRequestKey, { value: 'full' }))
@@ -136,7 +136,7 @@ describe('requestsCache', () => {
       store.query(isRequestCached(ttlRequestKey, { value: 'full' }))
     ).toBeFalsy();
 
-    store.reduce(updateRequestCache(ttlRequestKey, { ttl: 1000 }));
+    store.update(updateRequestCache(ttlRequestKey, { ttl: 1000 }));
 
     expect(
       store.query(isRequestCached(ttlRequestKey, { value: 'full' }))

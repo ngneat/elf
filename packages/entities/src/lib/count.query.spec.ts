@@ -26,7 +26,7 @@ describe('count', () => {
       expect(value).toMatchSnapshot(`calls: ${count++}`);
     });
 
-    store.reduce(addEntities(createTodo(2)));
+    store.update(addEntities(createTodo(2)));
   });
 
   it('should work with ref', () => {
@@ -40,7 +40,7 @@ describe('count', () => {
         expect(value).toMatchSnapshot(`calls: ${count++}`);
       });
 
-    store.reduce(
+    store.update(
       addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
     );
   });
@@ -54,10 +54,10 @@ describe('count', () => {
         expect(value).toMatchSnapshot(`calls: ${count++}`);
       });
 
-    store.reduce(addEntities([createTodo(1), createTodo(2)]));
+    store.update(addEntities([createTodo(1), createTodo(2)]));
 
-    store.reduce(updateEntities(1, { completed: true }));
+    store.update(updateEntities(1, { completed: true }));
 
-    store.reduce(updateEntities(2, { title: '' }));
+    store.update(updateEntities(2, { title: '' }));
   });
 });

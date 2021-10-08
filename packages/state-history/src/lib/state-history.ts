@@ -185,7 +185,7 @@ class StateHistory<T extends Store, State extends StoreValue<T>> {
 
   private update() {
     this.skipUpdate = true;
-    this.store.reduce(() => this.history.present);
+    this.store.update(() => this.history.present);
     this.updateHasHistory();
     this.skipUpdate = false;
   }

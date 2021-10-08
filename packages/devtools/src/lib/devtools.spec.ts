@@ -32,7 +32,7 @@ describe('devtools', () => {
       }
     );
 
-    store.reduce(addEntities(createTodo(1)));
+    store.update(addEntities(createTodo(1)));
 
     expect(instanceMock.send).toHaveBeenCalledWith(
       { type: '[Todos] - Update' },
@@ -85,7 +85,7 @@ describe('devtools', () => {
       }
     );
 
-    bar.reduce(addEntities(createTodo(1)));
+    bar.update(addEntities(createTodo(1)));
 
     expect(instanceMock.send).toHaveBeenCalledWith(
       { type: '[Bar] - Update' },

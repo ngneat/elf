@@ -21,8 +21,8 @@ describe('selectEntity', () => {
       expect(entity).toMatchSnapshot(`2 calls`);
     });
 
-    store.reduce(addEntities(createTodo(1)));
-    store.reduce(addEntities(createTodo(2)));
+    store.update(addEntities(createTodo(1)));
+    store.update(addEntities(createTodo(2)));
   });
 
   it('should select an entity pluck property', () => {
@@ -30,7 +30,7 @@ describe('selectEntity', () => {
       expect(title).toMatchSnapshot(`2 calls`);
     });
 
-    store.reduce(addEntities(createTodo(1)));
+    store.update(addEntities(createTodo(1)));
   });
 
   it('should select an entity pluck mapper', () => {
@@ -40,8 +40,8 @@ describe('selectEntity', () => {
         expect(title).toMatchSnapshot(`2 calls`);
       });
 
-    store.reduce(addEntities(createTodo(1)));
-    store.reduce(updateEntities(1, { completed: true }));
+    store.update(addEntities(createTodo(1)));
+    store.update(updateEntities(1, { completed: true }));
   });
 
   it('should work with ref', () => {
@@ -50,7 +50,7 @@ describe('selectEntity', () => {
       expect(entity).toMatchSnapshot(`2 calls`);
     });
 
-    store.reduce(
+    store.update(
       addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
     );
   });

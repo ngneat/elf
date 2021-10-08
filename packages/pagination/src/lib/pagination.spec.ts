@@ -45,7 +45,7 @@ describe('withPagination', () => {
 
     expect(spy).toHaveBeenCalledWith(1);
 
-    store.reduce(setCurrentPage(2));
+    store.update(setCurrentPage(2));
 
     expect(spy).toHaveBeenCalledWith(2);
     expect(spy).toHaveBeenCalledTimes(2);
@@ -60,7 +60,7 @@ describe('withPagination', () => {
       total: 0,
     });
 
-    store.reduce(
+    store.update(
       updatePaginationData({
         currentPage: 1,
         total: 22,
@@ -79,7 +79,7 @@ describe('withPagination', () => {
   });
 
   it('should setPage/deletePage/deleteAllPages', () => {
-    store.reduce(setPage(1, [1, 2]));
+    store.update(setPage(1, [1, 2]));
     expect(store.query(getPaginationData())).toStrictEqual({
       pages: {
         1: [1, 2],
@@ -90,7 +90,7 @@ describe('withPagination', () => {
       lastPage: 0,
     });
 
-    store.reduce(setPage(2, [3, 4]));
+    store.update(setPage(2, [3, 4]));
 
     expect(store.query(getPaginationData())).toStrictEqual({
       pages: {
@@ -103,7 +103,7 @@ describe('withPagination', () => {
       lastPage: 0,
     });
 
-    store.reduce(deletePage(2));
+    store.update(deletePage(2));
     expect(store.query(getPaginationData())).toStrictEqual({
       pages: {
         1: [1, 2],
@@ -114,7 +114,7 @@ describe('withPagination', () => {
       lastPage: 0,
     });
 
-    store.reduce(deleteAllPages());
+    store.update(deleteAllPages());
 
     expect(store.query(getPaginationData())).toStrictEqual({
       pages: {},
@@ -128,7 +128,7 @@ describe('withPagination', () => {
   it('should selectHasPage/hasPage', () => {
     expect(store.query(hasPage(1))).toBeFalsy();
 
-    store.reduce(setPage(1, [1, 2]));
+    store.update(setPage(1, [1, 2]));
     expect(store.query(hasPage(1))).toBeTruthy();
 
     const spy = jest.fn();
@@ -138,10 +138,10 @@ describe('withPagination', () => {
     });
 
     expect(spy).toHaveBeenCalledWith(false);
-    store.reduce(setPage(2, [3, 4]));
+    store.update(setPage(2, [3, 4]));
     expect(spy).toHaveBeenCalledWith(true);
 
-    store.reduce(setPage(3, [5, 6]));
+    store.update(setPage(3, [5, 6]));
     expect(spy).toHaveBeenCalledTimes(2);
   });
 
@@ -154,22 +154,22 @@ describe('withPagination', () => {
 
     expect(spy).toHaveBeenCalledWith([]);
 
-    store.reduce(addEntities([{ id: 1 }, { id: 2 }]), setPage(1, [1, 2]));
+    store.update(addEntities([{ id: 1 }, { id: 2 }]), setPage(1, [1, 2]));
 
     expect(spy).toHaveBeenCalledWith([{ id: 1 }, { id: 2 }]);
 
-    store.reduce(addEntities([{ id: 3 }, { id: 4 }]), setPage(2, [3, 4]));
+    store.update(addEntities([{ id: 3 }, { id: 4 }]), setPage(2, [3, 4]));
 
     // Different page should not cause an emission
     expect(spy).toHaveBeenCalledTimes(2);
 
-    store.reduce(setCurrentPage(2));
+    store.update(setCurrentPage(2));
     expect(spy).toHaveBeenCalledWith([{ id: 3 }, { id: 4 }]);
 
-    store.reduce(updateEntities(3, { name: 'foo' }));
+    store.update(updateEntities(3, { name: 'foo' }));
     expect(spy).toHaveBeenCalledWith([{ id: 3, name: 'foo' }, { id: 4 }]);
 
-    store.reduce(deleteAllPages());
+    store.update(deleteAllPages());
     expect(spy).toHaveBeenCalledWith([]);
   });
 
@@ -183,7 +183,7 @@ describe('withPagination', () => {
     subject.next({});
     expect(spy).toHaveBeenCalledTimes(1);
 
-    store.reduce(setPage(1, [1, 2]));
+    store.update(setPage(1, [1, 2]));
 
     spy = jest.fn();
 

@@ -32,15 +32,15 @@ describe('activeId', () => {
 
     expect(spy).toHaveBeenCalledWith(undefined);
 
-    store.reduce(addEntities({ id: 1, title: '' }));
+    store.update(addEntities({ id: 1, title: '' }));
 
-    store.reduce(setActiveId(1));
+    store.update(setActiveId(1));
     expect(spy).toHaveBeenCalledWith({ id: 1, title: '' });
 
-    store.reduce(addEntities({ id: 2, title: '' }));
+    store.update(addEntities({ id: 2, title: '' }));
     expect(spy).toHaveBeenCalledTimes(2);
 
-    store.reduce(updateEntities(1, { title: 'foo' }));
+    store.update(updateEntities(1, { title: 'foo' }));
     expect(spy).toHaveBeenCalledTimes(3);
     expect(spy).toHaveBeenCalledWith({ id: 1, title: 'foo' });
   });
@@ -59,22 +59,22 @@ describe('activeIds', () => {
     store.pipe(selectActiveEntities()).subscribe(spy);
     expect(spy).toHaveBeenCalledWith([]);
 
-    store.reduce(addEntities({ id: 1, title: '' }));
-    store.reduce(setActiveIds([1]));
+    store.update(addEntities({ id: 1, title: '' }));
+    store.update(setActiveIds([1]));
     expect(spy).toHaveBeenCalledWith([{ id: 1, title: '' }]);
 
-    store.reduce(addEntities({ id: 2, title: '' }));
+    store.update(addEntities({ id: 2, title: '' }));
     expect(spy).toHaveBeenCalledTimes(2);
 
-    store.reduce(updateEntities(1, { title: 'foo' }));
+    store.update(updateEntities(1, { title: 'foo' }));
     expect(spy).toHaveBeenCalledTimes(3);
     expect(spy).toHaveBeenCalledWith([{ id: 1, title: 'foo' }]);
 
-    store.reduce(removeActiveIds(1));
+    store.update(removeActiveIds(1));
     expect(spy).toHaveBeenCalledWith([]);
 
-    store.reduce(addEntities({ id: 3, title: '3' }));
-    store.reduce(toggleActiveIds(3));
+    store.update(addEntities({ id: 3, title: '3' }));
+    store.update(toggleActiveIds(3));
     expect(spy).toHaveBeenCalledWith([{ id: 3, title: '3' }]);
   });
 });

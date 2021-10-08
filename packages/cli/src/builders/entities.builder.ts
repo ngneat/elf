@@ -86,7 +86,7 @@ export class EntitiesBuilder extends FeatureBuilder {
         },
       ],
       statements: [
-        `${this.storeVariableName}.reduce(setEntities(${this.storeNames.propertyName}));`,
+        `${this.storeVariableName}.update(setEntities(${this.storeNames.propertyName}));`,
       ],
     });
   }
@@ -102,7 +102,7 @@ export class EntitiesBuilder extends FeatureBuilder {
         },
       ],
       statements: [
-        `${this.storeVariableName}.reduce(addEntities(${this.storeSingularNames.propertyName}));`,
+        `${this.storeVariableName}.update(addEntities(${this.storeSingularNames.propertyName}));`,
       ],
     });
   }
@@ -122,7 +122,7 @@ export class EntitiesBuilder extends FeatureBuilder {
         },
       ],
       statements: [
-        `${this.storeVariableName}.reduce(updateEntities(id, ${this.storeSingularNames.propertyName}));`,
+        `${this.storeVariableName}.update(updateEntities(id, ${this.storeSingularNames.propertyName}));`,
       ],
     });
   }
@@ -137,7 +137,7 @@ export class EntitiesBuilder extends FeatureBuilder {
           type: `${this.storeSingularNames.className}['${this.idKey}']`,
         },
       ],
-      statements: [`${this.storeVariableName}.reduce(deleteEntities(id));`],
+      statements: [`${this.storeVariableName}.update(deleteEntities(id));`],
     });
   }
 }

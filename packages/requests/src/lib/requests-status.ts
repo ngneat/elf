@@ -119,15 +119,15 @@ export function setRequestStatus<
 ): MonoTypeOperatorFunction<T> {
   return function (source: Observable<T>) {
     return defer(() => {
-      store.reduce(updateRequestStatus(key, 'pending'));
+      store.update(updateRequestStatus(key, 'pending'));
 
       return source.pipe(
         tap({
           next() {
-            store.reduce(updateRequestStatus(key, 'success'));
+            store.update(updateRequestStatus(key, 'success'));
           },
           error(error) {
-            store.reduce(
+            store.update(
               updateRequestStatus(
                 key,
                 'error',

@@ -39,7 +39,7 @@ import { updateRequestCache } from '@ngneat/elf-requests';
 import { setEntities } from '@ngneat/elf-entities';
 
 export function setTodos(todos: Todo[]) {
-  store.reduce(
+  store.update(
     // highlight-next-line
     updateRequestCache('todos'),
     setEntities(todos)
@@ -67,7 +67,7 @@ one passed. Values can be status can be 'none', 'partial' or 'full':
 import { updateRequestCache } from '@ngneat/elf-requests';
 
 export function setTodos(todos: Todo[]) {
-  store.reduce(
+  store.update(
     // highlight-next-line
     updateRequestCache('todos', { value: 'partial' }),
     setEntities(todos)
@@ -162,10 +162,10 @@ const isPartialCached = store.query(
 ```ts
 import { updateRequestCache } from '@ngneat/elf-requests';
 
-store.reduce(updateRequestCache('todos'));
-store.reduce(updateRequestCache('todos', { value: 'partial' }));
-store.reduce(updateRequestCache('todos', { value: 'none' }));
-store.reduce(updateRequestCache('todos', { ttl: 1000 }));
+store.update(updateRequestCache('todos'));
+store.update(updateRequestCache('todos', { value: 'partial' }));
+store.update(updateRequestCache('todos', { value: 'none' }));
+store.update(updateRequestCache('todos', { ttl: 1000 }));
 ```
 
 If you pass `ttl` (time to live) when updating a cache record, that represents the time (in milliseconds) that `key` will
