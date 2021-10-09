@@ -8,7 +8,7 @@
 
 Elf is a reactive immutable state management solution built on top of RxJS. It uses custom RxJS operators to query the state and pure functions to update it.
 
-Elf encourages simplicity. It eases the hassle of creating boilerplate code and comes with robust tools, suitable for both experienced and inexperienced developers.
+Elf encourages simplicity. It saves you the hassle of creating boilerplate code and offers powerful tools with a moderate learning curve, suitable for experienced and inexperienced developers alike.
 
 ✅ &nbsp;Modular by design  
 ✅ &nbsp;Tree Shakeable & Fully Typed  
