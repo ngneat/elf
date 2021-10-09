@@ -18,12 +18,7 @@ export class RequestsStatusBuilder extends FeatureBuilder {
 
   run() {
     this.addImport(
-      [
-        'withRequestsStatus',
-        'selectRequestStatus',
-        'updateRequestStatus',
-        'StatusState',
-      ],
+      ['withRequestsStatus', 'selectRequestStatus'],
       '@ngneat/elf-requests'
     );
 
