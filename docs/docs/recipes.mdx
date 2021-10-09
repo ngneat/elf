@@ -1,5 +1,35 @@
 # Recipes
 
+## Selectors Optimization
+
+:::tip
+Beware of premature optimizations
+:::
+
+Imagine we have a `todos` store and we subscribe to the following selectors twice, at two different places simultaneously:
+
+```ts title="todos.repository.ts"
+export const todos$ = store.pipe(selectAll());
+
+// One component
+useObservable(todos$) // React
+todos$ | async // Angular
+
+// Second component
+useObservable(todos$) // React
+todos$ | async // Angular
+```
+
+Due to the nature of observables, the `selectAll()` operator will map over the entities twice, once for each subscription. We can use the `shareReplay` operator to optimize it:
+
+```ts title="todos.repository.ts"
+import { shareReplay } from 'rxjs/operators';
+
+export const todos$ = store.pipe(selectAll(), shareReplay({ refCount: true }))
+```
+
+With this change, the `selectAll` operator will now share the result with every subscriber.
+
 ## Reset Stores
 
 Resetting your stores can be useful when you want to clean the store's data upon user logout. We can combine the `registry` and `store.reset()` to create a `resetStores` function:
@@ -11,3 +41,4 @@ export function resetStores() {
   getRegistry().forEach(store => store.reset())
 }
 ```
+

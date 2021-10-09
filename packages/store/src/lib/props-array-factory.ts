@@ -2,7 +2,8 @@ import { capitalize } from './utils';
 import { propsFactory } from './props-factory';
 import { Reducer } from './store';
 import { EmptyConfig } from './state';
-import { coerceArray, OrArray } from '..';
+import { coerceArray } from './utils';
+import { OrArray } from './types';
 
 export function propsArrayFactory<
   T extends any[],
