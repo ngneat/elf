@@ -23,10 +23,15 @@ export class RequestsCacheBuilder extends FeatureBuilder {
     );
 
     this.repo.addMember({
-      name: `updateRequestCache`,
+      name: this.isFunctionsTpl
+        ? `update${this.storeNames.className}RequestCache`
+        : `updateRequestCache`,
       kind: StructureKind.Method,
-      parameters: [{ name: 'state', type: 'CacheState' }],
-      statements: `${this.storeVariableName}.update(updateRequestCache(key));`,
+      parameters: [
+        { name: 'key', type: 'string' },
+        { name: 'state', type: 'CacheState' },
+      ],
+      statements: `${this.storeVariableName}.update(updateRequestCache(key, state));`,
     });
   }
 }

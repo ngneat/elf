@@ -47,10 +47,6 @@ const packages = [
   },
   {
     name: '@ngneat/elf-state-history',
-    link: 'https://ngneat.github.io/elf/docs/histor',
-  },
-  {
-    name: '@ngneat/elf-state-history',
     link: 'https://ngneat.github.io/elf/docs/history',
   },
   {

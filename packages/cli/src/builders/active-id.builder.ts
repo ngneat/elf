@@ -30,7 +30,9 @@ export class ActiveIdBuilder extends FeatureBuilder {
 
     this.repo.addMember({
       kind: StructureKind.Method,
-      name: `setActiveId`,
+      name: this.isFunctionsTpl
+        ? `setActive${this.storeNames.className}Id`
+        : `setActiveId`,
       parameters: [
         {
           name: 'id',

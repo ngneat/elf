@@ -19,6 +19,7 @@ export abstract class FeatureBuilder {
     this.options.template,
     this.storeNames
   );
+  isFunctionsTpl = this.options.template === 'functions';
 
   constructor(
     protected sourceFile: SourceFile,

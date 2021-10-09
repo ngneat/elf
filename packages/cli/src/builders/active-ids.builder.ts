@@ -30,7 +30,9 @@ export class ActiveIdsBuilder extends FeatureBuilder {
 
     this.repo.addMember({
       kind: StructureKind.Method,
-      name: `toggleActiveIds`,
+      name: this.isFunctionsTpl
+        ? `toggleActive${this.storeNames.className}Ids`
+        : `toggleActiveIds`,
       parameters: [
         {
           name: 'ids',

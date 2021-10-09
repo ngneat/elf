@@ -46,8 +46,8 @@ export class TodosRepository {
     store.update(toggleActiveIds(ids));
   }
 
-  updateRequestCache(state: CacheState) {
-    store.update(updateRequestCache(key));
+  updateRequestCache(key: string, state: CacheState) {
+    store.update(updateRequestCache(key, state));
   }
 }
 "
@@ -93,16 +93,16 @@ export function updateTodo(id: Todo['id'], todo: Partial<Todo>) {
   todosStore.update(updateEntities(id, todo));
 }
 
-export function setActiveId(id: Todo['id']) {
+export function setActiveTodosId(id: Todo['id']) {
   todosStore.update(setActiveId(id));
 }
 
-export function toggleActiveIds(ids: Array<Todo['id']>) {
+export function toggleActiveTodosIds(ids: Array<Todo['id']>) {
   todosStore.update(toggleActiveIds(ids));
 }
 
-export function updateRequestCache(state: CacheState) {
-  todosStore.update(updateRequestCache(key));
+export function updateTodosRequestCache(key: string, state: CacheState) {
+  todosStore.update(updateRequestCache(key, state));
 }
 "
 `;
@@ -222,8 +222,8 @@ const { state, config } = createState(withRequestsCache());
 const store = new Store({ name: 'todos', state, config });
 
 export class TodosRepository {
-  updateRequestCache(state: CacheState) {
-    store.update(updateRequestCache(key));
+  updateRequestCache(key: string, state: CacheState) {
+    store.update(updateRequestCache(key, state));
   }
 }
 "
