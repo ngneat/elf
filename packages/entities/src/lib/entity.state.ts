@@ -58,17 +58,6 @@ export class EntitiesRef<
   }
 }
 
-function withEntitiesFactory<S extends EntitiesRecord, Ref extends EntitiesRef>(
-  ref: Ref
-) {
-  return {
-    [ref.entitiesKey]: {},
-    [ref.idsKey]: [],
-  } as unknown as {
-    [P in Ref['entitiesKey'] | Ref['idsKey']]: S[P];
-  };
-}
-
 export function entitiesPropsFactory<
   Feature extends string,
   IdKeyRef extends `idKey${Capitalize<Feature>}`,
@@ -98,16 +87,16 @@ export function entitiesPropsFactory<
     } = { idKey: 'id' as IdKey }
   ) {
     return {
-      props: withEntitiesFactory<
-        {
-          [K in EntitiesKey | IdsKey]: K extends EntitiesKey
-            ? Record<EntityType[IdKey], EntityType>
-            : K extends IdsKey
-            ? Array<EntityType[IdKey]>
-            : never;
-        },
-        typeof ref
-      >(ref),
+      props: {
+        [ref.entitiesKey]: {},
+        [ref.idsKey]: [],
+      } as {
+        [K in EntitiesKey | IdsKey]: K extends EntitiesKey
+          ? Record<EntityType[IdKey], EntityType>
+          : K extends IdsKey
+          ? Array<EntityType[IdKey]>
+          : never;
+      },
       config: {
         [idKeyRef]: config.idKey,
       } as {

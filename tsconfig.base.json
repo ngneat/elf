@@ -12,8 +12,6 @@
     "module": "esnext",
     "lib": ["ES2020", "dom"],
     "strict": true,
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "@ngneat/elf": ["packages/store/src/index.ts"],
