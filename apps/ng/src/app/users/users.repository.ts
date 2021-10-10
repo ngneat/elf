@@ -51,13 +51,10 @@ export class UsersRepository {
   }
 
   setUsers(users: User[]) {
-    store.update(
-      setEntities(users),
-      updateRequestCache(UsersRequests.default, 'full')
-    );
+    store.update(setEntities(users), updateRequestCache(UsersRequests.default));
   }
 
   addUser(user: User) {
-    this.store.update(addEntities(user), updateRequestCache(user.id, 'full'));
+    this.store.update(addEntities(user), updateRequestCache(user.id));
   }
 }
