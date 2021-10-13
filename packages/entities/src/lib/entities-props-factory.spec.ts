@@ -155,4 +155,59 @@ describe('entities props factory', () => {
 
     expect(spy).toHaveBeenCalledTimes(2);
   });
+
+  it('should allow initial value', () => {
+    const { withFooEntities, fooEntitiesRef } = entitiesPropsFactory('foo');
+
+    const { state, config } = createState(
+      withFooEntities<{ id: number; count: number }>({
+        initialValue: {
+          ids: [1],
+          entities: {
+            1: {
+              id: 1,
+              count: 0,
+            },
+          },
+        },
+      })
+    );
+
+    const store = new Store({ name: 'foo', state, config });
+
+    expect(store.getValue()).toMatchInlineSnapshot(`
+      Object {
+        "fooEntities": Object {
+          "1": Object {
+            "count": 0,
+            "id": 1,
+          },
+        },
+        "fooIds": Array [
+          1,
+        ],
+      }
+    `);
+
+    store.update(addEntities({ id: 2, count: 1 }, { ref: fooEntitiesRef }));
+
+    expect(store.getValue()).toMatchInlineSnapshot(`
+      Object {
+        "fooEntities": Object {
+          "1": Object {
+            "count": 0,
+            "id": 1,
+          },
+          "2": Object {
+            "count": 1,
+            "id": 2,
+          },
+        },
+        "fooIds": Array [
+          1,
+          2,
+        ],
+      }
+    `);
+  });
 });

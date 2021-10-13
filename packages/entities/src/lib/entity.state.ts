@@ -81,15 +81,17 @@ export function entitiesPropsFactory<
   function propsFactory<
     EntityType extends { [P in IdKey]: PropertyKey },
     IdKey extends string = 'id'
-  >(
-    config: {
-      idKey: IdKey;
-    } = { idKey: 'id' as IdKey }
-  ) {
+  >(config?: {
+    initialValue?: {
+      ids: Array<EntityType[IdKey]>;
+      entities: Record<EntityType[IdKey], EntityType>;
+    };
+    idKey?: IdKey;
+  }) {
     return {
       props: {
-        [ref.entitiesKey]: {},
-        [ref.idsKey]: [],
+        [ref.entitiesKey]: config?.initialValue?.entities || {},
+        [ref.idsKey]: config?.initialValue?.ids || [],
       } as {
         [K in EntitiesKey | IdsKey]: K extends EntitiesKey
           ? Record<EntityType[IdKey], EntityType>
@@ -98,9 +100,9 @@ export function entitiesPropsFactory<
           : never;
       },
       config: {
-        [idKeyRef]: config.idKey,
+        [idKeyRef]: config?.idKey || ('id' as IdKey),
       } as {
-        [K in IdKeyRef]: typeof config['idKey'];
+        [K in IdKeyRef]: IdKey;
       },
     };
   }
