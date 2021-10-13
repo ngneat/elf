@@ -357,3 +357,14 @@ const { state, config } = createState(
 
 const todosStore = new Store({ name: 'todos', state, config });
 ```
+
+## initialValue
+In case that you need to start the `entities` state with a value, you can specify it in the `initialValue` configuration:
+
+```ts
+import { createState, Store } from '@ngneat/elf';
+
+const { state, config } = createState(
+  withEntities<Widget>({ initialValue: [{ id: 1, name: '' }] })
+);
+```
