@@ -161,15 +161,12 @@ describe('entities props factory', () => {
 
     const { state, config } = createState(
       withFooEntities<{ id: number; count: number }>({
-        initialValue: {
-          ids: [1],
-          entities: {
-            1: {
-              id: 1,
-              count: 0,
-            },
+        initialValue: [
+          {
+            id: 1,
+            count: 0,
           },
-        },
+        ],
       })
     );
 

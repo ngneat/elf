@@ -42,7 +42,6 @@ export function addEntities<
     const { entitiesKey, idsKey } = ref!;
 
     const { ids, asObject } = buildEntities<S, Ref>(
-      ref as Ref,
       entities,
       getIdKey(context, ref)
     );
@@ -101,7 +100,6 @@ export function addEntitiesFifo<
     }
 
     const { ids, asObject } = buildEntities<S, Ref>(
-      ref as Ref,
       normalizedEntities,
       getIdKey(context, ref)
     );

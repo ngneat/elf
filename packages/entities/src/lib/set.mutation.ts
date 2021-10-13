@@ -31,7 +31,6 @@ export function setEntities<
     const { ref = defaultEntitiesRef } = options;
     const { entitiesKey, idsKey } = ref!;
     const { ids, asObject } = buildEntities<S, Ref>(
-      ref as Ref,
       entities,
       getIdKey<getIdType<S, Ref>>(context, ref)
     );

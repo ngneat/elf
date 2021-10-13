@@ -11,7 +11,6 @@ export function buildEntities<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef
 >(
-  ref: Ref,
   entities: getEntityType<S, Ref>[],
   idKey: string
 ): { ids: getIdType<S, Ref>[]; asObject: getEntityType<S, Ref> } {

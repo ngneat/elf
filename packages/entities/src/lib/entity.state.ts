@@ -1,4 +1,5 @@
 import { ReducerContext, capitalize } from '@ngneat/elf';
+import { buildEntities } from './entity.utils';
 
 export function getIdKey<T>(context: ReducerContext, ref: EntitiesRef): T {
   return context.config[ref.idKeyRef];
@@ -81,17 +82,22 @@ export function entitiesPropsFactory<
   function propsFactory<
     EntityType extends { [P in IdKey]: PropertyKey },
     IdKey extends string = 'id'
-  >(config?: {
-    initialValue?: {
-      ids: Array<EntityType[IdKey]>;
-      entities: Record<EntityType[IdKey], EntityType>;
-    };
-    idKey?: IdKey;
-  }) {
+  >(config?: { initialValue?: Array<EntityType>; idKey?: IdKey }) {
+    let entities = {};
+    let ids = [];
+    const idKey = config?.idKey || ('id' as IdKey);
+
+    if (config?.initialValue) {
+      ({ ids, asObject: entities } = buildEntities<any, any>(
+        config.initialValue,
+        idKey
+      ));
+    }
+
     return {
       props: {
-        [ref.entitiesKey]: config?.initialValue?.entities || {},
-        [ref.idsKey]: config?.initialValue?.ids || [],
+        [ref.entitiesKey]: entities,
+        [ref.idsKey]: ids,
       } as {
         [K in EntitiesKey | IdsKey]: K extends EntitiesKey
           ? Record<EntityType[IdKey], EntityType>
@@ -100,7 +106,7 @@ export function entitiesPropsFactory<
           : never;
       },
       config: {
-        [idKeyRef]: config?.idKey || ('id' as IdKey),
+        [idKeyRef]: idKey,
       } as {
         [K in IdKeyRef]: IdKey;
       },
