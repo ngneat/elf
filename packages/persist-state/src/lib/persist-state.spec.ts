@@ -6,6 +6,8 @@ import { StateStorage } from './storage';
 import { persistState } from './persist-state';
 
 describe('persist state', () => {
+  global.window = {} as any;
+
   it('should persist upon update', () => {
     const storage: StateStorage = {
       getItem: jest.fn().mockImplementation(() => of(null)),

@@ -43,6 +43,7 @@ As the second parameter you should pass a `Options` object, which can be used to
 - `source`: a method that receives the store and return what to save from it (by default - the entire store).
 - `preStoreInit`: a method that run upon initializing the store with a saved value, used for any required modifications before the value is set.
 - `key`: the name under which the store state is saved (by default - the store name plus a `@store` suffix).
+- `runGuard` - returns whether the actual implementation should be run. The default is `() => typeof window !== 'undefined'`
 
 <LiveDemo src={index} packages={['persist']} />
 
