@@ -69,8 +69,15 @@ export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`${siteConfig.title}`}
-      description="Elf - A Tiny Reactive Store with Magical Powers"
+      keywords={[
+        'reactive state management',
+        'react rxjs',
+        'angular state management',
+        'react reactive state management',
+        'elf',
+        'elf state management',
+      ]}
+      description="Elf - A Reactive Store with Magical Powers"
     >
       <HomepageHeader />
       <main>

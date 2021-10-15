@@ -3,7 +3,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/oceanicNext');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: 'Elf | A reactive store with magical powers',
+  title: 'Elf | A Reactive Store with Magical Powers',
   tagline: 'A Reactive Store with Magical Powers',
   baseUrl: '/elf/',
   url: 'https://ngneat.github.io',
