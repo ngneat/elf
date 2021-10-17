@@ -2,6 +2,7 @@ import { createState, Store } from '@ngneat/elf';
 import {
   selectRequestStatus,
   updateRequestCache,
+  updateRequestStatus,
   withRequestsCache,
   withRequestsStatus,
 } from '@ngneat/elf-requests';
@@ -51,10 +52,18 @@ export class UsersRepository {
   }
 
   setUsers(users: User[]) {
-    store.update(setEntities(users), updateRequestCache(UsersRequests.default));
+    store.update(
+      setEntities(users),
+      updateRequestStatus(UsersRequests.default, 'success'),
+      updateRequestCache(UsersRequests.default)
+    );
   }
 
   addUser(user: User) {
-    this.store.update(addEntities(user), updateRequestCache(user.id));
+    this.store.update(
+      addEntities(user),
+      updateRequestCache(user.id),
+      updateRequestStatus(user.id, 'success')
+    );
   }
 }

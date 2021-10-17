@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createState, Store } from '@ngneat/elf';
-import { withRequestsStatus } from '@ngneat/elf-requests';
+import { updateRequestStatus, withRequestsStatus } from '@ngneat/elf-requests';
 import {
   addEntities,
   selectAll,
@@ -45,7 +45,8 @@ export class GalleryRepository {
     const uiGalleryItems = galleryItems.map(({ id }) => ({ id, open: false }));
     store.update(
       addEntities(galleryItems),
-      addEntities(uiGalleryItems, { ref: UIEntitiesRef })
+      addEntities(uiGalleryItems, { ref: UIEntitiesRef }),
+      updateRequestStatus('gallery', 'success')
     );
   }
 

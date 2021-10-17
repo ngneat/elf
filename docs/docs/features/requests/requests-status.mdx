@@ -45,8 +45,22 @@ export function fetchTodos() {
 }
 ```
 
-This will ensure the `store` will have the `todos` call listed as `pending` in the store, until the call complete,
-at which point it changes to either `success` or `error`.
+This will ensure the `store` will have the `todos` call listed initially as `pending` and as `error` when it fails. Upon successful completion, the `success` status must be manually set as follows:
+
+```ts title="todos.repository.ts"
+import { updateRequestStatus } from '@ngneat/elf-requests';
+import { setTodos } from './todos.repository';
+
+export function setTodos(todos: Todo[]) {
+  store.update(
+    addEntities(todos),
+    // highlight-next-line
+    updateRequestStatus('todos', 'success'),
+  )
+}
+```
+
+You need to set it manually to avoid a redundant update and have the option to define what a "successful" response is.
 
 <LiveDemo src={index} packages={['entities', 'requests']} />
 <br />

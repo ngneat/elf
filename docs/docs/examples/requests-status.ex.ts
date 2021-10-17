@@ -4,6 +4,7 @@ import {
   withRequestsStatus,
   selectRequestStatus,
   setRequestStatus,
+  updateRequestStatus,
 } from '@ngneat/elf-requests';
 import { fromFetch } from 'rxjs/fetch';
 import { tap } from 'rxjs/operators';
@@ -24,11 +25,21 @@ todosStore.pipe(selectRequestStatus('todos')).subscribe((status) => {
   console.log(status);
 });
 
-fromFetch<Todo[]>('https://jsonplaceholder.typicode.com/todos', {
-  selector: (response) => response.json(),
-})
-  .pipe(
-    tap((todos) => setEntities(todos)),
-    setRequestStatus(todosStore, 'todos')
-  )
-  .subscribe();
+function setTodos(todos: Todo[]) {
+  todosStore.update(
+    setEntities(todos),
+    updateRequestStatus('todos', 'success')
+  );
+}
+
+// todos.service.ts
+
+function fecthTodos() {
+  return fromFetch<Todo[]>('https://jsonplaceholder.typicode.com/todos', {
+    selector: (response) => response.json(),
+  }).pipe(tap(setTodos), setRequestStatus(todosStore, 'todos'));
+}
+
+setTimeout(() => {
+  fecthTodos().subscribe();
+}, 2000);

@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { createState, Store } from '@ngneat/elf';
 
-import { selectRequestStatus, withRequestsStatus } from '@ngneat/elf-requests';
+import {
+  selectRequestStatus,
+  updateRequestStatus,
+  withRequestsStatus,
+} from '@ngneat/elf-requests';
 import {
   PaginationData,
   selectCurrentPage,
@@ -44,6 +48,7 @@ export class ContactsRepository {
     store.update(
       addEntities(data),
       updatePaginationData(pagination),
+      updateRequestStatus('contacts', 'success'),
       setPage(
         page,
         data.map((c) => c.id)
