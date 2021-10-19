@@ -7,6 +7,7 @@ type ActionsDispatcher = Observable<Action>;
 
 interface DevtoolsOptions {
   maxAge?: number;
+  name?: string;
   preAction?: () => void;
   actionsDispatcher?: ActionsDispatcher;
 }
@@ -30,6 +31,8 @@ declare global {
 }
 
 export function devTools(options: DevtoolsOptions = {}) {
+  if (!window.__REDUX_DEVTOOLS_EXTENSION__) return;
+
   const instance = window.__REDUX_DEVTOOLS_EXTENSION__.connect(options);
   const subscriptions = new Map<string, Subscription>();
 
