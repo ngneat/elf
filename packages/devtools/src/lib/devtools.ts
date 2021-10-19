@@ -1,6 +1,12 @@
 import { Observable, Subscription } from 'rxjs';
 import { skip } from 'rxjs/operators';
-import { capitalize, registry$, getStoresSnapshot } from '@ngneat/elf';
+import {
+  capitalize,
+  registry$,
+  getStoresSnapshot,
+  getRegistry,
+  Store,
+} from '@ngneat/elf';
 
 type Action = { type: string } & Record<string, any>;
 type ActionsDispatcher = Observable<Action>;
@@ -39,6 +45,23 @@ export function devTools(options: DevtoolsOptions = {}) {
   const send = (action: Action) => {
     instance.send(action, getStoresSnapshot());
   };
+
+  const addStore = (store: Store<any, any>) => {
+    const name = store.name;
+    const displayName = capitalize(name);
+
+    send({ type: `[${displayName}] - @Init` });
+
+    const update = store.pipe(skip(1)).subscribe(() => {
+      options.preAction?.();
+      send({ type: `[${displayName}] - Update` });
+    });
+
+    subscriptions.set(name, update);
+  };
+
+  // There should be support for stores that were created before we initialized the `devTools`
+  getRegistry().forEach(addStore);
 
   if (options.actionsDispatcher) {
     subscriptions.set(
