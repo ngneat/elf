@@ -1,5 +1,6 @@
 import { Store } from '@ngneat/elf';
-import { combineLatest, map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { StatusState } from '..';
 
 export function createRequestDataSource<
