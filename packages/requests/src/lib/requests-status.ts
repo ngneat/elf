@@ -1,4 +1,5 @@
 import {
+  OrArray,
   propsFactory,
   Query,
   Reducer,
@@ -6,6 +7,7 @@ import {
   StateOf,
   Store,
   StoreDef,
+  coerceArray,
 } from '@ngneat/elf';
 import {
   defer,
@@ -138,4 +140,14 @@ export function setRequestStatus<
       );
     });
   };
+}
+
+export function initializeAsIdle(keys: OrArray<string>) {
+  return coerceArray(keys).reduce((acc, key) => {
+    acc[key] = {
+      value: 'idle',
+    };
+
+    return acc;
+  }, {} as Record<string, IdleState>);
 }

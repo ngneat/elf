@@ -62,6 +62,30 @@ export function setTodos(todos: Todo[]) {
 
 You need to set it manually to avoid a redundant update and have the option to define what a "successful" response is.
 
+You can use the `initializeAsIdle` function to initialize a request as idle:
+
+```ts
+import { createState, Store } from '@ngneat/elf';
+import { withEntities } from '@ngneat/elf-entities';
+import { withRequestsStatus, initializeAsIdle } from '@ngneat/elf-requests';
+
+interface Todo {
+  id: number;
+  label: string;
+}
+
+const { state, config } = createState(
+  withEntities<Todo>(),
+  withRequestsStatus(
+    // highlight-next-line
+    initializeAsIdle(['addTodo', 'updateTodo'])
+  )
+);
+
+const todosStore = new Store({ name: 'todos', state, config });
+```
+
+
 <LiveDemo src={index} packages={['entities', 'requests']} />
 <br />
 You can monitor and change the request status for your APIs using the following

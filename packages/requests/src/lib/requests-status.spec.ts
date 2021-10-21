@@ -1,6 +1,6 @@
 import { createState, Store } from '@ngneat/elf';
 import { expectTypeOf } from 'expect-type';
-import { StatusState, updateRequestStatus } from '..';
+import { initializeAsIdle, StatusState, updateRequestStatus } from '..';
 import {
   getRequestStatus,
   selectIsRequestPending,
@@ -114,5 +114,16 @@ describe('requestsStatus', () => {
     store.update(updateRequestStatus(requestKey, 'foo'));
     // @ts-expect-error - Should pass the error as third param
     store.update(updateRequestStatus(requestKey, 'error'));
+  });
+
+  it('should initializeAsIdle', () => {
+    const { state, config } = createState(
+      withRequestsStatus(initializeAsIdle(['foo', 'bar']))
+    );
+    const store = new Store({ state, config, name: '' });
+
+    expect(store.query(getRequestStatus('bar'))).toEqual({ value: 'idle' });
+    expect(store.query(getRequestStatus('foo'))).toEqual({ value: 'idle' });
+    expect(store.query(getRequestStatus('baz'))).toEqual({ value: 'pending' });
   });
 });
