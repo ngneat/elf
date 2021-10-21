@@ -45,7 +45,7 @@ export function fetchTodos() {
 }
 ```
 
-This will ensure the `store` will have the `todos` call listed initially as `pending` and as `error` when it fails. Upon successful completion, the `success` status must be manually set as follows:
+The initial value of any `key` is `idle`. `setRequestStatus` changes the value to `pending` or to `error` when it fails. Upon successful completion, the `success` status must be manually set as follows:
 
 ```ts title="todos.repository.ts"
 import { updateRequestStatus } from '@ngneat/elf-requests';

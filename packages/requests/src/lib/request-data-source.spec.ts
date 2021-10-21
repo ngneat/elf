@@ -42,6 +42,15 @@ describe('createRequestDataSource', () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith({
+      loading: false,
+      error: undefined,
+      todos: [],
+    });
+
+    store.update(updateRequestStatus('todos', 'pending'));
+
+    expect(spy).toHaveBeenCalledTimes(2);
+    expect(spy).toHaveBeenCalledWith({
       loading: true,
       error: undefined,
       todos: [],
@@ -49,7 +58,7 @@ describe('createRequestDataSource', () => {
 
     store.update(updateRequestStatus('todos', 'success'));
 
-    expect(spy).toHaveBeenCalledTimes(2);
+    expect(spy).toHaveBeenCalledTimes(3);
     expect(spy).toHaveBeenCalledWith({
       loading: false,
       error: undefined,
@@ -58,7 +67,7 @@ describe('createRequestDataSource', () => {
 
     store.update(addEntities(createTodo(1)));
 
-    expect(spy).toHaveBeenCalledTimes(3);
+    expect(spy).toHaveBeenCalledTimes(4);
     expect(spy).toHaveBeenCalledWith({
       loading: false,
       error: undefined,
@@ -67,7 +76,7 @@ describe('createRequestDataSource', () => {
 
     store.update(updateRequestStatus('todos', 'error', { type: 'foo' }));
 
-    expect(spy).toHaveBeenCalledTimes(4);
+    expect(spy).toHaveBeenCalledTimes(5);
     expect(spy).toHaveBeenCalledWith({
       loading: false,
       error: { type: 'foo' },

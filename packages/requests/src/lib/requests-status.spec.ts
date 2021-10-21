@@ -22,10 +22,10 @@ describe('requestsStatus', () => {
       spy(v);
     });
 
-    expect(spy).toHaveBeenCalledWith({ value: 'pending' });
+    expect(spy).toHaveBeenCalledWith({ value: 'idle' });
 
     expect(store.query(getRequestStatus(requestKey))).toStrictEqual({
-      value: 'pending',
+      value: 'idle',
     });
 
     store.update(

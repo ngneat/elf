@@ -97,8 +97,8 @@ export function getRequestStatus<S extends StateOf<typeof withRequestsStatus>>(
     return (
       getRequestsStatus(state)[key] ??
       ({
-        value: 'pending',
-      } as PendingState)
+        value: 'idle',
+      } as IdleState)
     );
   };
 }
