@@ -1,7 +1,7 @@
 import { Store } from '@ngneat/elf';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { StatusState } from '..';
+import { ErrorState, StatusState } from '..';
 
 export function createRequestDataSource<
   Data,
@@ -12,11 +12,13 @@ export function createRequestDataSource<
   store,
   status$,
   dataKey,
+  idleAsPending = false,
 }: {
   dataKey?: DataKey;
   data$: Observable<Data>;
   status$: Observable<StatusState>;
   store: Store;
+  idleAsPending?: boolean;
 }): Observable<{
   [K in 'loading' | 'error' | DataKey]: K extends DataKey
     ? Data
@@ -33,10 +35,14 @@ export function createRequestDataSource<
     })
     .pipe(
       map(({ data, status }) => {
+        const v = status.value;
+
         return {
           [dataKey ?? 'data']: data,
-          loading: status.value === 'pending',
-          error: status.value === 'error' ? status.error : undefined,
+          loading: idleAsPending
+            ? v === 'pending' || v === 'idle'
+            : v === 'pending',
+          error: v === 'error' ? (status as ErrorState).error : undefined,
         } as any;
       })
     );
