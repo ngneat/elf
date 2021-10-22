@@ -1,5 +1,7 @@
 import { createState, Store } from '@ngneat/elf';
 import {
+  bindTrackRequestStatus,
+  bindSkipWhileCached,
   selectRequestStatus,
   updateRequestCache,
   updateRequestStatus,
@@ -21,10 +23,6 @@ export interface User {
   email: string;
 }
 
-export const enum UsersRequests {
-  default = 'users',
-}
-
 const { state, config } = createState(
   withEntities<User>(),
   withRequestsStatus(),
@@ -35,32 +33,31 @@ const store = new Store({ name: 'users', state, config });
 @Injectable({ providedIn: 'root' })
 export class UsersRepository {
   users$ = store.pipe(selectAll());
-  status$ = store.pipe(selectRequestStatus(UsersRequests.default));
+  status$ = store.pipe(selectRequestStatus('users'));
+
+  trackUsersRequestsStatus = bindTrackRequestStatus<'users' | `user-${string}`>(
+    store
+  );
+  skipWhileUsersCached = bindSkipWhileCached(store);
 
   user$(id: User['id']) {
     return store.pipe(selectEntity(id));
   }
 
   userStatus$(id: string) {
-    return store.pipe(
-      selectRequestStatus(id, { groupKey: UsersRequests.default })
-    );
-  }
-
-  get store() {
-    return store;
+    return store.pipe(selectRequestStatus(id, { groupKey: 'users' }));
   }
 
   setUsers(users: User[]) {
     store.update(
       setEntities(users),
-      updateRequestStatus(UsersRequests.default, 'success'),
-      updateRequestCache(UsersRequests.default)
+      updateRequestStatus('users', 'success'),
+      updateRequestCache('users')
     );
   }
 
   addUser(user: User) {
-    this.store.update(
+    store.update(
       addEntities(user),
       updateRequestCache(user.id),
       updateRequestStatus(user.id, 'success')

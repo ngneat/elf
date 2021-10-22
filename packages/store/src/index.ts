@@ -3,7 +3,7 @@ export {
   Reducer,
   StoreValue,
   StoreDef,
-  ReducerContext,
+  getStoreContext,
 } from './lib/store';
 export { propsFactory } from './lib/props-factory';
 export { propsArrayFactory } from './lib/props-array-factory';
@@ -30,4 +30,4 @@ export {
   isUndefined,
   capitalize,
 } from './lib/utils';
-export { StateOf, Query, OrArray } from './lib/types';
+export { StateOf, Query, OrArray, StoreContext } from './lib/types';

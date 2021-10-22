@@ -104,3 +104,14 @@ export function skipWhileCached<T, S extends StateOf<typeof withRequestsCache>>(
     return source;
   };
 }
+
+export function bindSkipWhileCached<
+  S extends StateOf<typeof withRequestsCache>
+>(store: Store<StoreDef<S>>) {
+  return function (
+    key: Parameters<typeof skipWhileCached>[1],
+    options?: Parameters<typeof skipWhileCached>[2]
+  ) {
+    return skipWhileCached(store, key, options);
+  };
+}

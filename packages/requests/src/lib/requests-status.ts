@@ -111,12 +111,9 @@ export function selectIsRequestPending<
   return select((state) => getRequestStatus(key)(state).value === 'pending');
 }
 
-export function trackRequestStatus<
-  T,
-  S extends StateOf<typeof withRequestsStatus>
->(
-  store: Store<StoreDef<S>>,
-  key: string,
+export function trackRequestStatus<Keys extends string, T>(
+  store: Store<StoreDef<StateOf<typeof withRequestsStatus>>>,
+  key: Keys,
   options?: { mapError?: (error: any) => any; handleSuccess?: boolean }
 ): MonoTypeOperatorFunction<T> {
   return function (source: Observable<T>) {
@@ -155,4 +152,15 @@ export function initializeAsIdle(keys: OrArray<string>) {
 
     return acc;
   }, {} as Record<string, IdleState>);
+}
+
+// S extends StateOf<typeof withRequestsStatus>>(store: Store<StoreDef<S>>
+
+export function bindTrackRequestStatus<Keys extends string>(store: Store<any>) {
+  return function <T>(
+    key: Keys,
+    options?: Parameters<typeof trackRequestStatus>[2]
+  ) {
+    return trackRequestStatus<Keys, T>(store, key, options);
+  };
 }
