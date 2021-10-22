@@ -30,17 +30,17 @@ const { state, config } = createState(
 const todosStore = new Store({ name: 'todos', state, config });
 ```
 
-In your server call, you can use the `setRequestStatus` operator and pass a unique `key` to identify the request:
+In your server call, you can use the `trackRequestStatus` operator and pass a unique `key` to identify the request:
 
 ```ts title="todos.service.ts"
-import { setRequestStatus } from '@ngneat/elf-requests';
+import { trackRequestStatus } from '@ngneat/elf-requests';
 import { setTodos } from './todos.repository';
 
 export function fetchTodos() {
   return http.get(todosUrl).pipe(
     tap((todos) => setTodos(todos)),
     // highlight-next-line
-    setRequestStatus(todosStore, 'todos')
+    trackRequestStatus(todosStore, 'todos')
   );
 }
 ```
@@ -60,9 +60,13 @@ export function setTodos(todos: Todo[]) {
 }
 ```
 
-You need to set it manually to avoid a redundant update and have the option to define what a "successful" response is.
+You need to set it manually to avoid a **redundant** update and have the option to define what a "successful" response is. You can give up these advantages by using the `handleSuccess` option:
 
-You can use the `initializeAsIdle` function to initialize a request as idle:
+```ts
+trackRequestStatus(todosStore, 'todos', { handleSuccess: true })
+```
+
+You can use the `initializeAsIdle` function to initialize a request as `idle`:
 
 ```ts
 import { createState, Store } from '@ngneat/elf';

@@ -3,7 +3,7 @@ import { withEntities, setEntities } from '@ngneat/elf-entities';
 import {
   withRequestsStatus,
   selectRequestStatus,
-  setRequestStatus,
+  trackRequestStatus,
   updateRequestStatus,
 } from '@ngneat/elf-requests';
 import { fromFetch } from 'rxjs/fetch';
@@ -37,7 +37,7 @@ function setTodos(todos: Todo[]) {
 function fecthTodos() {
   return fromFetch<Todo[]>('https://jsonplaceholder.typicode.com/todos', {
     selector: (response) => response.json(),
-  }).pipe(tap(setTodos), setRequestStatus(todosStore, 'todos'));
+  }).pipe(tap(setTodos), trackRequestStatus(todosStore, 'todos'));
 }
 
 setTimeout(() => {

@@ -111,13 +111,13 @@ export function selectIsRequestPending<
   return select((state) => getRequestStatus(key)(state).value === 'pending');
 }
 
-export function setRequestStatus<
+export function trackRequestStatus<
   T,
   S extends StateOf<typeof withRequestsStatus>
 >(
   store: Store<StoreDef<S>>,
   key: string,
-  options?: { mapError?: (error: any) => any }
+  options?: { mapError?: (error: any) => any; handleSuccess?: boolean }
 ): MonoTypeOperatorFunction<T> {
   return function (source: Observable<T>) {
     return defer(() => {
@@ -127,6 +127,11 @@ export function setRequestStatus<
 
       return source.pipe(
         tap({
+          next() {
+            if (options?.handleSuccess) {
+              store.update(updateRequestStatus(key, 'success'));
+            }
+          },
           error(error) {
             store.update(
               updateRequestStatus(

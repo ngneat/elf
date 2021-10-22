@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { User, UsersRepository, UsersRequests } from './users.repository';
-import { setRequestStatus, skipWhileCached } from '@ngneat/elf-requests';
+import { trackRequestStatus, skipWhileCached } from '@ngneat/elf-requests';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,7 @@ export class UsersService {
       .get<User[]>('https://jsonplaceholder.typicode.com/users')
       .pipe(
         tap((users) => this.usersRepo.setUsers(users)),
-        setRequestStatus(this.usersRepo.store, UsersRequests.default),
+        trackRequestStatus(this.usersRepo.store, UsersRequests.default),
         skipWhileCached(this.usersRepo.store, UsersRequests.default)
       );
   }
@@ -25,7 +25,7 @@ export class UsersService {
       .get<User>(`https://jsonplaceholder.typicode.com/users/${id}`)
       .pipe(
         tap((user) => this.usersRepo.addUser(user)),
-        setRequestStatus(this.usersRepo.store, id),
+        trackRequestStatus(this.usersRepo.store, id),
         skipWhileCached(this.usersRepo.store, [id, UsersRequests.default])
       );
   }
