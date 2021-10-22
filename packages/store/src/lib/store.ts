@@ -1,13 +1,6 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Query } from '..';
 import { addStore, removeStore } from './registry';
-import { StoreContext } from './types';
-
-export const STORE_CONTEXT = Symbol('STORE_CONTEXT');
-
-export function getStoreContext(state: any): StoreContext {
-  return state[STORE_CONTEXT];
-}
 
 export class Store<
   SDef extends StoreDef = any,
@@ -15,23 +8,17 @@ export class Store<
 > extends BehaviorSubject<State> {
   initialState!: State;
 
-  private context: StoreContext = {
+  private context: ReducerContext = {
     config: this.getConfig(),
   };
 
   constructor(private storeDef: SDef) {
-    super(
-      Object.assign(storeDef.state, {
-        [STORE_CONTEXT]: {
-          config: storeDef.config,
-        },
-      })
-    );
+    super(storeDef.state);
     this.initialState = this.getValue();
     addStore(this);
   }
 
-  get name() {
+  get name(): StoreDef['name'] {
     return this.storeDef.name;
   }
 
@@ -40,7 +27,7 @@ export class Store<
   }
 
   query<R>(selector: Query<State, R>) {
-    return selector(this.getValue(), this.context);
+    return selector(this.getValue());
   }
 
   update(...reducers: Array<Reducer<State>>) {
@@ -53,10 +40,6 @@ export class Store<
     }, currentState);
 
     if (nextState !== currentState) {
-      if (!(nextState as any)[STORE_CONTEXT]) {
-        (nextState as any)[STORE_CONTEXT] = this.context;
-      }
-
       super.next(nextState);
     }
   }
@@ -116,7 +99,8 @@ export class Store<
 }
 
 export type StoreValue<T extends Store> = ReturnType<T['getValue']>;
-export type Reducer<State> = (state: State, context: StoreContext) => State;
+export type Reducer<State> = (state: State, context: ReducerContext) => State;
+export type ReducerContext = { config: Record<PropertyKey, any> };
 
 export interface StoreDef<State = any> {
   name: string;
