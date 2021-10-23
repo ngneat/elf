@@ -2,7 +2,7 @@ import { createState, Store } from '@ngneat/elf';
 import { expectTypeOf } from 'expect-type';
 import { mapTo, tap, timer } from 'rxjs';
 import {
-  createRequestStatusOperator,
+  createRequestsStatusOperator,
   initializeAsIdle,
   StatusState,
   updateRequestStatus,
@@ -98,12 +98,11 @@ describe('requestsStatus', () => {
 
     const store = new Store({ state, config, name: 'users' });
 
-    const trackUsersRequestsStatus = createRequestStatusOperator(store);
+    const trackUsersRequestsStatus = createRequestsStatusOperator(store);
 
     const spy = jest.fn();
 
     store.pipe(selectRequestStatus('users')).subscribe((v) => {
-      console.log(v);
       spy(v);
     });
 

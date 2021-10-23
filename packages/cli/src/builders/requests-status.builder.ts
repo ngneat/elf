@@ -10,7 +10,7 @@ export class RequestsStatusBuilder extends FeatureBuilder {
 
   getPropsFactory() {
     return factory.createCallExpression(
-      factory.createIdentifier('withRequestsStatus'),
+      factory.createIdentifier(`withRequestsStatus<'${this.storeName}'>`),
       undefined,
       []
     );
@@ -18,14 +18,24 @@ export class RequestsStatusBuilder extends FeatureBuilder {
 
   run() {
     this.addImport(
-      ['withRequestsStatus', 'selectRequestStatus'],
+      [
+        'withRequestsStatus',
+        'selectRequestStatus',
+        'createRequestsStatusOperator',
+      ],
       '@ngneat/elf-requests'
     );
 
     this.repo.insertMember(0, {
       name: `status$`,
       kind: StructureKind.Property,
-      initializer: `${this.storeVariableName}.pipe(selectRequestStatus('key'))`,
+      initializer: `${this.storeVariableName}.pipe(selectRequestStatus('${this.storeNames.propertyName}'))`,
+    });
+
+    this.repo.insertMember(0, {
+      name: `track${this.storeNames.className}RequestsStatus`,
+      kind: StructureKind.Property,
+      initializer: `createRequestsStatusOperator(${this.storeVariableName})`,
     });
   }
 }

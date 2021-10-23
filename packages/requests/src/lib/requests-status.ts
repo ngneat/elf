@@ -157,7 +157,7 @@ function trackRequestStatus<S extends RequestsStatusState, T>(
   };
 }
 
-export function createRequestStatusOperator<S extends RequestsStatusState>(
+export function createRequestsStatusOperator<S extends RequestsStatusState>(
   store: Store<StoreDef<S>>
 ) {
   return function <T>(

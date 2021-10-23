@@ -1,6 +1,8 @@
 import {
   coerceArray,
-  propsFactory,
+  EmptyConfig,
+  OrArray,
+  PropsFactory,
   Query,
   Reducer,
   select,
@@ -11,31 +13,34 @@ import {
 
 import { EMPTY, Observable, OperatorFunction } from 'rxjs';
 
-type CacheValue = Record<string | number, CacheState>;
+type RequestsCacheState = StateOf<typeof withRequestsCache>;
+type RecordKeys<S> = S extends { requestsCache: Record<infer K, any> }
+  ? K
+  : string;
+
 export type CacheState = {
   value: 'none' | 'partial' | 'full';
   timestamp?: number;
 };
 
-export const {
-  withRequestsCache,
-  updateRequestsCache,
-  selectRequestsCache,
-  resetRequestsCache,
-  getRequestsCache,
-  setRequestsCache,
-} = propsFactory('requestsCache', {
-  initialValue: {} as CacheValue,
-});
-
-export function selectRequestCache<S extends StateOf<typeof withRequestsCache>>(
-  key: string | number
+export function withRequestsCache<Keys extends string>(
+  initialValue?: Record<Keys, CacheState>
+): PropsFactory<{ requestsCache: Record<Keys, CacheState> }, EmptyConfig> {
+  return {
+    props: {
+      requestsCache: initialValue ?? ({} as Record<Keys, CacheState>),
+    },
+    config: undefined,
+  };
+}
+export function selectRequestCache<S extends RequestsCacheState>(
+  key: RecordKeys<S>
 ): OperatorFunction<S, CacheState> {
   return select((state) => getRequestCache(key)(state));
 }
 
-export function updateRequestCache<S extends StateOf<typeof withRequestsCache>>(
-  key: string | number,
+export function updateRequestCache<S extends RequestsCacheState>(
+  key: RecordKeys<S>,
   { ttl, value: v }: { ttl?: number; value?: CacheState['value'] } = {}
 ): Reducer<S> {
   const data = {
@@ -45,17 +50,23 @@ export function updateRequestCache<S extends StateOf<typeof withRequestsCache>>(
     data.timestamp = Date.now() + ttl;
   }
 
-  return updateRequestsCache({
-    [key]: data,
-  });
+  return function (state) {
+    return {
+      ...state,
+      requestsCache: {
+        ...state.requestsCache,
+        [key]: data,
+      },
+    };
+  };
 }
 
-export function getRequestCache<S extends StateOf<typeof withRequestsCache>>(
-  key: string | number
+export function getRequestCache<S extends RequestsCacheState>(
+  key: RecordKeys<S>
 ): Query<S, CacheState> {
   return function (state: S) {
     const cacheValue =
-      getRequestsCache(state)[key] ??
+      state.requestsCache[key] ??
       ({
         value: 'none',
       } as CacheState);
@@ -70,17 +81,15 @@ export function getRequestCache<S extends StateOf<typeof withRequestsCache>>(
   };
 }
 
-export function selectIsRequestCached<
-  S extends StateOf<typeof withRequestsCache>
->(
+export function selectIsRequestCached<S extends RequestsCacheState>(
   key: Parameters<typeof isRequestCached>[0],
   options?: { value?: CacheState['value'] }
 ): OperatorFunction<S, boolean> {
   return select((state) => isRequestCached(key, options)(state));
 }
 
-export function isRequestCached<S extends StateOf<typeof withRequestsCache>>(
-  key: string | number | string[] | number[],
+export function isRequestCached<S extends RequestsCacheState>(
+  key: OrArray<RecordKeys<S>>,
   options?: { value?: CacheState['value'] }
 ) {
   return function (state: S) {
@@ -91,9 +100,9 @@ export function isRequestCached<S extends StateOf<typeof withRequestsCache>>(
   };
 }
 
-export function skipWhileCached<T, S extends StateOf<typeof withRequestsCache>>(
+function skipWhileCached<S extends RequestsCacheState, T>(
   store: Store<StoreDef<S>>,
-  key: Parameters<typeof isRequestCached>[0],
+  key: OrArray<RecordKeys<S>>,
   options?: { value?: CacheState['value']; returnSource?: Observable<any> }
 ) {
   return function (source: Observable<T>) {
@@ -105,13 +114,13 @@ export function skipWhileCached<T, S extends StateOf<typeof withRequestsCache>>(
   };
 }
 
-export function bindSkipWhileCached<
-  S extends StateOf<typeof withRequestsCache>
->(store: Store<StoreDef<S>>) {
-  return function (
-    key: Parameters<typeof skipWhileCached>[1],
+export function createRequestsCacheOperator<S extends RequestsCacheState>(
+  store: Store<StoreDef<S>>
+) {
+  return function <T>(
+    key: RecordKeys<S>,
     options?: Parameters<typeof skipWhileCached>[2]
   ) {
-    return skipWhileCached(store, key, options);
+    return skipWhileCached<S, T>(store, key, options);
   };
 }

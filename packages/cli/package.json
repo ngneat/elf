@@ -28,7 +28,6 @@
   "devDependencies": {
     "@oclif/dev-cli": "1.26.0",
     "@types/chalk": "2.2.0",
-    "@types/cosmiconfig": "6.0.0",
     "@types/fs-extra": "8.1.0",
     "@types/inquirer": "7.3.2",
     "@types/jest": "26.0.23",

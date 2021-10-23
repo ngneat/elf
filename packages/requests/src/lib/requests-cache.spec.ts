@@ -5,23 +5,23 @@ import {
   isRequestCached,
   selectIsRequestCached,
   selectRequestCache,
-  skipWhileCached,
   updateRequestCache,
-  updateRequestsCache,
   withRequestsCache,
 } from './requests-cache';
 import { Subject } from 'rxjs';
 import { expectTypeOf } from 'expect-type';
+import { createRequestsCacheOperator } from '..';
 
 describe('requestsCache', () => {
-  const { state, config } = createState(withRequestsCache());
-  const store = new Store({ state, config, name: '' });
-  const requestKey = 'foo';
+  const { state, config } = createState(
+    withRequestsCache<'users' | `user-${string}`>()
+  );
+  const store = new Store({ state, config, name: 'users' });
 
   it('should work', () => {
     const spy = jest.fn();
 
-    store.pipe(selectRequestCache(requestKey)).subscribe((v) => {
+    store.pipe(selectRequestCache('users')).subscribe((v) => {
       expectTypeOf(v).toEqualTypeOf<CacheState>();
       spy(v);
     });
@@ -30,19 +30,13 @@ describe('requestsCache', () => {
       value: 'none',
     });
 
-    expect(store.query(getRequestCache(requestKey))).toStrictEqual({
+    expect(store.query(getRequestCache('users'))).toStrictEqual({
       value: 'none',
     });
 
-    store.update(
-      updateRequestsCache({
-        [requestKey]: {
-          value: 'partial',
-        },
-      })
-    );
+    store.update(updateRequestCache('users', { value: 'partial' }));
 
-    expect(store.query(getRequestCache(requestKey))).toStrictEqual({
+    expect(store.query(getRequestCache('users'))).toStrictEqual({
       value: 'partial',
     });
 
@@ -50,34 +44,30 @@ describe('requestsCache', () => {
       value: 'partial',
     });
 
-    store.update(
-      updateRequestsCache({
-        bar: {
-          value: 'partial',
-        },
-      })
-    );
+    store.update(updateRequestCache('user-1', { value: 'partial' }));
 
     // // Updating a different key should not cause emission
     expect(spy).toHaveBeenCalledTimes(2);
 
     // It's partial not full
-    store.pipe(selectIsRequestCached(requestKey)).subscribe((v) => {
+    store.pipe(selectIsRequestCached('users')).subscribe((v) => {
       expectTypeOf(v).toEqualTypeOf<boolean>();
       expect(v).toBeFalsy();
     });
 
     // It's partial not full
-    expect(store.query(isRequestCached(requestKey))).toBeFalsy();
+    expect(store.query(isRequestCached('users'))).toBeFalsy();
     expect(
-      store.query(isRequestCached(requestKey, { value: 'partial' }))
+      store.query(isRequestCached('users', { value: 'partial' }))
     ).toBeTruthy();
   });
 
   it('should updateRequestCache', () => {
-    const { state, config } = createState(withRequestsCache());
-    const store = new Store({ state, config, name: '' });
-    const key = 'baz';
+    const { state, config } = createState(
+      withRequestsCache<'users' | `user-${string}`>()
+    );
+    const store = new Store({ state, config, name: 'users' });
+    const key = 'users';
 
     store.update(updateRequestCache(key));
 
@@ -95,34 +85,39 @@ describe('requestsCache', () => {
   });
 
   it('should skipWhileCached', () => {
+    const { state, config } = createState(
+      withRequestsCache<'users' | `user-${string}`>()
+    );
+    const store = new Store({ state, config, name: 'users' });
+    const skipWhileUsersCached = createRequestsCacheOperator(store);
+
     let spy = jest.fn();
 
     const subject = new Subject();
 
-    subject.asObservable().pipe(skipWhileCached(store, 'bar')).subscribe(spy);
+    subject.asObservable().pipe(skipWhileUsersCached('users')).subscribe(spy);
 
     subject.next({});
     expect(spy).toHaveBeenCalledTimes(1);
 
-    store.update(
-      updateRequestsCache({
-        bar: {
-          value: 'full',
-        },
-      })
-    );
+    store.update(updateRequestCache('users', { value: 'full' }));
 
     spy = jest.fn();
 
-    subject.asObservable().pipe(skipWhileCached(store, 'bar')).subscribe(spy);
+    subject.asObservable().pipe(skipWhileUsersCached('users')).subscribe(spy);
 
     subject.next({});
     expect(spy).toHaveBeenCalledTimes(0);
   });
 
   it('should uphold ttl', () => {
+    const { state, config } = createState(
+      withRequestsCache<'users' | `user-${string}`>()
+    );
+    const store = new Store({ state, config, name: 'users' });
+
     jest.useFakeTimers();
-    const ttlRequestKey = 'fooTTL';
+    const ttlRequestKey = 'users';
 
     store.update(updateRequestCache(ttlRequestKey, { ttl: 1000 }));
 

@@ -10,7 +10,7 @@ export class RequestsCacheBuilder extends FeatureBuilder {
 
   getPropsFactory() {
     return factory.createCallExpression(
-      factory.createIdentifier('withRequestsCache'),
+      factory.createIdentifier(`withRequestsCache<'${this.storeName}'>`),
       undefined,
       []
     );
@@ -18,7 +18,12 @@ export class RequestsCacheBuilder extends FeatureBuilder {
 
   run() {
     this.addImport(
-      ['withRequestsCache', 'updateRequestCache', 'CacheState'],
+      [
+        'withRequestsCache',
+        'updateRequestCache',
+        'CacheState',
+        'createRequestsCacheOperator',
+      ],
       '@ngneat/elf-requests'
     );
 
@@ -28,10 +33,16 @@ export class RequestsCacheBuilder extends FeatureBuilder {
         : `updateRequestCache`,
       kind: StructureKind.Method,
       parameters: [
-        { name: 'key', type: 'string' },
+        { name: 'keys', type: `'${this.storeName}'` },
         { name: 'state', type: 'CacheState' },
       ],
       statements: `${this.storeVariableName}.update(updateRequestCache(key, state));`,
+    });
+
+    this.repo.insertMember(0, {
+      name: `skipWhile${this.storeNames.className}Cached`,
+      kind: StructureKind.Property,
+      initializer: `createRequestsCacheOperator(${this.storeVariableName})`,
     });
   }
 }
