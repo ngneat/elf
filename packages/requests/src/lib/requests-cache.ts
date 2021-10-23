@@ -13,8 +13,10 @@ import {
 
 import { EMPTY, Observable, OperatorFunction } from 'rxjs';
 
-type RequestsCacheState = StateOf<typeof withRequestsCache>;
-type RecordKeys<S> = S extends { requestsCache: Record<infer K, any> }
+export type RequestsCacheState = StateOf<typeof withRequestsCache>;
+export type CacheRecordKeys<S> = S extends {
+  requestsCache: Record<infer K, any>;
+}
   ? K
   : string;
 
@@ -34,13 +36,13 @@ export function withRequestsCache<Keys extends string>(
   };
 }
 export function selectRequestCache<S extends RequestsCacheState>(
-  key: RecordKeys<S>
+  key: CacheRecordKeys<S>
 ): OperatorFunction<S, CacheState> {
   return select((state) => getRequestCache(key)(state));
 }
 
 export function updateRequestCache<S extends RequestsCacheState>(
-  key: RecordKeys<S>,
+  key: CacheRecordKeys<S>,
   { ttl, value: v }: { ttl?: number; value?: CacheState['value'] } = {}
 ): Reducer<S> {
   const data = {
@@ -62,7 +64,7 @@ export function updateRequestCache<S extends RequestsCacheState>(
 }
 
 export function getRequestCache<S extends RequestsCacheState>(
-  key: RecordKeys<S>
+  key: CacheRecordKeys<S>
 ): Query<S, CacheState> {
   return function (state: S) {
     const cacheValue =
@@ -89,7 +91,7 @@ export function selectIsRequestCached<S extends RequestsCacheState>(
 }
 
 export function isRequestCached<S extends RequestsCacheState>(
-  key: OrArray<RecordKeys<S>>,
+  key: OrArray<CacheRecordKeys<S>>,
   options?: { value?: CacheState['value'] }
 ) {
   return function (state: S) {
@@ -100,9 +102,9 @@ export function isRequestCached<S extends RequestsCacheState>(
   };
 }
 
-function skipWhileCached<S extends RequestsCacheState, T>(
+export function skipWhileCached<S extends RequestsCacheState, T>(
   store: Store<StoreDef<S>>,
-  key: OrArray<RecordKeys<S>>,
+  key: OrArray<CacheRecordKeys<S>>,
   options?: { value?: CacheState['value']; returnSource?: Observable<any> }
 ) {
   return function (source: Observable<T>) {
@@ -114,13 +116,13 @@ function skipWhileCached<S extends RequestsCacheState, T>(
   };
 }
 
-export function createRequestsCacheOperator<S extends RequestsCacheState>(
-  store: Store<StoreDef<S>>
-) {
-  return function <T>(
-    key: RecordKeys<S>,
-    options?: Parameters<typeof skipWhileCached>[2]
-  ) {
-    return skipWhileCached<S, T>(store, key, options);
-  };
-}
+// export function createRequestsCacheOperator<S extends RequestsCacheState>(
+//   store: Store<StoreDef<S>>
+// ) {
+//   return function <T>(
+//     key: CacheRecordKeys<S>,
+//     options?: Parameters<typeof skipWhileCached>[2]
+//   ) {
+//     return skipWhileCached<S, T>(store, key, options);
+//   };
+// }

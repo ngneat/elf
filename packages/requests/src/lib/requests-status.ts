@@ -18,8 +18,8 @@ import {
   tap,
 } from 'rxjs';
 
-type RequestsStatusState = StateOf<typeof withRequestsStatus>;
-type RecordKeys<S> = S extends { requestsStatus: Record<infer K, any> }
+export type RequestsStatusState = StateOf<typeof withRequestsStatus>;
+export type RecordKeys<S> = S extends { requestsStatus: Record<infer K, any> }
   ? K
   : string;
 
@@ -96,8 +96,8 @@ export function getRequestStatus<S extends RequestsStatusState>(
     return (
       state.requestsStatus[key] ??
       ({
-        value: 'pending',
-      } as PendingState)
+        value: 'idle',
+      } as IdleState)
     );
   };
 }
@@ -124,7 +124,7 @@ export function selectIsRequestPending<S extends RequestsStatusState>(
   return select((state) => getRequestStatus(key)(state).value === 'pending');
 }
 
-function trackRequestStatus<S extends RequestsStatusState, T>(
+export function trackRequestStatus<S extends RequestsStatusState, T>(
   store: Store<StoreDef<S>>,
   key: RecordKeys<S>,
   options?: { mapError?: (error: any) => any; handleSuccess?: boolean }
