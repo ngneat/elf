@@ -116,13 +116,13 @@ export function skipWhileCached<S extends RequestsCacheState, T>(
   };
 }
 
-// export function createRequestsCacheOperator<S extends RequestsCacheState>(
-//   store: Store<StoreDef<S>>
-// ) {
-//   return function <T>(
-//     key: CacheRecordKeys<S>,
-//     options?: Parameters<typeof skipWhileCached>[2]
-//   ) {
-//     return skipWhileCached<S, T>(store, key, options);
-//   };
-// }
+export function createRequestsCacheOperator<S extends RequestsCacheState>(
+  store: Store<StoreDef<S>>
+) {
+  return function <T>(
+    key: CacheRecordKeys<S>,
+    options?: Parameters<typeof skipWhileCached>[2]
+  ) {
+    return skipWhileCached<S, T>(store, key, options);
+  };
+}

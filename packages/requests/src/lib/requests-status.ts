@@ -127,7 +127,7 @@ export function selectIsRequestPending<S extends RequestsStatusState>(
 export function trackRequestStatus<S extends RequestsStatusState, T>(
   store: Store<StoreDef<S>>,
   key: RecordKeys<S>,
-  options?: { mapError?: (error: any) => any; handleSuccess?: boolean }
+  options?: { mapError?: (error: any) => any }
 ): MonoTypeOperatorFunction<T> {
   return function (source: Observable<T>) {
     return defer(() => {
@@ -137,11 +137,6 @@ export function trackRequestStatus<S extends RequestsStatusState, T>(
 
       return source.pipe(
         tap({
-          next() {
-            if (options?.handleSuccess) {
-              store.update(updateRequestStatus(key, 'success'));
-            }
-          },
           error(error) {
             store.update(
               updateRequestStatus(
@@ -168,12 +163,12 @@ export function createRequestsStatusOperator<S extends RequestsStatusState>(
   };
 }
 
-export function initializeAsIdle(keys: OrArray<string>) {
+export function initializeAsPending(keys: OrArray<string>) {
   return coerceArray(keys).reduce((acc, key) => {
     acc[key] = {
-      value: 'idle',
+      value: 'pending',
     };
 
     return acc;
-  }, {} as Record<string, IdleState>);
+  }, {} as Record<string, PendingState>);
 }

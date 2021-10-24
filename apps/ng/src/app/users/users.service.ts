@@ -14,8 +14,8 @@ export class UsersService {
       .get<User[]>('https://jsonplaceholder.typicode.com/users')
       .pipe(
         tap((users) => this.usersRepo.setUsers(users)),
-        this.usersRepo.trackUsersRequestsStatus('users'),
-        this.usersRepo.skipWhileUsersCached('users')
+        this.usersRepo.dataSource.trackRequestStatus(),
+        this.usersRepo.dataSource.skipWhileCached()
       );
   }
 
@@ -24,8 +24,8 @@ export class UsersService {
       .get<User>(`https://jsonplaceholder.typicode.com/users/${id}`)
       .pipe(
         tap((user) => this.usersRepo.addUser(user)),
-        this.usersRepo.trackUsersRequestsStatus(`user-${id}`),
-        this.usersRepo.skipWhileUsersCached([id, 'users'])
+        this.usersRepo.userDataSource.trackRequestStatus({ key: id }),
+        this.usersRepo.userDataSource.skipWhileCached({ key: [id, 'users'] })
       );
   }
 }

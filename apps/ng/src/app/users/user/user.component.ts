@@ -5,16 +5,16 @@ import { UsersRepository } from '../users.repository';
 
 @Component({
   template: `
-    <h1>Status: {{ status$ | async | json }}</h1>
+    <ng-container *ngIf="userDataSource | async as data">
+      <h1>Loading: {{ data.loading }}</h1>
 
-    <h1>User: {{ user$ | async | json }}</h1>
+      <code>User: {{ data.user | json }}</code>
+    </ng-container>
   `,
 })
 export class UserComponent implements OnInit {
   id = this.router.snapshot.params.id;
-  user$ = this.usersRepository.user$(this.id);
-
-  status$ = this.usersRepository.userStatus$(this.router.snapshot.params.id);
+  userDataSource = this.usersRepository.userDataSource.data$({ key: this.id });
 
   constructor(
     private router: ActivatedRoute,

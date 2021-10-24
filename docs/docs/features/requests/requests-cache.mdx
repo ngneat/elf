@@ -12,7 +12,7 @@ npm i @ngneat/elf-requests
 
 To use this feature, provide the `withRequestsCache` props factory function in the `createState` call:
 
-```ts
+```ts title="todos.repository.ts"
 import { createState, Store } from '@ngneat/elf';
 import { withEntities } from '@ngneat/elf-entities';
 import { withRequestsCache } from '@ngneat/elf-requests';
@@ -24,14 +24,37 @@ interface Todo {
 
 const { state, config } = createState(
   withEntities<Todo>(),
-  withRequestsCache()
+  // You can pass the keys type
+  // highlight-next-line
+  withRequestsCache<`todos`, `todo-${string}`>()
 );
 
 export const todosStore = new Store({ name: 'todos', state, config });
 ```
+Now we can use the `createRequestsCacheOperator` function that takes a store and returns a custom operator.
 
-In your server call, you can use the `skipWhileCached` operator and pass a unique key to identify the request.
-This enables skipping the API call if the passed key is located in the store cache.
+```ts
+import { withRequestsCache, createRequestsCacheOperator } from '@ngneat/elf-requests';
+
+export const todosStore = new Store({ name: 'todos', state, config });
+
+export const skipWhileTodosCached = createRequestsCacheOperator(todosStore);
+```
+
+We can use the resulting operator and pass a unique key to identify the request. This enables skipping the API call if the passed key is located in the store cache.
+
+```ts title="todos.service.ts"
+import { setTodos, skipWhileTodosCached } from './todos.repository';
+
+export function fetchTodos() {
+  return http.get(todosUrl).pipe(
+    tap(setTodos(todos)),
+    // highlight-next-line
+    skipWhileTodosCached('todos')
+  );
+}
+```
+
 Use it in tandem with `updateRequestsCache`:
 
 ```ts title="todos.repository.ts"
@@ -43,19 +66,6 @@ export function setTodos(todos: Todo[]) {
     // highlight-next-line
     updateRequestCache('todos'),
     setEntities(todos)
-  );
-}
-```
-
-```ts title="todos.service.ts"
-import { skipWhileCached } from '@ngneat/elf-requests';
-import { todosStore, setTodos } from './todos.repository';
-
-export function fetchTodos() {
-  return http.get(todosUrl).pipe(
-    tap((todos) => setTodos(todos)),
-    // highlight-next-line
-    skipWhileCached(todosStore, 'todos')
   );
 }
 ```
@@ -76,14 +86,13 @@ export function setTodos(todos: Todo[]) {
 ```
 
 ```ts title="todos.service.ts"
-import { skipWhileCached } from '@ngneat/elf-requests';
-import { todosStore, setTodos } from './todos.repository';
+import { setTodos, skipWhileTodosCached } from './todos.repository';
 
 export function fetchTodos() {
   return http.get(todosUrl).pipe(
     tap((todos) => setTodos(todos)),
     // highlight-next-line
-    skipWhileCached(todosStore, 'todos', { value: 'partial' })
+    skipWhileTodosCached('todos', { value: 'partial' })
   );
 }
 ```
@@ -92,14 +101,13 @@ In addition to value, you can pass in the same object a `returnSource` which wil
 request is cached. The default return value is `EMPTY` observable.
 
 ```ts title="todos.service.ts"
-import { skipWhileCached } from '@ngneat/elf-requests';
-import { todosStore, setTodos } from './todos.repository';
+import { skipWhileTodosCached, setTodos } from './todos.repository';
 
 export function fetchTodos() {
   return http.get(todosUrl).pipe(
     tap((todos) => setTodos(todos)),
     // highlight-next-line
-    skipWhileCached(todosStore, 'todos', { returnSource: of([]) })
+    skipWhileTodosCached('todos', { returnSource: of([]) })
   );
 }
 ```
@@ -170,6 +178,3 @@ store.update(updateRequestCache('todos', { ttl: 1000 }));
 
 If you pass `ttl` (time to live) when updating a cache record, that represents the time (in milliseconds) that `key` will
 have the value that was set (afterward, it reverts to 'none').
-
-And more:
-`updateRequestsCache`, `resetRequestsCache`, `getRequestsCache`, `setRequestsCache`

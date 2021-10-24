@@ -4,7 +4,7 @@ import {
   withRequestsCache,
   updateRequestCache,
   selectRequestCache,
-  skipWhileCached,
+  createRequestsCacheOperator,
 } from '@ngneat/elf-requests';
 import { fromFetch } from 'rxjs/fetch';
 import { tap } from 'rxjs/operators';
@@ -16,10 +16,11 @@ interface Todo {
 
 const { state, config } = createState(
   withEntities<Todo>(),
-  withRequestsCache()
+  withRequestsCache<'todos'>()
 );
 
 const todosStore = new Store({ name: 'todos', state, config });
+const skipWhileTodosCached = createRequestsCacheOperator(todosStore);
 
 export function setTodos(todos: Todo[]) {
   todosStore.update(updateRequestCache('todos'), setEntities(todos));
@@ -32,10 +33,7 @@ todosStore.pipe(selectRequestCache('todos')).subscribe((status) => {
 function fetchTodos() {
   return fromFetch<Todo[]>('https://jsonplaceholder.typicode.com/todos', {
     selector: (response) => response.json(),
-  }).pipe(
-    tap((todos) => setTodos(todos)),
-    skipWhileCached(todosStore, 'todos')
-  );
+  }).pipe(tap(setTodos), skipWhileTodosCached('todos'));
 }
 
 fetchTodos().subscribe(() => console.log('fetched'));

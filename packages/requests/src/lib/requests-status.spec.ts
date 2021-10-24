@@ -3,10 +3,10 @@ import { expectTypeOf } from 'expect-type';
 import { mapTo, tap, timer } from 'rxjs';
 import {
   createRequestsStatusOperator,
-  initializeAsIdle,
+  initializeAsPending,
   StatusState,
   updateRequestStatus,
-} from '..';
+} from './requests-status';
 import {
   getRequestStatus,
   selectIsRequestPending,
@@ -29,10 +29,10 @@ describe('requestsStatus', () => {
       spy(v);
     });
 
-    expect(spy).toHaveBeenCalledWith({ value: 'pending' });
+    expect(spy).toHaveBeenCalledWith({ value: 'idle' });
 
     expect(store.query(getRequestStatus('users'))).toStrictEqual({
-      value: 'pending',
+      value: 'idle',
     });
 
     store.update(updateRequestStatus('users', 'success'));
@@ -80,13 +80,13 @@ describe('requestsStatus', () => {
 
   it('should initializeAsIdle', () => {
     const { state, config } = createState(
-      withRequestsStatus(initializeAsIdle(['foo', 'bar']))
+      withRequestsStatus(initializeAsPending(['foo', 'bar']))
     );
     const store = new Store({ state, config, name: 'users' });
 
-    expect(store.query(getRequestStatus('bar'))).toEqual({ value: 'idle' });
-    expect(store.query(getRequestStatus('foo'))).toEqual({ value: 'idle' });
-    expect(store.query(getRequestStatus('baz'))).toEqual({ value: 'pending' });
+    expect(store.query(getRequestStatus('bar'))).toEqual({ value: 'pending' });
+    expect(store.query(getRequestStatus('foo'))).toEqual({ value: 'pending' });
+    expect(store.query(getRequestStatus('baz'))).toEqual({ value: 'idle' });
   });
 
   it('should createRequestStatusOperator', () => {
@@ -111,7 +111,7 @@ describe('requestsStatus', () => {
     timer(1000)
       .pipe(
         mapTo({ id: 1 }),
-        trackUsersRequestsStatus('users', { handleSuccess: true }),
+        trackUsersRequestsStatus('users'),
         tap((v) => {
           // check that we persists the return type
           expectTypeOf(v).toEqualTypeOf<{ id: number }>();

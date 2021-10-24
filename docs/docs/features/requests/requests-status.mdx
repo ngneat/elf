@@ -12,10 +12,10 @@ npm i @ngneat/elf-requests
 
 To use this feature, provide the `withRequestsStatus` props factory function in the `createState` call:
 
-```ts
+```ts title="todos.repository"
 import { createState, Store } from '@ngneat/elf';
 import { withEntities } from '@ngneat/elf-entities';
-import { withRequestsStatus } from '@ngneat/elf-requests';
+import { withRequestsStatus, createRequestsStatusOperator } from '@ngneat/elf-requests';
 
 interface Todo {
   id: number;
@@ -24,28 +24,40 @@ interface Todo {
 
 const { state, config } = createState(
   withEntities<Todo>(),
-  withRequestsStatus()
+  // You can pass the keys type
+  // highlight-next-line
+  withRequestsStatus<`todos`, `todo-${string}`>()
 );
 
 const todosStore = new Store({ name: 'todos', state, config });
 ```
 
-In your server call, you can use the `trackRequestStatus` operator and pass a unique `key` to identify the request:
+Now we can use the `createRequestsStatusOperator` function that takes a store and returns a custom operator. That operator takes the request key and sets its initial status to `pending`. It also updates it to `error` when it fails.
+
+```ts title="todos.repository"
+import { withRequestsStatus, createRequestsStatusOperator } from '@ngneat/elf-requests';
+
+// ...
+const todosStore = new Store({ name: 'todos', state, config });
+// highlight-next-line
+export const trackTodosRequestsStatus = createRequestsStatusOperator(todosStore);
+```
+
+And use it with our `async` source:
 
 ```ts title="todos.service.ts"
-import { trackRequestStatus } from '@ngneat/elf-requests';
-import { setTodos } from './todos.repository';
+import { setTodos, trackTodosRequestsStatus } from './todos.repository';
 
 export function fetchTodos() {
   return http.get(todosUrl).pipe(
-    tap((todos) => setTodos(todos)),
+    tap(setTodos),
     // highlight-next-line
-    trackRequestStatus(todosStore, 'todos')
+    trackTodosRequestsStatus('todos')
   );
 }
 ```
 
-This will ensure the `store` will have the `todos` call listed initially as `pending` and as `error` when it fails. Upon successful completion, the `success` status must be manually set as follows:
+Upon successful completion, the `success` status must be manually set as follows:
 
 ```ts title="todos.repository.ts"
 import { updateRequestStatus } from '@ngneat/elf-requests';
@@ -62,27 +74,18 @@ export function setTodos(todos: Todo[]) {
 
 You need to set it manually to avoid a **redundant** update and have the option to define what a "successful" response is. You can give up these advantages by using the `handleSuccess` option:
 
-```ts
-trackRequestStatus(todosStore, 'todos', { handleSuccess: true })
-```
-
-You can use the `initializeAsIdle` function to initialize a request as `idle`:
+The default `status` of any request is `idle`. You can use the `initializeAsPending` function to initialize a request as `pending`:
 
 ```ts
 import { createState, Store } from '@ngneat/elf';
 import { withEntities } from '@ngneat/elf-entities';
-import { withRequestsStatus, initializeAsIdle } from '@ngneat/elf-requests';
-
-interface Todo {
-  id: number;
-  label: string;
-}
+import { withRequestsStatus, initializeAsPending } from '@ngneat/elf-requests';
 
 const { state, config } = createState(
   withEntities<Todo>(),
   withRequestsStatus(
     // highlight-next-line
-    initializeAsIdle(['addTodo', 'updateTodo'])
+    initializeAsPending('todos')
   )
 );
 
@@ -142,6 +145,3 @@ store.update(updateRequestStatus('todos', 'pending'));
 store.update(updateRequestStatus('todos', 'success'));
 store.update(updateRequestStatus('todos', 'error', error));
 ```
-
-And more:
-`updateRequestsStatus`, `selectRequestsStatus`, `resetRequestsStatus`, `getRequestsStatus`, `setRequestsStatus`

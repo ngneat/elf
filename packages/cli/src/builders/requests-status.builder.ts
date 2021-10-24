@@ -17,25 +17,6 @@ export class RequestsStatusBuilder extends FeatureBuilder {
   }
 
   run() {
-    this.addImport(
-      [
-        'withRequestsStatus',
-        'selectRequestStatus',
-        'createRequestsStatusOperator',
-      ],
-      '@ngneat/elf-requests'
-    );
-
-    this.repo.insertMember(0, {
-      name: `status$`,
-      kind: StructureKind.Property,
-      initializer: `${this.storeVariableName}.pipe(selectRequestStatus('${this.storeNames.propertyName}'))`,
-    });
-
-    this.repo.insertMember(0, {
-      name: `track${this.storeNames.className}RequestsStatus`,
-      kind: StructureKind.Property,
-      initializer: `createRequestsStatusOperator(${this.storeVariableName})`,
-    });
+    this.addImport(['withRequestsStatus'], '@ngneat/elf-requests');
   }
 }

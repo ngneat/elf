@@ -17,32 +17,6 @@ export class RequestsCacheBuilder extends FeatureBuilder {
   }
 
   run() {
-    this.addImport(
-      [
-        'withRequestsCache',
-        'updateRequestCache',
-        'CacheState',
-        'createRequestsCacheOperator',
-      ],
-      '@ngneat/elf-requests'
-    );
-
-    this.repo.addMember({
-      name: this.isFunctionsTpl
-        ? `update${this.storeNames.className}RequestCache`
-        : `updateRequestCache`,
-      kind: StructureKind.Method,
-      parameters: [
-        { name: 'keys', type: `'${this.storeName}'` },
-        { name: 'state', type: 'CacheState' },
-      ],
-      statements: `${this.storeVariableName}.update(updateRequestCache(key, state));`,
-    });
-
-    this.repo.insertMember(0, {
-      name: `skipWhile${this.storeNames.className}Cached`,
-      kind: StructureKind.Property,
-      initializer: `createRequestsCacheOperator(${this.storeVariableName})`,
-    });
+    this.addImport(['withRequestsCache'], '@ngneat/elf-requests');
   }
 }
