@@ -10,22 +10,13 @@ export class RequestsStatusBuilder extends FeatureBuilder {
 
   getPropsFactory() {
     return factory.createCallExpression(
-      factory.createIdentifier('withRequestsStatus'),
+      factory.createIdentifier(`withRequestsStatus<'${this.storeName}'>`),
       undefined,
       []
     );
   }
 
   run() {
-    this.addImport(
-      ['withRequestsStatus', 'selectRequestStatus'],
-      '@ngneat/elf-requests'
-    );
-
-    this.repo.insertMember(0, {
-      name: `status$`,
-      kind: StructureKind.Property,
-      initializer: `${this.storeVariableName}.pipe(selectRequestStatus('key'))`,
-    });
+    this.addImport(['withRequestsStatus'], '@ngneat/elf-requests');
   }
 }

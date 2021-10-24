@@ -11,6 +11,7 @@ body:
         - entities
         - requests-status
         - requests-cache
+        - requests-data-source
         - pagination
         - persist-state
         - state-history

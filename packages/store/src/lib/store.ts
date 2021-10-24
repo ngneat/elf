@@ -1,4 +1,5 @@
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Query } from '..';
 import { addStore, removeStore } from './registry';
 
 export class Store<
@@ -17,7 +18,7 @@ export class Store<
     addStore(this);
   }
 
-  get name() {
+  get name(): StoreDef['name'] {
     return this.storeDef.name;
   }
 
@@ -25,7 +26,7 @@ export class Store<
     return this.storeDef.config;
   }
 
-  query<R>(selector: (state: State) => R) {
+  query<R>(selector: Query<State, R>) {
     return selector(this.getValue());
   }
 
@@ -97,9 +98,9 @@ export class Store<
   complete() {}
 }
 
-export type ReducerContext = { config: Record<PropertyKey, any> };
 export type StoreValue<T extends Store> = ReturnType<T['getValue']>;
 export type Reducer<State> = (state: State, context: ReducerContext) => State;
+export type ReducerContext = { config: Record<PropertyKey, any> };
 
 export interface StoreDef<State = any> {
   name: string;

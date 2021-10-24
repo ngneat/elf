@@ -3,7 +3,7 @@ import { withEntities, setEntities } from '@ngneat/elf-entities';
 import {
   withRequestsStatus,
   selectRequestStatus,
-  trackRequestStatus,
+  createRequestsStatusOperator,
   updateRequestStatus,
 } from '@ngneat/elf-requests';
 import { fromFetch } from 'rxjs/fetch';
@@ -16,10 +16,11 @@ interface Todo {
 
 const { state, config } = createState(
   withEntities<Todo>(),
-  withRequestsStatus()
+  withRequestsStatus<'todos'>()
 );
 
 const todosStore = new Store({ name: 'todos', state, config });
+const trackTodosRequestsStatus = createRequestsStatusOperator(todosStore);
 
 todosStore.pipe(selectRequestStatus('todos')).subscribe((status) => {
   console.log(status);
@@ -37,7 +38,7 @@ function setTodos(todos: Todo[]) {
 function fecthTodos() {
   return fromFetch<Todo[]>('https://jsonplaceholder.typicode.com/todos', {
     selector: (response) => response.json(),
-  }).pipe(tap(setTodos), trackRequestStatus(todosStore, 'todos'));
+  }).pipe(tap(setTodos), trackTodosRequestsStatus('todos'));
 }
 
 setTimeout(() => {

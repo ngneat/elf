@@ -11,7 +11,7 @@ export function propsArrayFactory<
   Props extends { [Key in K]: T },
   Config = EmptyConfig
 >(key: K, options: { initialValue: T; config?: Config }) {
-  const normalizedKey = capitalize(key as string);
+  const normalizedKey = capitalize(key);
   const base = propsFactory<T, K, Props, Config>(key, options);
 
   return {

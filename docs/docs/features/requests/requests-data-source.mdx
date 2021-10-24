@@ -9,7 +9,7 @@ With the `createRequestDataSource` function, we can easily select the state of a
 import { createState, Store } from '@ngneat/elf';
 import {
   withRequestsStatus,
-  selectRequestStatus,
+  withRequestsCache,
   // highlight-next-line
   createRequestDataSource,
 } from '@ngneat/elf-requests';
@@ -17,51 +17,84 @@ import { selectAll, withEntities } from '@ngneat/elf-entities';
 
 const { state, config } = createState(
   withEntities<Todo>(),
-  withRequestsStatus()
+  withRequestsStatus(),
+  withRequestsCache()
 );
 
-const store = new Store({ state, config, name: '' });
-
-const todos$ = store.pipe(selectAll());
-const status$ = store.pipe(selectRequestStatus('todos'));
+const store = new Store({ state, config, name: 'todos' });
 
 // highlight-start
-export const todosDataSource$ = createRequestDataSource({
-  data$: todos$,
-  status$,
+export const todosDataSource = createRequestDataSource({
+  data$: () => store.pipe(selectAll()),
+  requestKey: 'todos',
+  dataKey: 'todos',
   store
 });
 // highlight-end
 ```
 
-The `todosDataSource$` will return an observable with the following type:
+The `todosDataSource` will return a function named `data$` that returns an observable with the following shape:
 
 ```ts
-{
-  data: Todo[];
-  loading: boolean;
-  error: unknown;
-}
+todosDataSource.data$().subscribe(({ todos, loading, error }) => {})
+```
+
+And the following operators and functions that operates on the provided `requestKey`:
+
+```ts
+store.update(
+  setTodos(todos),
+  todosDataSource.setSuccess();
+  todosDataSource.setCached();
+)
+
+todosDataSource.trackRequestStatus();
+todosDataSource.skipWhileCached();
 ```
 
 <LiveDemo src={index} packages={['entities', 'requests']} />
-<br />
-We can also pass the `dataKey` option to change the default `data` property name:
+
+
+## Dynamic DataSource
+We can use the `createRequestDataSource` with a dynamic key:
 
 ```ts
-export const todosDataSource$ = createRequestDataSource({
-  // highlight-next-line
-  dataKey: 'todos',
-  data$: todos$,
-  status$,
+import { createState, Store } from '@ngneat/elf';
+import {
+  withRequestsStatus,
+  withRequestsCache,
+  createRequestDataSource,
+} from '@ngneat/elf-requests';
+import { selectEntity, withEntities } from '@ngneat/elf-entities';
+
+const { state, config } = createState(
+  withEntities<Todo>(),
+  withRequestsStatus(),
+  withRequestsCache()
+);
+
+const store = new Store({ state, config, name: 'todos' });
+
+// highlight-start
+export const todoDataSource = createRequestDataSource({
+  data$: (key: number) => store.pipe(selectEntity(key)),
+  dataKey: 'todo',
   store
 });
+// highlight-end
+```
 
-// Now the response will be typed as:
-{
-  // highlight-next-line
-  todos: Todo[];
-  loading: boolean;
-  error: unknown;
-}
+Note that you should not pass a `requestKey` in this case. With this change, you will get the following API:
+
+```ts
+todoDataSource.data$({ key: 1 }).subscribe(({ todo, loading, error }) => {})
+
+store.update(
+  addTodo(todo),
+  todoDataSource.setSuccess({ key: 1 });
+  todoDataSource.setCached({ key: 1 });
+)
+
+todoDataSource.trackRequestStatus({ key: 1 });
+todoDataSource.skipWhileCached({ key: 1 });
 ```

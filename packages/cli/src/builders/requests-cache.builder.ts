@@ -10,28 +10,13 @@ export class RequestsCacheBuilder extends FeatureBuilder {
 
   getPropsFactory() {
     return factory.createCallExpression(
-      factory.createIdentifier('withRequestsCache'),
+      factory.createIdentifier(`withRequestsCache<'${this.storeName}'>`),
       undefined,
       []
     );
   }
 
   run() {
-    this.addImport(
-      ['withRequestsCache', 'updateRequestCache', 'CacheState'],
-      '@ngneat/elf-requests'
-    );
-
-    this.repo.addMember({
-      name: this.isFunctionsTpl
-        ? `update${this.storeNames.className}RequestCache`
-        : `updateRequestCache`,
-      kind: StructureKind.Method,
-      parameters: [
-        { name: 'key', type: 'string' },
-        { name: 'state', type: 'CacheState' },
-      ],
-      statements: `${this.storeVariableName}.update(updateRequestCache(key, state));`,
-    });
+    this.addImport(['withRequestsCache'], '@ngneat/elf-requests');
   }
 }

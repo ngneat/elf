@@ -1,23 +1,27 @@
 import {
+  coerceArray,
+  EmptyConfig,
   OrArray,
-  propsFactory,
+  PropsFactory,
   Query,
   Reducer,
   select,
   StateOf,
   Store,
   StoreDef,
-  coerceArray,
 } from '@ngneat/elf';
 import {
   defer,
   MonoTypeOperatorFunction,
   Observable,
   OperatorFunction,
+  tap,
 } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
-type StatusValue = Record<string | number, StatusState>;
+export type RequestsStatusState = StateOf<typeof withRequestsStatus>;
+export type RecordKeys<S> = S extends { requestsStatus: Record<infer K, any> }
+  ? K
+  : string;
 
 export type StatusState = SuccessState | ErrorState | PendingState | IdleState;
 
@@ -38,25 +42,73 @@ export interface IdleState {
   value: 'idle';
 }
 
-export const {
-  withRequestsStatus,
-  updateRequestsStatus,
-  selectRequestsStatus,
-  resetRequestsStatus,
-  getRequestsStatus,
-  setRequestsStatus,
-} = propsFactory('requestsStatus', {
-  initialValue: {} as StatusValue,
-});
+export function withRequestsStatus<Keys extends string>(
+  initialValue?: Record<Keys, StatusState>
+): PropsFactory<{ requestsStatus: Record<Keys, StatusState> }, EmptyConfig> {
+  return {
+    props: {
+      requestsStatus: initialValue ?? ({} as Record<Keys, StatusState>),
+    },
+    config: undefined,
+  };
+}
 
-export function selectRequestStatus<
-  S extends StateOf<typeof withRequestsStatus>
->(
-  key: string | number,
+export function updateRequestStatus<S extends RequestsStatusState>(
+  key: RecordKeys<S>,
+  value: 'error',
+  error: any
+): Reducer<S>;
+
+export function updateRequestStatus<S extends RequestsStatusState>(
+  key: RecordKeys<S>,
+  value: Exclude<StatusState['value'], 'error'>,
+  error?: any
+): Reducer<S>;
+
+export function updateRequestStatus<S extends RequestsStatusState>(
+  key: any,
+  value: any,
+  error?: any
+): Reducer<S> {
+  const newStatus = {
+    value,
+  } as StatusState;
+
+  if (value === 'error') {
+    (newStatus as ErrorState).error = error;
+  }
+
+  return function (state) {
+    return {
+      ...state,
+      requestsStatus: {
+        ...state.requestsStatus,
+        [key]: newStatus,
+      },
+    };
+  };
+}
+
+export function getRequestStatus<S extends RequestsStatusState>(
+  key: RecordKeys<S>
+): Query<S, StatusState> {
+  return function (state) {
+    return (
+      state.requestsStatus[key] ??
+      ({
+        value: 'idle',
+      } as IdleState)
+    );
+  };
+}
+
+export function selectRequestStatus<S extends RequestsStatusState>(
+  key: RecordKeys<S>,
   options?: { groupKey?: string }
 ): OperatorFunction<S, StatusState> {
   return select((state) => {
     const base = getRequestStatus(key)(state);
+
     if (options?.groupKey) {
       const parent = getRequestStatus(options.groupKey)(state);
       return parent.value === 'success' ? parent : base;
@@ -66,58 +118,16 @@ export function selectRequestStatus<
   });
 }
 
-export function updateRequestStatus<
-  S extends StateOf<typeof withRequestsStatus>
->(key: string | number, value: 'error', error: any): Reducer<S>;
-export function updateRequestStatus<
-  S extends StateOf<typeof withRequestsStatus>
->(
-  key: string | number,
-  value: Exclude<StatusState['value'], 'error'>,
-  error?: any
-): Reducer<S>;
-export function updateRequestStatus<
-  S extends StateOf<typeof withRequestsStatus>
->(key: string | number, value: any, error?: any): Reducer<S> {
-  const base = {
-    value,
-  } as StatusState;
-
-  if (value === 'error') {
-    (base as ErrorState).error = error;
-  }
-
-  return updateRequestsStatus({
-    [key]: base,
-  });
-}
-
-export function getRequestStatus<S extends StateOf<typeof withRequestsStatus>>(
-  key: string | number
-): Query<S, StatusState> {
-  return function (state: S) {
-    return (
-      getRequestsStatus(state)[key] ??
-      ({
-        value: 'pending',
-      } as PendingState)
-    );
-  };
-}
-
-export function selectIsRequestPending<
-  S extends StateOf<typeof withRequestsStatus>
->(key: string | number): OperatorFunction<S, boolean> {
+export function selectIsRequestPending<S extends RequestsStatusState>(
+  key: RecordKeys<S>
+): OperatorFunction<S, boolean> {
   return select((state) => getRequestStatus(key)(state).value === 'pending');
 }
 
-export function trackRequestStatus<
-  T,
-  S extends StateOf<typeof withRequestsStatus>
->(
+export function trackRequestStatus<S extends RequestsStatusState, T>(
   store: Store<StoreDef<S>>,
-  key: string,
-  options?: { mapError?: (error: any) => any; handleSuccess?: boolean }
+  key: RecordKeys<S>,
+  options?: { mapError?: (error: any) => any }
 ): MonoTypeOperatorFunction<T> {
   return function (source: Observable<T>) {
     return defer(() => {
@@ -127,11 +137,6 @@ export function trackRequestStatus<
 
       return source.pipe(
         tap({
-          next() {
-            if (options?.handleSuccess) {
-              store.update(updateRequestStatus(key, 'success'));
-            }
-          },
           error(error) {
             store.update(
               updateRequestStatus(
@@ -147,12 +152,23 @@ export function trackRequestStatus<
   };
 }
 
-export function initializeAsIdle(keys: OrArray<string>) {
+export function createRequestsStatusOperator<S extends RequestsStatusState>(
+  store: Store<StoreDef<S>>
+) {
+  return function <T>(
+    key: RecordKeys<S>,
+    options?: Parameters<typeof trackRequestStatus>[2]
+  ) {
+    return trackRequestStatus<S, T>(store, key, options);
+  };
+}
+
+export function initializeAsPending(keys: OrArray<string>) {
   return coerceArray(keys).reduce((acc, key) => {
     acc[key] = {
-      value: 'idle',
+      value: 'pending',
     };
 
     return acc;
-  }, {} as Record<string, IdleState>);
+  }, {} as Record<string, PendingState>);
 }

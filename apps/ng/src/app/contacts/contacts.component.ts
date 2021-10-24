@@ -3,7 +3,7 @@ import { ContactsService } from './state/contacts.service';
 import { generatePages } from './contacts-data';
 import { ContactsRepository } from './state/contacts.repository';
 import { map, startWith, switchMap } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -14,7 +14,7 @@ import { FormControl } from '@angular/forms';
 export class ContactsComponent implements OnInit {
   data$ = combineLatest({
     contacts: this.repo.activePageContacts$,
-    status: this.repo.status$,
+    status: of(true),
     indicators: this.repo.activePage$.pipe(
       switchMap((page) =>
         this.service

@@ -19,6 +19,7 @@ module.exports = {
     'entities',
     'requests-cache',
     'requests-status',
+    'requests-data-source',
     'state-history',
     'persist-state',
     'pagination',

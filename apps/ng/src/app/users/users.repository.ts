@@ -1,10 +1,8 @@
 import { createState, Store } from '@ngneat/elf';
 import {
-  selectRequestStatus,
-  updateRequestCache,
-  updateRequestStatus,
   withRequestsCache,
   withRequestsStatus,
+  createRequestDataSource,
 } from '@ngneat/elf-requests';
 import { Injectable } from '@angular/core';
 import {
@@ -21,10 +19,6 @@ export interface User {
   email: string;
 }
 
-export const enum UsersRequests {
-  default = 'users',
-}
-
 const { state, config } = createState(
   withEntities<User>(),
   withRequestsStatus(),
@@ -34,36 +28,33 @@ const store = new Store({ name: 'users', state, config });
 
 @Injectable({ providedIn: 'root' })
 export class UsersRepository {
-  users$ = store.pipe(selectAll());
-  status$ = store.pipe(selectRequestStatus(UsersRequests.default));
+  dataSource = createRequestDataSource({
+    store,
+    data$: () => store.pipe(selectAll()),
+    requestKey: 'users',
+    dataKey: 'users',
+  });
 
-  user$(id: User['id']) {
-    return store.pipe(selectEntity(id));
-  }
-
-  userStatus$(id: string) {
-    return store.pipe(
-      selectRequestStatus(id, { groupKey: UsersRequests.default })
-    );
-  }
-
-  get store() {
-    return store;
-  }
+  userDataSource = createRequestDataSource({
+    store,
+    data$: (key: number) => store.pipe(selectEntity(key)),
+    dataKey: 'user',
+    requestStatusOptions: { groupKey: 'users' },
+  });
 
   setUsers(users: User[]) {
     store.update(
       setEntities(users),
-      updateRequestStatus(UsersRequests.default, 'success'),
-      updateRequestCache(UsersRequests.default)
+      this.dataSource.setSuccess(),
+      this.dataSource.setCached()
     );
   }
 
   addUser(user: User) {
-    this.store.update(
+    store.update(
       addEntities(user),
-      updateRequestCache(user.id),
-      updateRequestStatus(user.id, 'success')
+      this.userDataSource.setSuccess({ key: user.id }),
+      this.userDataSource.setCached({ key: user.id })
     );
   }
 }
