@@ -81,7 +81,7 @@ import { upsertEntities } from '@ngneat/elf-entities';
 export function updateCart(id: Product['id']) {
   productsStore.update(
     upsertEntities(id, {
-      updater: e => ({ ...e, quantity: entity.quantity + 1 }),
+      updater: e => ({ ...e, quantity: e.quantity + 1 }),
       creator: id => ({ id, quantity: 1 }),
       // highlight-next-line
       ref: cartEntitiesRef
