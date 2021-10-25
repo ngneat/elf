@@ -126,3 +126,12 @@ export function createRequestsCacheOperator<S extends RequestsCacheState>(
     return skipWhileCached<S, T>(store, key, options);
   };
 }
+
+export function clearRequestsCache<S extends RequestsCacheState>(): Reducer<S> {
+  return function (state) {
+    return {
+      ...state,
+      requestsCache: {},
+    };
+  };
+}

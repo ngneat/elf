@@ -7,6 +7,7 @@ export {
   createRequestsCacheOperator,
   selectRequestCache,
   selectIsRequestCached,
+  clearRequestsCache,
 } from './lib/requests-cache';
 export {
   createRequestsStatusOperator,
@@ -17,5 +18,6 @@ export {
   selectIsRequestPending,
   selectRequestStatus,
   withRequestsStatus,
+  clearRequestsStatus,
 } from './lib/requests-status';
 export { createRequestDataSource } from './lib/request-data-source';

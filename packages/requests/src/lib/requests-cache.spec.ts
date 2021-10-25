@@ -1,6 +1,7 @@
 import { createState, Store } from '@ngneat/elf';
 import {
   CacheState,
+  clearRequestsCache,
   getRequestCache,
   isRequestCached,
   selectIsRequestCached,
@@ -144,5 +145,31 @@ describe('requestsCache', () => {
     ).toBeFalsy();
 
     jest.useRealTimers();
+  });
+
+  it('should clear all', () => {
+    const { state, config } = createState(withRequestsCache());
+
+    const store = new Store({ state, config, name: 'users' });
+
+    store.update(updateRequestCache('todos'));
+
+    expect(store.getValue()).toMatchInlineSnapshot(`
+      Object {
+        "requestsCache": Object {
+          "todos": Object {
+            "value": "full",
+          },
+        },
+      }
+    `);
+
+    store.update(clearRequestsCache());
+
+    expect(store.getValue()).toMatchInlineSnapshot(`
+      Object {
+        "requestsCache": Object {},
+      }
+    `);
   });
 });

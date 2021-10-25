@@ -2,6 +2,7 @@ import { createState, Store } from '@ngneat/elf';
 import { expectTypeOf } from 'expect-type';
 import { mapTo, tap, timer } from 'rxjs';
 import {
+  clearRequestsStatus,
   createRequestsStatusOperator,
   initializeAsPending,
   StatusState,
@@ -121,5 +122,31 @@ describe('requestsStatus', () => {
 
     jest.runAllTimers();
     expect(spy).toHaveBeenCalledTimes(2);
+  });
+
+  it('should clear all', () => {
+    const { state, config } = createState(withRequestsStatus());
+
+    const store = new Store({ state, config, name: 'users' });
+
+    store.update(updateRequestStatus('todos', 'success'));
+
+    expect(store.getValue()).toMatchInlineSnapshot(`
+      Object {
+        "requestsStatus": Object {
+          "todos": Object {
+            "value": "success",
+          },
+        },
+      }
+    `);
+
+    store.update(clearRequestsStatus());
+
+    expect(store.getValue()).toMatchInlineSnapshot(`
+      Object {
+        "requestsStatus": Object {},
+      }
+    `);
   });
 });

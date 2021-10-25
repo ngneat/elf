@@ -172,3 +172,14 @@ export function initializeAsPending(keys: OrArray<string>) {
     return acc;
   }, {} as Record<string, PendingState>);
 }
+
+export function clearRequestsStatus<
+  S extends RequestsStatusState
+>(): Reducer<S> {
+  return function (state) {
+    return {
+      ...state,
+      requestsStatus: {},
+    };
+  };
+}

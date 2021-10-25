@@ -145,3 +145,11 @@ store.update(updateRequestStatus('todos', 'pending'));
 store.update(updateRequestStatus('todos', 'success'));
 store.update(updateRequestStatus('todos', 'error', error));
 ```
+
+### `clearRequestsStatus`
+
+```ts
+import { clearRequestsStatus } from '@ngneat/elf-requests';
+
+store.update(clearRequestsStatus());
+```

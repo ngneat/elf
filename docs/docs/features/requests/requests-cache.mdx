@@ -178,3 +178,11 @@ store.update(updateRequestCache('todos', { ttl: 1000 }));
 
 If you pass `ttl` (time to live) when updating a cache record, that represents the time (in milliseconds) that `key` will
 have the value that was set (afterward, it reverts to 'none').
+
+### `clearRequestsCache`
+
+```ts
+import { clearRequestsCache } from '@ngneat/elf-requests';
+
+store.update(clearRequestsCache());
+```
