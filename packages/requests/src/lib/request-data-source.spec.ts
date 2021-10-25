@@ -215,4 +215,31 @@ describe('createRequestDataSource', () => {
       todos: [createTodo(1)],
     });
   });
+
+  it('should not emit if values are the same by ref', () => {
+    const { state, config } = createState(
+      withEntities<Todo>(),
+      withRequestsStatus<'todos'>()
+    );
+
+    const store = new Store({ state, config, name: '' });
+
+    const todosDataSource = createRequestDataSource({
+      store: store,
+      dataKey: 'todos',
+      requestKey: 'todos',
+      idleAsPending: true,
+      data$: () => store.pipe(selectAll()),
+    });
+
+    const spy = jest.fn();
+
+    todosDataSource.data$().subscribe(spy);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+
+    store.update(updateRequestStatus('todos', 'pending'));
+
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
 });

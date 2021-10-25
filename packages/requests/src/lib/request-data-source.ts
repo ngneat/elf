@@ -1,8 +1,11 @@
 import { Reducer, Store, StoreDef } from '@ngneat/elf';
 import { MonoTypeOperatorFunction, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { updateRequestCache } from '..';
-import { RequestsCacheState, skipWhileCached } from './requests-cache';
+import { distinctUntilChanged, map } from 'rxjs/operators';
+import {
+  RequestsCacheState,
+  skipWhileCached,
+  updateRequestCache,
+} from './requests-cache';
 import {
   RecordKeys,
   RequestsStatusState,
@@ -113,6 +116,15 @@ export function createRequestDataSource<
                 : status.value === 'pending',
               error: status.value === 'error' ? status.error : undefined,
             } as any;
+          }),
+          distinctUntilChanged((a, b) => {
+            // if the status is the same, for example, `pending` and `pending`, and the `data` is the same
+            // don't emit a redundant value
+            return (
+              a[dataKey] === b[dataKey] &&
+              a.loading === b.loading &&
+              a.error === b.error
+            );
           })
         ),
   } as any;
