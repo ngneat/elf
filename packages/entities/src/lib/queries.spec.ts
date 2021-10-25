@@ -4,7 +4,7 @@ import {
   createUIEntityStore,
   createUITodo,
 } from '@ngneat/elf-mocks';
-import { getEntity, hasEntity } from './queries';
+import { getEntities, getEntity, hasEntity } from './queries';
 import { addEntities } from './add.mutation';
 import { UIEntitiesRef } from './entity.state';
 
@@ -36,6 +36,37 @@ describe('queries', () => {
 
       store.update(addEntities(createUITodo(1), { ref: UIEntitiesRef }));
       expect(store.query(hasEntity(1, { ref: UIEntitiesRef }))).toEqual(true);
+    });
+  });
+
+  describe('getEntities', () => {
+    it('should return the collection', () => {
+      const store = createEntitiesStore();
+      store.update(addEntities(createTodo(1)));
+      expect(store.query(getEntities())).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "completed": false,
+            "id": 1,
+            "title": "todo 1",
+          },
+        ]
+      `);
+    });
+
+    it('should work with ref', () => {
+      const store = createUIEntityStore();
+
+      store.update(addEntities(createUITodo(1), { ref: UIEntitiesRef }));
+      expect(store.query(getEntities({ ref: UIEntitiesRef })))
+        .toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "id": 1,
+            "open": false,
+          },
+        ]
+      `);
     });
   });
 });

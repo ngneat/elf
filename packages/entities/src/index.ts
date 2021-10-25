@@ -33,4 +33,4 @@ export {
 } from './lib/entity.state';
 export { unionEntities as unionEntities } from './lib/union-entities';
 export * from './lib/active/active';
-export { getEntity, hasEntity } from './lib/queries';
+export { getEntity, hasEntity, getEntities } from './lib/queries';

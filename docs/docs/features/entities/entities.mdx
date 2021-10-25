@@ -140,6 +140,16 @@ const count$ = todosStore.pipe(
 );
 ```
 
+### `getEntities`
+
+Get the entity collection:
+
+```ts
+import { getEntities } from '@ngneat/elf-entities';
+
+const todos = todosStore.query(getEntities());
+```
+
 ### `getEntity`
 
 Get an entity by id:
