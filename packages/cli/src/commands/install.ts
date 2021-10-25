@@ -11,9 +11,9 @@ export default class Install extends Command {
   async run() {
     this.parse(Install);
 
-    const detectPackageManager = require('detect-package-manager');
+    const { detect } = require('detect-package-manager');
 
-    const pm = await detectPackageManager();
+    const pm = await detect();
 
     const { packages, external } = await prompt();
     const all = [...packages, ...external];
