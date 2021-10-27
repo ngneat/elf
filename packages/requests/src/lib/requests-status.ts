@@ -15,8 +15,8 @@ import {
   MonoTypeOperatorFunction,
   Observable,
   OperatorFunction,
-  tap,
 } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 export type RequestsStatusState = StateOf<typeof withRequestsStatus>;
 export type RecordKeys<S> = S extends { requestsStatus: Record<infer K, any> }
