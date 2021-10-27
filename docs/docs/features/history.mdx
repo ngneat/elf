@@ -22,7 +22,7 @@ const { state, config } = createState(withEntities<Todo>());
 
 const todosStore = new Store({ state, name, config });
 
-export const todosPersistState = stateHistory(todosStore);
+export const todosStateHistory = stateHistory(todosStore);
 ```
 
 This allows you to use the following methods and queries to jump to points in the store's history timeline:
