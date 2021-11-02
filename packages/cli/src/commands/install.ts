@@ -63,7 +63,7 @@ const packages = [
 const external = [
   { name: '@ngneat/effects', link: 'https://github.com/ngneat/effects' },
   {
-    name: '@ngneat/effects-hook',
+    name: '@ngneat/effects-hooks',
     link: 'https://github.com/ngneat/effects#use-with-react',
   },
   {
