@@ -19,7 +19,7 @@ export function write<S>(updater: (state: S) => void): (state: S) => S {
 }
 ```
 
-Now you can use it in the store's `reducer` function:
+Now you can use it in the store's `update` function:
 
 ```ts title="todos.respository.ts"
 import { withProps, Store, createState } from '@ngneat/elf';
