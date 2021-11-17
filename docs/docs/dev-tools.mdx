@@ -21,3 +21,16 @@ The plugin supports the following options passed as the second function paramete
 `maxAge`: Maximum amount of actions to be stored in the history tree.
 
 `preAction`: A method that's called before each action.
+
+`getActionType`: Get the current action type, for example:
+
+```
+devTools({
+  getActionType: (state: any): string => {
+    // Attempt to get the repository's callee
+    const stack = (new Error()).stack?.split('\n') || [];
+    const updateIdx = stack.findIndex((e: string) => e.startsWith('update@'));
+    return updateIdx >= 0 ? stack[updateIdx + 1].split('@')[0] : 'Update';
+  }
+});
+```

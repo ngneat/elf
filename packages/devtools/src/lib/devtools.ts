@@ -16,6 +16,7 @@ interface DevtoolsOptions {
   name?: string;
   preAction?: () => void;
   actionsDispatcher?: ActionsDispatcher;
+  getActionType?: (state: any) => string;
 }
 
 declare global {
@@ -52,9 +53,10 @@ export function devTools(options: DevtoolsOptions = {}) {
 
     send({ type: `[${displayName}] - @Init` });
 
-    const update = store.pipe(skip(1)).subscribe(() => {
+    const update = store.pipe(skip(1)).subscribe((state) => {
       options.preAction?.();
-      send({ type: `[${displayName}] - Update` });
+      const actionType = options.getActionType?.(state) || 'Update';
+      send({ type: `[${displayName}] - ${actionType}` });
     });
 
     subscriptions.set(name, update);
@@ -79,9 +81,10 @@ export function devTools(options: DevtoolsOptions = {}) {
     if (type === 'add') {
       send({ type: `[${displayName}] - @Init` });
 
-      const update = store.pipe(skip(1)).subscribe(() => {
+      const update = store.pipe(skip(1)).subscribe((state) => {
         options.preAction?.();
-        send({ type: `[${displayName}] - Update` });
+        const actionType = options.getActionType?.(state) || 'Update';
+        send({ type: `[${displayName}] - ${actionType}` });
       });
 
       subscriptions.set(name, update);
