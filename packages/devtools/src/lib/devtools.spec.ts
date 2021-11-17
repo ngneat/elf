@@ -15,9 +15,13 @@ describe('devtools', () => {
         connect: jest.fn().mockImplementation(() => instanceMock),
       },
     },
+    configurable: true,
+    writable: true,
   });
 
-  createEntitiesStore('books');
+  const bookStore = createEntitiesStore('books');
+  let barStore: any;
+  let fooStore: any;
 
   devTools();
 
@@ -83,7 +87,7 @@ describe('devtools', () => {
       }
     );
 
-    createEntitiesStore('foo');
+    fooStore = createEntitiesStore('foo');
 
     expect(instanceMock.send).toHaveBeenCalledWith(
       { type: '[Foo] - @Init' },
@@ -99,7 +103,7 @@ describe('devtools', () => {
       }
     );
 
-    const bar = createEntitiesStore('bar');
+    barStore = createEntitiesStore('bar');
 
     expect(instanceMock.send).toHaveBeenCalledWith(
       { type: '[Bar] - @Init' },
@@ -119,7 +123,7 @@ describe('devtools', () => {
       }
     );
 
-    bar.update(addEntities(createTodo(1)));
+    barStore.update(addEntities(createTodo(1)));
 
     expect(instanceMock.send).toHaveBeenCalledWith(
       { type: '[Bar] - Update' },
@@ -145,4 +149,52 @@ describe('devtools', () => {
       }
     );
   });
+
+  afterAll(() => {
+    bookStore.destroy();
+    fooStore.destroy();
+    barStore.destroy();
+  });
+});
+
+describe('devtools - getActionType', () => {
+  const instanceMock = {
+    init: jest.fn(),
+    subscribe: jest.fn(),
+    send: jest.fn(),
+  };
+
+  Object.defineProperty(global, 'window', {
+    value: {
+      __REDUX_DEVTOOLS_EXTENSION__: {
+        connect: jest.fn().mockImplementation(() => instanceMock),
+      },
+    },
+  });
+
+  devTools({ getActionType: (): string => 'Hello' });
+
+  const store = createEntitiesStore();
+
+  it('should get action type', () => {
+    store.update(addEntities(createTodo(1)));
+
+    expect(instanceMock.send).toHaveBeenLastCalledWith(
+      { type: '[Todos] - Hello' },
+      {
+        todos: {
+          entities: {
+            1: {
+              completed: false,
+              id: 1,
+              title: 'todo 1',
+            },
+          },
+          ids: [1],
+        },
+      }
+    );
+  });
+
+  afterAll(() => store.destroy());
 });

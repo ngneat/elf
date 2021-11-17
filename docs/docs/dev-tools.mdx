@@ -38,3 +38,16 @@ platformBrowserDynamic()
     });
 })
 ```
+
+`getActionType` - Get the current action type, for example:
+
+```ts
+devTools({
+  getActionType: (): string => {
+    // Attempt to get the repository's callee
+    const stack = (new Error()).stack?.split('\n') || [];
+    const updateIdx = stack.findIndex((e: string) => e.startsWith('update@'));
+    return updateIdx >= 0 ? stack[updateIdx + 1].split('@')[0] : 'Update';
+  }
+});
+```

@@ -18,6 +18,7 @@ interface DevtoolsOptions {
   postTimelineUpdate?: () => void;
   preAction?: () => void;
   actionsDispatcher?: ActionsDispatcher;
+  getActionType?: () => string;
 }
 
 declare global {
@@ -66,7 +67,8 @@ export function devTools(options: DevtoolsOptions = {}) {
       }
 
       options.preAction?.();
-      send({ type: `[${displayName}] - Update` });
+      const actionType = options.getActionType?.() || 'Update';
+      send({ type: `[${displayName}] - ${actionType}` });
     });
 
     subscriptions.set(name, update);
