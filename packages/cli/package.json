@@ -1,7 +1,7 @@
 {
   "name": "@ngneat/elf-cli",
   "description": "A CLI for elf store",
-  "version": "1.0.0-beta.11",
+  "version": "1.0.0-beta.12",
   "author": "Netanel Basal @NetanelBasal",
   "publishConfig": {
     "access": "public"
@@ -70,9 +70,6 @@
     "build": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme && npm run copy:cli",
     "test": "jest",
     "version": "oclif-dev readme && git add README.md"
-  },
-  "peerDependencies": {
-    "typescript": ">= 4.3.2"
   },
   "types": "lib/index.d.ts"
 }
