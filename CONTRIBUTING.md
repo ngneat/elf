@@ -2,6 +2,11 @@
 
 🙏 We would ❤️ for you to contribute to Elf and help make it even better than it is today!
 
+## Developing
+- Run `npm i` on both the root and `packages/cli`
+- Run specs: nx test `<package-name>`
+- Run build: nx build `<package-name>`
+
 ## <a name="rules"></a> Coding Rules
 
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
