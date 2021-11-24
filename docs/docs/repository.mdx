@@ -11,7 +11,7 @@ interface AuthProps {
 
 const { state, config } = createState(withProps<AuthProps>({ user: null }));
 
-const authStore = new Store({ state, name, config });
+const authStore = new Store({ state, name: 'auth', config });
 
 export const user$ = authStore.pipe(select((state) => state.user));
 
@@ -33,7 +33,7 @@ You can also use the `class` pattern:
 ```ts title="auth.repository.ts"
 // ...
 
-const authStore = new Store({ state, name, config });
+const authStore = new Store({ state, name: 'auth', config });
 
 export class AuthRepository {
   user$ = authStore.pipe(select((state) => state.user));
