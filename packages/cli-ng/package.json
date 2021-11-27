@@ -1,6 +1,6 @@
 {
   "name": "@ngneat/elf-cli-ng",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0",
   "description": "Angular adapter for elf store cli",
   "publishConfig": {
     "access": "public"

@@ -22,7 +22,7 @@ $ npm install -g @ngneat/elf-cli
 $ elf COMMAND
 running command...
 $ elf (-v|--version|version)
-@ngneat/elf-cli/1.0.0-beta.12 darwin-x64 node-v14.18.1
+@ngneat/elf-cli/1.0.0 darwin-x64 node-v14.18.1
 $ elf --help [COMMAND]
 USAGE
   $ elf COMMAND
@@ -66,7 +66,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [lib/commands/install.js](https://github.com/ngneat/elf/blob/v1.0.0-beta.12/lib/commands/install.js)_
+_See code: [lib/commands/install.js](https://github.com/ngneat/elf/blob/v1.0.0/lib/commands/install.js)_
 
 ## `elf repo`
 
@@ -81,5 +81,5 @@ OPTIONS
   --dry-run
 ```
 
-_See code: [lib/commands/repo.js](https://github.com/ngneat/elf/blob/v1.0.0-beta.12/lib/commands/repo.js)_
+_See code: [lib/commands/repo.js](https://github.com/ngneat/elf/blob/v1.0.0/lib/commands/repo.js)_
 <!-- commandsstop -->
