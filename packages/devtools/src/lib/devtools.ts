@@ -53,7 +53,6 @@ export function devTools(options: DevtoolsOptions = {}) {
     send({ type: `[${displayName}] - @Init` });
 
     const update = store.pipe(skip(1)).subscribe(() => {
-      console.log('update');
       options.preAction?.();
       send({ type: `[${displayName}] - Update` });
     });
