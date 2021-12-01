@@ -18,6 +18,23 @@ devTools();
 
 The plugin supports the following options passed as the second function parameter:
 
-`maxAge`: Maximum amount of actions to be stored in the history tree.
+`maxAge` - Maximum amount of actions to be stored in the history tree.
 
-`preAction`: A method that's called before each action.
+`preAction` - A method that's called before each action.
+
+`postTimelineUpdate` - A function that'll be invoked after the timeline update. For example, you can run a change detection when working with Angular:
+
+```ts
+import { ApplicationRef } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+import { AppModule } from './app/app.module';
+import { devTools } from '@ngneat/elf-devtools';
+
+platformBrowserDynamic()
+  .bootstrapModule(AppModule).then((moduleRef) => {
+    devTools({
+      postTimelineUpdate: () => moduleRef.injector.get(ApplicationRef).tick()
+    });
+})
+```

@@ -6,6 +6,7 @@ import {
   getStoresSnapshot,
   getRegistry,
   Store,
+  getStore,
 } from '@ngneat/elf';
 
 type Action = { type: string } & Record<string, any>;
@@ -14,6 +15,7 @@ type ActionsDispatcher = Observable<Action>;
 interface DevtoolsOptions {
   maxAge?: number;
   name?: string;
+  postTimelineUpdate?: () => void;
   preAction?: () => void;
   actionsDispatcher?: ActionsDispatcher;
 }
@@ -29,7 +31,11 @@ declare global {
         init(state: Record<string, any>): void;
         unsubscribe(): void;
         subscribe(
-          cb: (message: { type: string; payload: { type: string } }) => void
+          cb: (message: {
+            type: string;
+            payload: { type: string };
+            state: string;
+          }) => void
         ): () => void;
       };
     };
@@ -39,6 +45,7 @@ declare global {
 export function devTools(options: DevtoolsOptions = {}) {
   if (!window.__REDUX_DEVTOOLS_EXTENSION__) return;
 
+  let lock = false;
   const instance = window.__REDUX_DEVTOOLS_EXTENSION__.connect(options);
   const subscriptions = new Map<string, Subscription>();
 
@@ -53,6 +60,11 @@ export function devTools(options: DevtoolsOptions = {}) {
     send({ type: `[${displayName}] - @Init` });
 
     const update = store.pipe(skip(1)).subscribe(() => {
+      if (lock) {
+        lock = false;
+        return;
+      }
+
       options.preAction?.();
       send({ type: `[${displayName}] - Update` });
     });
@@ -94,6 +106,17 @@ export function devTools(options: DevtoolsOptions = {}) {
       if (payloadType === 'COMMIT') {
         instance.init(getStoresSnapshot());
         return;
+      }
+
+      if (payloadType === 'JUMP_TO_STATE') {
+        const state = JSON.parse(message.state);
+
+        for (const [name, value] of Object.entries(state)) {
+          lock = true;
+          getStore(name)?.update(() => value);
+        }
+
+        options.postTimelineUpdate?.();
       }
     }
   });
