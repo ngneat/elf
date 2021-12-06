@@ -1,5 +1,9 @@
 import { createState, Store } from '@ngneat/elf';
-import { updateRequestStatus, withRequestsStatus } from './requests-status';
+import {
+  updateRequestStatus,
+  withRequestsStatus,
+  StatusState,
+} from './requests-status';
 import {
   addEntities,
   selectAll,
@@ -8,7 +12,11 @@ import {
   withEntities,
 } from '@ngneat/elf-entities';
 import { createTodo, Todo } from '@ngneat/elf-mocks';
-import { createRequestDataSource } from './request-data-source';
+import {
+  createRequestDataSource,
+  DataSource,
+  DynamicKeyDataSource,
+} from './request-data-source';
 import { expectTypeOf } from 'expect-type';
 import { mapTo, tap, timer } from 'rxjs';
 import { withRequestsCache } from '..';
@@ -241,5 +249,96 @@ describe('createRequestDataSource', () => {
     store.update(updateRequestStatus('todos', 'pending'));
 
     expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should return proper type without using generic on "withRequestsStatus"', () => {
+    const { state, config } = createState(
+      withEntities<Todo>(),
+      withRequestsStatus()
+    );
+
+    const store = new Store({ state, config, name: '' });
+
+    const todosDataSource = createRequestDataSource({
+      store: store,
+      dataKey: 'todos',
+      requestKey: 'todos',
+      data$: () => store.pipe(selectAll()),
+    });
+
+    const todoDataSource = createRequestDataSource({
+      store: store,
+      dataKey: 'todo',
+      data$: (key: number) => store.pipe(selectEntity(key)),
+    });
+
+    expectTypeOf(todosDataSource).toEqualTypeOf<
+      DataSource<
+        { requestsStatus: Record<string, StatusState> } & {
+          entities: Record<number, Todo>;
+          ids: number[];
+        },
+        'todos',
+        Todo[],
+        unknown
+      >
+    >();
+    expectTypeOf(todoDataSource).toEqualTypeOf<
+      DynamicKeyDataSource<
+        { requestsStatus: Record<string, StatusState> } & {
+          entities: Record<number, Todo>;
+          ids: number[];
+        },
+        'todo',
+        Todo | undefined,
+        unknown
+      >
+    >();
+  });
+
+  it('should return proper type with using generic on "withRequestsStatus"', () => {
+    type TodoStatuses = 'get' | 'add' | 'delete';
+    const { state, config } = createState(
+      withEntities<Todo>(),
+      withRequestsStatus<TodoStatuses>()
+    );
+
+    const store = new Store({ state, config, name: '' });
+
+    const todosDataSource = createRequestDataSource({
+      store: store,
+      dataKey: 'todos',
+      requestKey: 'get',
+      data$: () => store.pipe(selectAll()),
+    });
+
+    const todoDataSource = createRequestDataSource({
+      store: store,
+      dataKey: 'todo',
+      data$: (key: number) => store.pipe(selectEntity(key)),
+    });
+
+    expectTypeOf(todosDataSource).toEqualTypeOf<
+      DataSource<
+        { requestsStatus: Record<TodoStatuses, StatusState> } & {
+          entities: Record<number, Todo>;
+          ids: number[];
+        },
+        'todos',
+        Todo[],
+        unknown
+      >
+    >();
+    expectTypeOf(todoDataSource).toEqualTypeOf<
+      DynamicKeyDataSource<
+        { requestsStatus: Record<TodoStatuses, StatusState> } & {
+          entities: Record<number, Todo>;
+          ids: number[];
+        },
+        'todo',
+        Todo | undefined,
+        unknown
+      >
+    >();
   });
 });
