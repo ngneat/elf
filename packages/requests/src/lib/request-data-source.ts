@@ -26,7 +26,7 @@ type ReturnedData<DataKey extends string, Data, Error> = {
     : never;
 };
 
-type DataSource<S, DataKey extends string, Data, Error> = {
+export type DataSource<S, DataKey extends string, Data, Error> = {
   trackRequestStatus: <T>(
     options?: Parameters<typeof trackRequestStatus>[2]
   ) => MonoTypeOperatorFunction<T>;
@@ -41,7 +41,7 @@ type DataSource<S, DataKey extends string, Data, Error> = {
     }
   : Record<any, any>);
 
-type DynamicKeyDataSource<S, DataKey extends string, Data, Error> = {
+export type DynamicKeyDataSource<S, DataKey extends string, Data, Error> = {
   trackRequestStatus: <T>(
     options: KeyProp & Parameters<typeof trackRequestStatus>[2]
   ) => MonoTypeOperatorFunction<T>;
@@ -58,31 +58,75 @@ type DynamicKeyDataSource<S, DataKey extends string, Data, Error> = {
     }
   : Record<any, any>);
 
+interface DataSourceCreationDefaultParams<
+  S extends RequestsStatusState,
+  DataKey extends string
+> {
+  store: Store<StoreDef<S>>;
+  dataKey: DataKey;
+  idleAsPending?: boolean;
+  requestStatusOptions?: Parameters<typeof selectRequestStatus>[1];
+}
+
+interface DataSourceCreationParams<
+  Data,
+  S extends RequestsStatusState,
+  RequestKey extends RecordKeys<S>,
+  DataKey extends string
+> extends DataSourceCreationDefaultParams<S, DataKey> {
+  data$: () => Observable<Data>;
+  requestKey: RequestKey;
+}
+
+interface DynamicKeyDataSourceCreationParams<
+  Data,
+  S extends RequestsStatusState,
+  DataKey extends string
+> extends DataSourceCreationDefaultParams<S, DataKey> {
+  data$: (key: any) => Observable<Data>;
+}
+
 export function createRequestDataSource<
   Data,
   S extends RequestsStatusState,
   RequestKey extends RecordKeys<S>,
   DataKey extends string,
   Error = unknown
->({
-  data$,
-  store,
-  requestKey,
-  dataKey,
-  requestStatusOptions,
-  idleAsPending = false,
-}: {
-  dataKey: DataKey;
-  data$: string extends RequestKey
-    ? (key: any) => Observable<Data>
-    : () => Observable<Data>;
-  requestKey?: RequestKey;
-  store: Store<StoreDef<S>>;
-  idleAsPending?: boolean;
-  requestStatusOptions?: Parameters<typeof selectRequestStatus>[1];
-}): string extends RequestKey
-  ? DynamicKeyDataSource<S, DataKey, Data, Error>
-  : DataSource<S, DataKey, Data, Error> {
+>(
+  params: DataSourceCreationParams<Data, S, RequestKey, DataKey>
+): DataSource<S, DataKey, Data, Error>;
+export function createRequestDataSource<
+  Data,
+  S extends RequestsStatusState,
+  DataKey extends string,
+  Error = unknown
+>(
+  params: DynamicKeyDataSourceCreationParams<Data, S, DataKey>
+): DynamicKeyDataSource<S, DataKey, Data, Error>;
+export function createRequestDataSource<
+  Data,
+  S extends RequestsStatusState,
+  RequestKey extends RecordKeys<S>,
+  DataKey extends string,
+  Error = unknown
+>(
+  params:
+    | DataSourceCreationParams<Data, S, RequestKey, DataKey>
+    | DynamicKeyDataSourceCreationParams<Data, S, DataKey>
+):
+  | DynamicKeyDataSource<S, DataKey, Data, Error>
+  | DataSource<S, DataKey, Data, Error> {
+  const {
+    data$,
+    store,
+    dataKey,
+    requestStatusOptions,
+    requestKey,
+    idleAsPending = false,
+  } = Reflect.has(params, 'requestKey')
+    ? (params as DataSourceCreationParams<Data, S, RequestKey, DataKey>)
+    : { ...params, requestKey: undefined };
+
   return {
     trackRequestStatus: (
       options: KeyProp & Parameters<typeof trackRequestStatus>[2]
