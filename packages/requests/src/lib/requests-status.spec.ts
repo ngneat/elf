@@ -6,6 +6,7 @@ import {
   createRequestsStatusOperator,
   initializeAsPending,
   StatusState,
+  updateRequestsStatus,
   updateRequestStatus,
 } from './requests-status';
 import {
@@ -149,4 +150,41 @@ describe('requestsStatus', () => {
       }
     `);
   });
+});
+
+test('updateRequestsStatus', () => {
+  const { state, config } = createState(withRequestsStatus());
+
+  const store = new Store({ state, config, name: 'users' });
+
+  store.update(
+    updateRequestsStatus({
+      foo: {
+        value: 'pending',
+      },
+    })
+  );
+
+  expect(store.getValue()).toMatchSnapshot();
+
+  store.update(
+    updateRequestsStatus({
+      foo: {
+        value: 'success',
+      },
+      bar: {
+        value: 'pending',
+      },
+    })
+  );
+
+  expect(store.getValue()).toMatchSnapshot();
+
+  store.update(updateRequestsStatus(['bar'], 'success'));
+
+  expect(store.getValue()).toMatchSnapshot();
+
+  store.update(updateRequestsStatus(['bar'], 'error', { type: 'foo' }));
+
+  expect(store.getValue()).toMatchSnapshot();
 });

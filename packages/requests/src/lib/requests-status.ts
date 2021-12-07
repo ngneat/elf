@@ -53,6 +53,55 @@ export function withRequestsStatus<Keys extends string>(
   };
 }
 
+export function updateRequestsStatus<S extends RequestsStatusState>(
+  keys: Array<RecordKeys<S>>,
+  value: 'error',
+  error: any
+): Reducer<S>;
+export function updateRequestsStatus<S extends RequestsStatusState>(
+  keys: Array<RecordKeys<S>>,
+  value: Exclude<StatusState['value'], 'error'>
+): Reducer<S>;
+export function updateRequestsStatus<S extends RequestsStatusState>(
+  requests: Partial<Record<RecordKeys<S>, StatusState>>
+): Reducer<S>;
+export function updateRequestsStatus<S extends RequestsStatusState>(
+  requestsOrKeys: any,
+  value?: any,
+  error?: any
+): Reducer<S> {
+  let normalized = requestsOrKeys;
+  if (value) {
+    normalized = requestsOrKeys.reduce((acc: any, key: string) => {
+      acc[key] = resolveStatus(value, error);
+
+      return acc;
+    }, {});
+  }
+
+  return function (state) {
+    return {
+      ...state,
+      requestsStatus: {
+        ...state.requestsStatus,
+        ...normalized,
+      },
+    };
+  };
+}
+
+function resolveStatus(value: StatusState['value'], error?: any) {
+  const newStatus = {
+    value,
+  } as StatusState;
+
+  if (value === 'error') {
+    (newStatus as ErrorState).error = error;
+  }
+
+  return newStatus;
+}
+
 export function updateRequestStatus<S extends RequestsStatusState>(
   key: RecordKeys<S>,
   value: 'error',
@@ -70,20 +119,12 @@ export function updateRequestStatus<S extends RequestsStatusState>(
   value: any,
   error?: any
 ): Reducer<S> {
-  const newStatus = {
-    value,
-  } as StatusState;
-
-  if (value === 'error') {
-    (newStatus as ErrorState).error = error;
-  }
-
   return function (state) {
     return {
       ...state,
       requestsStatus: {
         ...state.requestsStatus,
-        [key]: newStatus,
+        [key]: resolveStatus(value, error),
       },
     };
   };

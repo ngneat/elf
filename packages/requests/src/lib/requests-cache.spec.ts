@@ -7,6 +7,7 @@ import {
   selectIsRequestCached,
   selectRequestCache,
   updateRequestCache,
+  updateRequestsCache,
   withRequestsCache,
 } from './requests-cache';
 import { Subject } from 'rxjs';
@@ -172,4 +173,39 @@ describe('requestsCache', () => {
       }
     `);
   });
+});
+
+test('updateRequestsCache', () => {
+  const { state, config } = createState(
+    withRequestsCache<'foo' | 'bar' | 'baz'>()
+  );
+
+  const store = new Store({ state, config, name: 'users' });
+
+  store.update(
+    updateRequestsCache({
+      foo: {
+        value: 'partial',
+      },
+    })
+  );
+
+  expect(store.getValue()).toMatchSnapshot();
+
+  store.update(
+    updateRequestsCache({
+      foo: {
+        value: 'full',
+      },
+      bar: {
+        value: 'full',
+      },
+    })
+  );
+
+  expect(store.getValue()).toMatchSnapshot();
+
+  store.update(updateRequestsCache(['foo', 'bar'], { value: 'partial' }));
+
+  expect(store.getValue()).toMatchSnapshot();
 });

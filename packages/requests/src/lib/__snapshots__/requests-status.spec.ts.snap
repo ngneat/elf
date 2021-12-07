@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`updateRequestsStatus 1`] = `
+Object {
+  "requestsStatus": Object {
+    "foo": Object {
+      "value": "pending",
+    },
+  },
+}
+`;
+
+exports[`updateRequestsStatus 2`] = `
+Object {
+  "requestsStatus": Object {
+    "bar": Object {
+      "value": "pending",
+    },
+    "foo": Object {
+      "value": "success",
+    },
+  },
+}
+`;
+
+exports[`updateRequestsStatus 3`] = `
+Object {
+  "requestsStatus": Object {
+    "bar": Object {
+      "value": "success",
+    },
+    "foo": Object {
+      "value": "success",
+    },
+  },
+}
+`;
+
+exports[`updateRequestsStatus 4`] = `
+Object {
+  "requestsStatus": Object {
+    "bar": Object {
+      "error": Object {
+        "type": "foo",
+      },
+      "value": "error",
+    },
+    "foo": Object {
+      "value": "success",
+    },
+  },
+}
+`;

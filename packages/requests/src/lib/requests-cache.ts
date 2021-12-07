@@ -41,6 +41,40 @@ export function selectRequestCache<S extends RequestsCacheState>(
   return select((state) => getRequestCache(key)(state));
 }
 
+export function updateRequestsCache<S extends RequestsCacheState>(
+  keys: Array<CacheRecordKeys<S>>,
+  value: CacheState
+): Reducer<S>;
+export function updateRequestsCache<S extends RequestsCacheState>(
+  requests: Partial<Record<CacheRecordKeys<S>, CacheState>>
+): Reducer<S>;
+export function updateRequestsCache<S extends RequestsCacheState>(
+  requestsOrKeys: any,
+  value?: any
+): Reducer<S> {
+  let normalized = requestsOrKeys;
+
+  if (value) {
+    normalized = requestsOrKeys.reduce((acc: any, key: string) => {
+      acc[key] = {
+        value,
+      };
+
+      return acc;
+    }, {});
+  }
+
+  return function (state) {
+    return {
+      ...state,
+      requestsCache: {
+        ...state.requestsCache,
+        ...normalized,
+      },
+    };
+  };
+}
+
 export function updateRequestCache<S extends RequestsCacheState>(
   key: CacheRecordKeys<S>,
   { ttl, value: v }: { ttl?: number; value?: CacheState['value'] } = {}

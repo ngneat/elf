@@ -138,12 +138,27 @@ pending$ = store.pipe(selectIsRequestPending('todos'));
 ### `updateRequestStatus`
 
 ```ts
-import { updateRequestCache } from '@ngneat/elf-requests';
+import { updateRequestStatus } from '@ngneat/elf-requests';
 
 store.update(updateRequestStatus('todos', 'idle'));
 store.update(updateRequestStatus('todos', 'pending'));
 store.update(updateRequestStatus('todos', 'success'));
 store.update(updateRequestStatus('todos', 'error', error));
+```
+
+### `updateRequestsStatus`
+```ts
+import { updateRequestsStatus } from '@ngneat/elf-requests';
+
+store.update(updateRequestsStatus({
+  keyOne: {
+    value: 'success'
+  }
+}));
+
+
+store.update(updateRequestsStatus(['keyOne', 'keyTwo'], 'success'));
+store.update(updateRequestStatus(['keyOne', 'keyTwo'], 'error', error));
 ```
 
 ### `clearRequestsStatus`
