@@ -8,6 +8,7 @@ export {
   selectRequestCache,
   selectIsRequestCached,
   clearRequestsCache,
+  updateRequestsCache,
 } from './lib/requests-cache';
 export {
   createRequestsStatusOperator,
@@ -19,5 +20,6 @@ export {
   selectRequestStatus,
   withRequestsStatus,
   clearRequestsStatus,
+  updateRequestsStatus,
 } from './lib/requests-status';
 export { createRequestDataSource } from './lib/request-data-source';
