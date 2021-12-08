@@ -15,8 +15,9 @@ import {
   MonoTypeOperatorFunction,
   Observable,
   OperatorFunction,
+  pipe,
 } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { distinctUntilKeyChanged, tap } from 'rxjs/operators';
 
 export type RequestsStatusState = StateOf<typeof withRequestsStatus>;
 export type RecordKeys<S> = S extends { requestsStatus: Record<infer K, any> }
@@ -147,22 +148,28 @@ export function selectRequestStatus<S extends RequestsStatusState>(
   key: RecordKeys<S>,
   options?: { groupKey?: string }
 ): OperatorFunction<S, StatusState> {
-  return select((state) => {
-    const base = getRequestStatus(key)(state);
+  return pipe(
+    distinctUntilKeyChanged('requestsStatus'),
+    select((state) => {
+      const base = getRequestStatus(key)(state);
 
-    if (options?.groupKey) {
-      const parent = getRequestStatus(options.groupKey)(state);
-      return parent.value === 'success' ? parent : base;
-    }
+      if (options?.groupKey) {
+        const parent = getRequestStatus(options.groupKey)(state);
+        return parent.value === 'success' ? parent : base;
+      }
 
-    return base;
-  });
+      return base;
+    })
+  );
 }
 
 export function selectIsRequestPending<S extends RequestsStatusState>(
   key: RecordKeys<S>
 ): OperatorFunction<S, boolean> {
-  return select((state) => getRequestStatus(key)(state).value === 'pending');
+  return pipe(
+    distinctUntilKeyChanged('requestsStatus'),
+    select((state) => getRequestStatus(key)(state).value === 'pending')
+  );
 }
 
 export function trackRequestStatus<S extends RequestsStatusState, T>(

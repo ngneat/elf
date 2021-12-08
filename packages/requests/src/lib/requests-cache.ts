@@ -11,7 +11,13 @@ import {
   StoreDef,
 } from '@ngneat/elf';
 
-import { EMPTY, Observable, OperatorFunction } from 'rxjs';
+import {
+  distinctUntilKeyChanged,
+  EMPTY,
+  Observable,
+  OperatorFunction,
+  pipe,
+} from 'rxjs';
 
 export type RequestsCacheState = StateOf<typeof withRequestsCache>;
 export type CacheRecordKeys<S> = S extends {
@@ -35,10 +41,15 @@ export function withRequestsCache<Keys extends string>(
     config: undefined,
   };
 }
+
+distinctUntilKeyChanged('');
 export function selectRequestCache<S extends RequestsCacheState>(
   key: CacheRecordKeys<S>
 ): OperatorFunction<S, CacheState> {
-  return select((state) => getRequestCache(key)(state));
+  return pipe(
+    distinctUntilKeyChanged('requestsCache'),
+    select((state) => getRequestCache(key)(state))
+  );
 }
 
 export function updateRequestsCache<S extends RequestsCacheState>(
@@ -121,7 +132,10 @@ export function selectIsRequestCached<S extends RequestsCacheState>(
   key: Parameters<typeof isRequestCached>[0],
   options?: { value?: CacheState['value'] }
 ): OperatorFunction<S, boolean> {
-  return select((state) => isRequestCached(key, options)(state));
+  return pipe(
+    distinctUntilKeyChanged('requestsCache'),
+    select((state) => isRequestCached(key, options)(state))
+  );
 }
 
 export function isRequestCached<S extends RequestsCacheState>(
