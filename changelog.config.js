@@ -17,6 +17,7 @@ module.exports = {
   scopes: [
     'store',
     'entities',
+    'requests',
     'requests-cache',
     'requests-status',
     'requests-data-source',

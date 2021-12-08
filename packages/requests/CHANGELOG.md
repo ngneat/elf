@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.1](https://github.com/ngneat/elf/compare/requests-1.0.1...requests-1.1.0) (2021-12-08)
+
+### Bug Fixes
+
+* **requests-status:** 🐞 add emission optimization ([1ac3aa5](https://github.com/ngneat/elf/commit/1ac3aa552a11dcfc9b7c262d418a224fb383c80a))
+
+
 # [1.1.0](https://github.com/ngneat/elf/compare/requests-1.0.1...requests-1.1.0) (2021-12-07)
 
 
