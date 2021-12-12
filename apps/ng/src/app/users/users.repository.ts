@@ -1,28 +1,22 @@
+import { createState, Store } from '@ngneat/elf';
+import {
+  withRequestsCache,
+  withRequestsStatus,
+  createRequestDataSource,
+} from '@ngneat/elf-requests';
+import { Injectable } from '@angular/core';
 import {
   addEntities,
-  createState,
   selectAll,
   selectEntity,
   setEntities,
-  Store,
   withEntities,
-} from '@ngneat/elf';
-import {
-  selectRequestStatus,
-  updateRequestCache,
-  withRequestsCache,
-  withRequestsStatus,
-} from '@ngneat/elf-requests';
-import { Injectable } from '@angular/core';
+} from '@ngneat/elf-entities';
 
 export interface User {
   id: number;
   name: string;
   email: string;
-}
-
-export const enum UsersRequests {
-  default = 'users',
 }
 
 const { state, config } = createState(
@@ -34,33 +28,33 @@ const store = new Store({ name: 'users', state, config });
 
 @Injectable({ providedIn: 'root' })
 export class UsersRepository {
-  users$ = store.pipe(selectAll());
-  status$ = store.pipe(selectRequestStatus(UsersRequests.default));
+  dataSource = createRequestDataSource({
+    store,
+    data$: () => store.pipe(selectAll()),
+    requestKey: 'users',
+    dataKey: 'users',
+  });
 
-  // ps = persistState(store, { storage: useLocalStorage })
-
-  user$(id: User['id']) {
-    return store.pipe(selectEntity(id));
-  }
-
-  userStatus$(id: string) {
-    return store.pipe(
-      selectRequestStatus(id, { groupKey: UsersRequests.default })
-    );
-  }
-
-  get store() {
-    return store;
-  }
+  userDataSource = createRequestDataSource({
+    store,
+    data$: (key: number) => store.pipe(selectEntity(key)),
+    dataKey: 'user',
+    requestStatusOptions: { groupKey: 'users' },
+  });
 
   setUsers(users: User[]) {
-    store.reduce(
+    store.update(
       setEntities(users),
-      updateRequestCache(UsersRequests.default, 'full')
+      this.dataSource.setSuccess(),
+      this.dataSource.setCached()
     );
   }
 
   addUser(user: User) {
-    this.store.reduce(addEntities(user), updateRequestCache(user.id, 'full'));
+    store.update(
+      addEntities(user),
+      this.userDataSource.setSuccess({ key: user.id }),
+      this.userDataSource.setCached({ key: user.id })
+    );
   }
 }

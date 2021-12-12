@@ -1,6 +1,8 @@
 import {
   coerceArray,
-  propsFactory,
+  EmptyConfig,
+  OrArray,
+  PropsFactory,
   Query,
   Reducer,
   select,
@@ -9,65 +11,135 @@ import {
   StoreDef,
 } from '@ngneat/elf';
 
-import { EMPTY, Observable, OperatorFunction } from 'rxjs';
+import {
+  distinctUntilKeyChanged,
+  EMPTY,
+  Observable,
+  OperatorFunction,
+  pipe,
+} from 'rxjs';
 
-type CacheValue = Record<string | number, CacheState>;
+export type RequestsCacheState = StateOf<typeof withRequestsCache>;
+export type CacheRecordKeys<S> = S extends {
+  requestsCache: Record<infer K, any>;
+}
+  ? K
+  : string;
+
 export type CacheState = {
   value: 'none' | 'partial' | 'full';
+  timestamp?: number;
 };
 
-export const {
-  withRequestsCache,
-  updateRequestsCache,
-  selectRequestsCache,
-  resetRequestsCache,
-  getRequestsCache,
-  setRequestsCache,
-} = propsFactory('requestsCache', {
-  initialValue: {} as CacheValue,
-});
-
-export function selectRequestCache<S extends StateOf<typeof withRequestsCache>>(
-  key: string | number
-): OperatorFunction<S, CacheState> {
-  return select((state) => getRequestCache(key)(state));
-}
-
-export function updateRequestCache<S extends StateOf<typeof withRequestsCache>>(
-  key: string | number,
-  value: CacheState['value']
-): Reducer<S> {
-  return updateRequestsCache({
-    [key]: {
-      value,
+export function withRequestsCache<Keys extends string>(
+  initialValue?: Record<Keys, CacheState>
+): PropsFactory<{ requestsCache: Record<Keys, CacheState> }, EmptyConfig> {
+  return {
+    props: {
+      requestsCache: initialValue ?? ({} as Record<Keys, CacheState>),
     },
-  });
-}
-
-export function getRequestCache<S extends StateOf<typeof withRequestsCache>>(
-  key: string | number
-): Query<S, CacheState> {
-  return function (state: S) {
-    return (
-      getRequestsCache(state)[key] ??
-      ({
-        value: 'none',
-      } as CacheState)
-    );
+    config: undefined,
   };
 }
 
-export function selectIsRequestCached<
-  S extends StateOf<typeof withRequestsCache>
->(
+distinctUntilKeyChanged('');
+export function selectRequestCache<S extends RequestsCacheState>(
+  key: CacheRecordKeys<S>
+): OperatorFunction<S, CacheState> {
+  return pipe(
+    distinctUntilKeyChanged('requestsCache'),
+    select((state) => getRequestCache(key)(state))
+  );
+}
+
+export function updateRequestsCache<S extends RequestsCacheState>(
+  keys: Array<CacheRecordKeys<S>>,
+  value: CacheState
+): Reducer<S>;
+export function updateRequestsCache<S extends RequestsCacheState>(
+  requests: Partial<Record<CacheRecordKeys<S>, CacheState>>
+): Reducer<S>;
+export function updateRequestsCache<S extends RequestsCacheState>(
+  requestsOrKeys: any,
+  value?: any
+): Reducer<S> {
+  let normalized = requestsOrKeys;
+
+  if (value) {
+    normalized = requestsOrKeys.reduce((acc: any, key: string) => {
+      acc[key] = {
+        value,
+      };
+
+      return acc;
+    }, {});
+  }
+
+  return function (state) {
+    return {
+      ...state,
+      requestsCache: {
+        ...state.requestsCache,
+        ...normalized,
+      },
+    };
+  };
+}
+
+export function updateRequestCache<S extends RequestsCacheState>(
+  key: CacheRecordKeys<S>,
+  { ttl, value: v }: { ttl?: number; value?: CacheState['value'] } = {}
+): Reducer<S> {
+  const data = {
+    value: v ?? 'full',
+  } as CacheState;
+  if (ttl) {
+    data.timestamp = Date.now() + ttl;
+  }
+
+  return function (state) {
+    return {
+      ...state,
+      requestsCache: {
+        ...state.requestsCache,
+        [key]: data,
+      },
+    };
+  };
+}
+
+export function getRequestCache<S extends RequestsCacheState>(
+  key: CacheRecordKeys<S>
+): Query<S, CacheState> {
+  return function (state: S) {
+    const cacheValue =
+      state.requestsCache[key] ??
+      ({
+        value: 'none',
+      } as CacheState);
+
+    if (cacheValue.timestamp && cacheValue.timestamp < Date.now()) {
+      return {
+        value: 'none',
+      };
+    }
+
+    return cacheValue;
+  };
+}
+
+export function selectIsRequestCached<S extends RequestsCacheState>(
   key: Parameters<typeof isRequestCached>[0],
   options?: { value?: CacheState['value'] }
 ): OperatorFunction<S, boolean> {
-  return select((state) => isRequestCached(key, options)(state));
+  return pipe(
+    distinctUntilKeyChanged('requestsCache'),
+    select((state) => isRequestCached(key, options)(state))
+  );
 }
 
-export function isRequestCached<S extends StateOf<typeof withRequestsCache>>(
-  key: string | number | string[] | number[],
+export function isRequestCached<S extends RequestsCacheState>(
+  key: OrArray<CacheRecordKeys<S>>,
   options?: { value?: CacheState['value'] }
 ) {
   return function (state: S) {
@@ -78,9 +150,9 @@ export function isRequestCached<S extends StateOf<typeof withRequestsCache>>(
   };
 }
 
-export function skipWhileCached<T, S extends StateOf<typeof withRequestsCache>>(
+export function skipWhileCached<S extends RequestsCacheState, T>(
   store: Store<StoreDef<S>>,
-  key: Parameters<typeof isRequestCached>[0],
+  key: OrArray<CacheRecordKeys<S>>,
   options?: { value?: CacheState['value']; returnSource?: Observable<any> }
 ) {
   return function (source: Observable<T>) {
@@ -89,5 +161,25 @@ export function skipWhileCached<T, S extends StateOf<typeof withRequestsCache>>(
     }
 
     return source;
+  };
+}
+
+export function createRequestsCacheOperator<S extends RequestsCacheState>(
+  store: Store<StoreDef<S>>
+) {
+  return function <T>(
+    key: CacheRecordKeys<S>,
+    options?: Parameters<typeof skipWhileCached>[2]
+  ) {
+    return skipWhileCached<S, T>(store, key, options);
+  };
+}
+
+export function clearRequestsCache<S extends RequestsCacheState>(): Reducer<S> {
+  return function (state) {
+    return {
+      ...state,
+      requestsCache: {},
+    };
   };
 }

@@ -12,7 +12,11 @@ export interface StateStorage {
   removeItem(key: string): MaybeAsync<boolean>;
 }
 
-function createStorage(storage: Storage): StateStorage {
+function createStorage(storage: Storage | undefined): StateStorage | undefined {
+  if (!storage) {
+    return;
+  }
+
   return {
     getItem(key: string) {
       const v = storage.getItem(key);
@@ -29,5 +33,9 @@ function createStorage(storage: Storage): StateStorage {
   };
 }
 
-export const useLocalStorage = createStorage(localStorage);
-export const useSessionStorage = createStorage(sessionStorage);
+export const localStorageStrategy = createStorage(
+  typeof localStorage !== 'undefined' ? localStorage : undefined
+)!;
+export const sessionStorageStrategy = createStorage(
+  typeof sessionStorage !== 'undefined' ? sessionStorage : undefined
+)!;

@@ -1,17 +1,19 @@
 import { EMPTY, Observable, OperatorFunction } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {
-  DefaultEntitiesRef,
-  EmptyConfig,
   EntitiesRef,
   EntitiesState,
   getEntityType,
+  DefaultEntitiesRef,
+  selectMany,
   getIdType,
+} from '@ngneat/elf-entities';
+import {
+  EmptyConfig,
   Query,
   Reducer,
   select,
-  selectMany,
-  State,
+  PropsFactory,
   StateOf,
   Store,
   StoreDef,
@@ -34,9 +36,9 @@ export function withPagination<
   IdType extends number | string = number
 >(options?: {
   initialPage?: IdType;
-}): State<PaginationState<IdType>, EmptyConfig> {
+}): PropsFactory<PaginationState<IdType>, EmptyConfig> {
   return {
-    state: {
+    props: {
       pagination: {
         currentPage: options?.initialPage ?? (1 as IdType),
         pages: {} as Record<IdType, IdType[]>,
@@ -45,7 +47,7 @@ export function withPagination<
         total: 0,
       },
     },
-    config: {},
+    config: undefined,
   };
 }
 
@@ -86,7 +88,7 @@ export function getPaginationData<
 export function updatePaginationData<
   S extends StateOf<typeof withPagination> & EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
->(data: Omit<PaginationState['pagination'], 'pages'>): Reducer<S> {
+>(data: PaginationData): Reducer<S> {
   return function (state: S) {
     return {
       ...state,
@@ -165,7 +167,7 @@ export function hasPage<S extends StateOf<typeof withPagination>>(
   };
 }
 
-export function selectActivePageEntities<
+export function selectCurrentPageEntities<
   S extends StateOf<typeof withPagination> & EntitiesState<DefaultEntitiesRef>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(): OperatorFunction<S, Array<getEntityType<S, Ref>>> {

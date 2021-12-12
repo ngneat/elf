@@ -2,7 +2,7 @@ import { stateHistory } from './state-history';
 import { createState, propsFactory, Store } from '@ngneat/elf';
 
 function eq(store: Store, value: number) {
-  expect(store.state).toEqual({ prop: value });
+  expect(store.getValue()).toEqual({ prop: value });
 }
 
 describe('state history', () => {
@@ -15,7 +15,7 @@ describe('state history', () => {
     const history = stateHistory(store);
 
     eq(store, 0);
-    store.reduce(setProp(1));
+    store.update(setProp(1));
     eq(store, 1);
 
     history.undo();
@@ -24,8 +24,8 @@ describe('state history', () => {
     history.redo();
     eq(store, 1);
 
-    store.reduce(setProp(2));
-    store.reduce(setProp(3));
+    store.update(setProp(2));
+    store.update(setProp(3));
     eq(store, 3);
 
     history.undo();
@@ -36,14 +36,14 @@ describe('state history', () => {
 
     history.pause();
 
-    store.reduce(setProp(4));
-    store.reduce(setProp(5));
+    store.update(setProp(4));
+    store.update(setProp(5));
     eq(store, 5);
     history.undo();
     eq(store, 0);
 
     history.resume();
-    store.reduce(setProp(1));
+    store.update(setProp(1));
     history.undo();
     eq(store, 0);
   });

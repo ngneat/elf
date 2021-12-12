@@ -1,0 +1,170 @@
+# Status
+
+import index from '!!raw-loader!@site/docs/examples/requests-status.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
+Using this feature, you can manage the status of API calls in your store. First, you need to install the package by
+using the CLI command `elf-cli install` and selecting the requests package, or via npm:
+
+```bash
+npm i @ngneat/elf-requests
+```
+
+To use this feature, provide the `withRequestsStatus` props factory function in the `createState` call:
+
+```ts title="todos.repository"
+import { createState, Store } from '@ngneat/elf';
+import { withEntities } from '@ngneat/elf-entities';
+import { withRequestsStatus, createRequestsStatusOperator } from '@ngneat/elf-requests';
+
+interface Todo {
+  id: number;
+  label: string;
+}
+
+const { state, config } = createState(
+  withEntities<Todo>(),
+  // You can pass the keys type
+  // highlight-next-line
+  withRequestsStatus<`todos`, `todo-${string}`>()
+);
+
+const todosStore = new Store({ name: 'todos', state, config });
+```
+
+Now we can use the `createRequestsStatusOperator` function that takes a store and returns a custom operator. That operator takes the request key and sets its initial status to `pending`. It also updates it to `error` when it fails.
+
+```ts title="todos.repository"
+import { withRequestsStatus, createRequestsStatusOperator } from '@ngneat/elf-requests';
+
+// ...
+const todosStore = new Store({ name: 'todos', state, config });
+// highlight-next-line
+export const trackTodosRequestsStatus = createRequestsStatusOperator(todosStore);
+```
+
+And use it with our `async` source:
+
+```ts title="todos.service.ts"
+import { setTodos, trackTodosRequestsStatus } from './todos.repository';
+
+export function fetchTodos() {
+  return http.get(todosUrl).pipe(
+    tap(setTodos),
+    // highlight-next-line
+    trackTodosRequestsStatus('todos')
+  );
+}
+```
+
+Upon successful completion, the `success` status must be manually set as follows:
+
+```ts title="todos.repository.ts"
+import { updateRequestStatus } from '@ngneat/elf-requests';
+import { setTodos } from './todos.repository';
+
+export function setTodos(todos: Todo[]) {
+  store.update(
+    addEntities(todos),
+    // highlight-next-line
+    updateRequestStatus('todos', 'success'),
+  )
+}
+```
+
+You need to set it manually to avoid a **redundant** update and have the option to define what a "successful" response is. You can give up these advantages by using the `handleSuccess` option:
+
+The default `status` of any request is `idle`. You can use the `initializeAsPending` function to initialize a request as `pending`:
+
+```ts
+import { createState, Store } from '@ngneat/elf';
+import { withEntities } from '@ngneat/elf-entities';
+import { withRequestsStatus, initializeAsPending } from '@ngneat/elf-requests';
+
+const { state, config } = createState(
+  withEntities<Todo>(),
+  withRequestsStatus(
+    // highlight-next-line
+    initializeAsPending('todos')
+  )
+);
+
+const todosStore = new Store({ name: 'todos', state, config });
+```
+
+
+<LiveDemo src={index} packages={['entities', 'requests']} />
+<br />
+You can monitor and change the request status for your APIs using the following
+queries and mutations:
+
+## Queries
+
+### `selectRequestStatus`
+
+Select the status of the provided request key:
+
+```ts
+import { selectRequestStatus } from '@ngneat/elf-requests';
+
+todosStatus$ = store.pipe(selectRequestStatus('todos'));
+
+// This will return success when either the `todos` key or the `todo-1` key is succeeded
+todoStatus$ = store.pipe(selectRequestStatus('todo-1', { groupKey: 'todos' }));
+```
+
+### `getRequestStatus`
+
+Get the status of the provided request key:
+
+```ts
+import { getRequestStatus } from '@ngneat/elf-requests';
+
+todosStatus = store.query(getRequestStatus('todos'));
+```
+
+### `selectIsRequestPending`
+
+Select whether the status of the provided request key is `pending`:
+
+```ts
+import { selectIsRequestPending } from '@ngneat/elf-requests';
+
+pending$ = store.pipe(selectIsRequestPending('todos'));
+```
+
+## Mutations
+
+### `updateRequestStatus`
+
+```ts
+import { updateRequestStatus } from '@ngneat/elf-requests';
+
+store.update(updateRequestStatus('todos', 'idle'));
+store.update(updateRequestStatus('todos', 'pending'));
+store.update(updateRequestStatus('todos', 'success'));
+store.update(updateRequestStatus('todos', 'error', error));
+```
+
+### `updateRequestsStatus`
+```ts
+import { updateRequestsStatus } from '@ngneat/elf-requests';
+
+store.update(updateRequestsStatus({
+  keyOne: {
+    value: 'success'
+  }
+}));
+
+
+store.update(updateRequestsStatus(['keyOne', 'keyTwo'], 'success'));
+store.update(updateRequestStatus(['keyOne', 'keyTwo'], 'error', error));
+```
+
+### `clearRequestsStatus`
+
+```ts
+import { clearRequestsStatus } from '@ngneat/elf-requests';
+
+store.update(clearRequestsStatus());
+```

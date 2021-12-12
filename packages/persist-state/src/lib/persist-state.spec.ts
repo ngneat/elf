@@ -1,11 +1,13 @@
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { addEntities } from '@ngneat/elf';
+import { addEntities } from '@ngneat/elf-entities';
 import { createEntitiesStore, createTodo } from '@ngneat/elf-mocks';
 import { StateStorage } from './storage';
 import { persistState } from './persist-state';
 
 describe('persist state', () => {
+  global.window = {} as any;
+
   it('should persist upon update', () => {
     const storage: StateStorage = {
       getItem: jest.fn().mockImplementation(() => of(null)),
@@ -17,9 +19,12 @@ describe('persist state', () => {
     persistState(store, { storage });
     expect(storage.setItem).not.toHaveBeenCalled();
 
-    store.reduce(addEntities(createTodo(1)));
+    store.update(addEntities(createTodo(1)));
     expect(storage.setItem).toHaveBeenCalledTimes(1);
-    expect(storage.setItem).toHaveBeenCalledWith(`todos@store`, store.state);
+    expect(storage.setItem).toHaveBeenCalledWith(
+      `todos@store`,
+      store.getValue()
+    );
   });
 
   it('should initialize the store from storage', () => {
@@ -35,7 +40,7 @@ describe('persist state', () => {
     const instance = persistState(store, { storage });
     const spy = jest.fn();
     instance.initialized$.subscribe(spy);
-    expect(store.state).toEqual(value);
+    expect(store.getValue()).toEqual(value);
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
@@ -53,7 +58,7 @@ describe('persist state', () => {
     });
     expect(storage.setItem).not.toHaveBeenCalled();
 
-    store.reduce(addEntities(createTodo(1)));
+    store.update(addEntities(createTodo(1)));
     expect(storage.setItem).toHaveBeenCalledTimes(1);
     expect(storage.setItem).toHaveBeenCalledWith(`todos@store`, {
       ids: [1, 2],

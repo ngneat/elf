@@ -1,0 +1,33 @@
+{
+  "name": "@ngneat/elf-cli-ng",
+  "version": "1.0.0",
+  "description": "Angular adapter for elf store cli",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/ngneat/elf/issues"
+  },
+  "homepage": "https://github.com/ngneat/elf#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ngneat/elf"
+  },
+  "keywords": [
+    "rxjs",
+    "state management",
+    "reactive state management",
+    "js state management",
+    "reactive store",
+    "elf",
+    "angular",
+    "cli"
+  ],
+  "author": {
+    "name": "Netanel Basal",
+    "email": "netanel7799@gmail.com",
+    "url": "https://netbasal.com"
+  },
+  "sideEffects": false,
+  "license": "MIT"
+}

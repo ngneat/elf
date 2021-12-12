@@ -1,0 +1,44 @@
+# Registry
+
+Elf keeps your stores in a `registry` and exposes the following functions:
+
+## getRegistry
+Get the the registry:
+
+```ts
+import { getRegistry } from '@ngneat/elf';
+
+const stores = getRegistry();
+```
+
+## getStore
+
+Get a reference to a store by name:
+
+
+```ts
+import { getStore } from '@ngneat/elf';
+
+const todosStore = getStore('name');
+```
+
+## getStoresSnapshot
+
+Get a snapshot of stores values:
+
+```ts
+import { getStoresSnapshot } from '@ngneat/elf';
+
+const storesValues = getStoresSnapshot();
+```
+
+## registry$
+An observable that emits when a store is added or removed:
+
+```ts
+import { registry$ } from '@ngneat/elf';
+
+registry$.subscribe(event => {
+  // event = { type: 'add' | 'remove'; store: Store }
+})
+```

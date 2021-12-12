@@ -8,11 +8,10 @@ import { UsersService } from './users.service';
   styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
-  users$ = this.usersRepo.users$;
-  status$ = this.usersRepo.status$;
+  dataSource = this.usersRepo.dataSource.data$();
 
   constructor(
-    private usersRepo: UsersRepository,
+    public usersRepo: UsersRepository,
     private usersService: UsersService
   ) {}
 

@@ -1,4 +1,4 @@
-import { addEntities } from '@ngneat/elf';
+import { addEntities } from '@ngneat/elf-entities';
 import { createEntitiesStore, createTodo } from '@ngneat/elf-mocks';
 import { devTools } from './devtools';
 
@@ -17,14 +17,31 @@ describe('devtools', () => {
     },
   });
 
+  createEntitiesStore('books');
+
   devTools();
 
   it('should send actions', () => {
+    // There should be support for stores that were created before we initialized the devTools
+    expect(instanceMock.send).toHaveBeenCalledWith(
+      { type: '[Books] - @Init' },
+      {
+        books: {
+          entities: {},
+          ids: [],
+        },
+      }
+    );
+
     const store = createEntitiesStore();
 
     expect(instanceMock.send).toHaveBeenCalledWith(
       { type: '[Todos] - @Init' },
       {
+        books: {
+          entities: {},
+          ids: [],
+        },
         todos: {
           entities: {},
           ids: [],
@@ -32,11 +49,15 @@ describe('devtools', () => {
       }
     );
 
-    store.reduce(addEntities(createTodo(1)));
+    store.update(addEntities(createTodo(1)));
 
     expect(instanceMock.send).toHaveBeenCalledWith(
       { type: '[Todos] - Update' },
       {
+        books: {
+          entities: {},
+          ids: [],
+        },
         todos: {
           entities: {
             1: {
@@ -54,7 +75,12 @@ describe('devtools', () => {
 
     expect(instanceMock.send).toHaveBeenCalledWith(
       { type: 'Remove Todos' },
-      {}
+      {
+        books: {
+          entities: {},
+          ids: [],
+        },
+      }
     );
 
     createEntitiesStore('foo');
@@ -62,6 +88,10 @@ describe('devtools', () => {
     expect(instanceMock.send).toHaveBeenCalledWith(
       { type: '[Foo] - @Init' },
       {
+        books: {
+          entities: {},
+          ids: [],
+        },
         foo: {
           entities: {},
           ids: [],
@@ -74,6 +104,10 @@ describe('devtools', () => {
     expect(instanceMock.send).toHaveBeenCalledWith(
       { type: '[Bar] - @Init' },
       {
+        books: {
+          entities: {},
+          ids: [],
+        },
         foo: {
           entities: {},
           ids: [],
@@ -85,11 +119,15 @@ describe('devtools', () => {
       }
     );
 
-    bar.reduce(addEntities(createTodo(1)));
+    bar.update(addEntities(createTodo(1)));
 
     expect(instanceMock.send).toHaveBeenCalledWith(
       { type: '[Bar] - Update' },
       {
+        books: {
+          entities: {},
+          ids: [],
+        },
         foo: {
           entities: {},
           ids: [],

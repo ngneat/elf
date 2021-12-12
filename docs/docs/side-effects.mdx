@@ -1,0 +1,122 @@
+# Managing Side Effects
+
+Elf is a state management solution, and it doesn't force you to manage side effects in a certain way. But the same team also created companion packages that can be used with Elf to handle side effects.
+
+A side-effect is anything that happens outside of the normal flow of the store—interacting with the API asynchronously, setting intervals and timeouts, updating the local storage, etc.
+
+It's entirely up to the developer to model and implement those tasks and update the store.
+
+
+Let's examine three ways to handle side effects in our application:
+
+## Using Services
+
+In most cases, services are the most straightforward solution:
+
+```ts title="todos.service.ts"
+import { setTodos, addTodo } from './todos.repository';
+import { tap } from 'rxjs/operators';
+
+export function fetchTodos() {
+  return http.get('todos').pipe(
+    tap(setTodos)
+  )
+}
+
+export function addTodo(todo: Todo) {
+  return http.post('todos', todo).pipe(
+    tap(addTodo)
+  )
+}
+```
+
+And `subscribe` in the component. Below is an example using a React component:
+
+```tsx
+import { useObservable } from '@ngneat/react-rxjs';
+import { todos$ } from './todos.repository';
+import { fetchTodos } from './todos.service';
+
+function Todos() {
+  const [todos] = useObservable(todos$);
+  
+  useEffect(() => {
+    fetchTodos().subscribe();
+  }, [])
+  
+  return <div>{todos}</div>
+}
+```
+
+Check out the [`@ngneat/react-rxjs`](https://github.com/ngneat/react-rxjs) library for more information.
+
+
+## Using Effects
+
+We can register `effects` that'll execute when we dispatch actions using [`@ngneat/effects`](https://github.com/ngneat/effects).
+
+```ts title="todos.effects.ts"
+
+import { createEffect, ofType } from '@ngneat/effects';
+
+const loadTodos = createAction('[Todos] Load');
+
+export const loadTodos$ = createEffect(actions => 
+  actions.pipe(
+    ofType(loadTodos),
+    switchMap((todo) => todosApi.loadTodos()),
+    tap(setTodos)
+  )
+);
+```
+
+Below is an example using a React component:
+
+```tsx
+import { useEffects } from '@ngneat/effects-hook';
+import { dispatch }   from '@ngneat/effects';
+import { useObservable } from '@ngneat/react-rxjs';
+import { useEffect }  from 'react';
+
+export function TodosPage() {
+  const [todos] = useObservable(todos$);
+
+  useEffects([loadTodos$]);
+
+  useEffect(() => dispatch(loadTodos()), []);
+
+  return {todos}
+}
+```
+
+In the [official](https://github.com/ngneat/effects) documentation, you can find more information and an Angular example.
+
+## Using Effect Functions
+
+You may prefer effect functions if you're not a big fan of `actions`.
+
+```ts title="todos.effects.ts"
+import { createEffectFn } from '@ngneat/effects';
+
+export const searchTodoEffect = createEffectFn((searchTerm$: Observable<string>) => {
+  return searchTerm$.pipe(
+    debounceTime(300),
+    switchMap((searchTerm) => fetchTodos({ searchTerm })),
+    tap(setTodos)
+  );
+});
+```
+
+Below is an example using a React component:
+
+```tsx
+import { useEffectFn } from '@ngneat/effects-hooks';
+
+function SearchComponent() {
+  const searchTodo = useEffectFn(searchTodoEffect);
+
+  return <input onChange = {({ target: { value } }) => searchTodo(value) }/>
+}
+```
+
+In the [official](https://github.com/ngneat/effects#effect-functions) documentation, you can find more information and an Angular example. It's possible to use effects and effect functions simultaneously if you like.

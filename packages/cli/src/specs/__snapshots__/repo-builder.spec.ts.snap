@@ -1,0 +1,244 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Repo Builder all: all 1`] = `
+"import { Store, createState, withProps } from '@ngneat/elf';
+import { withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
+import { withRequestsCache, withRequestsStatus } from '@ngneat/elf-requests';
+
+export interface TodoUI {
+  id: number;
+}
+
+export interface Todo {
+  id: number;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface TodosProps {
+}
+
+const { state, config } = createState(withProps<TodosProps>({}), withEntities<Todo>(), withUIEntities<TodoUI>(), withActiveId(), withActiveIds(), withRequestsCache<'todos'>(), withRequestsStatus<'todos'>());
+const store = new Store({ name: 'todos', state, config });
+
+export class TodosRepository {
+  activeTodos$ = store.pipe(selectActiveEntities());
+  activeTodo$ = store.pipe(selectActiveEntity());
+  todos$ = store.pipe(selectAll());
+
+  deleteTodo(id: Todo['id']) {
+    store.update(deleteEntities(id));
+  }
+
+  addTodo(todo: Todo) {
+    store.update(addEntities(todo));
+  }
+
+  updateTodo(id: Todo['id'], todo: Partial<Todo>) {
+    store.update(updateEntities(id, todo));
+  }
+
+  setActiveId(id: Todo['id']) {
+    store.update(setActiveId(id));
+  }
+
+  toggleActiveIds(ids: Array<Todo['id']>) {
+    store.update(toggleActiveIds(ids));
+  }
+}
+"
+`;
+
+exports[`Repo Builder should support function template: all 1`] = `
+"import { Store, createState, withProps } from '@ngneat/elf';
+import { withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
+import { withRequestsCache, withRequestsStatus } from '@ngneat/elf-requests';
+
+export interface TodoUI {
+  id: number;
+}
+
+export interface Todo {
+  id: number;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface TodosProps {
+}
+
+const { state, config } = createState(withProps<TodosProps>({}), withEntities<Todo>(), withUIEntities<TodoUI>(), withActiveId(), withActiveIds(), withRequestsCache<'todos'>(), withRequestsStatus<'todos'>());
+export const todosStore = new Store({ name: 'todos', state, config });
+
+export const activeTodos$ = todosStore.pipe(selectActiveEntities());
+
+export const activeTodo$ = todosStore.pipe(selectActiveEntity());
+
+export const todos$ = todosStore.pipe(selectAll());
+
+export function deleteTodo(id: Todo['id']) {
+  todosStore.update(deleteEntities(id));
+}
+
+export function addTodo(todo: Todo) {
+  todosStore.update(addEntities(todo));
+}
+
+export function updateTodo(id: Todo['id'], todo: Partial<Todo>) {
+  todosStore.update(updateEntities(id, todo));
+}
+
+export function setActiveTodosId(id: Todo['id']) {
+  todosStore.update(setActiveId(id));
+}
+
+export function toggleActiveTodosIds(ids: Array<Todo['id']>) {
+  todosStore.update(toggleActiveIds(ids));
+}
+"
+`;
+
+exports[`Repo Builder withActiveId: withActiveId 1`] = `
+"import { Store, createState } from '@ngneat/elf';
+import { withActiveId, selectActiveEntity, setActiveId } from '@ngneat/elf-entities';
+
+const { state, config } = createState(withActiveId());
+const store = new Store({ name: 'todos', state, config });
+
+export class TodosRepository {
+  activeTodo$ = store.pipe(selectActiveEntity());
+
+  setActiveId(id: Todo['id']) {
+    store.update(setActiveId(id));
+  }
+}
+"
+`;
+
+exports[`Repo Builder withActiveIds: withActiveIds 1`] = `
+"import { Store, createState } from '@ngneat/elf';
+import { withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
+
+const { state, config } = createState(withActiveIds());
+const store = new Store({ name: 'todos', state, config });
+
+export class TodosRepository {
+  activeTodos$ = store.pipe(selectActiveEntities());
+
+  toggleActiveIds(ids: Array<Todo['id']>) {
+    store.update(toggleActiveIds(ids));
+  }
+}
+"
+`;
+
+exports[`Repo Builder withEntities idKey: withEntities 1`] = `
+"import { Store, createState } from '@ngneat/elf';
+import { withEntities, selectAll, addEntities, updateEntities, deleteEntities } from '@ngneat/elf-entities';
+
+export interface Todo {
+  _id: number;
+}
+
+const { state, config } = createState(withEntities<Todo, '_id'>({ idKey: '_id' }));
+const store = new Store({ name: 'todos', state, config });
+
+export class TodosRepository {
+  todos$ = store.pipe(selectAll());
+
+  addTodo(todo: Todo) {
+    store.update(addEntities(todo));
+  }
+
+  updateTodo(id: Todo['_id'], todo: Partial<Todo>) {
+    store.update(updateEntities(id, todo));
+  }
+
+  deleteTodo(id: Todo['_id']) {
+    store.update(deleteEntities(id));
+  }
+}
+"
+`;
+
+exports[`Repo Builder withEntities: withEntities 1`] = `
+"import { Store, createState } from '@ngneat/elf';
+import { withEntities, selectAll, addEntities, updateEntities, deleteEntities } from '@ngneat/elf-entities';
+
+export interface Todo {
+  id: number;
+}
+
+const { state, config } = createState(withEntities<Todo>());
+const store = new Store({ name: 'todos', state, config });
+
+export class TodosRepository {
+  todos$ = store.pipe(selectAll());
+
+  addTodo(todo: Todo) {
+    store.update(addEntities(todo));
+  }
+
+  updateTodo(id: Todo['id'], todo: Partial<Todo>) {
+    store.update(updateEntities(id, todo));
+  }
+
+  deleteTodo(id: Todo['id']) {
+    store.update(deleteEntities(id));
+  }
+}
+"
+`;
+
+exports[`Repo Builder withProps: withProps 1`] = `
+"import { Store, createState, withProps } from '@ngneat/elf';
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface TodosProps {
+}
+
+const { state, config } = createState(withProps<TodosProps>({}));
+const store = new Store({ name: 'todos', state, config });
+
+export class TodosRepository {
+}
+"
+`;
+
+exports[`Repo Builder withRequestsCache: withRequestsCache 1`] = `
+"import { Store, createState } from '@ngneat/elf';
+import { withRequestsCache } from '@ngneat/elf-requests';
+
+const { state, config } = createState(withRequestsCache<'todos'>());
+const store = new Store({ name: 'todos', state, config });
+
+export class TodosRepository {
+}
+"
+`;
+
+exports[`Repo Builder withRequestsStatus: withRequestsStatus 1`] = `
+"import { Store, createState } from '@ngneat/elf';
+import { withRequestsStatus } from '@ngneat/elf-requests';
+
+const { state, config } = createState(withRequestsStatus<'todos'>());
+const store = new Store({ name: 'todos', state, config });
+
+export class TodosRepository {
+}
+"
+`;
+
+exports[`Repo Builder withUIEntities: withUIEntities 1`] = `
+"import { Store, createState } from '@ngneat/elf';
+import { withUIEntities } from '@ngneat/elf-entities';
+
+export interface TodoUI {
+  id: number;
+}
+
+const { state, config } = createState(withUIEntities<TodoUI>());
+const store = new Store({ name: 'todos', state, config });
+
+export class TodosRepository {
+}
+"
+`;

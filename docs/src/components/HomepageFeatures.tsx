@@ -16,40 +16,72 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
-    image: '/img/undraw_docusaurus_mountain.svg',
+    title: 'Modular by design',
+    image: 'img/modular.png',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Build multiple stores and let your bundler code split them automatically
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    image: '/img/undraw_docusaurus_tree.svg',
+    title: 'Tree Shakeable & Fully Typed',
+    image: 'img/tree.png',
+    description: <>Anything you don't use won't become part of your bundle</>,
+  },
+  {
+    title: 'CLI',
+    image: 'img/cli.png',
+    description: <>A fast and efficient way to build up your stores</>,
+  },
+  {
+    title: 'First Class Entities Support',
+    image: 'img/entities.png',
+    description: <>Simply and easily manage entities in your store</>,
+  },
+  {
+    title: 'Requests Status & Cache',
+    image: 'img/requests.png',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Monitor server requests and cache them, preventing redundant API calls
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    image: '/img/undraw_docusaurus_react.svg',
+    title: 'Persist State',
+    image: 'img/persist.png',
+    description: (
+      <>Persist the store's state, offering a seamless user experience</>
+    ),
+  },
+  {
+    title: 'State History',
+    image: 'img/history.png',
+    description: (
+      <>Save the store's state history, for easy undo/redo functionality</>
+    ),
+  },
+  {
+    title: 'Pagination',
+    image: 'img/pagination.png',
+    description: <>Get built-in support for managing pagination in the app</>,
+  },
+  {
+    title: 'Devtools',
+    image: 'img/devtools.png',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Elf hooks into Redux devtools to give you an enhanced development
+        experience
       </>
     ),
   },
 ];
 
-function Feature({title, image, description}: FeatureItem) {
+function Feature({ title, image, description }: FeatureItem) {
   return (
-    <div className={clsx('col col--4')}>
+    <div className={clsx('col col--4 feature')}>
       <div className="text--center">
         <img className={styles.featureSvg} alt={title} src={image} />
       </div>

@@ -1,34 +1,37 @@
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require('prism-react-renderer/themes/nightOwlLight');
+const darkCodeTheme = require('prism-react-renderer/themes/oceanicNext');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  title: 'Elf | A Reactive Store with Magical Powers',
+  tagline: 'A Reactive Store with Magical Powers',
+  baseUrl: '/elf/',
+  url: 'https://ngneat.github.io',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'ngneat',
+  projectName: 'elf',
   themeConfig: {
+    algolia: {
+      apiKey: '129bed74e0b4d728358bf7b123274c18',
+      indexName: 'elf',
+    },
     navbar: {
-      title: 'My Site',
+      title: 'Elf',
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        alt: 'Elf',
+        src: 'img/elf.png',
       },
       items: [
         {
-          type: 'doc',
-          docId: 'intro',
+          to: 'docs/store',
+          activeBasePath: 'docs',
+          label: 'Docs',
           position: 'left',
-          label: 'Tutorial',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/ngneat/elf',
           label: 'GitHub',
           position: 'right',
         },
@@ -41,8 +44,8 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Tutorial',
-              to: '/docs/intro',
+              label: 'Docs',
+              to: '/docs/store',
             },
           ],
         },
@@ -50,16 +53,12 @@ module.exports = {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              label: 'Discussions',
+              href: 'https://github.com/ngneat/elf/discussions',
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
+              href: 'https://twitter.com/NetanelBasal',
             },
           ],
         },
@@ -67,37 +66,28 @@ module.exports = {
           title: 'More',
           items: [
             {
-              label: 'Blog',
-              to: '/blog',
-            },
-            {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/ngneat/elf',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Elf, Inc.`,
     },
     prism: {
       theme: lightCodeTheme,
       darkTheme: darkCodeTheme,
     },
   },
+
   presets: [
     [
       '@docusaurus/preset-classic',
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/',
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/main/website/blog/',
+            'https://github.com/ngneat/elf/docusaurus/edit/main/website/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

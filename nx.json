@@ -17,35 +17,9 @@
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "parallel": 3
       }
-    }
-  },
-  "projects": {
-    "devtools": {
-      "tags": []
-    },
-    "ng": {
-      "tags": []
-    },
-    "ng-e2e": {
-      "tags": [],
-      "implicitDependencies": ["ng"]
-    },
-    "pagination": {
-      "tags": []
-    },
-    "persist-state": {
-      "tags": []
-    },
-    "requests": {
-      "tags": []
-    },
-    "state-history": {
-      "tags": []
-    },
-    "store": {
-      "tags": []
     }
   },
   "targetDependencies": {
@@ -59,5 +33,39 @@
   "workspaceLayout": {
     "appsDir": "apps",
     "libsDir": "packages"
-  }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "generators": {
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    },
+    "@nrwl/react": {
+      "application": {
+        "style": "scss",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "scss"
+      },
+      "library": {
+        "style": "scss",
+        "linter": "eslint"
+      }
+    }
+  },
+  "defaultProject": "react"
 }

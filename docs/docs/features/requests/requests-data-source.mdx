@@ -1,0 +1,100 @@
+# Data Source
+
+import index from '!!raw-loader!@site/docs/examples/data-source.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
+With the `createRequestDataSource` function, we can easily select the state of an async request from our store:
+
+```ts
+import { createState, Store } from '@ngneat/elf';
+import {
+  withRequestsStatus,
+  withRequestsCache,
+  // highlight-next-line
+  createRequestDataSource,
+} from '@ngneat/elf-requests';
+import { selectAll, withEntities } from '@ngneat/elf-entities';
+
+const { state, config } = createState(
+  withEntities<Todo>(),
+  withRequestsStatus(),
+  withRequestsCache()
+);
+
+const store = new Store({ state, config, name: 'todos' });
+
+// highlight-start
+export const todosDataSource = createRequestDataSource({
+  data$: () => store.pipe(selectAll()),
+  requestKey: 'todos',
+  dataKey: 'todos',
+  store
+});
+// highlight-end
+```
+
+The `todosDataSource` will return a function named `data$` that returns an observable with the following shape:
+
+```ts
+todosDataSource.data$().subscribe(({ todos, loading, error }) => {})
+```
+
+And the following operators and functions that operates on the provided `requestKey`:
+
+```ts
+store.update(
+  setTodos(todos),
+  todosDataSource.setSuccess();
+  todosDataSource.setCached();
+)
+
+todosDataSource.trackRequestStatus();
+todosDataSource.skipWhileCached();
+```
+
+<LiveDemo src={index} packages={['entities', 'requests']} />
+
+
+## Dynamic DataSource
+We can use the `createRequestDataSource` with a dynamic key:
+
+```ts
+import { createState, Store } from '@ngneat/elf';
+import {
+  withRequestsStatus,
+  withRequestsCache,
+  createRequestDataSource,
+} from '@ngneat/elf-requests';
+import { selectEntity, withEntities } from '@ngneat/elf-entities';
+
+const { state, config } = createState(
+  withEntities<Todo>(),
+  withRequestsStatus(),
+  withRequestsCache()
+);
+
+const store = new Store({ state, config, name: 'todos' });
+
+// highlight-start
+export const todoDataSource = createRequestDataSource({
+  data$: (key: number) => store.pipe(selectEntity(key)),
+  dataKey: 'todo',
+  store
+});
+// highlight-end
+```
+
+Note that you should not pass a `requestKey` in this case. With this change, you will get the following API:
+
+```ts
+todoDataSource.data$({ key: 1 }).subscribe(({ todo, loading, error }) => {})
+
+store.update(
+  addTodo(todo),
+  todoDataSource.setSuccess({ key: 1 });
+  todoDataSource.setCached({ key: 1 });
+)
+
+todoDataSource.trackRequestStatus({ key: 1 });
+todoDataSource.skipWhileCached({ key: 1 });
+```

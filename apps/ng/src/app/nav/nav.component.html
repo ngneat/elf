@@ -1,12 +1,17 @@
 <nav class="navbar navbar-expand-lg bg ps-3 pe-4 nav-purple-bg">
   <div class="container-fluid">
     <a routerLink="/">
-      <img src="assets/elf.svg" class="logo">
+      <img src="assets/elf.svg" class="logo" />
     </a>
     <div class="float-end">
       <ul class="collapse navbar-collapse navbar-nav">
         <li *ngFor="let item of navItems" class="nav-item ms-2">
-          <a routerLinkActive="active" [routerLink]="item.link" class="nav-link">{{ item.label }}</a>
+          <a
+            routerLinkActive="active"
+            [routerLink]="item.link"
+            class="nav-link"
+            >{{ item.label }}</a
+          >
         </li>
       </ul>
     </div>

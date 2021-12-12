@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "compilerOptions": {
+    "target": "ES2015",
+    "esModuleInterop": true
+  },
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ]
+}

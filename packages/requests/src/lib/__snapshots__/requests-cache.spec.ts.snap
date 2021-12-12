@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`updateRequestsCache 1`] = `
+Object {
+  "requestsCache": Object {
+    "foo": Object {
+      "value": "partial",
+    },
+  },
+}
+`;
+
+exports[`updateRequestsCache 2`] = `
+Object {
+  "requestsCache": Object {
+    "bar": Object {
+      "value": "full",
+    },
+    "foo": Object {
+      "value": "full",
+    },
+  },
+}
+`;
+
+exports[`updateRequestsCache 3`] = `
+Object {
+  "requestsCache": Object {
+    "bar": Object {
+      "value": Object {
+        "value": "partial",
+      },
+    },
+    "foo": Object {
+      "value": Object {
+        "value": "partial",
+      },
+    },
+  },
+}
+`;

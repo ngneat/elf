@@ -1,0 +1,62 @@
+# UI Entities
+
+import index from '!!raw-loader!@site/docs/examples/ui-entities.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
+This feature allows the store to hold UI-specific entity data, for instance, whether the user has opened the card representing an entity.
+When used in conjunction with `withEntities` this can be used to store additional UI data separately from the entities themselves.
+
+```ts
+import { createState, Store } from '@ngneat/elf';
+import { withEntities, withUIEntities } from '@ngneat/elf-entities';
+
+interface TodoUI {
+  id: number;
+  open: boolean;
+}
+interface Todo {
+  id: number;
+  name: string;
+}
+
+const { state, config } = createState(
+  withEntities<Todo>(),
+  withUIEntities<TodoUI>()
+);
+
+const todosStore = new Store({ name: 'todos', state, config });
+```
+
+The usage is similar to that of `entities` - you can use the same selectors and mutations, with the addition of passing the
+`UIEntitiesRef` ref in the method's `options` parameter, e.g.:
+
+```ts
+import { addEntities, UIEntitiesRef, selectEntity } from '@ngneat/elf-entities';
+
+todosStore.update(
+  addEntities({ id: 1, name: 'foo' }),
+  addEntities({ id: 1, open: true }, { ref: UIEntitiesRef })
+);
+
+uiEntity$ = todosStore.pipe(selectEntity(1, { ref: UIEntitiesRef }));
+```
+
+We can use the `unionEntities()` operator that returns a combined collection of the entities and their corresponding `UIEntities`:
+
+```ts
+import {
+  unionEntities,
+  selectAll,
+  selectEntities,
+  UIEntitiesRef,
+} from '@ngneat/elf-entities';
+
+todos$ = todosStore
+  .combine({
+    entities: todosStore.pipe(selectAll()),
+    UIEntities: todosStore.pipe(selectEntities({ ref: UIEntitiesRef })),
+  })
+  .pipe(unionEntities());
+```
+
+<LiveDemo src={index} packages={['entities']} />

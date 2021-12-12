@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
-import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { write } from '../../store/mutations';
+import { createState, select, Store, withProps } from '@ngneat/elf';
 import {
   addEntities,
-  createState,
-  select,
   selectAll,
-  Store,
+  selectAllApply,
   updateEntities,
   withEntities,
-  withProps,
-} from '@ngneat/elf';
+} from '@ngneat/elf-entities';
 
 interface Todo {
   id: number;
@@ -35,16 +32,25 @@ export class TodosRepository {
   todos$ = store.pipe(selectAll());
   filter$ = store.pipe(select((state) => state.filter));
 
-  visibleTodos$ = combineLatest([this.filter$, this.todos$]).pipe(
-    map((data) => filterTodos(...data))
+  visibleTodos$ = this.filter$.pipe(
+    switchMap((filter) => {
+      return store.pipe(
+        selectAllApply({
+          filterEntity({ completed }) {
+            if (filter === 'ALL') return true;
+            return filter === 'COMPLETED' ? completed : !completed;
+          },
+        })
+      );
+    })
   );
 
   addTodo(title: Todo['title']) {
-    store.reduce(addEntities({ id: Math.random(), title, completed: false }));
+    store.update(addEntities({ id: Math.random(), title, completed: false }));
   }
 
   updateFilter(filter: TodosProps['filter']) {
-    store.reduce(
+    store.update(
       write((state) => {
         state.filter = filter;
       })
@@ -52,22 +58,11 @@ export class TodosRepository {
   }
 
   updateCompleted(id: Todo['id']) {
-    store.reduce(
+    store.update(
       updateEntities(id, (entity) => ({
         ...entity,
         completed: !entity.completed,
       }))
     );
-  }
-}
-
-function filterTodos(filter: TodosProps['filter'], todos: Todo[]) {
-  switch (filter) {
-    case 'COMPLETED':
-      return todos.filter((t) => t.completed);
-    case 'ACTIVE':
-      return todos.filter((t) => !t.completed);
-    default:
-      return todos;
   }
 }

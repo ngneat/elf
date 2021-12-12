@@ -1,0 +1,360 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update Upsert should add the entity if it doesn't exists: two entities 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update Upsert should merge updater with creator: two entities, title "elf" 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "elf",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "elf",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update Upsert should update add the missing entities and update existing: two entities, 1: title "elf", 2: title "todo 2" 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "elf",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update Upsert should update an entity if exists: one entity, title "elf" 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "elf",
+    },
+  },
+  "ids": Array [
+    1,
+  ],
+}
+`;
+
+exports[`update Upsert should work with ref: two entities, open true 1`] = `
+Object {
+  "UIEntities": Object {
+    "1": Object {
+      "id": 1,
+      "open": false,
+    },
+    "2": Object {
+      "id": 2,
+      "open": false,
+    },
+  },
+  "UIIds": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update should update all: completed false 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update should update all: completed true 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": true,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": true,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update should update by callback: completed false 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+  },
+  "ids": Array [
+    1,
+  ],
+}
+`;
+
+exports[`update should update by callback: completed true 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": true,
+      "id": 1,
+      "title": "todo 1",
+    },
+  },
+  "ids": Array [
+    1,
+  ],
+}
+`;
+
+exports[`update should update by predicate: completed false 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update should update by predicate: completed true 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": true,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update should update multiple entities: multi completed false 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update should update multiple entities: multi completed true 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": true,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": true,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update should update one entity: completed false 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+  },
+  "ids": Array [
+    1,
+  ],
+}
+`;
+
+exports[`update should update one entity: completed true 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": true,
+      "id": 1,
+      "title": "todo 1",
+    },
+  },
+  "ids": Array [
+    1,
+  ],
+}
+`;
+
+exports[`update should work with ref update all: open false 1`] = `
+Object {
+  "UIEntities": Object {
+    "1": Object {
+      "id": 1,
+      "open": false,
+    },
+    "2": Object {
+      "id": 2,
+      "open": false,
+    },
+  },
+  "UIIds": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update should work with ref update all: open true 1`] = `
+Object {
+  "UIEntities": Object {
+    "1": Object {
+      "id": 1,
+      "open": true,
+    },
+    "2": Object {
+      "id": 2,
+      "open": true,
+    },
+  },
+  "UIIds": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update should work with ref: open false 1`] = `
+Object {
+  "UIEntities": Object {
+    "1": Object {
+      "id": 1,
+      "open": false,
+    },
+    "2": Object {
+      "id": 2,
+      "open": false,
+    },
+  },
+  "UIIds": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update should work with ref: open true 1`] = `
+Object {
+  "UIEntities": Object {
+    "1": Object {
+      "id": 1,
+      "open": true,
+    },
+    "2": Object {
+      "id": 2,
+      "open": false,
+    },
+  },
+  "UIIds": Array [
+    1,
+    2,
+  ],
+}
+`;

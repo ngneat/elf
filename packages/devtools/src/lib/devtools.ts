@@ -1,10 +1,23 @@
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { skip } from 'rxjs/operators';
-import { registry$ } from '@ngneat/elf';
+import {
+  capitalize,
+  registry$,
+  getStoresSnapshot,
+  getRegistry,
+  Store,
+  getStore,
+} from '@ngneat/elf';
+
+type Action = { type: string } & Record<string, any>;
+type ActionsDispatcher = Observable<Action>;
 
 interface DevtoolsOptions {
   maxAge?: number;
+  name?: string;
+  postTimelineUpdate?: () => void;
   preAction?: () => void;
+  actionsDispatcher?: ActionsDispatcher;
 }
 
 declare global {
@@ -18,7 +31,11 @@ declare global {
         init(state: Record<string, any>): void;
         unsubscribe(): void;
         subscribe(
-          cb: (message: { type: string; payload: { type: string } }) => void
+          cb: (message: {
+            type: string;
+            payload: { type: string };
+            state: string;
+          }) => void
         ): () => void;
       };
     };
@@ -26,42 +43,59 @@ declare global {
 }
 
 export function devTools(options: DevtoolsOptions = {}) {
-  const capitalize = (value: string) =>
-    value && value.charAt(0).toUpperCase() + value.slice(1);
-  const instance = window.__REDUX_DEVTOOLS_EXTENSION__.connect(options);
+  if (!window.__REDUX_DEVTOOLS_EXTENSION__) return;
 
-  const rootState: Record<string, any> = {};
+  let lock = false;
+  const instance = window.__REDUX_DEVTOOLS_EXTENSION__.connect(options);
   const subscriptions = new Map<string, Subscription>();
 
-  const send = (
-    data: { type: string } & Record<string, any>,
-    state?: Record<string, any>
-  ) => {
-    instance.send(data, state ?? rootState);
+  const send = (action: Action) => {
+    instance.send(action, getStoresSnapshot());
   };
+
+  const addStore = (store: Store<any, any>) => {
+    const name = store.name;
+    const displayName = capitalize(name);
+
+    send({ type: `[${displayName}] - @Init` });
+
+    const update = store.pipe(skip(1)).subscribe(() => {
+      if (lock) {
+        lock = false;
+        return;
+      }
+
+      options.preAction?.();
+      send({ type: `[${displayName}] - Update` });
+    });
+
+    subscriptions.set(name, update);
+  };
+
+  // There should be support for stores that were created before we initialized the `devTools`
+  getRegistry().forEach(addStore);
+
+  if (options.actionsDispatcher) {
+    subscriptions.set(
+      'actionsDispatcher',
+      options.actionsDispatcher.subscribe((action) => {
+        send(action);
+      })
+    );
+  }
 
   const subscription = registry$.subscribe(({ store, type }) => {
     const name = store.name;
     const displayName = capitalize(name);
 
     if (type === 'add') {
-      rootState[name] = store.state;
-      send({ type: `[${displayName}] - @Init` }, rootState);
-
-      const update = store.pipe(skip(1)).subscribe((value) => {
-        rootState[name] = value;
-        options.preAction?.();
-        send({ type: `[${displayName}] - Update` }, rootState);
-      });
-
-      subscriptions.set(name, update);
+      addStore(store);
     }
 
     if (type === 'remove') {
-      Reflect.deleteProperty(rootState, name);
-      subscriptions.get(name)!.unsubscribe();
+      subscriptions.get(name)?.unsubscribe();
       subscriptions.delete(name);
-      send({ type: `Remove ${displayName}` }, rootState);
+      send({ type: `Remove ${displayName}` });
     }
   });
 
@@ -70,14 +104,24 @@ export function devTools(options: DevtoolsOptions = {}) {
       const payloadType = message.payload.type;
 
       if (payloadType === 'COMMIT') {
-        instance.init(rootState);
+        instance.init(getStoresSnapshot());
         return;
+      }
+
+      if (payloadType === 'JUMP_TO_STATE') {
+        const state = JSON.parse(message.state);
+
+        for (const [name, value] of Object.entries(state)) {
+          lock = true;
+          getStore(name)?.update(() => value);
+        }
+
+        options.postTimelineUpdate?.();
       }
     }
   });
 
   return {
-    send,
     unsubscribe() {
       subscription.unsubscribe();
       instance.unsubscribe();

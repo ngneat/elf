@@ -1,4 +1,33 @@
 {
   "name": "@ngneat/elf-requests",
-  "version": "0.0.1"
+  "version": "1.1.1",
+  "description": "Status and requests cache for elf store",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/ngneat/elf/issues"
+  },
+  "homepage": "https://github.com/ngneat/elf#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ngneat/elf"
+  },
+  "keywords": [
+    "rxjs",
+    "state management",
+    "reactive state management",
+    "js state management",
+    "reactive store",
+    "elf",
+    "request cache",
+    "request status"
+  ],
+  "author": {
+    "name": "Netanel Basal",
+    "email": "netanel7799@gmail.com",
+    "url": "https://netbasal.com"
+  },
+  "license": "MIT",
+  "sideEffects": false
 }

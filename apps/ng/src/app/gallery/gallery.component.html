@@ -1,0 +1,25 @@
+<div>
+  <h1>Artworks:</h1>
+  <ng-container *ngIf="items$ | async as items">
+    <div class="gallery-container">
+      <div *ngFor="let galleryItem of items; trackBy: trackByFn">
+        <h2>{{ galleryItem.title }}</h2>
+        <img [alt]="galleryItem.title" [src]="galleryItem.image" />
+        <div
+          class="pointer"
+          *ngIf="!galleryItem.open"
+          (click)="toggleItemOpen(galleryItem.id)"
+        >
+          click for more details
+        </div>
+        <div
+          class="pointer"
+          *ngIf="galleryItem.open"
+          (click)="toggleItemOpen(galleryItem.id)"
+        >
+          {{ galleryItem.description }}
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

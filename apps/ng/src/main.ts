@@ -1,11 +1,13 @@
-import { enableProdMode, ViewEncapsulation } from '@angular/core';
+import {
+  ApplicationRef,
+  enableProdMode,
+  ViewEncapsulation,
+} from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import { devTools } from '@ngneat/elf-devtools';
-
-devTools();
 
 if (environment.production) {
   enableProdMode();
@@ -14,5 +16,10 @@ if (environment.production) {
 platformBrowserDynamic()
   .bootstrapModule(AppModule, {
     defaultEncapsulation: ViewEncapsulation.Emulated,
+  })
+  .then((moduleRef) => {
+    devTools({
+      postTimelineUpdate: () => moduleRef.injector.get(ApplicationRef).tick(),
+    });
   })
   .catch((err) => console.error(err));
