@@ -8,7 +8,12 @@ import {
   getEntityType,
 } from '../entity.state';
 import { switchMap } from 'rxjs/operators';
-import { propsArrayFactory, propsFactory, StateOf } from '@ngneat/elf';
+import {
+  propsArrayFactory,
+  propsFactory,
+  SomeArray,
+  StateOf,
+} from '@ngneat/elf';
 import { selectEntity } from '../entity.query';
 import { selectMany } from '../many.query';
 
@@ -51,7 +56,7 @@ export function selectActiveEntities<
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
   options: BaseEntityOptions<Ref> = {}
-): OperatorFunction<S, getEntityType<S, Ref>[]> {
+): OperatorFunction<S, SomeArray<getEntityType<S, Ref>>> {
   const { ref = defaultEntitiesRef } = options;
 
   return function (source: Observable<S>) {

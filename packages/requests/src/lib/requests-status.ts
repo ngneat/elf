@@ -212,11 +212,11 @@ export function createRequestsStatusOperator<S extends RequestsStatusState>(
 }
 
 export function initializeAsPending(keys: OrArray<string>) {
-  return coerceArray(keys).reduce((acc, key) => {
+  const keysArray = coerceArray(keys) as Array<string>;
+  return keysArray.reduce((acc, key) => {
     acc[key] = {
       value: 'pending',
     };
-
     return acc;
   }, {} as Record<string, PendingState>);
 }

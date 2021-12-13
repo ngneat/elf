@@ -1,4 +1,4 @@
-import { createState, Store } from '@ngneat/elf';
+import { createState, SomeArray, Store } from '@ngneat/elf';
 import { expectTypeOf } from 'expect-type';
 import { selectAll, selectEntities, withEntities } from '..';
 import { addEntities } from './add.mutation';
@@ -137,7 +137,7 @@ describe('entities props factory', () => {
         spy(v);
 
         expectTypeOf(v).toEqualTypeOf<{
-          movies: Movie[];
+          movies: SomeArray<Movie>;
           generes: Record<string, Genre>;
           actors: Record<string, Actor>;
         }>();

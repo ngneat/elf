@@ -8,7 +8,7 @@ import {
   getIdKey,
   getIdType,
 } from './entity.state';
-import { Reducer } from '@ngneat/elf';
+import { Reducer, SomeArray } from '@ngneat/elf';
 import { buildEntities } from './entity.utils';
 
 /**
@@ -24,7 +24,7 @@ export function setEntities<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
-  entities: getEntityType<S, Ref>[],
+  entities: SomeArray<getEntityType<S, Ref>>,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
   return function (state, context) {
