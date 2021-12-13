@@ -256,38 +256,22 @@ todosStore.update(
 
 Add or update entities.
 
-All entities must have an `id` property so we can identify them in the store.
-
-You can pass in partial entities and they will be merged with the existing ones.
+To identify entities in the store, every entity must have an `id` property. Any partial entities will be merged with the existing ones:
 
 ```ts
 import { upsertEntitiesBy } from '@ngneat/elf-entities';
 
-// update an existing entity
 todosStore.update(
-  // add an elf
-  addEntities({ id: '1', name: 'elf' }),
-  // update him to be happy
   upsertEntities({ id: '1', happy: true })
 );
-```
-
-Or you can use it with an array
-
-```ts
-import { upsertEntitiesBy } from '@ngneat/elf-entities';
 
 todosStore.update(
-  addEntities({ id: '1', name: 'elf' }),
   upsertEntities([
-    // will update elf 1
     { id: '1', happy: true },
-    // will add elf 2
-    { id: '2', name: 'elf 2' },
+    { id: '2', name: 'elf 2', happy: false },
   ])
 );
 ```
-
 ### `upsertEntitiesById`
 
 Insert or update an entity. When the id isn't found, it creates a new entity; otherwise, it performs an update:
