@@ -2,7 +2,7 @@ import { createState, Store } from '@ngneat/elf';
 import {
   withEntities,
   entitiesPropsFactory,
-  upsertEntities,
+  upsertEntitiesById,
   addEntities,
 } from '@ngneat/elf-entities';
 
@@ -32,7 +32,7 @@ productsStore.subscribe((value) => {
 
 productsStore.update(
   addEntities({ id: 1, title: 'one', price: 55 }),
-  upsertEntities(1, {
+  upsertEntitiesById(1, {
     updater: (e) => ({ ...e, quantity: e.quantity + 1 }),
     creator: (id) => ({ id, quantity: 1 }),
     ref: cartEntitiesRef,

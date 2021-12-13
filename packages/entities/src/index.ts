@@ -9,6 +9,7 @@ export {
   updateAllEntities,
   updateEntities,
   updateEntitiesByPredicate,
+  upsertEntitiesById,
   upsertEntities,
 } from './lib/update.mutation';
 export { selectAll, selectEntities, selectAllApply } from './lib/all.query';

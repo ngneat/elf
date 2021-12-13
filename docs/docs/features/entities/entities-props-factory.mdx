@@ -19,9 +19,7 @@ interface Product {
   price: number;
 }
 
-const { state, config } = createState(
-  withEntities<Product>()
-)
+const { state, config } = createState(withEntities<Product>());
 
 export const productsStore = new Store({ name: 'products', config, state });
 ```
@@ -49,7 +47,7 @@ interface CartItem {
 const { state, config } = createState(
   withEntities<Product>(),
   withCartEntities<CartItem>()
-)
+);
 
 export const productsStore = new Store({ name: 'products', config, state });
 ```
@@ -72,21 +70,20 @@ In the above example, our final `state` shape will be:
 <LiveDemo src={index} packages={['entities']} />
 <br />
 
-
 We can pass the `cartEntitiesRef` to each one of the built-in [queries](./entities#queries) and [mutations](./entities#mutations):
 
 ```ts title="products.repository.ts"
-import { upsertEntities } from '@ngneat/elf-entities';
+import { upsertEntitiesById } from '@ngneat/elf-entities';
 
 export function updateCart(id: Product['id']) {
   productsStore.update(
-    upsertEntities(id, {
-      updater: e => ({ ...e, quantity: e.quantity + 1 }),
-      creator: id => ({ id, quantity: 1 }),
+    upsertEntitiesById(id, {
+      updater: (e) => ({ ...e, quantity: e.quantity + 1 }),
+      creator: (id) => ({ id, quantity: 1 }),
       // highlight-next-line
-      ref: cartEntitiesRef
+      ref: cartEntitiesRef,
     })
-  )
+  );
 }
 ```
 
@@ -127,8 +124,11 @@ const store = new Store({ name: 'movies', state, config });
 store.update(
   addEntities({ id: '1', name: 'Nicolas cage' }, { ref: actorsEntitiesRef }),
   addEntities({ id: '1', name: 'Action' }, { ref: genresEntitiesRef }),
-  addEntities({ id: '1', title: 'Gone in 60 Seconds', genres: ['1'], actors: ['1'] })
-)
+  addEntities({
+    id: '1',
+    title: 'Gone in 60 Seconds',
+    genres: ['1'],
+    actors: ['1'],
+  })
+);
 ```
-
-

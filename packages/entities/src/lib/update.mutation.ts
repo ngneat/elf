@@ -5,11 +5,12 @@ import {
   EntitiesRef,
   EntitiesState,
   getEntityType,
+  getIdKey,
   getIdType,
   ItemPredicate,
 } from './entity.state';
 import { Reducer, OrArray, coerceArray, isFunction } from '@ngneat/elf';
-import { findIdsByPredicate } from './entity.utils';
+import { buildEntities, findIdsByPredicate } from './entity.utils';
 import { hasEntity } from './queries';
 import { addEntities, AddEntitiesOptions } from './add.mutation';
 
@@ -131,7 +132,7 @@ type CreateFn<Entity, ID> = (id: ID) => Entity;
  * @example
  *
  */
-export function upsertEntities<
+export function upsertEntitiesById<
   S extends EntitiesState<Ref>,
   U extends UpdateFn<EntityType>,
   C extends CreateFn<EntityType, getIdType<S, Ref>>,
@@ -172,5 +173,70 @@ export function upsertEntities<
     )(state, context);
 
     return addEntities(newEntities, options)(newState, context) as S;
+  };
+}
+
+/**
+ *
+ * Merge entities that exists, add those who don't
+ * Make sure all entities have an id
+ *
+ * @example
+ *
+ * // single entity
+ * store.update(upsertEntities({ id: 1, completed: true }))
+ *
+ * // or multiple entities
+ * store.update(upsertEntities([{ id: 1, completed: true }, { id: 2, completed: true }]))
+ *
+ * // or using a custom ref
+ * store.update(upsertEntities([{ id: 1, open: true }], { ref: UIEntitiesRef }))
+ *
+ */
+export function upsertEntities<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(
+  entities: OrArray<Partial<getEntityType<S, Ref>>>,
+  options: AddEntitiesOptions & BaseEntityOptions<Ref> = {}
+): Reducer<S> {
+  return function (state, context) {
+    const { prepend = false, ref = defaultEntitiesRef } = options;
+    const { entitiesKey, idsKey } = ref!;
+    const idKey = getIdKey<getIdType<S, Ref>>(context, ref);
+
+    const asObject = {} as Record<getIdType<S, Ref>, getEntityType<S, Ref>>;
+    const ids = [] as getIdType<S, Ref>;
+
+    const entitiesArray = coerceArray(entities);
+    if (entitiesArray.length === 0) {
+      return state;
+    }
+
+    for (const entity of entitiesArray) {
+      const id: getIdType<S, Ref> = entity[idKey];
+      // if entity exists, merge update, else add
+      if (hasEntity(id, options)(state)) {
+        asObject[id] = { ...state[entitiesKey][id], ...entity };
+      } else {
+        ids.push(id);
+        asObject[id] = entity;
+      }
+    }
+
+    const updatedIds =
+      ids.length === 0
+        ? {}
+        : {
+            [idsKey]: prepend
+              ? [...ids, ...state[idsKey]]
+              : [...state[idsKey], ...ids],
+          };
+
+    return {
+      ...state,
+      ...updatedIds,
+      [entitiesKey]: { ...state[entitiesKey], ...asObject },
+    };
   };
 }
