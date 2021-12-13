@@ -30,4 +30,4 @@ export {
   isUndefined,
   capitalize,
 } from './lib/utils';
-export { StateOf, Query, OrArray } from './lib/types';
+export { StateOf, Query, OrArray, SomeArray } from './lib/types';

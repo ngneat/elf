@@ -7,7 +7,7 @@ import {
   getEntityType,
   getIdType,
 } from './entity.state';
-import { Query } from '@ngneat/elf';
+import { Query, SomeArray } from '@ngneat/elf';
 
 /**
  *
@@ -21,7 +21,9 @@ import { Query } from '@ngneat/elf';
 export function getEntities<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
->(options: BaseEntityOptions<Ref> = {}): Query<S, getEntityType<S, Ref>[]> {
+>(
+  options: BaseEntityOptions<Ref> = {}
+): Query<S, SomeArray<getEntityType<S, Ref>>> {
   const { ref: { entitiesKey, idsKey } = defaultEntitiesRef } = options;
 
   return function (state) {

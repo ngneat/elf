@@ -10,7 +10,7 @@ import {
 } from './entity.state';
 import { MonoTypeOperatorFunction, OperatorFunction, pipe } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { select } from '@ngneat/elf';
+import { select, SomeArray } from '@ngneat/elf';
 
 export function untilEntitiesChanges<T extends EntitiesRecord>(
   key: string
@@ -36,7 +36,7 @@ export function selectAll<
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
   options: BaseEntityOptions<Ref> = {}
-): OperatorFunction<S, getEntityType<S, Ref>[]> {
+): OperatorFunction<S, SomeArray<getEntityType<S, Ref>>> {
   const { ref: { entitiesKey, idsKey } = defaultEntitiesRef } = options;
 
   return pipe(
