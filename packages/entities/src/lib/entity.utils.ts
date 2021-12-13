@@ -5,7 +5,6 @@ import {
   getIdType,
   ItemPredicate,
 } from './entity.state';
-import { coerceArray } from '@ngneat/elf';
 
 export function buildEntities<
   S extends EntitiesState<Ref>,
@@ -17,7 +16,7 @@ export function buildEntities<
   const asObject = {} as Record<getIdType<S, Ref>, getEntityType<S, Ref>>;
   const ids = [] as getIdType<S, Ref>;
 
-  for (const entity of coerceArray(entities)) {
+  for (const entity of entities) {
     const id: getIdType<S, Ref> = entity[idKey];
 
     ids.push(id);

@@ -10,7 +10,7 @@ import {
   ItemPredicate,
 } from './entity.state';
 import { Reducer, OrArray, coerceArray, isFunction } from '@ngneat/elf';
-import { buildEntities, findIdsByPredicate } from './entity.utils';
+import { findIdsByPredicate } from './entity.utils';
 import { hasEntity } from './queries';
 import { addEntities, AddEntitiesOptions } from './add.mutation';
 
@@ -155,7 +155,11 @@ export function upsertEntitiesById<
     const updatedEntitiesIds = [];
     const newEntities = [];
 
-    for (const id of coerceArray(ids)) {
+    const asArray = coerceArray(ids);
+
+    if (!asArray.length) return state;
+
+    for (const id of asArray) {
       if (hasEntity(id, options)(state)) {
         updatedEntitiesIds.push(id);
       } else {
@@ -209,7 +213,7 @@ export function upsertEntities<
     const ids = [] as getIdType<S, Ref>;
 
     const entitiesArray = coerceArray(entities);
-    if (entitiesArray.length === 0) {
+    if (!entitiesArray.length) {
       return state;
     }
 
@@ -224,14 +228,13 @@ export function upsertEntities<
       }
     }
 
-    const updatedIds =
-      ids.length === 0
-        ? {}
-        : {
-            [idsKey]: prepend
-              ? [...ids, ...state[idsKey]]
-              : [...state[idsKey], ...ids],
-          };
+    const updatedIds = !ids.length
+      ? {}
+      : {
+          [idsKey]: prepend
+            ? [...ids, ...state[idsKey]]
+            : [...state[idsKey], ...ids],
+        };
 
     return {
       ...state,

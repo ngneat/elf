@@ -41,8 +41,12 @@ export function addEntities<
 
     const { entitiesKey, idsKey } = ref!;
 
+    const asArray = coerceArray(entities);
+
+    if (!asArray.length) return state;
+
     const { ids, asObject } = buildEntities<S, Ref>(
-      entities,
+      asArray,
       getIdKey(context, ref)
     );
 
