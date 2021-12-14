@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.0.1](https://github.com/ngneat/elf/compare/entities-2.0.0...entities-2.0.1) (2021-12-13)
+
+
+### Bug Fixes
+
+* **entities:** typed support for immutable/readonly arrays ([#86](https://github.com/ngneat/elf/issues/86)) ([9cd6638](https://github.com/ngneat/elf/commit/9cd66381b7b9562eda10c52cd63bc19017ec8bbb))
+
+
+
 # [2.0.0](https://github.com/ngneat/elf/compare/entities-1.0.0...entities-2.0.0) (2021-12-13)
 
 
