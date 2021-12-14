@@ -6,7 +6,6 @@ import {
   Query,
   Reducer,
   select,
-  SomeArray,
   StateOf,
   Store,
   StoreDef,

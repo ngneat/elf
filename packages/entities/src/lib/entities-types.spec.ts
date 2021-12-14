@@ -17,7 +17,7 @@ import {
   withEntities,
 } from '@ngneat/elf-entities';
 import { expectTypeOf } from 'expect-type';
-import { createState, SomeArray, Store, withProps } from '@ngneat/elf';
+import { createState, Store, withProps } from '@ngneat/elf';
 
 describe('Entities Types', () => {
   it('should assert createState', () => {
@@ -55,7 +55,7 @@ describe('Entities Types', () => {
 
     it('should set the correct types', () => {
       store.pipe(selectAll()).subscribe((v) => {
-        expectTypeOf(v).toEqualTypeOf<SomeArray<Todo>>();
+        expectTypeOf(v).toEqualTypeOf<Todo[]>();
       });
 
       store.pipe(selectEntity(1)).subscribe((v) => {
@@ -71,7 +71,7 @@ describe('Entities Types', () => {
       });
 
       store.pipe(selectMany([1])).subscribe((v) => {
-        expectTypeOf(v).toEqualTypeOf<SomeArray<Todo>>();
+        expectTypeOf(v).toEqualTypeOf<Todo[]>();
       });
 
       store.pipe(selectMany([1], { pluck: 'title' })).subscribe((v) => {
@@ -127,7 +127,7 @@ describe('Entities Types', () => {
 
     it('should set the correct types', () => {
       store.pipe(selectAll({ ref: UIEntitiesRef })).subscribe((v) => {
-        expectTypeOf(v).toEqualTypeOf<SomeArray<UITodo>>();
+        expectTypeOf(v).toEqualTypeOf<UITodo[]>();
       });
 
       store.pipe(selectEntity(1, { ref: UIEntitiesRef })).subscribe((v) => {
@@ -147,7 +147,7 @@ describe('Entities Types', () => {
         });
 
       store.pipe(selectMany([1], { ref: UIEntitiesRef })).subscribe((v) => {
-        expectTypeOf(v).toEqualTypeOf<SomeArray<UITodo>>();
+        expectTypeOf(v).toEqualTypeOf<UITodo[]>();
       });
 
       store
