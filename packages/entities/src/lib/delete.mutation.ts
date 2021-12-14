@@ -39,7 +39,7 @@ export function deleteEntities<
     );
 
     for (const id of idsToRemove) {
-      Reflect.deleteProperty(newEntities, id as getIdType<S, Ref>);
+      Reflect.deleteProperty(newEntities, id);
     }
 
     return {

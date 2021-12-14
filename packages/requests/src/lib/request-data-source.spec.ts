@@ -1,4 +1,4 @@
-import { createState, SomeArray, Store } from '@ngneat/elf';
+import { createState, Store } from '@ngneat/elf';
 import {
   updateRequestStatus,
   withRequestsStatus,
@@ -183,7 +183,7 @@ describe('createRequestDataSource', () => {
       expectTypeOf(v).toEqualTypeOf<{
         loading: boolean;
         error: unknown;
-        todos: SomeArray<Todo>;
+        todos: Todo[];
       }>();
 
       spy(v);

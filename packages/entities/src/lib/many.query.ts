@@ -14,7 +14,6 @@ import {
   distinctUntilArrayItemChanged,
   select,
   isUndefined,
-  SomeArray,
 } from '@ngneat/elf';
 import { getEntity } from './entity.query';
 
@@ -72,7 +71,7 @@ export function selectMany<
 >(
   ids: Array<getIdType<S, Ref>>,
   options?: BaseEntityOptions<Ref>
-): OperatorFunction<S, SomeArray<getEntityType<S, Ref>>>;
+): OperatorFunction<S, getEntityType<S, Ref>[]>;
 
 export function selectMany<S extends EntitiesState<Ref>, Ref>(
   ids: any[],

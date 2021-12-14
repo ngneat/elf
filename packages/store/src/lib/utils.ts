@@ -1,7 +1,7 @@
-import { SomeArray } from './types';
-
-export function coerceArray<T>(value: T | SomeArray<T>): SomeArray<T> {
-  return Array.isArray(value) ? value : [value as T];
+export function coerceArray<T>(value: T | T[]): T[];
+export function coerceArray<T>(value: T | readonly T[]): readonly T[];
+export function coerceArray<T>(value: T | T[]): T[] {
+  return Array.isArray(value) ? value : [value];
 }
 
 export function isFunction(value: any): value is (...args: any[]) => any {

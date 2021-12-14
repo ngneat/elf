@@ -1,4 +1,3 @@
-import { SomeArray } from '@ngneat/elf';
 import {
   EntitiesRef,
   EntitiesState,
@@ -11,7 +10,7 @@ export function buildEntities<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef
 >(
-  entities: SomeArray<getEntityType<S, Ref>>,
+  entities: getEntityType<S, Ref>[],
   idKey: string
 ): { ids: getIdType<S, Ref>[]; asObject: getEntityType<S, Ref> } {
   const asObject = {} as Record<getIdType<S, Ref>, getEntityType<S, Ref>>;

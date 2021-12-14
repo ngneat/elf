@@ -1,10 +1,9 @@
 import { OperatorFunction } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SomeArray } from '@ngneat/elf';
 
 export function unionEntities<
   T extends {
-    entities: SomeArray<Record<string, any>>;
+    entities: Record<string, any>[];
     UIEntities: Record<string | number, Record<string, any>>;
   }
 >(

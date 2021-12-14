@@ -17,7 +17,6 @@ import {
   StateOf,
   Store,
   StoreDef,
-  SomeArray,
 } from '@ngneat/elf';
 
 export interface PaginationData<IdType extends number | string = number> {
@@ -171,7 +170,7 @@ export function hasPage<S extends StateOf<typeof withPagination>>(
 export function selectCurrentPageEntities<
   S extends StateOf<typeof withPagination> & EntitiesState<DefaultEntitiesRef>,
   Ref extends EntitiesRef = DefaultEntitiesRef
->(): OperatorFunction<S, SomeArray<getEntityType<S, Ref>>> {
+>(): OperatorFunction<S, Array<getEntityType<S, Ref>>> {
   return function (source: Observable<S>) {
     return source.pipe(selectCurrentPage()).pipe(
       switchMap((page) => {
