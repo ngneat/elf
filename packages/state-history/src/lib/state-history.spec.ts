@@ -8,6 +8,18 @@ function eq(store: Store, value: number) {
 describe('state history', () => {
   const { withProp, setProp } = propsFactory('prop', { initialValue: 0 });
 
+  it('should set the current state', () => {
+    const { state, config } = createState(withProps({ counter: 0 }));
+    const store = new Store({ state, config, name: '' });
+    const history = stateHistory(store);
+
+    expect((history as any).history).toEqual({
+      past: [],
+      present: { counter: 0 },
+      future: [],
+    });
+  });
+
   it('should work', () => {
     const { state, config } = createState(withProp());
     const store = new Store({ state, config, name: '' });
@@ -111,5 +123,39 @@ describe('state history', () => {
     history.undo();
 
     expect(store.getValue()).toEqual(steps[0]);
+  });
+
+  it('should replace store on undo/redo', () => {
+    const { state, config } = createState(withProps({ counter: 5 }));
+    const store = new Store({ state, config, name: '' });
+    const history = stateHistory(store);
+
+    expect((history as any).history).toEqual({
+      past: [],
+      present: { counter: 5 },
+      future: [],
+    });
+    expect(store.getValue()).toEqual({ counter: 5 });
+
+    store.update((state) => ({
+      ...state,
+      newProperty: true,
+    }));
+
+    expect((history as any).history).toEqual({
+      past: [{ counter: 5 }],
+      present: { counter: 5, newProperty: true },
+      future: [],
+    });
+    expect(store.getValue()).toEqual({ counter: 5, newProperty: true });
+
+    history.undo();
+
+    expect((history as any).history).toEqual({
+      past: [],
+      present: { counter: 5 },
+      future: [{ counter: 5, newProperty: true }],
+    });
+    expect(store.getValue()).toEqual({ counter: 5 });
   });
 });
