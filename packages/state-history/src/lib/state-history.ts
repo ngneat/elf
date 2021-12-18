@@ -1,5 +1,5 @@
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged, pairwise } from 'rxjs/operators';
+import { distinctUntilChanged, filter, pairwise, tap } from 'rxjs/operators';
 import { isFunction, Store, StoreValue } from '@ngneat/elf';
 
 export interface StateHistoryOptions<State> {
@@ -54,22 +54,21 @@ class StateHistory<T extends Store, State extends StoreValue<T>> {
   }
 
   activate() {
-    this.history.present = this.store.getValue();
-
     this.subscription = this.store
-      .pipe(pairwise())
-      .subscribe(([past, present]) => {
-        if (this.skipUpdate || this.paused) {
-          return;
-        }
+      .pipe(filter(() => !(this.skipUpdate || this.paused)))
+      .subscribe((present) => {
+        const past = this.history.present;
 
-        const shouldUpdate = this.mergedOptions.comparatorFn!(past, present);
+        const shouldUpdate =
+          !past || this.mergedOptions.comparatorFn!(past, present);
 
         if (shouldUpdate) {
           if (this.history.past.length === this.mergedOptions.maxAge) {
             this.history.past = this.history.past.slice(1);
           }
-          this.history.past = [...this.history.past, past];
+          if (past) {
+            this.history.past = [...this.history.past, past];
+          }
           this.history.present = present;
           this.updateHasHistory();
         }
