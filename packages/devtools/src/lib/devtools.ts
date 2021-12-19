@@ -55,11 +55,11 @@ export function devTools(options: DevtoolsOptions = {}) {
   const instance = window.__REDUX_DEVTOOLS_EXTENSION__.connect(options);
   const subscriptions = new Map<string, Subscription>();
 
-  externalEvents$.subscribe((action) => send(action));
-
   const send = (action: Action) => {
     instance.send(action, getStoresSnapshot());
   };
+
+  subscriptions.set('externalSend', externalEvents$.subscribe(send));
 
   const addStore = (store: Store<any, any>) => {
     const name = store.name;
