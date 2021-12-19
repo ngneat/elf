@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.2.0](https://github.com/ngneat/elf/compare/devtools-1.1.0...devtools-1.2.0) (2021-12-19)
+
+
+### Features
+
+* **devtools:** expose send function ([#95](https://github.com/ngneat/elf/issues/95)) ([5c56a21](https://github.com/ngneat/elf/commit/5c56a213cf94fab755042bfec923054bd8053981))
+
+
+
 # [1.1.0](https://github.com/ngneat/elf/compare/devtools-1.0.2...devtools-1.1.0) (2021-12-01)
 
 
