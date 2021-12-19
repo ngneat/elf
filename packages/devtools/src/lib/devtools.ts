@@ -1,13 +1,13 @@
-import { Observable, Subscription } from 'rxjs';
-import { skip } from 'rxjs/operators';
 import {
   capitalize,
-  registry$,
-  getStoresSnapshot,
   getRegistry,
-  Store,
   getStore,
+  getStoresSnapshot,
+  registry$,
+  Store,
 } from '@ngneat/elf';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { skip } from 'rxjs/operators';
 
 type Action = { type: string } & Record<string, any>;
 type ActionsDispatcher = Observable<Action>;
@@ -42,12 +42,20 @@ declare global {
   }
 }
 
+const externalEvents$ = new Subject<Action>();
+
+export function send(action: Action) {
+  externalEvents$.next(action);
+}
+
 export function devTools(options: DevtoolsOptions = {}) {
   if (!window.__REDUX_DEVTOOLS_EXTENSION__) return;
 
   let lock = false;
   const instance = window.__REDUX_DEVTOOLS_EXTENSION__.connect(options);
   const subscriptions = new Map<string, Subscription>();
+
+  externalEvents$.subscribe((action) => send(action));
 
   const send = (action: Action) => {
     instance.send(action, getStoresSnapshot());
