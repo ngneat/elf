@@ -76,8 +76,8 @@ export function selectEntities<
  * @example
  *
  * store.pipe(selectAllApply({
- *   map: (entity) => new Todo(entity),
- *   filter: entity => entity.completed
+ *   mapEntity: (entity) => new Todo(entity),
+ *   filterEntity: entity => entity.completed
  * }))
  *
  *
