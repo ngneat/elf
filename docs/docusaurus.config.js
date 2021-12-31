@@ -87,7 +87,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl:
-            'https://github.com/ngneat/elf/docusaurus/edit/main/website/',
+            'https://github.com/ngneat/elf/edit/master/docs/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
