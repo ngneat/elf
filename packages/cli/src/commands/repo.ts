@@ -27,7 +27,8 @@ export default class Repo extends Command {
 
     const globalConfig: GlobalConfig | undefined =
       cosmiconfigSync('elf').search()?.config;
-    const options = await prompt();
+
+    const options = await prompt(globalConfig);
     let mergedOptions = options;
 
     if (globalConfig?.cli?.plugins) {

@@ -1,7 +1,7 @@
 {
   "name": "@ngneat/elf-cli",
   "description": "A CLI for elf store",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "author": "Netanel Basal @NetanelBasal",
   "publishConfig": {
     "access": "public"
