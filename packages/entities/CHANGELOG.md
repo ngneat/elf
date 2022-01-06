@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.0.3](https://github.com/ngneat/elf/compare/entities-2.0.2...entities-2.0.3) (2022-01-06)
+
+
+### Bug Fixes
+
+* **entities:** 🐞 setEntities should work with empty array ([e1c4b8d](https://github.com/ngneat/elf/commit/e1c4b8da99179505c721fb0bdebd34ddba679626)), closes [#112](https://github.com/ngneat/elf/issues/112)
+
+
+
 ## [2.0.2](https://github.com/ngneat/elf/compare/entities-2.0.1...entities-2.0.2) (2021-12-14)
 
 
