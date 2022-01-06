@@ -28,8 +28,6 @@ export function setEntities<
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
   return function (state, context) {
-    if (!entities.length) return state;
-
     const { ref = defaultEntitiesRef } = options;
     const { entitiesKey, idsKey } = ref!;
     const { ids, asObject } = buildEntities<S, Ref>(
