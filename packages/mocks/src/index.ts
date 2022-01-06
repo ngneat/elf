@@ -1,5 +1,5 @@
-import { withEntities, withUIEntities } from '@ngneat/elf-entities';
 import { createState, Store } from '@ngneat/elf';
+import { withEntities, withUIEntities } from '@ngneat/elf-entities';
 
 export interface Todo {
   id: number;
