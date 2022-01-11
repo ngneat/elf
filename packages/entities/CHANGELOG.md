@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [2.1.0](https://github.com/ngneat/elf/compare/entities-2.0.3...entities-2.1.0) (2022-01-11)
+
+
+### Features
+
+* **entities:** add select many entities by predicate ([#113](https://github.com/ngneat/elf/issues/113)) ([8afe79c](https://github.com/ngneat/elf/commit/8afe79c44d25435b2bc4da9fe71325eb7990cf0f))
+
+
+
 ## [2.0.3](https://github.com/ngneat/elf/compare/entities-2.0.2...entities-2.0.3) (2022-01-06)
 
 
