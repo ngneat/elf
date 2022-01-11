@@ -86,6 +86,18 @@ const title$ = todosStore.pipe(selectEntity(id, { pluck: 'title' }));
 const title$ = todosStore.pipe(selectEntity(id, { pluck: (e) => e.title }));
 ```
 
+### `selectEntityByPredicate`
+
+Select an entity from the store by predicate:
+
+```ts
+import { selectEntityByPredicate } from '@ngneat/elf-entities';
+
+const todo$ = todosStore.pipe(selectEntityByPredicate(({completed}) => !completed));
+const title$ = todosStore.pipe(selectEntityByPredicate(({completed}) => !completed, {pluck: "title", idKey: "_id"}));
+const title$ = todosStore.pipe(selectEntityByPredicate(({completed}) => !completed, {pluck: (e) => e.title, idKey: "_id"}));
+```
+
 ### `selectMany`
 
 Select multiple entities from the store:
@@ -96,6 +108,18 @@ import { selectMany } from '@ngneat/elf-entities';
 const todos$ = todosStore.pipe(selectMany([id, id]));
 const titles$ = todosStore.pipe(selectMany(id, { pluck: 'title' }));
 const titles$ = todosStore.pipe(selectMany(id, { pluck: (e) => e.title }));
+```
+
+### `selectManyByPredicate`
+
+Select multiple entities from the store by predicate:
+
+```ts
+import { selectManyByPredicate } from '@ngneat/elf-entities';
+
+const todos$ = todosStore.pipe(selectManyByPredicate(entity => entity.completed === false));
+const titles$ = todosStore.pipe(selectManyByPredicate(entity => entity.completed === false, {pluck: "title"}));
+const titles$ = todosStore.pipe(selectManyByPredicate(entity => entity.completed === false, {pluck: (e) => e.title}));
 ```
 
 ### `selectFirst`

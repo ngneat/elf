@@ -1,5 +1,7 @@
+import { select } from '@ngneat/elf';
 import { OperatorFunction, pipe } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
+import { untilEntitiesChanges } from './all.query';
 import {
   BaseEntityOptions,
   defaultEntitiesRef,
@@ -9,8 +11,6 @@ import {
   getEntityType,
   ItemPredicate,
 } from './entity.state';
-import { untilEntitiesChanges } from './all.query';
-import { select } from '@ngneat/elf';
 import { findIdsByPredicate } from './entity.utils';
 
 /**

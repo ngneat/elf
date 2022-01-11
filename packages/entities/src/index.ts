@@ -13,10 +13,10 @@ export {
   upsertEntities,
 } from './lib/update.mutation';
 export { selectAll, selectEntities, selectAllApply } from './lib/all.query';
-export { selectEntity } from './lib/entity.query';
+export { selectEntity, selectEntityByPredicate } from './lib/entity.query';
 export { selectFirst } from './lib/first.query';
 export { selectLast } from './lib/last.query';
-export { selectMany } from './lib/many.query';
+export { selectMany, selectManyByPredicate } from './lib/many.query';
 export {
   selectEntitiesCount,
   selectEntitiesCountByPredicate,

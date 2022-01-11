@@ -20,3 +20,15 @@
   placeholder="title"
   (keydown.enter)="todosRepo.addTodo(todo.value)"
 />
+
+<h2 style="margin-top: 20px">Completed</h2>
+<ul>
+  <li *ngFor="let todo of todosRepo.selectByCompletedState(true) | async">
+    <input
+      type="checkbox"
+      (change)="todosRepo.updateCompleted(todo.id)"
+      [checked]="todo.completed"
+    />
+    {{ todo.title }}
+  </li>
+</ul>

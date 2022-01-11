@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
-import { write } from '../../store/mutations';
 import { createState, select, Store, withProps } from '@ngneat/elf';
 import {
   addEntities,
   selectAll,
   selectAllApply,
+  selectEntityByPredicate,
+  selectManyByPredicate,
   updateEntities,
   withEntities,
 } from '@ngneat/elf-entities';
+import { switchMap } from 'rxjs/operators';
+import { write } from '../../store/mutations';
 
 interface Todo {
   id: number;
@@ -44,6 +46,18 @@ export class TodosRepository {
       );
     })
   );
+
+  selectByCompletedState(completed: Todo['completed']) {
+    return store.pipe(
+      selectManyByPredicate((entity) => entity.completed === completed)
+    );
+  }
+
+  selectFirstCompletedTitle() {
+    return store.pipe(
+      selectEntityByPredicate((entity) => entity.completed, { pluck: 'title' })
+    );
+  }
 
   addTodo(title: Todo['title']) {
     store.update(addEntities({ id: Math.random(), title, completed: false }));
