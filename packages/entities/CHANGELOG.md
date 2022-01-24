@@ -2,6 +2,22 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [3.0.0](https://github.com/ngneat/elf/compare/entities-2.1.0...entities-3.0.0) (2022-01-24)
+
+
+### Bug Fixes
+
+* **entities:** correct typing for selectActiveEntity ([#126](https://github.com/ngneat/elf/issues/126)) ([3354f77](https://github.com/ngneat/elf/commit/3354f77349e0cb05f8181b2d11c09a2a7116486a))
+
+
+### BREAKING CHANGES
+
+* **entities:** selectActiveEntity is now stricter
+
+`selectActiveEntity` is stricter and returns `Entity | undefined`
+
+
+
 # [2.1.0](https://github.com/ngneat/elf/compare/entities-2.0.3...entities-2.1.0) (2022-01-11)
 
 
