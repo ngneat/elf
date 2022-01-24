@@ -25,7 +25,7 @@ export function selectActiveEntity<
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
   options: BaseEntityOptions<Ref> = {}
-): OperatorFunction<S, getEntityType<S, Ref>> {
+): OperatorFunction<S, getEntityType<S, Ref> | undefined> {
   const { ref = defaultEntitiesRef } = options;
 
   return function (source: Observable<S>) {
