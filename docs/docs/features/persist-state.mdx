@@ -60,3 +60,23 @@ const instance = persistState(todoStore, {
 
 instance.initialized$.subscribe(console.log);
 ```
+
+## Async Support
+
+This gives you the option to save a store’s value to a persistent storage, such as indexDB, websql, or any other asynchronous API. Here’s an example that leverages [localForage](https://github.com/localForage/localForage):
+
+```ts
+import * as localForage from 'localforage';
+
+localForage.config({
+  driver: localForage.INDEXEDDB,
+  name: 'myApp',
+  version: 1.0,
+  storeName: 'auth',
+});
+
+export const persist = persistState(authStore, {
+  key: 'auth',
+  storage: localForage,
+});
+```
