@@ -80,3 +80,19 @@ export const persist = persistState(authStore, {
   storage: localForage,
 });
 ```
+
+## Excluding keys from saved state
+
+`excludeKeys()` operator can be used to exclude some keys from saved state:
+
+```ts
+import { excludeKeys, persistState, localStorageStrategy } from '@ngneat/elf-persist-state';
+
+persistState(todoStore, {
+  key: 'todos',
+  storage: localStorageStrategy,
+  source: () => todoStore.pipe(
+    excludeKeys(['ids', 'entities'])
+  )
+});
+```
