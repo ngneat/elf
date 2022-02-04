@@ -33,5 +33,6 @@ export {
   entitiesPropsFactory,
 } from './lib/entity.state';
 export { unionEntities as unionEntities } from './lib/union-entities';
+export { unionEntitiesAsMap as unionEntitiesAsMap } from './lib/union-entities-as-map';
 export * from './lib/active/active';
 export { getEntity, hasEntity, getEntities } from './lib/queries';
