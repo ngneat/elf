@@ -4,3 +4,4 @@ export {
   localStorageStrategy,
   sessionStorageStrategy,
 } from './lib/storage';
+export { excludeKeys } from './lib/exclude-keys';
