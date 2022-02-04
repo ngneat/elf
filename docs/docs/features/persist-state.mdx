@@ -81,9 +81,9 @@ export const persist = persistState(authStore, {
 });
 ```
 
-## Excluding keys from saved state
+## Excluding keys from the state
 
-`excludeKeys()` operator can be used to exclude some keys from saved state:
+The `excludeKeys()` operator can be used to exclude keys from the state:
 
 ```ts
 import { excludeKeys, persistState, localStorageStrategy } from '@ngneat/elf-persist-state';
