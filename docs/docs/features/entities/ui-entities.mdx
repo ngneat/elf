@@ -41,7 +41,7 @@ todosStore.update(
 uiEntity$ = todosStore.pipe(selectEntity(1, { ref: UIEntitiesRef }));
 ```
 
-We can use the `unionEntities()` operator that returns a combined collection of the entities and their corresponding `UIEntities`:
+We can use the `unionEntities()` or `unionEntitiesAsMap()` operator to get a combination of the entities and their corresponding `UIEntities`:
 
 ```ts
 import {
