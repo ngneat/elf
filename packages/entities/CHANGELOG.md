@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [3.1.0](https://github.com/ngneat/elf/compare/entities-3.0.0...entities-3.1.0) (2022-02-06)
+
+
+### Features
+
+* **entities:** 🔥 add unionEntitiesAsMap operator ([#134](https://github.com/ngneat/elf/issues/134)) ([fc8a9c0](https://github.com/ngneat/elf/commit/fc8a9c0956fb1aefcb4c455aa64943de8ca13c52))
+
+
+
 # [3.0.0](https://github.com/ngneat/elf/compare/entities-2.1.0...entities-3.0.0) (2022-01-24)
 
 
