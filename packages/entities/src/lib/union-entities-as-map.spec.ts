@@ -30,7 +30,7 @@ describe('unionEntitiesAsMap', () => {
       .pipe(unionEntitiesAsMap())
       .subscribe((v) => {
         spy(v);
-        expectTypeOf(v).toEqualTypeOf<Record<string, Todo & UITodo>>();
+        expectTypeOf(v).toEqualTypeOf<Record<number, Todo & UITodo>>();
       });
 
     expect(spy).toHaveBeenCalledTimes(1);
