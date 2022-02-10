@@ -4,7 +4,7 @@ export {
   deleteEntities,
   deleteEntitiesByPredicate,
 } from './lib/delete.mutation';
-export { setEntities } from './lib/set.mutation';
+export { setEntities, setEntitiesMap } from './lib/set.mutation';
 export {
   updateAllEntities,
   updateEntities,

@@ -207,6 +207,26 @@ import { setEntities } from '@ngneat/elf-entities';
 todosStore.update(setEntities([todo, todo]));
 ```
 
+### `setEntitiesMap`
+
+Replace current collection with the provided map:
+
+```ts
+import { setEntitiesMap } from '@ngneat/elf-entities';
+
+const todos = {
+  1: {
+    id: 1,
+    task: 'Buy milk'
+  },
+  2: {
+    id: 2,
+    task: 'Fix car'
+  }
+}
+todosStore.update(setEntitiesMap(todos));
+```
+
 ### `addEntities`
 
 Add an entity or entities to the store:
