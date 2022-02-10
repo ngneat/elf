@@ -249,13 +249,13 @@ export function upsertEntities<
  *
  * @example
  *
- * // update single entity id
+ * // Update a single entity id
  * store.update(updateEntitiesIds(1, 2));
  *
- * // update multiple entities ids
+ * // Update multiple entities ids
  * store.update(updateEntitiesIds([1, 2], [10, 20]));
  *
- * // update entity id using a custom ref
+ * // Update entity id using a custom ref
  * store.update(updateEntitiesIds(1, 2, { ref: UIEntitiesRef }));
  *
  */
@@ -296,7 +296,7 @@ export function updateEntitiesIds<
       Reflect.deleteProperty(updatedEntities, oldVal);
     }
 
-    const updatedStateIds: getIdType<S, Ref>[] = [...state[ref.idsKey]];
+    const updatedStateIds: getIdType<S, Ref>[] = state[ref.idsKey].slice();
     let processedIds = 0;
 
     for (let i = 0; i < updatedStateIds.length; i++) {

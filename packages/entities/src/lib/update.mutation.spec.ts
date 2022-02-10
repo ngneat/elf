@@ -220,5 +220,14 @@ describe('update', () => {
       store.update(updateEntitiesIds(1, 2, { ref: UIEntitiesRef }));
       toMatchSnapshot(expect, store, 'id updated true');
     });
+
+    it('should update entity after changing the id', () => {
+      store.update(addEntities([createTodo(1)]));
+      store.update(
+        updateEntitiesIds(1, 2),
+        updateEntities(2, { completed: true })
+      );
+      toMatchSnapshot(expect, store, 'id updated true, completed true');
+    });
   });
 });

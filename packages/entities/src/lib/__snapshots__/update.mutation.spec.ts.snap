@@ -30,6 +30,21 @@ Object {
 }
 `;
 
+exports[`update UpdateEntitiesIds should update entity after changing the id: id updated true, completed true 1`] = `
+Object {
+  "entities": Object {
+    "2": Object {
+      "completed": true,
+      "id": 2,
+      "title": "todo 1",
+    },
+  },
+  "ids": Array [
+    2,
+  ],
+}
+`;
+
 exports[`update UpdateEntitiesIds should update multiple ids: ids updated false 1`] = `
 Object {
   "entities": Object {
