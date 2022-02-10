@@ -1,3 +1,5 @@
+import { coerceArray, isFunction, OrArray, Reducer } from '@ngneat/elf';
+import { addEntities, AddEntitiesOptions } from './add.mutation';
 import {
   BaseEntityOptions,
   defaultEntitiesRef,
@@ -9,12 +11,15 @@ import {
   getIdType,
   ItemPredicate,
 } from './entity.state';
-import { Reducer, OrArray, coerceArray, isFunction } from '@ngneat/elf';
 import { findIdsByPredicate } from './entity.utils';
 import { hasEntity } from './queries';
-import { addEntities, AddEntitiesOptions } from './add.mutation';
 
 export type UpdateFn<Entity> = Partial<Entity> | ((entity: Entity) => Entity);
+
+type IdChanged<Entity> = {
+  oldId: Entity[keyof Entity];
+  newId: Entity[keyof Entity];
+};
 
 function toModel<Entity>(updater: UpdateFn<Entity>, entity: Entity): Entity {
   if (isFunction(updater)) {
@@ -25,6 +30,32 @@ function toModel<Entity>(updater: UpdateFn<Entity>, entity: Entity): Entity {
     ...entity,
     ...updater,
   };
+}
+
+function updateStateIds<Entity>(
+  changedIds: IdChanged<Entity>[],
+  stateIds: Entity[keyof Entity][]
+) {
+  const updatedIds = [...stateIds];
+
+  for (let i = 0; i < stateIds.length; i++) {
+    const id = stateIds[i];
+
+    for (let j = 0; j < changedIds.length; j++) {
+      const changedId = changedIds[j];
+      if (id === changedId.oldId) {
+        updatedIds[i] = changedId.newId;
+        changedIds.splice(j, 1);
+        break;
+      }
+    }
+
+    if (!changedIds.length) {
+      break;
+    }
+  }
+
+  return updatedIds;
 }
 
 /**
@@ -47,24 +78,51 @@ export function updateEntities<
   updater: U,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state) {
-    const { ref: { entitiesKey } = defaultEntitiesRef } = options;
+  return function (state, context) {
+    const { ref = defaultEntitiesRef } = options;
     const updatedEntities = {} as Record<
       getIdType<S, Ref>,
       getEntityType<S, Ref>
     >;
 
+    const idProp = getIdKey<keyof getEntityType<S, Ref>>(context, ref);
+
+    const changedIds: IdChanged<getEntityType<S, Ref>>[] = [];
+
     for (const id of coerceArray(ids)) {
-      updatedEntities[id] = toModel<getEntityType<S, Ref>>(
-        updater,
-        state[entitiesKey][id]
-      );
+      const oldEntity = state[ref.entitiesKey][id];
+      const updated = toModel<getEntityType<S, Ref>>(updater, oldEntity);
+
+      const newId = updated[idProp];
+      const oldId = oldEntity[idProp];
+
+      if (newId !== oldId) {
+        updatedEntities[newId] = updated;
+        delete updatedEntities[id];
+        changedIds.push({ oldId, newId });
+      } else {
+        updatedEntities[id] = updated;
+      }
     }
 
-    return {
+    const newEntities = { ...state[ref.entitiesKey], ...updatedEntities };
+    let newIds: string[] = state[ref.idsKey];
+
+    if (changedIds.length) {
+      for (const id of changedIds) {
+        Reflect.deleteProperty(newEntities, id.oldId);
+      }
+
+      newIds = updateStateIds(changedIds, state[ref.idsKey]);
+    }
+
+    const newState = {
       ...state,
-      [entitiesKey]: { ...state[entitiesKey], ...updatedEntities },
+      [ref.entitiesKey]: newEntities,
+      [ref.idsKey]: newIds,
     };
+
+    return newState;
   };
 }
 
@@ -165,11 +223,13 @@ export function upsertEntitiesById<
       } else {
         let newEntity = creator(id);
         if (options.mergeUpdaterWithCreator) {
-          newEntity = toModel(updater, newEntity);
+          const updated = toModel(updater, newEntity);
+          newEntity = updated;
         }
         newEntities.push(newEntity);
       }
     }
+
     const newState = updateEntities(
       updatedEntitiesIds,
       updater,

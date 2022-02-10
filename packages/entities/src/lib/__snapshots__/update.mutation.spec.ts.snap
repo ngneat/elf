@@ -15,21 +15,6 @@ Object {
 }
 `;
 
-exports[`update Upsert should merge fields on update: merged entity with completed: true 1`] = `
-Object {
-  "entities": Object {
-    "1": Object {
-      "completed": true,
-      "id": 1,
-      "title": "todo 1",
-    },
-  },
-  "ids": Array [
-    1,
-  ],
-}
-`;
-
 exports[`update Upsert should update the entity if it has the same id: updated entity with completed: true 1`] = `
 Object {
   "entities": Object {
@@ -101,7 +86,7 @@ Object {
 }
 `;
 
-exports[`update UpsertById should update add the missing entities and update existing: two entities, 1: title "elf", 2: title "todo 2" 1`] = `
+exports[`update UpsertById should add the missing entities and update existing: two entities, 1: title "elf", 2: title "todo 2" 1`] = `
 Object {
   "entities": Object {
     "1": Object {
@@ -151,6 +136,36 @@ Object {
   },
   "UIIds": Array [
     1,
+    2,
+  ],
+}
+`;
+
+exports[`update should support id update: id updated false 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+  },
+  "ids": Array [
+    1,
+  ],
+}
+`;
+
+exports[`update should support id update: id updated true 1`] = `
+Object {
+  "entities": Object {
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 1",
+    },
+  },
+  "ids": Array [
     2,
   ],
 }

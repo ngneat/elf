@@ -7,6 +7,7 @@ import {
   toMatchSnapshot,
 } from '@ngneat/elf-mocks';
 import { addEntities } from './add.mutation';
+import { UIEntitiesRef } from './entity.state';
 import {
   updateAllEntities,
   updateEntities,
@@ -14,8 +15,6 @@ import {
   upsertEntities,
   upsertEntitiesById,
 } from './update.mutation';
-import { UIEntitiesRef } from './entity.state';
-import { getEntity } from '..';
 
 describe('update', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -65,6 +64,13 @@ describe('update', () => {
     toMatchSnapshot(expect, store, 'completed true');
   });
 
+  it('should support id update', () => {
+    store.update(addEntities([createTodo(1)]));
+    toMatchSnapshot(expect, store, 'id updated false');
+    store.update(updateEntities(1, { id: 2 }));
+    toMatchSnapshot(expect, store, 'id updated true');
+  });
+
   it('should work with ref', () => {
     const store = createUIEntityStore();
     store.update(
@@ -111,7 +117,7 @@ describe('update', () => {
       toMatchSnapshot(expect, store, 'one entity, title "elf"');
     });
 
-    it('should update add the missing entities and update existing', () => {
+    it('should add the missing entities and update existing', () => {
       const store = createEntitiesStore();
       store.update(
         addEntities([createTodo(1)]),
@@ -165,22 +171,9 @@ describe('update', () => {
       store.update(addEntities([todo]));
 
       // update the todo
-      todo.completed = true;
-      store.update(upsertEntities([todo]));
-
-      toMatchSnapshot(expect, store, 'updated entity with completed: true');
-    });
-
-    it(`should merge fields on update`, () => {
-      const store = createEntitiesStore();
-
-      const todo = createTodo(1);
-      store.update(addEntities([todo]));
-
-      // update the todo
       store.update(upsertEntities([{ id: 1, completed: true }]));
 
-      toMatchSnapshot(expect, store, 'merged entity with completed: true');
+      toMatchSnapshot(expect, store, 'updated entity with completed: true');
     });
 
     it('should work with ref', () => {
