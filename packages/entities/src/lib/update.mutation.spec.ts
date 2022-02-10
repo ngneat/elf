@@ -12,6 +12,7 @@ import {
   updateAllEntities,
   updateEntities,
   updateEntitiesByPredicate,
+  updateEntitiesIds,
   upsertEntities,
   upsertEntitiesById,
 } from './update.mutation';
@@ -62,13 +63,6 @@ describe('update', () => {
     toMatchSnapshot(expect, store, 'completed false');
     store.update(updateAllEntities({ completed: true }));
     toMatchSnapshot(expect, store, 'completed true');
-  });
-
-  it('should support id update', () => {
-    store.update(addEntities([createTodo(1)]));
-    toMatchSnapshot(expect, store, 'id updated false');
-    store.update(updateEntities(1, { id: 2 }));
-    toMatchSnapshot(expect, store, 'id updated true');
   });
 
   it('should work with ref', () => {
@@ -194,6 +188,37 @@ describe('update', () => {
       const sameIds = store.getValue().ids;
 
       expect(ids).toBe(sameIds);
+    });
+  });
+
+  describe('UpdateEntitiesIds', () => {
+    it('should support id update', () => {
+      store.update(addEntities([createTodo(1)]));
+      toMatchSnapshot(expect, store, 'id updated false');
+      store.update(updateEntitiesIds(1, 2));
+      toMatchSnapshot(expect, store, 'id updated true');
+    });
+
+    it('should update multiple ids', () => {
+      store.update(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
+      toMatchSnapshot(expect, store, 'ids updated false');
+      store.update(updateEntitiesIds([2, 3], [4, 5]));
+      toMatchSnapshot(expect, store, 'ids updated true');
+    });
+
+    it('should throw if new id already exists in the store', () => {
+      store.update(addEntities([createTodo(1), createTodo(2)]));
+      expect(() => {
+        store.update(updateEntitiesIds(1, 2));
+      }).toThrow();
+    });
+
+    it('should work with ref', () => {
+      const store = createUIEntityStore();
+      store.update(addEntities([createUITodo(1)], { ref: UIEntitiesRef }));
+      toMatchSnapshot(expect, store, 'id updated false');
+      store.update(updateEntitiesIds(1, 2, { ref: UIEntitiesRef }));
+      toMatchSnapshot(expect, store, 'id updated true');
     });
   });
 });

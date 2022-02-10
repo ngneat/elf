@@ -16,11 +16,6 @@ import { hasEntity } from './queries';
 
 export type UpdateFn<Entity> = Partial<Entity> | ((entity: Entity) => Entity);
 
-type IdChanged<Entity> = {
-  oldId: Entity[keyof Entity];
-  newId: Entity[keyof Entity];
-};
-
 function toModel<Entity>(updater: UpdateFn<Entity>, entity: Entity): Entity {
   if (isFunction(updater)) {
     return updater(entity);
@@ -30,32 +25,6 @@ function toModel<Entity>(updater: UpdateFn<Entity>, entity: Entity): Entity {
     ...entity,
     ...updater,
   };
-}
-
-function updateStateIds<Entity>(
-  changedIds: IdChanged<Entity>[],
-  stateIds: Entity[keyof Entity][]
-) {
-  const updatedIds = [...stateIds];
-
-  for (let i = 0; i < stateIds.length; i++) {
-    const id = stateIds[i];
-
-    for (let j = 0; j < changedIds.length; j++) {
-      const changedId = changedIds[j];
-      if (id === changedId.oldId) {
-        updatedIds[i] = changedId.newId;
-        changedIds.splice(j, 1);
-        break;
-      }
-    }
-
-    if (!changedIds.length) {
-      break;
-    }
-  }
-
-  return updatedIds;
 }
 
 /**
@@ -78,51 +47,24 @@ export function updateEntities<
   updater: U,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state, context) {
-    const { ref = defaultEntitiesRef } = options;
+  return function (state) {
+    const { ref: { entitiesKey } = defaultEntitiesRef } = options;
     const updatedEntities = {} as Record<
       getIdType<S, Ref>,
       getEntityType<S, Ref>
     >;
 
-    const idProp = getIdKey<keyof getEntityType<S, Ref>>(context, ref);
-
-    const changedIds: IdChanged<getEntityType<S, Ref>>[] = [];
-
     for (const id of coerceArray(ids)) {
-      const oldEntity = state[ref.entitiesKey][id];
-      const updated = toModel<getEntityType<S, Ref>>(updater, oldEntity);
-
-      const newId = updated[idProp];
-      const oldId = oldEntity[idProp];
-
-      if (newId !== oldId) {
-        updatedEntities[newId] = updated;
-        delete updatedEntities[id];
-        changedIds.push({ oldId, newId });
-      } else {
-        updatedEntities[id] = updated;
-      }
+      updatedEntities[id] = toModel<getEntityType<S, Ref>>(
+        updater,
+        state[entitiesKey][id]
+      );
     }
 
-    const newEntities = { ...state[ref.entitiesKey], ...updatedEntities };
-    let newIds: string[] = state[ref.idsKey];
-
-    if (changedIds.length) {
-      for (const id of changedIds) {
-        Reflect.deleteProperty(newEntities, id.oldId);
-      }
-
-      newIds = updateStateIds(changedIds, state[ref.idsKey]);
-    }
-
-    const newState = {
+    return {
       ...state,
-      [ref.entitiesKey]: newEntities,
-      [ref.idsKey]: newIds,
+      [entitiesKey]: { ...state[entitiesKey], ...updatedEntities },
     };
-
-    return newState;
   };
 }
 
@@ -223,13 +165,11 @@ export function upsertEntitiesById<
       } else {
         let newEntity = creator(id);
         if (options.mergeUpdaterWithCreator) {
-          const updated = toModel(updater, newEntity);
-          newEntity = updated;
+          newEntity = toModel(updater, newEntity);
         }
         newEntities.push(newEntity);
       }
     }
-
     const newState = updateEntities(
       updatedEntitiesIds,
       updater,
@@ -300,6 +240,88 @@ export function upsertEntities<
       ...state,
       ...updatedIds,
       [entitiesKey]: { ...state[entitiesKey], ...asObject },
+    };
+  };
+}
+
+/**
+ * Update entities ids
+ *
+ * @example
+ *
+ * // update single entity id
+ * store.update(updateEntitiesIds(1, 2));
+ *
+ * // update multiple entities ids
+ * store.update(updateEntitiesIds([1, 2], [10, 20]));
+ *
+ * // update entity id using a custom ref
+ * store.update(updateEntitiesIds(1, 2, { ref: UIEntitiesRef }));
+ *
+ */
+export function updateEntitiesIds<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(
+  oldId: OrArray<getIdType<S, Ref>>,
+  newId: OrArray<getIdType<S, Ref>>,
+  options: BaseEntityOptions<Ref> = {}
+): Reducer<S> {
+  return function (state, context) {
+    const oldIds = coerceArray(oldId);
+    const newIds = coerceArray(newId);
+
+    if (oldIds.length !== newIds.length) {
+      throw new Error('The number of old and new ids must be equal');
+    }
+
+    const { ref = defaultEntitiesRef } = options;
+    const idProp = getIdKey<string>(context, ref);
+    const updatedEntities = { ...state[ref.entitiesKey] };
+
+    for (let i = 0; i < oldIds.length; i++) {
+      const oldVal = oldIds[i];
+      const newVal = newIds[i];
+
+      if (state[ref.entitiesKey][newVal]) {
+        throw new Error(
+          `Updating id "${oldVal}". The new id "${newVal}" already exists`
+        );
+      }
+
+      const oldEntity = state[ref.entitiesKey][oldVal];
+      const updated = { ...oldEntity, [idProp]: newVal };
+
+      updatedEntities[newVal] = updated;
+      Reflect.deleteProperty(updatedEntities, oldVal);
+    }
+
+    const updatedStateIds: getIdType<S, Ref>[] = [...state[ref.idsKey]];
+    let processedIds = 0;
+
+    for (let i = 0; i < updatedStateIds.length; i++) {
+      const currentId = updatedStateIds[i];
+
+      for (let j = 0; j < oldIds.length; j++) {
+        const oldVal = oldIds[j];
+        const newVal = newIds[j];
+
+        if (currentId === oldVal) {
+          updatedStateIds[i] = newVal;
+          processedIds++;
+          break;
+        }
+      }
+
+      if (processedIds === oldIds.length) {
+        break;
+      }
+    }
+
+    return {
+      ...state,
+      [ref.entitiesKey]: updatedEntities,
+      [ref.idsKey]: updatedStateIds,
     };
   };
 }

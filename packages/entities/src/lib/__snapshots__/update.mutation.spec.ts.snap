@@ -1,5 +1,117 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`update UpdateEntitiesIds should support id update: id updated false 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+  },
+  "ids": Array [
+    1,
+  ],
+}
+`;
+
+exports[`update UpdateEntitiesIds should support id update: id updated true 1`] = `
+Object {
+  "entities": Object {
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 1",
+    },
+  },
+  "ids": Array [
+    2,
+  ],
+}
+`;
+
+exports[`update UpdateEntitiesIds should update multiple ids: ids updated false 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+    "3": Object {
+      "completed": false,
+      "id": 3,
+      "title": "todo 3",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+    3,
+  ],
+}
+`;
+
+exports[`update UpdateEntitiesIds should update multiple ids: ids updated true 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "4": Object {
+      "completed": false,
+      "id": 4,
+      "title": "todo 2",
+    },
+    "5": Object {
+      "completed": false,
+      "id": 5,
+      "title": "todo 3",
+    },
+  },
+  "ids": Array [
+    1,
+    4,
+    5,
+  ],
+}
+`;
+
+exports[`update UpdateEntitiesIds should work with ref: id updated false 1`] = `
+Object {
+  "UIEntities": Object {
+    "1": Object {
+      "id": 1,
+      "open": false,
+    },
+  },
+  "UIIds": Array [
+    1,
+  ],
+}
+`;
+
+exports[`update UpdateEntitiesIds should work with ref: id updated true 1`] = `
+Object {
+  "UIEntities": Object {
+    "2": Object {
+      "id": 2,
+      "open": false,
+    },
+  },
+  "UIIds": Array [
+    2,
+  ],
+}
+`;
+
 exports[`update Upsert should add the entity if it doesn't exists: one entities 1`] = `
 Object {
   "entities": Object {
@@ -65,27 +177,6 @@ Object {
 }
 `;
 
-exports[`update UpsertById should merge updater with creator: two entities, title "elf" 1`] = `
-Object {
-  "entities": Object {
-    "1": Object {
-      "completed": false,
-      "id": 1,
-      "title": "elf",
-    },
-    "2": Object {
-      "completed": false,
-      "id": 2,
-      "title": "elf",
-    },
-  },
-  "ids": Array [
-    1,
-    2,
-  ],
-}
-`;
-
 exports[`update UpsertById should add the missing entities and update existing: two entities, 1: title "elf", 2: title "todo 2" 1`] = `
 Object {
   "entities": Object {
@@ -98,6 +189,27 @@ Object {
       "completed": false,
       "id": 2,
       "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update UpsertById should merge updater with creator: two entities, title "elf" 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "elf",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "elf",
     },
   },
   "ids": Array [
@@ -136,36 +248,6 @@ Object {
   },
   "UIIds": Array [
     1,
-    2,
-  ],
-}
-`;
-
-exports[`update should support id update: id updated false 1`] = `
-Object {
-  "entities": Object {
-    "1": Object {
-      "completed": false,
-      "id": 1,
-      "title": "todo 1",
-    },
-  },
-  "ids": Array [
-    1,
-  ],
-}
-`;
-
-exports[`update should support id update: id updated true 1`] = `
-Object {
-  "entities": Object {
-    "2": Object {
-      "completed": false,
-      "id": 2,
-      "title": "todo 1",
-    },
-  },
-  "ids": Array [
     2,
   ],
 }
