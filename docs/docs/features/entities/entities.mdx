@@ -316,6 +316,7 @@ todosStore.update(
   ])
 );
 ```
+
 ### `upsertEntitiesById`
 
 Insert or update an entity. When the id isn't found, it creates a new entity; otherwise, it performs an update:
@@ -354,6 +355,40 @@ todosStore.update(
 ```
 
 The above example will first create the entity using the _creator_ method, then pass the result to the _updater_ method, and merge both.
+
+### `updateEntitiesIds`
+
+Update id of an entity or entities in the store:
+
+```ts
+import { updateEntitiesIds } from '@ngneat/elf-entities';
+
+todosStore.update(updateEntitiesIds(oldId, newId));
+
+todosStore.update(updateEntitiesIds([oldId1, oldId2], [newId1, newId2]));
+```
+
+The most common use case for this is "optimistic updates":
+
+```ts
+function addTodo(todo: Todo) {
+  const tempId = generateRandomId();
+  todosStore.update(addEntities({ ...todo, id: tempId }));
+
+  addTodoToServer(todo).then(
+    (response) => {
+      todosStore.update(
+        updateEntitiesIds(tempId, response.id),
+        updateEntities(response.id, response)
+      );
+    },
+    (error) => {
+      todosStore.update(deleteEntities(tempId));
+      // handle error
+    }
+  );
+}
+```
 
 ### `deleteEntities`
 
