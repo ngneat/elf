@@ -22,7 +22,7 @@ $ npm install -g @ngneat/elf-cli
 $ elf COMMAND
 running command...
 $ elf (-v|--version|version)
-@ngneat/elf-cli/1.1.0 darwin-x64 node-v14.18.1
+@ngneat/elf-cli/2.0.0 darwin-x64 node-v14.18.1
 $ elf --help [COMMAND]
 USAGE
   $ elf COMMAND
@@ -52,7 +52,7 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.3.1/src/commands/help.ts)_
 
 ## `elf install`
 
@@ -66,7 +66,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [lib/commands/install.js](https://github.com/ngneat/elf/blob/v1.1.0/lib/commands/install.js)_
+_See code: [lib/commands/install.js](https://github.com/ngneat/elf/blob/v2.0.0/lib/commands/install.js)_
 
 ## `elf repo`
 
@@ -81,5 +81,5 @@ OPTIONS
   --dry-run
 ```
 
-_See code: [lib/commands/repo.js](https://github.com/ngneat/elf/blob/v1.1.0/lib/commands/repo.js)_
+_See code: [lib/commands/repo.js](https://github.com/ngneat/elf/blob/v2.0.0/lib/commands/repo.js)_
 <!-- commandsstop -->

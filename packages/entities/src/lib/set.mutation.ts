@@ -42,3 +42,13 @@ export function setEntities<
     };
   };
 }
+
+export function setEntitiesMap<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(
+  entities: Record<any, getEntityType<S, Ref>>,
+  options: BaseEntityOptions<Ref> = {}
+) {
+  return setEntities(Object.values(entities), options);
+}

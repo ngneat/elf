@@ -1,7 +1,7 @@
 {
   "name": "@ngneat/elf-cli",
   "description": "A CLI for elf store",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "author": "Netanel Basal @NetanelBasal",
   "publishConfig": {
     "access": "public"
@@ -11,9 +11,9 @@
   },
   "bugs": "https://github.com/ngneat/elf/issues",
   "dependencies": {
-    "@oclif/command": "1.8.0",
-    "@oclif/config": "1.17.0",
-    "@oclif/plugin-help": "3.2.2",
+    "@oclif/command": "1.8.16",
+    "@oclif/config": "1.18.3",
+    "@oclif/plugin-help": "5.1.11",
     "chalk": "4.1.2",
     "cosmiconfig": "7.0.1",
     "detect-package-manager": "2.0.1",
@@ -21,10 +21,10 @@
     "inquirer": "8.1.1",
     "inquirer-fuzzy-path": "2.3.0",
     "pluralize": "8.0.0",
-    "ts-morph": "11.0.0",
+    "ts-morph": "13.0.3",
     "tslib": "1.14.1",
     "ts-node": "8.10.2",
-    "typescript": "^4.3.5"
+    "typescript": "4.5.5"
   },
   "devDependencies": {
     "@oclif/dev-cli": "1.26.0",

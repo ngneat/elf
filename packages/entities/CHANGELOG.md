@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [3.2.0](https://github.com/ngneat/elf/compare/entities-3.1.1...entities-3.2.0) (2022-02-12)
+
+
+### Features
+
+* **entities:** 🔥 support id update ([#147](https://github.com/ngneat/elf/issues/147)) ([af201e2](https://github.com/ngneat/elf/commit/af201e22a8ef7b3bb959124e95a8bf45057b9699))
+* **mutation:** add support for key-value structure ([#148](https://github.com/ngneat/elf/issues/148)) ([163fabd](https://github.com/ngneat/elf/commit/163fabd0386ce20dc1c35b9bb210d90b1c00c6dd))
+
+
+
 ## [3.1.1](https://github.com/ngneat/elf/compare/entities-3.1.0...entities-3.1.1) (2022-02-08)
 
 
