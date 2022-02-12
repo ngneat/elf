@@ -125,12 +125,10 @@ function throwIfEntityExists(
   state: Record<any, any>,
   entitiesKey: string
 ) {
-  if (Array.isArray(entities)) {
-    entities.forEach((entity) => {
-      const id = entity[idKey];
-      if (state[entitiesKey][id]) {
-        throw Error(`Entity already exists. ${idKey} ${id}`);
-      }
-    });
-  }
+  entities.forEach((entity) => {
+    const id = entity[idKey];
+    if (state[entitiesKey][id]) {
+      throw Error(`Entity already exists. ${idKey} ${id}`);
+    }
+  });
 }
