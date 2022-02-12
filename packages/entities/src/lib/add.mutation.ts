@@ -1,3 +1,5 @@
+import { coerceArray, OrArray, Reducer } from '@ngneat/elf';
+import { deleteEntities } from './delete.mutation';
 import {
   BaseEntityOptions,
   DefaultEntitiesRef,
@@ -8,9 +10,7 @@ import {
   getIdKey,
   getIdType,
 } from './entity.state';
-import { OrArray, Reducer, coerceArray } from '@ngneat/elf';
 import { buildEntities } from './entity.utils';
-import { deleteEntities } from './delete.mutation';
 
 export interface AddEntitiesOptions {
   prepend?: boolean;
@@ -40,11 +40,11 @@ export function addEntities<
     const { prepend = false, ref = defaultEntitiesRef } = options;
 
     const { entitiesKey, idsKey } = ref!;
+    const idKey = getIdKey<any>(context, ref);
 
-    const { ids, asObject } = buildEntities<S, Ref>(
-      entities,
-      getIdKey(context, ref)
-    );
+    throwIfEntityExists(entities, idKey, state, entitiesKey);
+
+    const { ids, asObject } = buildEntities<S, Ref>(entities, idKey);
 
     return {
       ...state,
@@ -110,4 +110,27 @@ export function addEntitiesFifo<
       [idsKey]: [...newState[idsKey], ...ids],
     };
   };
+}
+
+function throwIfEntityExists(
+  entities: any | any[],
+  idKey: string,
+  state: Record<any, any>,
+  entitiesKey: string
+) {
+  if (Array.isArray(entities)) {
+    entities.forEach((entity) => {
+      const id = entity[idKey];
+      checkEntity(id);
+    });
+  } else {
+    const id = entities[idKey];
+    checkEntity(id);
+  }
+
+  function checkEntity(id: string) {
+    if (state[entitiesKey][id]) {
+      throw Error(`Entity already exists. ${idKey} ${id}`);
+    }
+  }
 }
