@@ -47,10 +47,7 @@ export function addEntities<
     if (!asArray.length) return state;
     throwIfEntityExists(asArray, idKey, state, entitiesKey);
 
-    const { ids, asObject } = buildEntities<S, Ref>(
-      asArray,
-      getIdKey(context, ref)
-    );
+    const { ids, asObject } = buildEntities<S, Ref>(asArray, idKey);
 
     return {
       ...state,
@@ -130,7 +127,6 @@ function throwIfEntityExists(
       if (state[entitiesKey][id]) {
         throw Error(`Entity already exists. ${idKey} ${id}`);
       }
-      console.log(id);
     });
   }
 }
