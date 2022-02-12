@@ -35,27 +35,27 @@ const packages = [
   { name: '@ngneat/elf', link: 'https://ngneat.github.io/elf/docs/store' },
   {
     name: '@ngneat/elf-entities',
-    link: 'https://ngneat.github.io/elf/docs/entities',
+    link: 'https://ngneat.github.io/elf/docs/features/entities/entities/',
   },
   {
     name: '@ngneat/elf-devtools',
-    link: 'https://ngneat.github.io/elf/docs/devtools',
+    link: 'https://ngneat.github.io/elf/docs/dev-tools',
   },
   {
     name: '@ngneat/elf-requests',
-    link: 'https://ngneat.github.io/elf/docs/requests/requests-status',
+    link: 'https://ngneat.github.io/elf/docs/features/requests/requests-status',
   },
   {
     name: '@ngneat/elf-state-history',
-    link: 'https://ngneat.github.io/elf/docs/history',
+    link: 'https://ngneat.github.io/elf/docs/features/history',
   },
   {
     name: '@ngneat/elf-persist-state',
-    link: 'https://ngneat.github.io/elf/docs/persist-state',
+    link: 'https://ngneat.github.io/elf/docs/features/persist-state',
   },
   {
     name: '@ngneat/elf-pagination',
-    link: 'https://ngneat.github.io/elf/docs/pagination',
+    link: 'https://ngneat.github.io/elf/docs/features/pagination',
   },
   { name: '@ngneat/elf-cli-ng', link: 'https://ngneat.github.io/elf/docs/cli' },
 ];

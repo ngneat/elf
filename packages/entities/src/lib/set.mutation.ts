@@ -8,7 +8,7 @@ import {
   getIdKey,
   getIdType,
 } from './entity.state';
-import { Reducer, OrArray } from '@ngneat/elf';
+import { Reducer } from '@ngneat/elf';
 import { buildEntities } from './entity.utils';
 
 /**
@@ -24,7 +24,7 @@ export function setEntities<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
-  entities: OrArray<getEntityType<S, Ref>>,
+  entities: getEntityType<S, Ref>[],
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
   return function (state, context) {
@@ -41,4 +41,14 @@ export function setEntities<
       [idsKey]: ids,
     };
   };
+}
+
+export function setEntitiesMap<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(
+  entities: Record<any, getEntityType<S, Ref>>,
+  options: BaseEntityOptions<Ref> = {}
+) {
+  return setEntities(Object.values(entities), options);
 }

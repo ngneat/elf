@@ -86,6 +86,18 @@ const title$ = todosStore.pipe(selectEntity(id, { pluck: 'title' }));
 const title$ = todosStore.pipe(selectEntity(id, { pluck: (e) => e.title }));
 ```
 
+### `selectEntityByPredicate`
+
+Select an entity from the store by predicate:
+
+```ts
+import { selectEntityByPredicate } from '@ngneat/elf-entities';
+
+const todo$ = todosStore.pipe(selectEntityByPredicate(({completed}) => !completed));
+const title$ = todosStore.pipe(selectEntityByPredicate(({completed}) => !completed, {pluck: "title", idKey: "_id"}));
+const title$ = todosStore.pipe(selectEntityByPredicate(({completed}) => !completed, {pluck: (e) => e.title, idKey: "_id"}));
+```
+
 ### `selectMany`
 
 Select multiple entities from the store:
@@ -96,6 +108,18 @@ import { selectMany } from '@ngneat/elf-entities';
 const todos$ = todosStore.pipe(selectMany([id, id]));
 const titles$ = todosStore.pipe(selectMany(id, { pluck: 'title' }));
 const titles$ = todosStore.pipe(selectMany(id, { pluck: (e) => e.title }));
+```
+
+### `selectManyByPredicate`
+
+Select multiple entities from the store by predicate:
+
+```ts
+import { selectManyByPredicate } from '@ngneat/elf-entities';
+
+const todos$ = todosStore.pipe(selectManyByPredicate(entity => entity.completed === false));
+const titles$ = todosStore.pipe(selectManyByPredicate(entity => entity.completed === false, {pluck: "title"}));
+const titles$ = todosStore.pipe(selectManyByPredicate(entity => entity.completed === false, {pluck: (e) => e.title}));
 ```
 
 ### `selectFirst`
@@ -180,9 +204,27 @@ Replace current collection with the provided collection:
 ```ts
 import { setEntities } from '@ngneat/elf-entities';
 
-todosStore.update(
-  setEntities([todo, todo])
-);
+todosStore.update(setEntities([todo, todo]));
+```
+
+### `setEntitiesMap`
+
+Replace current collection with the provided map:
+
+```ts
+import { setEntitiesMap } from '@ngneat/elf-entities';
+
+const todos = {
+  1: {
+    id: 1,
+    task: 'Buy milk'
+  },
+  2: {
+    id: 2,
+    task: 'Fix car'
+  }
+}
+todosStore.update(setEntitiesMap(todos));
 ```
 
 ### `addEntities`
@@ -192,17 +234,11 @@ Add an entity or entities to the store:
 ```ts
 import { addEntities } from '@ngneat/elf-entities';
 
-todosStore.update(
-  addEntities(todo)
-);
+todosStore.update(addEntities(todo));
 
-todosStore.update(
-  addEntities([todo, todo])
-);
+todosStore.update(addEntities([todo, todo]));
 
-todosStore.update(
-  addEntities([todo, todo], { prepend: true })
-);
+todosStore.update(addEntities([todo, todo], { prepend: true }));
 ```
 
 ### `addEntitiesFifo`
@@ -212,9 +248,7 @@ Add an entity or entities to the store using fifo strategy:
 ```ts
 import { addEntitiesFifo } from '@ngneat/elf-entities';
 
-todosStore.update(
-  addEntitiesFifo([entity, entity]), { limit: 3 }
-);
+todosStore.update(addEntitiesFifo([entity, entity]), { limit: 3 });
 ```
 
 ### `updateEntities`
@@ -224,17 +258,11 @@ Update an entity or entities in the store:
 ```ts
 import { updateEntities } from '@ngneat/elf-entities';
 
-todosStore.update(
-  updateEntities(id, { name })
-);
+todosStore.update(updateEntities(id, { name }));
 
-todosStore.update(
-  updateEntities(id, (entity) => ({ ...entity, name }))
-);
+todosStore.update(updateEntities(id, (entity) => ({ ...entity, name })));
 
-todosStore.update(
-  updateEntities([id, id, id], { open: true })
-);
+todosStore.update(updateEntities([id, id, id], { open: true }));
 ```
 
 ### `updateEntitiesByPredicate`
@@ -245,17 +273,12 @@ Update an entity or entities in the store:
 import { updateEntitiesByPredicate } from '@ngneat/elf-entities';
 
 todosStore.update(
-  updateEntitiesByPredicate(
-    ({ count }) => count === 0,
-    { open: false }
-  )
+  updateEntitiesByPredicate(({ count }) => count === 0, { open: false })
 );
 
 todosStore.update(
-  updateEntitiesByPredicate(
-   ({ count }) => count === 0),
-   (entity) => ({ ...entity, open: false }
-  )
+  updateEntitiesByPredicate(({ count }) => count === 0),
+  (entity) => ({ ...entity, open: false })
 );
 ```
 
@@ -266,9 +289,7 @@ Update all entities in the store:
 ```ts
 import { updateAllEntities } from '@ngneat/elf-entities';
 
-todosStore.update(
-  updateAllEntities({ name: 'elf' })
-);
+todosStore.update(updateAllEntities({ name: 'elf' }));
 
 todosStore.update(
   updateAllEntities((entity) => ({ ...entity, count: entity.count + 1 }))
@@ -277,24 +298,45 @@ todosStore.update(
 
 ### `upsertEntities`
 
+Add or update entities.
+
+To identify entities in the store, every entity must have an `id` property. Any partial entities will be merged with the existing ones:
+
+```ts
+import { upsertEntitiesBy } from '@ngneat/elf-entities';
+
+todosStore.update(
+  upsertEntities({ id: '1', happy: true })
+);
+
+todosStore.update(
+  upsertEntities([
+    { id: '1', happy: true },
+    { id: '2', name: 'elf 2', happy: false },
+  ])
+);
+```
+
+### `upsertEntitiesById`
+
 Insert or update an entity. When the id isn't found, it creates a new entity; otherwise, it performs an update:
 
 ```ts
-import { upsertEntities } from '@ngneat/elf-entities';
+import { upsertEntitiesById } from '@ngneat/elf-entities';
 
 const creator = (id) => createTodo(id);
 
 todosStore.update(
-  upsertEntities(1, {
+  upsertEntitiesById(1, {
     updater: { name: 'elf' },
-    creator
+    creator,
   })
 );
 
 todosStore.update(
-  upsertEntities([1, 2], {
+  upsertEntitiesById([1, 2], {
     updater: (entity) => ({ ...entity, count: entity.count + 1 }),
-    creator
+    creator,
   })
 );
 ```
@@ -303,16 +345,50 @@ To perform a merge between a new entity and an `updater` result, use the `mergeU
 
 ```ts
 todosStore.update(
-  upsertEntities([1, 2], {
+  upsertEntitiesById([1, 2], {
     updater: (entity) => ({ ...entity, name }),
     creator,
     // highlight-next-line
-    mergeUpdaterWithCreator: true
+    mergeUpdaterWithCreator: true,
   })
 );
 ```
 
-The above example will first create the entity using the *creator* method, then pass the result to the *updater* method, and merge both.
+The above example will first create the entity using the _creator_ method, then pass the result to the _updater_ method, and merge both.
+
+### `updateEntitiesIds`
+
+Update id of an entity or entities in the store:
+
+```ts
+import { updateEntitiesIds } from '@ngneat/elf-entities';
+
+todosStore.update(updateEntitiesIds(oldId, newId));
+
+todosStore.update(updateEntitiesIds([oldId1, oldId2], [newId1, newId2]));
+```
+
+The most common use case for this is "optimistic updates":
+
+```ts
+function addTodo(todo: Todo) {
+  const tempId = generateRandomId();
+  todosStore.update(addEntities({ ...todo, id: tempId }));
+
+  addTodoToServer(todo).then(
+    (response) => {
+      todosStore.update(
+        updateEntitiesIds(tempId, response.id),
+        updateEntities(response.id, response)
+      );
+    },
+    (error) => {
+      todosStore.update(deleteEntities(tempId));
+      // handle error
+    }
+  );
+}
+```
 
 ### `deleteEntities`
 
@@ -332,9 +408,7 @@ Delete an entity or entities from the store:
 ```ts
 import { deleteEntitiesByPredicate } from '@ngneat/elf-entities';
 
-todosStore.update(
-  deleteEntitiesByPredicate(({ completed }) => completed)
-);
+todosStore.update(deleteEntitiesByPredicate(({ completed }) => completed));
 ```
 
 ### `deleteAllEntities`
@@ -369,6 +443,7 @@ const todosStore = new Store({ name: 'todos', state, config });
 ```
 
 ## initialValue
+
 In case that you need to start the `entities` state with a value, you can specify it in the `initialValue` configuration:
 
 ```ts

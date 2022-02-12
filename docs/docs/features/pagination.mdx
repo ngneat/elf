@@ -87,7 +87,7 @@ import { selectCurrentPageEntities } from '@ngneat/elf-pagination';
 todos$ = store.pipe(selectCurrentPageEntities());
 ```
 
-### `selectCurrentPageEntities`
+### `selectCurrentPage`
 
 Select the current page number (by default it's page 1):
 
@@ -193,5 +193,5 @@ Delete all pages:
 ```ts
 import { deleteAllPages } from '@ngneat/elf-pagination';
 
-store.update(deleteAllPages(2));
+store.update(deleteAllPages());
 ```

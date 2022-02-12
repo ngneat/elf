@@ -43,6 +43,10 @@ describe('activeId', () => {
     store.update(updateEntities(1, { title: 'foo' }));
     expect(spy).toHaveBeenCalledTimes(3);
     expect(spy).toHaveBeenCalledWith({ id: 1, title: 'foo' });
+
+    store.update(setActiveId(123));
+    expect(spy).toHaveBeenCalledTimes(4);
+    expect(spy).toHaveBeenNthCalledWith(4, undefined);
   });
 });
 

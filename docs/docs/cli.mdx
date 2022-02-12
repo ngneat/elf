@@ -62,3 +62,22 @@ Install the package, and add the following code:
 ```
 
 The plugin will add the `Injectable` decorator to the `repository` class.
+
+### fuzzypath
+A [fuzzy](https://github.com/adelsz/inquirer-fuzzy-path) file/directory search and selection prompt. It can be configured as follows:
+
+```ts title="elf.config.js"
+module.exports = {
+  cli: {
+    fuzzypath: {
+      rootPath: // defaults to process.cwd()
+      excludePath(path) {
+        // defaults to path.includes('node_modules')
+      }
+      excludeFilter(path) {
+        // defaults to path.includes('.');
+      }
+    }
+  }
+}
+```

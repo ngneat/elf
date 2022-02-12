@@ -1,5 +1,12 @@
+import {
+  distinctUntilArrayItemChanged,
+  isUndefined,
+  select,
+} from '@ngneat/elf';
 import { OperatorFunction, pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { untilEntitiesChanges } from './all.query';
+import { getEntity } from './entity.query';
 import {
   BaseEntityOptions,
   defaultEntitiesRef,
@@ -9,13 +16,9 @@ import {
   EntitiesState,
   getEntityType,
   getIdType,
+  ItemPredicate,
 } from './entity.state';
-import {
-  distinctUntilArrayItemChanged,
-  select,
-  isUndefined,
-} from '@ngneat/elf';
-import { getEntity } from './entity.query';
+import { checkPluck } from './entity.utils';
 
 interface Options extends BaseEntityOptions<any> {
   pluck?: string | ((entity: unknown) => any);
@@ -91,6 +94,39 @@ export function selectMany<S extends EntitiesState<Ref>, Ref>(
       }
 
       return filtered;
+    }),
+    distinctUntilArrayItemChanged()
+  );
+}
+
+export function selectManyByPredicate<
+  S extends EntitiesState<Ref>,
+  R extends getEntityType<S, Ref>[],
+  K extends keyof getEntityType<S, Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(
+  predicate: ItemPredicate<getEntityType<S, Ref>>,
+  options?: {
+    pluck?: K | ((entity: getEntityType<S, Ref>) => R);
+  } & BaseEntityOptions<Ref>
+): OperatorFunction<S, getEntityType<S, Ref>[]> {
+  const { ref: { entitiesKey, idsKey } = defaultEntitiesRef, pluck } =
+    options || {};
+
+  return pipe(
+    untilEntitiesChanges(entitiesKey),
+    select<S, getEntityType<S, Ref>[]>((state) => {
+      const filteredEntities: getEntityType<S, Ref>[] = [];
+
+      state[idsKey].forEach((id: getIdType<S, Ref>, index: number) => {
+        const entity = state[entitiesKey][id];
+
+        if (predicate(entity, index)) {
+          filteredEntities.push(checkPluck(entity, pluck));
+        }
+      });
+
+      return filteredEntities;
     }),
     distinctUntilArrayItemChanged()
   );

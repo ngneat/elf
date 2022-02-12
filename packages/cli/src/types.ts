@@ -26,6 +26,11 @@ export interface GlobalConfig {
     idKey?: Options['idKey'];
     repoLibrary?: string;
     plugins?: string[];
+    fuzzypath?: {
+      rootPath?: string;
+      excludeFilter?: Function;
+      excludePath?: Function;
+    };
   };
 }
 
