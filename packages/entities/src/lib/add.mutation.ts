@@ -45,7 +45,9 @@ export function addEntities<
     const asArray = coerceArray(entities);
 
     if (!asArray.length) return state;
-    throwIfEntityExists(asArray, idKey, state, entitiesKey);
+    if ((globalThis as any).process?.env.NODE_ENV !== 'production') {
+      throwIfEntityExists(asArray, idKey, state, entitiesKey);
+    }
 
     const { ids, asObject } = buildEntities<S, Ref>(asArray, idKey);
 
@@ -114,6 +116,8 @@ export function addEntitiesFifo<
     };
   };
 }
+
+// (globalThis as any).process = { env: { NODE_ENV: 'develpoment' } };
 
 function throwIfEntityExists(
   entities: any[],

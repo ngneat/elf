@@ -5,9 +5,17 @@
   "prefix": "elf",
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-builders/custom-webpack:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "customWebpackConfig": {
+          "path": "apps/ng/webpack.config.js",
+          "mergeRules": {
+            "externals": "replace"
+          }
+        },
+        "buildOptimizer": false,
+        "optimization": false,
         "outputPath": "dist/apps/ng",
         "index": "apps/ng/src/index.html",
         "main": "apps/ng/src/main.ts",
@@ -24,7 +32,7 @@
             {
               "type": "initial",
               "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumError": "10mb"
             },
             {
               "type": "anyComponentStyle",
