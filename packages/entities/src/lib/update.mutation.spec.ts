@@ -7,13 +7,15 @@ import {
   toMatchSnapshot,
 } from '@ngneat/elf-mocks';
 import { addEntities } from './add.mutation';
+import { UIEntitiesRef } from './entity.state';
 import {
   updateAllEntities,
   updateEntities,
   updateEntitiesByPredicate,
+  updateEntitiesIds,
   upsertEntities,
+  upsertEntitiesById,
 } from './update.mutation';
-import { UIEntitiesRef } from './entity.state';
 
 describe('update', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -83,7 +85,7 @@ describe('update', () => {
     toMatchSnapshot(expect, store, 'open true');
   });
 
-  describe('Upsert', () => {
+  describe('UpsertById', () => {
     const updater = (e: Todo) => ({ ...e, title: 'elf' });
     const creator = (id: number) => createTodo(id);
     const options = {
@@ -93,21 +95,27 @@ describe('update', () => {
 
     it(`should add the entity if it doesn't exists`, () => {
       const store = createEntitiesStore();
-      store.update(addEntities([createTodo(1)]), upsertEntities(2, options));
+      store.update(
+        addEntities([createTodo(1)]),
+        upsertEntitiesById(2, options)
+      );
       toMatchSnapshot(expect, store, 'two entities');
     });
 
     it('should update an entity if exists', () => {
       const store = createEntitiesStore();
-      store.update(addEntities([createTodo(1)]), upsertEntities(1, options));
+      store.update(
+        addEntities([createTodo(1)]),
+        upsertEntitiesById(1, options)
+      );
       toMatchSnapshot(expect, store, 'one entity, title "elf"');
     });
 
-    it('should update add the missing entities and update existing', () => {
+    it('should add the missing entities and update existing', () => {
       const store = createEntitiesStore();
       store.update(
         addEntities([createTodo(1)]),
-        upsertEntities([1, 2], options)
+        upsertEntitiesById([1, 2], options)
       );
       toMatchSnapshot(
         expect,
@@ -120,7 +128,10 @@ describe('update', () => {
       const store = createEntitiesStore();
       store.update(
         addEntities([createTodo(1)]),
-        upsertEntities([1, 2], { ...options, mergeUpdaterWithCreator: true })
+        upsertEntitiesById([1, 2], {
+          ...options,
+          mergeUpdaterWithCreator: true,
+        })
       );
       toMatchSnapshot(expect, store, 'two entities, title "elf"');
     });
@@ -129,7 +140,7 @@ describe('update', () => {
       const store = createUIEntityStore();
       store.update(
         addEntities([createUITodo(1)], { ref: UIEntitiesRef }),
-        upsertEntities([1, 2], {
+        upsertEntitiesById([1, 2], {
           updater: (e) => ({ ...e, open: false }),
           creator: (id) => createUITodo(id),
           mergeUpdaterWithCreator: true,
@@ -137,6 +148,86 @@ describe('update', () => {
         })
       );
       toMatchSnapshot(expect, store, 'two entities, open true');
+    });
+  });
+
+  describe('Upsert', () => {
+    it(`should add the entity if it doesn't exists`, () => {
+      const store = createEntitiesStore();
+      store.update(upsertEntities([createTodo(1)]));
+      toMatchSnapshot(expect, store, 'one entities');
+    });
+
+    it(`should update the entity if it has the same id`, () => {
+      const store = createEntitiesStore();
+
+      const todo = createTodo(1);
+      store.update(addEntities([todo]));
+
+      // update the todo
+      store.update(upsertEntities([{ id: 1, completed: true }]));
+
+      toMatchSnapshot(expect, store, 'updated entity with completed: true');
+    });
+
+    it('should work with ref', () => {
+      const store = createUIEntityStore();
+      store.update(
+        addEntities([createUITodo(1)], { ref: UIEntitiesRef }),
+        upsertEntities([{ id: 1, open: true }], { ref: UIEntitiesRef })
+      );
+      toMatchSnapshot(expect, store, 'one ui entity, open true');
+    });
+
+    it('if no ids are added, the id array should be the same ref', () => {
+      const store = createEntitiesStore();
+      store.update(addEntities([createTodo(1), createTodo(2)]));
+      const ids = store.getValue().ids;
+
+      store.update(upsertEntities([{ id: 1, completed: true }]));
+      const sameIds = store.getValue().ids;
+
+      expect(ids).toBe(sameIds);
+    });
+  });
+
+  describe('UpdateEntitiesIds', () => {
+    it('should support id update', () => {
+      store.update(addEntities([createTodo(1)]));
+      toMatchSnapshot(expect, store, 'id updated false');
+      store.update(updateEntitiesIds(1, 2));
+      toMatchSnapshot(expect, store, 'id updated true');
+    });
+
+    it('should update multiple ids', () => {
+      store.update(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
+      toMatchSnapshot(expect, store, 'ids updated false');
+      store.update(updateEntitiesIds([2, 3], [4, 5]));
+      toMatchSnapshot(expect, store, 'ids updated true');
+    });
+
+    it('should throw if new id already exists in the store', () => {
+      store.update(addEntities([createTodo(1), createTodo(2)]));
+      expect(() => {
+        store.update(updateEntitiesIds(1, 2));
+      }).toThrow();
+    });
+
+    it('should work with ref', () => {
+      const store = createUIEntityStore();
+      store.update(addEntities([createUITodo(1)], { ref: UIEntitiesRef }));
+      toMatchSnapshot(expect, store, 'id updated false');
+      store.update(updateEntitiesIds(1, 2, { ref: UIEntitiesRef }));
+      toMatchSnapshot(expect, store, 'id updated true');
+    });
+
+    it('should update entity after changing the id', () => {
+      store.update(addEntities([createTodo(1)]));
+      store.update(
+        updateEntitiesIds(1, 2),
+        updateEntities(2, { completed: true })
+      );
+      toMatchSnapshot(expect, store, 'id updated true, completed true');
     });
   });
 });

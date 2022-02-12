@@ -123,9 +123,9 @@ describe('createRequestDataSource', () => {
     function getTodo() {
       return timer(1000).pipe(
         mapTo(createTodo(1)),
-        tap((todos) =>
+        tap((todo) =>
           store.update(
-            setEntities(todos),
+            addEntities(todo),
             setSuccess({ key: 1 }),
             setCached({ key: 1 })
           )

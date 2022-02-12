@@ -5,12 +5,14 @@ import {
   PaginationData,
   selectCurrentPage,
   selectCurrentPageEntities,
+  selectPaginationData,
   setCurrentPage,
   setPage,
   updatePaginationData,
   withPagination,
 } from '@ngneat/elf-pagination';
 import { addEntities, withEntities } from '@ngneat/elf-entities';
+import { map } from 'rxjs';
 
 interface Contact {
   id: number;
@@ -29,6 +31,7 @@ const store = new Store({ state, config, name: 'contacts' });
 @Injectable({ providedIn: 'root' })
 export class ContactsRepository {
   activePage$ = store.pipe(selectCurrentPage());
+  paginationData$ = store.pipe(selectPaginationData());
   activePageContacts$ = store.pipe(selectCurrentPageEntities());
 
   setActivePage(id: Contact['id']) {
