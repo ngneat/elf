@@ -5,15 +5,9 @@
   "prefix": "elf",
   "targets": {
     "build": {
-      "executor": "@angular-builders/custom-webpack:browser",
+      "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "customWebpackConfig": {
-          "path": "apps/ng/webpack.config.js",
-          "mergeRules": {
-            "externals": "replace"
-          }
-        },
         "buildOptimizer": false,
         "optimization": false,
         "outputPath": "dist/apps/ng",
