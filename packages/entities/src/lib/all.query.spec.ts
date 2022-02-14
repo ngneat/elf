@@ -78,6 +78,14 @@ describe('selectAll', () => {
           ]);
         });
     });
+    it('should map and reverse', () => {
+      store
+        .pipe(selectAllApply({ mapEntity: (e) => e.title, reverse: true }))
+        .subscribe((v) => {
+          expectTypeOf(v).toEqualTypeOf<string[]>();
+          expect(v).toStrictEqual(['todo 2', 'todo 1']);
+        });
+    });
 
     it('should filter and then map', () => {
       store
