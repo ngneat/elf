@@ -58,6 +58,7 @@ const titles$ = todosStore.pipe(
   selectAllApply({
     mapEntity: (e) => e.title,
     filterEntity: (e) => e.completed,
+    reverse: false,
   })
 );
 ```
