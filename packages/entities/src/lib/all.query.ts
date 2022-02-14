@@ -90,12 +90,14 @@ export function selectAllApply<
   options: {
     mapEntity?(entity: getEntityType<S, Ref>): R;
     filterEntity?(entity: getEntityType<S, Ref>): boolean;
+    reverse?: boolean;
   } & BaseEntityOptions<Ref>
 ): OperatorFunction<S, R[]> {
   const {
     ref: { entitiesKey, idsKey } = defaultEntitiesRef,
     filterEntity = () => true,
     mapEntity = (e) => e,
+    reverse = false,
   } = options;
 
   return pipe(
@@ -109,8 +111,7 @@ export function selectAllApply<
           result.push(mapEntity(entity));
         }
       }
-
-      return result;
+      return reverse ? result.reverse() : result;
     })
   );
 }
