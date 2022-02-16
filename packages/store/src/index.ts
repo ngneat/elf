@@ -31,3 +31,4 @@ export {
   capitalize,
 } from './lib/utils';
 export { StateOf, Query, OrArray } from './lib/types';
+export { setProp } from './lib/mutations';

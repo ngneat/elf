@@ -76,5 +76,13 @@ authStore.update((state) => ({
 }));
 ```
 
+### Updating a root property
+
+import { setProp } from '@ngneat/elf';
+
+```ts
+store.update(setProp('foo', 'bar'));
+store.update(setProp('count', count => count + 1))
+```
 
 <LiveDemo src={index} />
