@@ -47,7 +47,7 @@ authStore.subscribe((state) => {
 });
 ```
 
-### The `select` Operator
+### The `select` operator
 
 Select a slice from the store:
 
@@ -78,9 +78,9 @@ authStore.update((state) => ({
 
 ### Updating a root property
 
+```ts
 import { setProp } from '@ngneat/elf';
 
-```ts
 store.update(setProp('foo', 'bar'));
 store.update(setProp('count', count => count + 1))
 ```
