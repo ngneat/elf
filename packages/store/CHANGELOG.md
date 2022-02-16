@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.0](https://github.com/ngneat/elf/compare/store-1.0.2...store-1.1.0) (2022-02-16)
+
+
+### Features
+
+* **store:** 🔥 add setProp mutation ([b0bea61](https://github.com/ngneat/elf/commit/b0bea61e67e476559a58ce35018460f8bfac68fb))
+
+
+
 ## [1.0.2](https://github.com/ngneat/elf/compare/store-1.0.1...store-1.0.2) (2021-12-14)
 
 
