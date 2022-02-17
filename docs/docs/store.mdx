@@ -79,10 +79,27 @@ authStore.update((state) => ({
 ### Updating a root property
 
 ```ts
-import { setProp } from '@ngneat/elf';
+import { setProp, setProps } from '@ngneat/elf';
 
 store.update(setProp('foo', 'bar'));
 store.update(setProp('count', count => count + 1))
+
+store.update(
+ setProps({
+   count: 1,
+   child: 2
+ })
+);
+
+store.update(
+  setProps(state => ({
+    count: 1,
+    nested: {
+      ...state.nested,
+      bar: 'baz'
+    }
+  })
+))
 ```
 
 <LiveDemo src={index} />
