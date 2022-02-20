@@ -22,9 +22,7 @@ The `propsFactory` function takes the `name` of a property and the initial value
 ```ts title="todos.repository.ts"
 import { withVersion, updateVersion, selectVersion } from '@app/store-props.ts';
 
-const { state, config } = createState(withVersion());
-
-const store = new Store({ state, config, name: 'todos' });
+const store = createStore({ name: 'todos' }, withVersion());
 
 store.update(updateVersion(2));
 store.select(selectVersion());
@@ -32,7 +30,6 @@ store.query(getVersion);
 ```
 
 If you need to use a complex type you can use `initialValue: {} as MyInterface`.
-
 
 ## Props Array Factory
 
@@ -51,7 +48,7 @@ export const {
   resetSkills,
   selectSkills,
   setSkills,
-  inSkills
+  inSkills,
 } = propsFactory('skills', {
   initialValue: [] as string[],
 });

@@ -1,10 +1,10 @@
-import { createState, Store } from '@ngneat/elf';
-import { withEntities, setEntities } from '@ngneat/elf-entities';
+import { createStore } from '@ngneat/elf';
+import { setEntities, withEntities } from '@ngneat/elf-entities';
 import {
-  withRequestsStatus,
-  selectRequestStatus,
   createRequestsStatusOperator,
+  selectRequestStatus,
   updateRequestStatus,
+  withRequestsStatus,
 } from '@ngneat/elf-requests';
 import { fromFetch } from 'rxjs/fetch';
 import { tap } from 'rxjs/operators';
@@ -14,12 +14,12 @@ interface Todo {
   label: string;
 }
 
-const { state, config } = createState(
+const todosStore = createStore(
+  { name: 'todos' },
   withEntities<Todo>(),
   withRequestsStatus<'todos'>()
 );
 
-const todosStore = new Store({ name: 'todos', state, config });
 const trackTodosRequestsStatus = createRequestsStatusOperator(todosStore);
 
 todosStore.pipe(selectRequestStatus('todos')).subscribe((status) => {

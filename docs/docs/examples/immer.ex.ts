@@ -1,6 +1,6 @@
+import { createStore, withProps } from '@ngneat/elf';
+import { selectAll, updateEntities, withEntities } from '@ngneat/elf-entities';
 import { produce } from 'immer';
-import { withProps, Store, createState } from '@ngneat/elf';
-import { withEntities, selectAll, updateEntities } from '@ngneat/elf-entities';
 
 export function write<S>(updater: (state: S) => void): (state: S) => S {
   return function (state) {
@@ -20,12 +20,11 @@ export interface TodosProps {
   filter: 'ALL' | 'ACTIVE' | 'COMPLETED';
 }
 
-const { state, config } = createState(
+const store = createStore(
+  { name: 'todos' },
   withEntities<Todo>(),
   withProps<TodosProps>({ filter: 'ALL' })
 );
-
-const store = new Store({ name: 'todos', state, config });
 
 export const todos$ = store.pipe(selectAll());
 

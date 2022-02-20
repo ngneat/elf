@@ -14,10 +14,10 @@ or via npm:
 npm i @ngneat/elf-entities
 ```
 
-To use this feature, provide the `withEntities` props factory function in the `createState` call:
+To use this feature, provide the `withEntities` props factory function in the `createStore` call:
 
 ```ts
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import { withEntities } from '@ngneat/elf-entities';
 
 interface Todo {
@@ -25,9 +25,7 @@ interface Todo {
   label: string;
 }
 
-const { state, config } = createState(withEntities<Todo>());
-
-const todosStore = new Store({ name: 'todos', state, config });
+const todosStore = createStore({ name: 'todos' }, withEntities<Todo>());
 ```
 
 <LiveDemo src={index} packages={['entities']} />
@@ -93,9 +91,21 @@ Select an entity from the store by predicate:
 ```ts
 import { selectEntityByPredicate } from '@ngneat/elf-entities';
 
-const todo$ = todosStore.pipe(selectEntityByPredicate(({completed}) => !completed));
-const title$ = todosStore.pipe(selectEntityByPredicate(({completed}) => !completed, {pluck: "title", idKey: "_id"}));
-const title$ = todosStore.pipe(selectEntityByPredicate(({completed}) => !completed, {pluck: (e) => e.title, idKey: "_id"}));
+const todo$ = todosStore.pipe(
+  selectEntityByPredicate(({ completed }) => !completed)
+);
+const title$ = todosStore.pipe(
+  selectEntityByPredicate(({ completed }) => !completed, {
+    pluck: 'title',
+    idKey: '_id',
+  })
+);
+const title$ = todosStore.pipe(
+  selectEntityByPredicate(({ completed }) => !completed, {
+    pluck: (e) => e.title,
+    idKey: '_id',
+  })
+);
 ```
 
 ### `selectMany`
@@ -117,9 +127,19 @@ Select multiple entities from the store by predicate:
 ```ts
 import { selectManyByPredicate } from '@ngneat/elf-entities';
 
-const todos$ = todosStore.pipe(selectManyByPredicate(entity => entity.completed === false));
-const titles$ = todosStore.pipe(selectManyByPredicate(entity => entity.completed === false, {pluck: "title"}));
-const titles$ = todosStore.pipe(selectManyByPredicate(entity => entity.completed === false, {pluck: (e) => e.title}));
+const todos$ = todosStore.pipe(
+  selectManyByPredicate((entity) => entity.completed === false)
+);
+const titles$ = todosStore.pipe(
+  selectManyByPredicate((entity) => entity.completed === false, {
+    pluck: 'title',
+  })
+);
+const titles$ = todosStore.pipe(
+  selectManyByPredicate((entity) => entity.completed === false, {
+    pluck: (e) => e.title,
+  })
+);
 ```
 
 ### `selectFirst`
@@ -217,13 +237,13 @@ import { setEntitiesMap } from '@ngneat/elf-entities';
 const todos = {
   1: {
     id: 1,
-    task: 'Buy milk'
+    task: 'Buy milk',
   },
   2: {
     id: 2,
-    task: 'Fix car'
-  }
-}
+    task: 'Fix car',
+  },
+};
 todosStore.update(setEntitiesMap(todos));
 ```
 
@@ -305,9 +325,7 @@ To identify entities in the store, every entity must have an `id` property. Any 
 ```ts
 import { upsertEntitiesBy } from '@ngneat/elf-entities';
 
-todosStore.update(
-  upsertEntities({ id: '1', happy: true })
-);
+todosStore.update(upsertEntities({ id: '1', happy: true }));
 
 todosStore.update(
   upsertEntities([
@@ -427,7 +445,7 @@ By default, Elf takes the `id` key from the entity `id` field. To change it, you
 the `withEntities` function:
 
 ```ts
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import { addEntities } from '@ngneat/elf-entities';
 
 interface Todo {
@@ -435,11 +453,10 @@ interface Todo {
   label: string;
 }
 
-const { state, config } = createState(
+const todosStore = createStore(
+  { name: 'todos' },
   withEntities<Todo, '_id'>({ idKey: '_id' })
 );
-
-const todosStore = new Store({ name: 'todos', state, config });
 ```
 
 ## initialValue
@@ -447,9 +464,10 @@ const todosStore = new Store({ name: 'todos', state, config });
 In case that you need to start the `entities` state with a value, you can specify it in the `initialValue` configuration:
 
 ```ts
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 
-const { state, config } = createState(
+const store = createStore(
+  { name },
   withEntities<Widget>({ initialValue: [{ id: 1, name: '' }] })
 );
 ```

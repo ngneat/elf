@@ -3,15 +3,13 @@
 The recommended way to use Elf is following the Repository Design Pattern. Implementing the Repository pattern is relatively simple. It's a file that encapsulates the store queries and mutations:
 
 ```ts title="auth.repository.ts"
-import { Store, createState, withProps, select } from '@ngneat/elf';
+import { createStore, withProps, select } from '@ngneat/elf';
 
 interface AuthProps {
   user: { id: string } | null;
 }
 
-const { state, config } = createState(withProps<AuthProps>({ user: null }));
-
-const authStore = new Store({ state, name, config });
+const authStore = createStore({ name }, withProps<AuthProps>({ user: null }));
 
 export const user$ = authStore.pipe(select((state) => state.user));
 
@@ -33,7 +31,7 @@ You can also use the `class` pattern:
 ```ts title="auth.repository.ts"
 // ...
 
-const authStore = new Store({ state, name, config });
+const authStore = createStore({ name }, withProps<AuthProps>({ user: null }));
 
 export class AuthRepository {
   user$ = authStore.pipe(select((state) => state.user));

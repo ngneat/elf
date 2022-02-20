@@ -8,15 +8,15 @@ import {
   VariableDeclarationKind,
 } from 'ts-morph';
 import { CallExpression, factory, ScriptTarget } from 'typescript';
-import { RequestsCacheBuilder } from './requests-cache.builder';
-import { ActiveIdsBuilder } from './active-ids.builder';
-import { EntitiesBuilder } from './entities.builder';
-import { UIEntitiesBuilder } from './ui-entities.builder';
-import { RequestsStatusBuilder } from './requests-status.builder';
-import { ActiveIdBuilder } from './active-id.builder';
-import { PropsBuilder } from './props.builder';
 import { Options } from '../types';
 import { names, resolveStoreVariableName } from '../utils';
+import { ActiveIdBuilder } from './active-id.builder';
+import { ActiveIdsBuilder } from './active-ids.builder';
+import { EntitiesBuilder } from './entities.builder';
+import { PropsBuilder } from './props.builder';
+import { RequestsCacheBuilder } from './requests-cache.builder';
+import { RequestsStatusBuilder } from './requests-status.builder';
+import { UIEntitiesBuilder } from './ui-entities.builder';
 
 export function createRepo(options: Options) {
   const { storeName } = options;
@@ -42,7 +42,7 @@ export function createRepo(options: Options) {
 
   sourceFile.addImportDeclaration({
     moduleSpecifier: '@ngneat/elf',
-    namedImports: ['Store', 'createState'].map((name) => ({
+    namedImports: ['createStore'].map((name) => ({
       kind: StructureKind.ImportSpecifier,
       name,
     })),
@@ -70,10 +70,14 @@ export function createRepo(options: Options) {
     }
   }
 
-  const state = factory.createCallExpression(
-    factory.createIdentifier('createState'),
+  const storeOpts = factory.createIdentifier(
+    `{ name: '${storeNames.propertyName}' }`
+  );
+
+  const store = factory.createCallExpression(
+    factory.createIdentifier('createStore'),
     undefined,
-    propsFactories
+    [storeOpts, ...propsFactories]
   );
 
   const repoPosition = repoClassDec.getChildIndex();
@@ -84,17 +88,7 @@ export function createRepo(options: Options) {
     declarations: [
       {
         name: resolveStoreVariableName(options.template, storeNames),
-        initializer: `new Store({ name: '${storeNames.propertyName}', state, config })`,
-      },
-    ],
-  });
-
-  sourceFile.insertVariableStatement(repoPosition, {
-    declarationKind: VariableDeclarationKind.Const,
-    declarations: [
-      {
-        name: '{ state, config }',
-        initializer: printNode(state),
+        initializer: printNode(store),
       },
     ],
   });

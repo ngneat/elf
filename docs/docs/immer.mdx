@@ -22,7 +22,7 @@ export function write<S>(updater: (state: S) => void): (state: S) => S {
 Now you can use it in the store's `update` function:
 
 ```ts title="todos.respository.ts"
-import { withProps, Store, createState } from '@ngneat/elf';
+import { withProps, createStore } from '@ngneat/elf';
 import { withEntities, selectAll, updateEntities } from '@ngneat/elf-entities';
 
 interface Todo {
@@ -35,12 +35,11 @@ export interface TodosProps {
   filter: 'ALL' | 'ACTIVE' | 'COMPLETED';
 }
 
-const { state, config } = createState(
+const store = createStore(
+  { name: 'todos' },
   withEntities<Todo>(),
   withProps<TodosProps>({ filter: 'ALL' })
 );
-
-const store = new Store({ name: 'todos', state, config });
 
 export const todos$ = store.pipe(selectAll());
 
@@ -54,7 +53,7 @@ export function updateFilter(filter: TodosProps['filter']) {
   );
 }
 
- export function updateCompleted(id: Todo['id']) {
+export function updateCompleted(id: Todo['id']) {
   store.update(
     updateEntities(
       id,

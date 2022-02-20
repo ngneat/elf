@@ -1,10 +1,10 @@
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import {
-  withEntities,
-  withActiveId,
-  selectActiveEntity,
   addEntities,
+  selectActiveEntity,
   setActiveId,
+  withActiveId,
+  withEntities,
 } from '@ngneat/elf-entities';
 
 interface Todo {
@@ -12,9 +12,11 @@ interface Todo {
   label: string;
 }
 
-const { state, config } = createState(withEntities<Todo>(), withActiveId());
-
-const todosStore = new Store({ name: 'todos', state, config });
+const todosStore = createStore(
+  { name: 'todos' },
+  withEntities<Todo>(),
+  withActiveId()
+);
 
 todosStore.pipe(selectActiveEntity()).subscribe((active) => {
   console.log(active);

@@ -1,4 +1,4 @@
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import { expectTypeOf } from 'expect-type';
 import { selectAll, selectEntities, withEntities } from '..';
 import { addEntities } from './add.mutation';
@@ -8,11 +8,10 @@ const { cartEntitiesRef, withCartEntities } = entitiesPropsFactory('cart');
 
 describe('entities props factory', () => {
   it('should create entities', () => {
-    const { state, config } = createState(
+    const store = createStore(
+      { name: 'todos' },
       withCartEntities<{ title: string; id: number }>()
     );
-
-    const store = new Store({ name: 'todos', config, state });
 
     store.update(
       addEntities({ id: 1, title: 'foo' }, { ref: cartEntitiesRef })
@@ -22,12 +21,11 @@ describe('entities props factory', () => {
   });
 
   it('should work with the default entities', () => {
-    const { state, config } = createState(
+    const store = createStore(
+      { name: 'todos' },
       withEntities<{ id: string; label: string }>(),
       withCartEntities<{ title: string; id: number }>()
     );
-
-    const store = new Store({ name: 'todos', config, state });
 
     store.update(
       addEntities({ id: '1', label: 'foo' }),
@@ -57,11 +55,10 @@ describe('entities props factory', () => {
   });
 
   it('should infer types', () => {
-    const { state, config } = createState(
+    const store = createStore(
+      { name: 'todos' },
       withCartEntities<{ title: string; id: number }>()
     );
-
-    const store = new Store({ name: 'todos', config, state });
 
     expectTypeOf(store.getValue()).toEqualTypeOf<{
       cartEntities: Record<
@@ -115,13 +112,12 @@ describe('entities props factory', () => {
     const { genresEntitiesRef, withGenresEntities } =
       entitiesPropsFactory('genres');
 
-    const { state, config } = createState(
+    const store = createStore(
+      { name: 'movies' },
       withEntities<Movie>(),
       withGenresEntities<Genre>(),
       withActorsEntities<Actor>()
     );
-
-    const store = new Store({ name: 'movies', state, config });
 
     expect(store.getValue()).toMatchSnapshot();
 
@@ -159,7 +155,8 @@ describe('entities props factory', () => {
   it('should allow initial value', () => {
     const { withFooEntities, fooEntitiesRef } = entitiesPropsFactory('foo');
 
-    const { state, config } = createState(
+    const store = createStore(
+      { name: 'foo' },
       withFooEntities<{ id: number; count: number }>({
         initialValue: [
           {
@@ -169,8 +166,6 @@ describe('entities props factory', () => {
         ],
       })
     );
-
-    const store = new Store({ name: 'foo', state, config });
 
     expect(store.getValue()).toMatchInlineSnapshot(`
       Object {
