@@ -1,6 +1,13 @@
 import * as inquirer from 'inquirer';
-import { baseFeatures, DEFAULT_ID_KEY, GlobalConfig, Options } from './types';
+import {
+  baseFeatures,
+  DEFAULT_ID_KEY,
+  GlobalConfig,
+  Options,
+  baseClassStorePlaces,
+} from './types';
 import { has } from './utils';
+import { cosmiconfigSync } from 'cosmiconfig';
 
 inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'));
 
@@ -17,6 +24,21 @@ export async function prompt(options: GlobalConfig | undefined) {
         return true;
       },
       type: 'inputs',
+    },
+    {
+      name: 'inlineStoreInClass',
+      message: 'Place of the store in a class',
+      type: 'list',
+      choices: baseClassStorePlaces,
+      when(): boolean {
+        const globalConfig: GlobalConfig | undefined =
+          cosmiconfigSync('elf').search()?.config;
+
+        return (
+          globalConfig?.cli?.repoTemplate === 'class' &&
+          globalConfig?.cli?.inlineStoreInClass === undefined
+        );
+      },
     },
     {
       name: 'features',

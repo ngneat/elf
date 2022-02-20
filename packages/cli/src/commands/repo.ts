@@ -57,6 +57,10 @@ export default class Repo extends Command {
         ...options,
         template: globalConfig.cli?.repoTemplate ?? 'functions',
         idKey: globalConfig.cli?.idKey ?? DEFAULT_ID_KEY,
+        inlineStoreInClass:
+          options.inlineStoreInClass ??
+          globalConfig.cli?.inlineStoreInClass ??
+          false,
       };
     }
 

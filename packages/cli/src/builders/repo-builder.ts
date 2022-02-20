@@ -6,6 +6,9 @@ import {
   SourceFile,
   StructureKind,
   VariableDeclarationKind,
+  Scope,
+  SyntaxKind,
+  ConstructorDeclaration,
 } from 'ts-morph';
 import { CallExpression, factory, ScriptTarget } from 'typescript';
 import { RequestsCacheBuilder } from './requests-cache.builder';
@@ -22,6 +25,7 @@ export function createRepo(options: Options) {
   const { storeName } = options;
   const storeNames = names(storeName);
   const isFunctionTpl = !options.template || options.template === 'functions';
+  const isStoreInlinedInClass = !isFunctionTpl && options.inlineStoreInClass;
 
   const project = new Project({
     manipulationSettings: {
@@ -39,6 +43,12 @@ export function createRepo(options: Options) {
     name: repoName,
     isExported: true,
   });
+  let repoClassDecConstructor: ConstructorDeclaration | undefined;
+
+  if (isStoreInlinedInClass) {
+    repoClassDec.addConstructor();
+    repoClassDecConstructor = repoClassDec.getConstructors()[0];
+  }
 
   sourceFile.addImportDeclaration({
     moduleSpecifier: '@ngneat/elf',
@@ -76,7 +86,54 @@ export function createRepo(options: Options) {
     propsFactories
   );
 
-  const repoPosition = repoClassDec.getChildIndex();
+  if (isStoreInlinedInClass && repoClassDecConstructor) {
+    addInlineStoreToRepoClass({
+      repoClassDec,
+      repoClassDecConstructor,
+      options,
+      state,
+      storeNames,
+    });
+  } else {
+    addStoreToRepo({
+      repoClassDec,
+      options,
+      state,
+      storeNames,
+      isFunctionTpl,
+      sourceFile,
+    });
+
+    if (isFunctionTpl) {
+      toFunctions(sourceFile, repoClassDec);
+    }
+  }
+
+  if (options.hooks) {
+    options.hooks.forEach((h) => h.post?.({ sourceFile, repoName, options }));
+  }
+
+  sourceFile.formatText({ indentSize: 2 });
+
+  return sourceFile.getText();
+}
+
+function addStoreToRepo({
+  repoClassDec: classDec,
+  sourceFile,
+  options,
+  storeNames,
+  state,
+  isFunctionTpl,
+}: {
+  repoClassDec: ClassDeclaration;
+  sourceFile: SourceFile;
+  options: Options;
+  storeNames: ReturnType<typeof names>;
+  state: CallExpression;
+  isFunctionTpl: boolean;
+}) {
+  const repoPosition = classDec.getChildIndex();
 
   sourceFile.insertVariableStatement(repoPosition, {
     declarationKind: VariableDeclarationKind.Const,
@@ -98,18 +155,58 @@ export function createRepo(options: Options) {
       },
     ],
   });
+}
 
-  if (isFunctionTpl) {
-    toFunctions(sourceFile, repoClassDec);
+function addInlineStoreToRepoClass({
+  repoClassDec: classDec,
+  repoClassDecConstructor: constructorDec,
+  options,
+  storeNames,
+  state,
+}: {
+  repoClassDec: ClassDeclaration;
+  repoClassDecConstructor: ConstructorDeclaration;
+  options: Options;
+  storeNames: ReturnType<typeof names>;
+  state: CallExpression;
+}) {
+  const storeName = resolveStoreVariableName(
+    options.template,
+    storeNames,
+    true
+  );
+  const { propertyIndex, methodIndex } = getPositionsOfInlineStoreDeclarations(
+    classDec,
+    constructorDec
+  );
+  const createStoreMethodName = 'createStore';
+
+  classDec.insertMethod(methodIndex, {
+    name: createStoreMethodName,
+    returnType: `Store<{ name: string; state: typeof state; config: typeof config; }>`,
+    scope: Scope.Private,
+    statements: (writer) => {
+      writer.writeLine(`const { state, config } = ${printNode(state)};`);
+      writer.blankLine();
+      writer.writeLine(
+        `return new Store({ name: '${storeNames.propertyName}', state, config });`
+      );
+    },
+  });
+
+  constructorDec.insertStatements(
+    0,
+    `${storeName} = this.${createStoreMethodName}();`
+  );
+
+  const store = classDec.insertProperty(propertyIndex, {
+    name: `${resolveStoreVariableName(options.template, storeNames)}`,
+    scope: Scope.Private,
+  });
+
+  if (propertyIndex > 0) {
+    store?.prependWhitespace('\n');
   }
-
-  if (options.hooks) {
-    options.hooks.forEach((h) => h.post?.({ sourceFile, repoName, options }));
-  }
-
-  sourceFile.formatText({ indentSize: 2 });
-
-  return sourceFile.getText();
 }
 
 function toFunctions(sourceFile: SourceFile, classDec: ClassDeclaration) {
@@ -128,4 +225,23 @@ function toFunctions(sourceFile: SourceFile, classDec: ClassDeclaration) {
   sourceFile.replaceWithText(
     `${sourceFile.getText()}\n ${exported.join('\n\n')}`
   );
+}
+
+function getPositionsOfInlineStoreDeclarations(
+  classDec: ClassDeclaration,
+  constructorDec: ConstructorDeclaration
+) {
+  const lastPropertyIndex = classDec
+    .getLastChildByKind(SyntaxKind.PropertyDeclaration)
+    ?.getChildIndex();
+  const lastMethodIndex = classDec
+    .getLastChildByKind(SyntaxKind.MethodDeclaration)
+    ?.getChildIndex();
+
+  return {
+    methodIndex: (lastMethodIndex ?? constructorDec.getChildIndex()) + 1,
+    propertyIndex: lastPropertyIndex
+      ? lastPropertyIndex + 1
+      : constructorDec.getChildIndex(),
+  };
 }

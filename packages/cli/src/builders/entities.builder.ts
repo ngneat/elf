@@ -1,6 +1,6 @@
 import { FeatureBuilder } from './feature-builder';
 import { DEFAULT_ID_KEY, Features } from '../types';
-import { StructureKind } from 'ts-morph';
+import { StructureKind, ClassMemberStructures } from 'ts-morph';
 import { factory } from 'typescript';
 
 export class EntitiesBuilder extends FeatureBuilder {
@@ -66,11 +66,29 @@ export class EntitiesBuilder extends FeatureBuilder {
       ],
     });
 
-    this.repo.addMember({
+    const initializer = `${this.storeVariableName}.pipe(selectAll())`;
+    const memberData: ClassMemberStructures = {
       name: `${this.storeNames.propertyName}$`,
       kind: StructureKind.Property,
-      initializer: `${this.storeVariableName}.pipe(selectAll())`,
-    });
+    };
+
+    if (this.isStoreInlinedInClass) {
+      this.addImport('Observable', 'rxjs');
+
+      this.repo.insertProperty(0, {
+        ...memberData,
+        type: `Observable<${this.storeSingularNames.className}[]>`,
+      });
+
+      this.repoConstructor?.addStatements(
+        `this.${memberData.name} = ${initializer};`
+      );
+    } else {
+      this.repo.insertMember(0, {
+        ...memberData,
+        initializer,
+      });
+    }
 
     this.options.crud.forEach((op) => this[op]?.());
   }
