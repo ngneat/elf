@@ -5,8 +5,7 @@ import { LiveDemo } from '@site/components/LiveDemo';
 
 The `stateHistory` function provides a convenient way for `undo` and `redo` functionality, saving you the trouble of maintaining a history in the app yourself.
 
-First, you need to install the package by using the CLI command `elf-cli install` and selecting the stat-history 
-package, or via npm:
+First, you need to install the package by using the CLI command `elf-cli install` and selecting the stat-history package, or via npm:
 
 ```bash
 npm i @ngneat/elf-state-history
@@ -15,12 +14,10 @@ npm i @ngneat/elf-state-history
 Then, call the `stateHistory` method when you want to start monitoring.
 
 ```ts
-import { Store, createState } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import { stateHistory } from '@ngneat/elf-state-history';
 
-const { state, config } = createState(withEntities<Todo>());
-
-const todosStore = new Store({ state, name, config });
+const todosStore = createStore({ name }, withEntities<Todo>());
 
 export const todosStateHistory = stateHistory(todosStore);
 ```

@@ -10,10 +10,10 @@ by using the CLI command `elf-cli install` and selecting the requests package, o
 npm i @ngneat/elf-requests
 ```
 
-To use this feature, provide the `withRequestsCache` props factory function in the `createState` call:
+To use this feature, provide the `withRequestsCache` props factory function in the `createStore` call:
 
 ```ts title="todos.repository.ts"
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import { withEntities } from '@ngneat/elf-entities';
 import { withRequestsCache } from '@ngneat/elf-requests';
 
@@ -22,21 +22,24 @@ interface Todo {
   label: string;
 }
 
-const { state, config } = createState(
+const todosStore = createStore(
+  { name: 'todos' },
   withEntities<Todo>(),
   // You can pass the keys type
   // highlight-next-line
   withRequestsCache<`todos`, `todo-${string}`>()
 );
-
-export const todosStore = new Store({ name: 'todos', state, config });
 ```
+
 Now we can use the `createRequestsCacheOperator` function that takes a store and returns a custom operator.
 
 ```ts
-import { withRequestsCache, createRequestsCacheOperator } from '@ngneat/elf-requests';
+import {
+  withRequestsCache,
+  createRequestsCacheOperator,
+} from '@ngneat/elf-requests';
 
-export const todosStore = new Store({ name: 'todos', state, config });
+export const todosStore = createStore({ name: 'todos' }, withEntities<Todo>());
 
 export const skipWhileTodosCached = createRequestsCacheOperator(todosStore);
 ```
@@ -180,15 +183,17 @@ If you pass `ttl` (time to live) when updating a cache record, that represents t
 have the value that was set (afterward, it reverts to 'none').
 
 ### `updateRequestsCache`
+
 ```ts
 import { updateRequestsCache } from '@ngneat/elf-requests';
 
-store.update(updateRequestsCache({
-  keyOne: {
-    value: 'partial'
-  }
-}));
-
+store.update(
+  updateRequestsCache({
+    keyOne: {
+      value: 'partial',
+    },
+  })
+);
 
 store.update(updateRequestsCache(['keyOne', 'keyTwo'], { value: 'partial' }));
 ```

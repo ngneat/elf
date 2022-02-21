@@ -1,25 +1,25 @@
 import {
   ClassDeclaration,
+  ConstructorDeclaration,
   printNode,
   Project,
   QuoteKind,
+  Scope,
   SourceFile,
   StructureKind,
-  VariableDeclarationKind,
-  Scope,
   SyntaxKind,
-  ConstructorDeclaration,
+  VariableDeclarationKind,
 } from 'ts-morph';
 import { CallExpression, factory, ScriptTarget } from 'typescript';
-import { RequestsCacheBuilder } from './requests-cache.builder';
-import { ActiveIdsBuilder } from './active-ids.builder';
-import { EntitiesBuilder } from './entities.builder';
-import { UIEntitiesBuilder } from './ui-entities.builder';
-import { RequestsStatusBuilder } from './requests-status.builder';
-import { ActiveIdBuilder } from './active-id.builder';
-import { PropsBuilder } from './props.builder';
 import { Options } from '../types';
 import { names, resolveStoreVariableName } from '../utils';
+import { ActiveIdBuilder } from './active-id.builder';
+import { ActiveIdsBuilder } from './active-ids.builder';
+import { EntitiesBuilder } from './entities.builder';
+import { PropsBuilder } from './props.builder';
+import { RequestsCacheBuilder } from './requests-cache.builder';
+import { RequestsStatusBuilder } from './requests-status.builder';
+import { UIEntitiesBuilder } from './ui-entities.builder';
 
 export function createRepo(options: Options) {
   const { storeName } = options;
@@ -52,7 +52,7 @@ export function createRepo(options: Options) {
 
   sourceFile.addImportDeclaration({
     moduleSpecifier: '@ngneat/elf',
-    namedImports: ['Store', 'createState'].map((name) => ({
+    namedImports: ['createStore'].map((name) => ({
       kind: StructureKind.ImportSpecifier,
       name,
     })),
@@ -80,10 +80,14 @@ export function createRepo(options: Options) {
     }
   }
 
-  const state = factory.createCallExpression(
-    factory.createIdentifier('createState'),
+  const storeOpts = factory.createIdentifier(
+    `{ name: '${storeNames.propertyName}' }`
+  );
+
+  const store = factory.createCallExpression(
+    factory.createIdentifier('createStore'),
     undefined,
-    propsFactories
+    [storeOpts, ...propsFactories]
   );
 
   if (isStoreInlinedInClass && repoClassDecConstructor) {
@@ -91,14 +95,14 @@ export function createRepo(options: Options) {
       repoClassDec,
       repoClassDecConstructor,
       options,
-      state,
+      store,
       storeNames,
     });
   } else {
     addStoreToRepo({
       repoClassDec,
       options,
-      state,
+      store,
       storeNames,
       isFunctionTpl,
       sourceFile,
@@ -123,14 +127,14 @@ function addStoreToRepo({
   sourceFile,
   options,
   storeNames,
-  state,
+  store,
   isFunctionTpl,
 }: {
   repoClassDec: ClassDeclaration;
   sourceFile: SourceFile;
   options: Options;
   storeNames: ReturnType<typeof names>;
-  state: CallExpression;
+  store: CallExpression;
   isFunctionTpl: boolean;
 }) {
   const repoPosition = classDec.getChildIndex();
@@ -141,17 +145,7 @@ function addStoreToRepo({
     declarations: [
       {
         name: resolveStoreVariableName(options.template, storeNames),
-        initializer: `new Store({ name: '${storeNames.propertyName}', state, config })`,
-      },
-    ],
-  });
-
-  sourceFile.insertVariableStatement(repoPosition, {
-    declarationKind: VariableDeclarationKind.Const,
-    declarations: [
-      {
-        name: '{ state, config }',
-        initializer: printNode(state),
+        initializer: printNode(store),
       },
     ],
   });
@@ -162,50 +156,27 @@ function addInlineStoreToRepoClass({
   repoClassDecConstructor: constructorDec,
   options,
   storeNames,
-  state,
+  store,
 }: {
   repoClassDec: ClassDeclaration;
   repoClassDecConstructor: ConstructorDeclaration;
   options: Options;
   storeNames: ReturnType<typeof names>;
-  state: CallExpression;
+  store: CallExpression;
 }) {
-  const storeName = resolveStoreVariableName(
-    options.template,
-    storeNames,
-    true
-  );
-  const { propertyIndex, methodIndex } = getPositionsOfInlineStoreDeclarations(
+  const propertyIndex = getPositionOfInlineStoreDeclaration(
     classDec,
     constructorDec
   );
-  const createStoreMethodName = 'createStore';
 
-  classDec.insertMethod(methodIndex, {
-    name: createStoreMethodName,
-    returnType: `Store<{ name: string; state: typeof state; config: typeof config; }>`,
-    scope: Scope.Private,
-    statements: (writer) => {
-      writer.writeLine(`const { state, config } = ${printNode(state)};`);
-      writer.blankLine();
-      writer.writeLine(
-        `return new Store({ name: '${storeNames.propertyName}', state, config });`
-      );
-    },
-  });
-
-  constructorDec.insertStatements(
-    0,
-    `${storeName} = this.${createStoreMethodName}();`
-  );
-
-  const store = classDec.insertProperty(propertyIndex, {
+  const storeProperty = classDec.insertProperty(propertyIndex, {
     name: `${resolveStoreVariableName(options.template, storeNames)}`,
     scope: Scope.Private,
+    initializer: printNode(store),
   });
 
   if (propertyIndex > 0) {
-    store?.prependWhitespace('\n');
+    storeProperty?.prependWhitespace('\n');
   }
 }
 
@@ -227,21 +198,15 @@ function toFunctions(sourceFile: SourceFile, classDec: ClassDeclaration) {
   );
 }
 
-function getPositionsOfInlineStoreDeclarations(
+function getPositionOfInlineStoreDeclaration(
   classDec: ClassDeclaration,
   constructorDec: ConstructorDeclaration
 ) {
   const lastPropertyIndex = classDec
     .getLastChildByKind(SyntaxKind.PropertyDeclaration)
     ?.getChildIndex();
-  const lastMethodIndex = classDec
-    .getLastChildByKind(SyntaxKind.MethodDeclaration)
-    ?.getChildIndex();
 
-  return {
-    methodIndex: (lastMethodIndex ?? constructorDec.getChildIndex()) + 1,
-    propertyIndex: lastPropertyIndex
-      ? lastPropertyIndex + 1
-      : constructorDec.getChildIndex(),
-  };
+  return lastPropertyIndex
+    ? lastPropertyIndex + 1
+    : constructorDec.getChildIndex();
 }

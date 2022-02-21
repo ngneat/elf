@@ -1,9 +1,9 @@
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import {
-  withEntities,
+  addEntities,
   entitiesPropsFactory,
   upsertEntitiesById,
-  addEntities,
+  withEntities,
 } from '@ngneat/elf-entities';
 
 const { cartEntitiesRef, withCartEntities } = entitiesPropsFactory('cart');
@@ -19,12 +19,11 @@ interface CartItem {
   quantity: number;
 }
 
-const { state, config } = createState(
+const productsStore = createStore(
+  { name: 'products' },
   withEntities<Product>(),
   withCartEntities<CartItem>()
 );
-
-const productsStore = new Store({ name: 'products', config, state });
 
 productsStore.subscribe((value) => {
   console.log(value);

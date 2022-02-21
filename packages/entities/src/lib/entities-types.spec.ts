@@ -1,9 +1,4 @@
-import {
-  createEntitiesStore,
-  createUIEntityStore,
-  Todo,
-  UITodo,
-} from '@ngneat/elf-mocks';
+import { createStore, withProps } from '@ngneat/elf';
 import {
   addEntities,
   selectAll,
@@ -16,15 +11,20 @@ import {
   UIEntitiesRef,
   withEntities,
 } from '@ngneat/elf-entities';
+import {
+  createEntitiesStore,
+  createUIEntityStore,
+  Todo,
+  UITodo,
+} from '@ngneat/elf-mocks';
 import { expectTypeOf } from 'expect-type';
-import { createState, Store, withProps } from '@ngneat/elf';
 
 describe('Entities Types', () => {
   it('should assert createState', () => {
-    const { state, config } = createState(
+    const store = createStore(
+      { name: '' },
       withProps<{ foo: string }>({ foo: '' })
     );
-    const store = new Store({ state, config, name: '' });
 
     // @ts-expect-error - We didn't provide withEntities
     store.pipe(selectAll());
@@ -34,8 +34,7 @@ describe('Entities Types', () => {
   });
 
   it('should assert createState with withEntities', () => {
-    const { state, config } = createState(withEntities());
-    const store = new Store({ state, config, name: '' });
+    const store = createStore({ name: '' }, withEntities());
 
     store.pipe(selectAll());
 
@@ -45,9 +44,9 @@ describe('Entities Types', () => {
 
   it('should assert idKey', () => {
     // @ts-expect-error - The default idKey is `id` and we didn't have it in our type
-    createState(withEntities<{ _id: string }>());
+    withEntities<{ _id: string }>();
 
-    createState(withEntities<{ _id: string }, '_id'>({ idKey: '_id' }));
+    withEntities<{ _id: string }, '_id'>({ idKey: '_id' });
   });
 
   describe('entities', () => {

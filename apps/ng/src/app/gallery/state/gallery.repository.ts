@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import {
   addEntities,
   selectAll,
   selectEntities,
   UIEntitiesRef,
+  unionEntities,
   updateEntities,
   withEntities,
   withUIEntities,
-  unionEntities,
 } from '@ngneat/elf-entities';
 
 export interface GalleryItem {
@@ -23,12 +23,11 @@ export interface GalleryUIItem {
   open: boolean;
 }
 
-const { state, config } = createState(
+const store = createStore(
+  { name: 'gallery' },
   withEntities<GalleryItem>(),
   withUIEntities<GalleryUIItem>()
 );
-
-const store = new Store({ name: 'gallery', state, config });
 
 @Injectable({ providedIn: 'root' })
 export class GalleryRepository {

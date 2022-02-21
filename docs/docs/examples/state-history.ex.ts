@@ -1,13 +1,12 @@
-import { Store, createState, withProps } from '@ngneat/elf';
+import { createStore, withProps } from '@ngneat/elf';
 import { stateHistory } from '@ngneat/elf-state-history';
 
-const { state, config } = createState(
+const todosStore = createStore(
+  { name: 'auth' },
   withProps<{ user: string }>({
     user: '',
   })
 );
-
-const todosStore = new Store({ state, name: 'auth', config });
 
 export const todosStateHistory = stateHistory(todosStore);
 

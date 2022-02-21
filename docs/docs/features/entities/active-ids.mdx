@@ -12,10 +12,10 @@ This feature requires `@ngneat/elf-entities`
 
 ## Active Id
 
-To use this feature, provide the `withActiveId` props factory function in the `createState` call:
+To use this feature, provide the `withActiveId` props factory function in the `createStore` call:
 
 ```ts
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import { withEntities, withActiveId } from '@ngneat/elf-entities';
 
 interface Todo {
@@ -23,9 +23,11 @@ interface Todo {
   label: string;
 }
 
-const { state, config } = createState(withEntities<Todo>(), withActiveId());
-
-const todosStore = new Store({ name: 'todos', state, config });
+const todosStore = createStore(
+  { name: 'todos' },
+  withEntities<Todo>(),
+  withActiveId()
+);
 ```
 
 <LiveDemo src={index} packages={['entities']} />
@@ -79,10 +81,10 @@ todosStore.update(setActiveId(id));
 
 ## Active Ids
 
-To use this feature, provide the `withActiveIds` props factory function in the `createState` call:
+To use this feature, provide the `withActiveIds` props factory function in the `createStore` call:
 
 ```ts
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import { withEntities, withActiveIds } from '@ngneat/elf-entities';
 
 interface Todo {
@@ -90,9 +92,11 @@ interface Todo {
   label: string;
 }
 
-const { state, config } = createState(withEntities<Todo>(), withActiveIds());
-
-const todosStore = new Store({ name: 'todos', state, config });
+const todosStore = createStore(
+  { name: 'todos' },
+  withEntities<Todo>(),
+  withActiveIds()
+);
 ```
 
 This will allow you to use the following ready-made mutations and queries:
