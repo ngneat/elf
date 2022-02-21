@@ -9,6 +9,7 @@ export interface Options {
   path: string;
   idKey: string;
   template?: 'class' | 'functions';
+  inlineStoreInClass?: boolean;
   hooks?: Array<Hooks>;
 }
 
@@ -23,6 +24,7 @@ export interface Hooks {
 export interface GlobalConfig {
   cli?: {
     repoTemplate?: Options['template'];
+    inlineStoreInClass?: Options['inlineStoreInClass'];
     idKey?: Options['idKey'];
     repoLibrary?: string;
     plugins?: string[];
@@ -35,6 +37,11 @@ export interface GlobalConfig {
 }
 
 export type Features = typeof baseFeatures[number]['value'];
+
+export const baseClassStorePlaces = [
+  { name: 'Outside of a class', value: false },
+  { name: 'Inside a class constructor', value: true },
+] as const;
 
 export const baseFeatures = [
   { name: 'Props', value: 'withProps' },

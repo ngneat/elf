@@ -1,4 +1,9 @@
-import { ClassDeclaration, SourceFile, StructureKind } from 'ts-morph';
+import {
+  ClassDeclaration,
+  SourceFile,
+  StructureKind,
+  ConstructorDeclaration,
+} from 'ts-morph';
 import { Features, Options } from '../types';
 import { coerceArray, names, resolveStoreVariableName } from '../utils';
 
@@ -15,18 +20,26 @@ export abstract class FeatureBuilder {
   idKey = this.options.idKey;
   storeSingularNames = names(pluralize.singular(this.storeName));
   storeNames = names(this.storeName);
-  storeVariableName = resolveStoreVariableName(
-    this.options.template,
-    this.storeNames
-  );
   isFunctionsTpl =
     !this.options.template || this.options.template === 'functions';
+  isStoreInlinedInClass =
+    !this.isFunctionsTpl && this.options.inlineStoreInClass;
+  storeVariableName = resolveStoreVariableName(
+    this.options.template,
+    this.storeNames,
+    this.isStoreInlinedInClass
+  );
+  repoConstructor: ConstructorDeclaration | undefined;
 
   constructor(
     protected sourceFile: SourceFile,
     protected repo: ClassDeclaration,
     protected options: Options
-  ) {}
+  ) {
+    if (this.isStoreInlinedInClass) {
+      this.repoConstructor = this.repo.getConstructors()[0];
+    }
+  }
 
   abstract run(): void;
 

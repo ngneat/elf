@@ -1,6 +1,6 @@
 import { FeatureBuilder } from './feature-builder';
 import { Features } from '../types';
-import { StructureKind } from 'ts-morph';
+import { StructureKind, ClassMemberStructures } from 'ts-morph';
 import { factory } from 'typescript';
 
 export class ActiveIdBuilder extends FeatureBuilder {
@@ -22,11 +22,27 @@ export class ActiveIdBuilder extends FeatureBuilder {
       '@ngneat/elf-entities'
     );
 
-    this.repo.insertMember(0, {
+    const initializer = `${this.storeVariableName}.pipe(selectActiveEntity())`;
+    const memberData: ClassMemberStructures = {
       name: `active${this.storeSingularNames.className}$`,
       kind: StructureKind.Property,
-      initializer: `${this.storeVariableName}.pipe(selectActiveEntity())`,
-    });
+    };
+
+    if (this.isStoreInlinedInClass) {
+      this.repo.insertProperty(0, {
+        ...memberData,
+        type: `Observable<${this.storeSingularNames.className} | undefined>`,
+      });
+
+      this.repoConstructor?.addStatements(
+        `this.${memberData.name} = ${initializer};`
+      );
+    } else {
+      this.repo.insertMember(0, {
+        ...memberData,
+        initializer,
+      });
+    }
 
     this.repo.addMember({
       kind: StructureKind.Method,
