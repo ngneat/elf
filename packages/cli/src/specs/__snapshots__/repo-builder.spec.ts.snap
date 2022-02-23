@@ -23,9 +23,10 @@ export class TodosRepository {
   activeTodo$: Observable<Todo | undefined>;
   todos$: Observable<Todo[]>;
 
-  private store = this.createStore();
+  private store;
 
   constructor() {
+    this.store = this.createStore();
     this.todos$ = this.store.pipe(selectAll());
     this.activeTodo$ = this.store.pipe(selectActiveEntity());
     this.activeTodos$ = this.store.pipe(selectActiveEntities());
@@ -161,9 +162,10 @@ import { withActiveId, selectActiveEntity, setActiveId } from '@ngneat/elf-entit
 export class TodosRepository {
   activeTodo$: Observable<Todo | undefined>;
 
-  private store = this.createStore();
+  private store;
 
   constructor() {
+    this.store = this.createStore();
     this.activeTodo$ = this.store.pipe(selectActiveEntity());
   }
 
@@ -203,9 +205,10 @@ import { withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/el
 export class TodosRepository {
   activeTodos$: Observable<Todo[]>;
 
-  private store = this.createStore();
+  private store;
 
   constructor() {
+    this.store = this.createStore();
     this.activeTodos$ = this.store.pipe(selectActiveEntities());
   }
 
@@ -250,9 +253,10 @@ export interface Todo {
 export class TodosRepository {
   todos$: Observable<Todo[]>;
 
-  private store = this.createStore();
+  private store;
 
   constructor() {
+    this.store = this.createStore();
     this.todos$ = this.store.pipe(selectAll());
   }
 
@@ -317,9 +321,10 @@ export interface Todo {
 export class TodosRepository {
   todos$: Observable<Todo[]>;
 
-  private store = this.createStore();
+  private store;
 
   constructor() {
+    this.store = this.createStore();
     this.todos$ = this.store.pipe(selectAll());
   }
 
@@ -368,9 +373,10 @@ export interface TodosProps {
 }
 
 export class TodosRepository {
-  private store = this.createStore();
+  private store;
 
   constructor() {
+    this.store = this.createStore();
   }
 
   private createStore(): typeof store {
@@ -401,9 +407,10 @@ exports[`Repo Builder withRequestsCache in a class: withRequestsCache in a class
 import { withRequestsCache } from '@ngneat/elf-requests';
 
 export class TodosRepository {
-  private store = this.createStore();
+  private store;
 
   constructor() {
+    this.store = this.createStore();
   }
 
   private createStore(): typeof store {
@@ -431,9 +438,10 @@ exports[`Repo Builder withRequestsStatus in a class: withRequestsStatus in a cla
 import { withRequestsStatus } from '@ngneat/elf-requests';
 
 export class TodosRepository {
-  private store = this.createStore();
+  private store;
 
   constructor() {
+    this.store = this.createStore();
   }
 
   private createStore(): typeof store {
@@ -465,9 +473,10 @@ export interface TodoUI {
 }
 
 export class TodosRepository {
-  private store = this.createStore();
+  private store;
 
   constructor() {
+    this.store = this.createStore();
   }
 
   private createStore(): typeof store {

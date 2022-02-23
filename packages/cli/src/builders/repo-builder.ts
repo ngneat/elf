@@ -164,13 +164,20 @@ function addInlineStoreToRepoClass({
   storeNames: ReturnType<typeof names>;
   store: CallExpression;
 }) {
+  const storeName = resolveStoreVariableName(
+    options.template,
+    storeNames,
+    true
+  );
   const { propertyIndex, methodIndex } = getPositionsOfInlineStoreDeclarations(
     classDec,
     constructorDec
   );
 
+  const createStoreMethodName = 'createStore';
+
   classDec.insertMethod(methodIndex, {
-    name: 'createStore',
+    name: createStoreMethodName,
     returnType: `typeof store`,
     scope: Scope.Private,
     statements: (writer) => {
@@ -180,10 +187,14 @@ function addInlineStoreToRepoClass({
     },
   });
 
+  constructorDec.insertStatements(
+    0,
+    `${storeName} = this.${createStoreMethodName}();`
+  );
+
   const storeProperty = classDec.insertProperty(propertyIndex, {
     name: `${resolveStoreVariableName(options.template, storeNames)}`,
     scope: Scope.Private,
-    initializer: `this.createStore()`,
   });
 
   if (propertyIndex > 0) {
