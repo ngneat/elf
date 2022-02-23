@@ -164,15 +164,26 @@ function addInlineStoreToRepoClass({
   storeNames: ReturnType<typeof names>;
   store: CallExpression;
 }) {
-  const propertyIndex = getPositionOfInlineStoreDeclaration(
+  const { propertyIndex, methodIndex } = getPositionsOfInlineStoreDeclarations(
     classDec,
     constructorDec
   );
 
+  classDec.insertMethod(methodIndex, {
+    name: 'createStore',
+    returnType: `typeof store`,
+    scope: Scope.Private,
+    statements: (writer) => {
+      writer.writeLine(`const store = ${printNode(store)};`);
+      writer.blankLine();
+      writer.writeLine(`return store;`);
+    },
+  });
+
   const storeProperty = classDec.insertProperty(propertyIndex, {
     name: `${resolveStoreVariableName(options.template, storeNames)}`,
     scope: Scope.Private,
-    initializer: printNode(store),
+    initializer: `this.createStore()`,
   });
 
   if (propertyIndex > 0) {
@@ -198,15 +209,21 @@ function toFunctions(sourceFile: SourceFile, classDec: ClassDeclaration) {
   );
 }
 
-function getPositionOfInlineStoreDeclaration(
+function getPositionsOfInlineStoreDeclarations(
   classDec: ClassDeclaration,
   constructorDec: ConstructorDeclaration
 ) {
   const lastPropertyIndex = classDec
     .getLastChildByKind(SyntaxKind.PropertyDeclaration)
     ?.getChildIndex();
+  const lastMethodIndex = classDec
+    .getLastChildByKind(SyntaxKind.MethodDeclaration)
+    ?.getChildIndex();
 
-  return lastPropertyIndex
-    ? lastPropertyIndex + 1
-    : constructorDec.getChildIndex();
+  return {
+    methodIndex: (lastMethodIndex ?? constructorDec.getChildIndex()) + 1,
+    propertyIndex: lastPropertyIndex
+      ? lastPropertyIndex + 1
+      : constructorDec.getChildIndex(),
+  };
 }
