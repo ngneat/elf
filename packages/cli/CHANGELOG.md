@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [2.2.0](https://github.com/ngneat/elf/compare/cli-2.1.0...cli-2.2.0) (2022-02-23)
+
+
+### Features
+
+* **store:** 🔥 introduce createStore function ([#174](https://github.com/ngneat/elf/issues/174)) ([fbc68ff](https://github.com/ngneat/elf/commit/fbc68ff1dd91190486a74dea9637ce34a47fb9ea))
+
+
+
 # [2.1.0](https://github.com/ngneat/elf/compare/cli-2.0.0...cli-2.1.0) (2022-02-21)
 
 
