@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [3.3.0](https://github.com/ngneat/elf/compare/entities-3.2.1...entities-3.3.0) (2022-02-23)
+
+
+### Features
+
+* **store:** 🔥 introduce createStore function ([#174](https://github.com/ngneat/elf/issues/174)) ([fbc68ff](https://github.com/ngneat/elf/commit/fbc68ff1dd91190486a74dea9637ce34a47fb9ea))
+
+
+
 ## [3.2.1](https://github.com/ngneat/elf/compare/entities-3.2.0...entities-3.2.1) (2022-02-12)
 
 
