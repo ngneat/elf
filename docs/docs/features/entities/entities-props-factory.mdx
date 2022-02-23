@@ -10,7 +10,7 @@ Let's say we have a products page with a shopping cart. As well as managing a st
 First, let's create the `products` store:
 
 ```ts title="products.repository.ts"
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import { withEntities } from '@ngneat/elf-entities';
 
 interface Product {
@@ -19,15 +19,16 @@ interface Product {
   price: number;
 }
 
-const { state, config } = createState(withEntities<Product>());
-
-export const productsStore = new Store({ name: 'products', config, state });
+export const productsStore = createStore(
+  { name: 'products' },
+  withEntities<Product>()
+);
 ```
 
 Now we can add a `cart` entities props to the same `store`:
 
 ```ts title="products.repository.ts"
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import { withEntities, entitiesPropsFactory } from '@ngneat/elf-entities';
 
 // highlight-next-line
@@ -44,12 +45,11 @@ interface CartItem {
   quantity: number;
 }
 
-const { state, config } = createState(
+export const productsStore = createStore(
+  { name: 'products' },
   withEntities<Product>(),
   withCartEntities<CartItem>()
 );
-
-export const productsStore = new Store({ name: 'products', config, state });
 ```
 
 The `entitiesPropsFactory` function takes the name of the `feature` and returns `entitiesRef` and `entitiesProps` we can use in our store.
@@ -113,13 +113,12 @@ const { actorsEntitiesRef, withActorsEntities } =
 const { genresEntitiesRef, withGenresEntities } =
   entitiesPropsFactory('genres');
 
-const { state, config } = createState(
+const store = createStore(
+  { name: 'movies' },
   withEntities<Movie>(),
   withGenresEntities<Genre>(),
   withActorsEntities<Actor>()
 );
-
-const store = new Store({ name: 'movies', state, config });
 
 store.update(
   addEntities({ id: '1', name: 'Nicolas cage' }, { ref: actorsEntitiesRef }),

@@ -1,15 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`cli-ng should add the Injectable decorator 1`] = `
-"import { Store, createState, withProps } from '@ngneat/elf';
+"import { createStore, withProps } from '@ngneat/elf';
 import { Injectable } from '@angular/core';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TodosProps {
 }
 
-const { state, config } = createState(withProps<TodosProps>({}));
-const store = new Store({ name: 'todos', state, config });
+const store = createStore({ name: 'todos' }, withProps<TodosProps>({}));
 
 @Injectable({ providedIn: 'root' })
 export class TodosRepository {

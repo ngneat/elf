@@ -1,14 +1,12 @@
-import { createState, Store } from '@ngneat/elf';
-import { withEntities, setEntities, selectAll } from '@ngneat/elf-entities';
+import { createStore } from '@ngneat/elf';
+import { selectAll, setEntities, withEntities } from '@ngneat/elf-entities';
 
 interface Todo {
   id: number;
   label: string;
 }
 
-const { state, config } = createState(withEntities<Todo>());
-
-const todosStore = new Store({ name: 'todos', state, config });
+const todosStore = createStore({ name: 'todos' }, withEntities<Todo>());
 
 todosStore.pipe(selectAll()).subscribe((todos) => {
   console.log(todos);

@@ -1,10 +1,5 @@
-import { createState, Store } from '@ngneat/elf';
-import {
-  withRequestsCache,
-  withRequestsStatus,
-  createRequestDataSource,
-} from '@ngneat/elf-requests';
 import { Injectable } from '@angular/core';
+import { createStore } from '@ngneat/elf';
 import {
   addEntities,
   selectAll,
@@ -12,6 +7,11 @@ import {
   setEntities,
   withEntities,
 } from '@ngneat/elf-entities';
+import {
+  createRequestDataSource,
+  withRequestsCache,
+  withRequestsStatus,
+} from '@ngneat/elf-requests';
 
 export interface User {
   id: number;
@@ -19,12 +19,12 @@ export interface User {
   email: string;
 }
 
-const { state, config } = createState(
+const store = createStore(
+  { name: 'users' },
   withEntities<User>(),
   withRequestsStatus(),
   withRequestsCache()
 );
-const store = new Store({ name: 'users', state, config });
 
 @Injectable({ providedIn: 'root' })
 export class UsersRepository {

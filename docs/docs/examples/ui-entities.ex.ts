@@ -1,13 +1,13 @@
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import {
-  withEntities,
-  withUIEntities,
   addEntities,
-  UIEntitiesRef,
-  selectEntity,
   selectAll,
   selectEntities,
+  selectEntity,
+  UIEntitiesRef,
   unionEntities,
+  withEntities,
+  withUIEntities,
 } from '@ngneat/elf-entities';
 
 interface TodoUI {
@@ -19,12 +19,11 @@ interface Todo {
   name: string;
 }
 
-const { state, config } = createState(
+const todosStore = createStore(
+  { name: 'todos' },
   withEntities<Todo>(),
   withUIEntities<TodoUI>()
 );
-
-const todosStore = new Store({ name: 'todos', state, config });
 
 todosStore.update(
   addEntities({ id: 1, name: 'foo' }),

@@ -1,11 +1,11 @@
-import { Store, createState, withProps, select } from '@ngneat/elf';
+import { createStore, select, withProps } from '@ngneat/elf';
 import {
-  withEntities,
-  setEntities,
   addEntities,
-  updateEntities,
   deleteEntities,
   selectAllApply,
+  setEntities,
+  updateEntities,
+  withEntities,
 } from '@ngneat/elf-entities';
 import { switchMap } from 'rxjs/operators';
 
@@ -19,11 +19,11 @@ export interface TodosProps {
   filter: 'ALL' | 'ACTIVE' | 'COMPLETED';
 }
 
-const { state, config } = createState(
+const store = createStore(
+  { name: 'todos' },
   withProps<TodosProps>({ filter: 'ALL' }),
   withEntities<Todo>()
 );
-const store = new Store({ name: 'todos', state, config });
 
 const filter$ = store.pipe(select(({ filter }) => filter));
 

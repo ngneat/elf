@@ -1,9 +1,9 @@
-import { createState, Store } from '@ngneat/elf';
-import { withEntities, addEntities } from '@ngneat/elf-entities';
+import { createStore } from '@ngneat/elf';
+import { addEntities, withEntities } from '@ngneat/elf-entities';
 import {
-  withPagination,
-  updatePaginationData,
   setPage,
+  updatePaginationData,
+  withPagination,
 } from '@ngneat/elf-pagination';
 
 interface Todo {
@@ -11,9 +11,11 @@ interface Todo {
   label: string;
 }
 
-const { state, config } = createState(withEntities<Todo>(), withPagination());
-
-const todosStore = new Store({ name: 'todos', state, config });
+const todosStore = createStore(
+  { name: 'todos' },
+  withEntities<Todo>(),
+  withPagination()
+);
 
 export function addTodos(todos: Todo[]) {
   todosStore.update(

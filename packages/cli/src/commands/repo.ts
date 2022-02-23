@@ -1,14 +1,13 @@
 import { Command, flags } from '@oclif/command';
-
-import { prompt } from '../prompt';
-import { createRepo } from '../builders/repo-builder';
-import { outputFileSync } from 'fs-extra';
-import { names } from '../utils';
+import chalk from 'chalk';
 import { cosmiconfigSync } from 'cosmiconfig';
-import { DEFAULT_ID_KEY, GlobalConfig } from '../types';
+import { outputFileSync } from 'fs-extra';
 import { resolve } from 'path';
 import { register } from 'ts-node';
-import chalk from 'chalk';
+import { createRepo } from '../builders/repo-builder';
+import { prompt } from '../prompt';
+import { DEFAULT_ID_KEY, GlobalConfig } from '../types';
+import { names } from '../utils';
 
 export default class Repo extends Command {
   static description = 'Create a repository';

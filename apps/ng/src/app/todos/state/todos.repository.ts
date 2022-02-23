@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { createState, select, Store, withProps } from '@ngneat/elf';
+import { createStore, select, withProps } from '@ngneat/elf';
 import {
   addEntities,
   selectAll,
@@ -22,12 +22,11 @@ export interface TodosProps {
   filter: 'ALL' | 'ACTIVE' | 'COMPLETED';
 }
 
-const { state, config } = createState(
+const store = createStore(
+  { name: 'todos' },
   withEntities<Todo>(),
   withProps<TodosProps>({ filter: 'ALL' })
 );
-
-const store = new Store({ name: 'todos', state, config });
 
 @Injectable({ providedIn: 'root' })
 export class TodosRepository {

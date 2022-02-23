@@ -1,23 +1,22 @@
+import { createStore } from '@ngneat/elf';
+import { selectAll, setEntities, withEntities } from '@ngneat/elf-entities';
+import {
+  createRequestDataSource,
+  withRequestsStatus,
+} from '@ngneat/elf-requests';
 import { fromFetch } from 'rxjs/fetch';
 import { tap } from 'rxjs/operators';
-import { createState, Store } from '@ngneat/elf';
-import {
-  withRequestsStatus,
-  createRequestDataSource,
-} from '@ngneat/elf-requests';
-import { withEntities, selectAll, setEntities } from '@ngneat/elf-entities';
 
 interface Todo {
   id: number;
   label: string;
 }
 
-const { state, config } = createState(
+const store = createStore(
+  { name: 'todos' },
   withEntities<Todo>(),
   withRequestsStatus()
 );
-
-const store = new Store({ state, config, name: 'todos' });
 
 const dataSource = createRequestDataSource({
   store,
