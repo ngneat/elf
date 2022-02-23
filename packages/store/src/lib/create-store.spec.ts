@@ -26,7 +26,8 @@ describe('createStore', () => {
     // @ts-expect-error - The state wasn't created with "asd" property
     store.update(() => ({ asd: 'foo' }));
 
-    // createStore({ name: 'todos' });
+    // @ts-expect-error - At least one argument of type PropsFactory<any, any> is expected
+    createStore({ name: 'todos' });
   });
 
   it('should create object of Store type', () => {
