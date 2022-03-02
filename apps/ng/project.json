@@ -8,8 +8,6 @@
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "buildOptimizer": false,
-        "optimization": false,
         "outputPath": "dist/apps/ng",
         "index": "apps/ng/src/index.html",
         "main": "apps/ng/src/main.ts",
@@ -26,7 +24,7 @@
             {
               "type": "initial",
               "maximumWarning": "500kb",
-              "maximumError": "10mb"
+              "maximumError": "1mb"
             },
             {
               "type": "anyComponentStyle",

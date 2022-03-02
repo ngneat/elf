@@ -16,12 +16,6 @@ export interface AddEntitiesOptions {
   prepend?: boolean;
 }
 
-declare const process: {
-  env: {
-    NODE_ENV: string;
-  };
-};
-
 /**
  *
  * Add entities
@@ -51,9 +45,8 @@ export function addEntities<
     const asArray = coerceArray(entities);
 
     if (!asArray.length) return state;
-    if (process.env.NODE_ENV !== 'production') {
-      throwIfEntityExists(asArray, idKey, state, entitiesKey);
-    }
+
+    throwIfEntityExists(asArray, idKey, state, entitiesKey);
 
     const { ids, asObject } = buildEntities<S, Ref>(asArray, idKey);
 
