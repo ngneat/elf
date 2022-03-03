@@ -14,6 +14,7 @@ import {
 import {
   distinctUntilKeyChanged,
   EMPTY,
+  MonoTypeOperatorFunction,
   Observable,
   OperatorFunction,
   pipe,
@@ -154,7 +155,7 @@ export function skipWhileCached<S extends RequestsCacheState, T>(
   store: Store<StoreDef<S>>,
   key: OrArray<CacheRecordKeys<S>>,
   options?: { value?: CacheState['value']; returnSource?: Observable<any> }
-) {
+): MonoTypeOperatorFunction<T> {
   return function (source: Observable<T>) {
     if (store.query(isRequestCached(key, { value: options?.value }))) {
       return options?.returnSource ?? EMPTY;

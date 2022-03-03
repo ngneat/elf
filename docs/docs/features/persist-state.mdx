@@ -14,7 +14,7 @@ npm i @ngneat/elf-persist-state
 To use it you should call the `persistState()` function, passing the store and the options:
 
 ```ts
-import { Store, createState, withProps, select } from '@ngneat/elf';
+import { createStore, withProps, select } from '@ngneat/elf';
 import {
   persistState,
   localStorageStrategy,
@@ -25,9 +25,7 @@ interface AuthProps {
   user: { id: string } | null;
 }
 
-const { state, config } = createState(withProps<AuthProps>({ user: null }));
-
-const authStore = new Store({ state, name, config });
+const authStore = createStore({ name }, withProps<AuthProps>({ user: null }));
 
 export const persist = persistState(authStore, {
   key: 'auth',
@@ -48,7 +46,8 @@ As the second parameter you should pass a `Options` object, which can be used to
 <LiveDemo src={index} packages={['persist']} />
 
 <br />
-Elf also exposes the `initialized$` observable. This observable emits after Elf initialized the stores based on the storage's value. For example:
+Elf also exposes the `initialized$` observable. This observable emits after Elf initialized
+the stores based on the storage's value. For example:
 
 ```ts
 import { persistState, localStorageStrategy } from '@ngneat/elf-persist-state';
@@ -86,13 +85,15 @@ export const persist = persistState(authStore, {
 The `excludeKeys()` operator can be used to exclude keys from the state:
 
 ```ts
-import { excludeKeys, persistState, localStorageStrategy } from '@ngneat/elf-persist-state';
+import {
+  excludeKeys,
+  persistState,
+  localStorageStrategy,
+} from '@ngneat/elf-persist-state';
 
 persistState(todoStore, {
   key: 'todos',
   storage: localStorageStrategy,
-  source: () => todoStore.pipe(
-    excludeKeys(['ids', 'entities'])
-  )
+  source: () => todoStore.pipe(excludeKeys(['ids', 'entities'])),
 });
 ```

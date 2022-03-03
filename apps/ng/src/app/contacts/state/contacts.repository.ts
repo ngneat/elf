@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { createState, Store } from '@ngneat/elf';
-
+import { createStore } from '@ngneat/elf';
+import { addEntities, withEntities } from '@ngneat/elf-entities';
 import {
   PaginationData,
   selectCurrentPage,
@@ -11,8 +11,6 @@ import {
   updatePaginationData,
   withPagination,
 } from '@ngneat/elf-pagination';
-import { addEntities, withEntities } from '@ngneat/elf-entities';
-import { map } from 'rxjs';
 
 interface Contact {
   id: number;
@@ -21,12 +19,11 @@ interface Contact {
   address: string;
 }
 
-const { state, config } = createState(
+const store = createStore(
+  { name: 'contacts' },
   withPagination(),
   withEntities<Contact>()
 );
-
-const store = new Store({ state, config, name: 'contacts' });
 
 @Injectable({ providedIn: 'root' })
 export class ContactsRepository {

@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { addEntities } from '@ngneat/elf-entities';
 import { createEntitiesStore, createTodo } from '@ngneat/elf-mocks';
@@ -63,5 +63,31 @@ describe('persist state', () => {
     expect(storage.setItem).toHaveBeenCalledWith(`todos@store`, {
       ids: [1, 2],
     });
+  });
+
+  it('should unsubscribe all calls to getItems', async () => {
+    const subscriptions = new Set<number>();
+    let getItemSubscriptionNb = 0;
+    const storage: StateStorage = {
+      getItem: jest.fn().mockImplementation(() => {
+        return new Observable(() => {
+          const id = ++getItemSubscriptionNb;
+          subscriptions.add(id);
+          return () => {
+            subscriptions.delete(id);
+          };
+        });
+      }),
+      setItem: jest.fn().mockImplementation(() => of(true)),
+      removeItem: jest.fn().mockImplementation(() => of(true)),
+    };
+    const store = createEntitiesStore();
+    const { unsubscribe } = persistState(store, { storage });
+
+    expect(subscriptions.size).toBeGreaterThan(0);
+
+    unsubscribe();
+
+    expect(subscriptions.size).toBe(0);
   });
 });

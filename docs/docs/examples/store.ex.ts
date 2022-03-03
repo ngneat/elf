@@ -1,12 +1,13 @@
-import { Store, createState, withProps, select } from '@ngneat/elf';
+import { createStore, select, withProps } from '@ngneat/elf';
 
 interface AuthProps {
   user: { id: string } | null;
 }
 
-const { state, config } = createState(withProps<AuthProps>({ user: null }));
-
-const authStore = new Store({ state, name: 'auth', config });
+const authStore = createStore(
+  { name: 'auth' },
+  withProps<AuthProps>({ user: null })
+);
 
 authStore.subscribe((state) => {
   console.log(state);

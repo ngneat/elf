@@ -7,7 +7,7 @@ This feature allows the store to hold UI-specific entity data, for instance, whe
 When used in conjunction with `withEntities` this can be used to store additional UI data separately from the entities themselves.
 
 ```ts
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import { withEntities, withUIEntities } from '@ngneat/elf-entities';
 
 interface TodoUI {
@@ -19,12 +19,11 @@ interface Todo {
   name: string;
 }
 
-const { state, config } = createState(
+const todosStore = createStore(
+  { name: 'todos' },
   withEntities<Todo>(),
   withUIEntities<TodoUI>()
 );
-
-const todosStore = new Store({ name: 'todos', state, config });
 ```
 
 The usage is similar to that of `entities` - you can use the same selectors and mutations, with the addition of passing the

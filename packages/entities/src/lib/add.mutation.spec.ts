@@ -1,4 +1,4 @@
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import {
   createEntitiesStore,
   createTodo,
@@ -43,11 +43,11 @@ describe('add', () => {
   });
 
   it('should work a different idKey', () => {
-    const { state, config } = createState(
+    const store = createStore(
+      { name: '' },
       withEntities<{ id: number }>(),
       withUIEntities<{ _id: string; name: string }, '_id'>({ idKey: '_id' })
     );
-    const store = new Store({ state, name: '', config });
     store.update(
       addEntities({ _id: '1', name: 'foo' }, { ref: UIEntitiesRef })
     );

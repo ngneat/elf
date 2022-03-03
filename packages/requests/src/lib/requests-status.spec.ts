@@ -82,7 +82,7 @@ describe('requestsStatus', () => {
 
   it('should initializeAsIdle', () => {
     const { state, config } = createState(
-      withRequestsStatus(initializeAsPending(['foo', 'bar']))
+      withRequestsStatus(initializeAsPending<'foo' | 'bar'>(['foo', 'bar']))
     );
     const store = new Store({ state, config, name: 'users' });
 

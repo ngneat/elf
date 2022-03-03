@@ -3,32 +3,30 @@
 import index from '!!raw-loader!@site/docs/examples/store.ex';
 import { LiveDemo } from '@site/components/LiveDemo';
 
-The store takes an object that contains three properties - a `state`, a `name`, and `config`.
+The `createStore` function is used to initialize a store with a state.
+The first argument is a configuration object where a name of the store is specified.
+After the first argument any number of features can be specified which describe the nature of the store.
 
-:::info
-
-A state is a composition of properties
-
-:::
-
-To create the initial state used by your store call the `createState()` method. This method returns a `state` object and a `config` object. They are then used in the creation of the store:
+An example of a simple store:
 
 ```ts
-import { Store, createState, withProps } from '@ngneat/elf';
+import { createStore, withProps } from '@ngneat/elf';
 
 interface AuthProps {
   user: { id: string } | null;
 }
 
-const { state, config } = createState(withProps<AuthProps>({ user: null }));
-
-const authStore = new Store({ state, name: 'auth', config });
+const authStore = createStore(
+  { name: 'auth' },
+  withProps<AuthProps>({ user: null })
+);
 ```
 
-The `createState` can accept any number of features which describe the nature of the store. For example:
+An example of a store that contains multiple state features:
 
 ```ts
-const { state, config } = createState(
+const store = createStore(
+  { name: 'todo' },
   withEntities<Todo>(),
   withUIEntities<UIEntity>(),
   withProps<{ foo: string }>({ foo: '' })
@@ -47,7 +45,7 @@ authStore.subscribe((state) => {
 });
 ```
 
-### The `select` Operator
+### The `select` operator
 
 Select a slice from the store:
 
@@ -76,5 +74,30 @@ authStore.update((state) => ({
 }));
 ```
 
+### Updating a root property
+
+```ts
+import { setProp, setProps } from '@ngneat/elf';
+
+store.update(setProp('foo', 'bar'));
+store.update(setProp('count', (count) => count + 1));
+
+store.update(
+  setProps({
+    count: 1,
+    child: 2,
+  })
+);
+
+store.update(
+  setProps((state) => ({
+    count: 1,
+    nested: {
+      ...state.nested,
+      bar: 'baz',
+    },
+  }))
+);
+```
 
 <LiveDemo src={index} />

@@ -1,10 +1,10 @@
-import { createState, Store } from '@ngneat/elf';
-import { withEntities, setEntities } from '@ngneat/elf-entities';
+import { createStore } from '@ngneat/elf';
+import { setEntities, withEntities } from '@ngneat/elf-entities';
 import {
-  withRequestsCache,
-  updateRequestCache,
-  selectRequestCache,
   createRequestsCacheOperator,
+  selectRequestCache,
+  updateRequestCache,
+  withRequestsCache,
 } from '@ngneat/elf-requests';
 import { fromFetch } from 'rxjs/fetch';
 import { tap } from 'rxjs/operators';
@@ -14,12 +14,12 @@ interface Todo {
   label: string;
 }
 
-const { state, config } = createState(
+const todosStore = createStore(
+  { name: 'todos' },
   withEntities<Todo>(),
   withRequestsCache<'todos'>()
 );
 
-const todosStore = new Store({ name: 'todos', state, config });
 const skipWhileTodosCached = createRequestsCacheOperator(todosStore);
 
 export function setTodos(todos: Todo[]) {

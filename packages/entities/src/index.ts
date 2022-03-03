@@ -11,6 +11,7 @@ export {
   updateEntitiesByPredicate,
   upsertEntitiesById,
   upsertEntities,
+  updateEntitiesIds,
 } from './lib/update.mutation';
 export { selectAll, selectEntities, selectAllApply } from './lib/all.query';
 export { selectEntity, selectEntityByPredicate } from './lib/entity.query';

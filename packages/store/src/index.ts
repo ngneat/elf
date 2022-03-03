@@ -1,33 +1,35 @@
+export { createStore, StoreConfig } from './lib/create-store';
+export { setProp, setProps } from './lib/mutations';
 export {
-  Store,
-  Reducer,
-  StoreValue,
-  StoreDef,
-  ReducerContext,
-} from './lib/store';
-export { propsFactory } from './lib/props-factory';
-export { propsArrayFactory } from './lib/props-array-factory';
-export {
-  select,
-  head,
   asap,
-  filterNil,
   distinctUntilArrayItemChanged,
+  filterNil,
+  head,
+  select,
 } from './lib/operators';
-export {
-  getStore,
-  getRegistry,
-  registry$,
-  getStoresSnapshot,
-} from './lib/registry';
+export { propsArrayFactory } from './lib/props-array-factory';
+export { propsFactory } from './lib/props-factory';
 export { withProps } from './lib/props.state';
-export { createState, PropsFactory, EmptyConfig } from './lib/state';
 export {
-  isFunction,
+  getRegistry,
+  getStore,
+  getStoresSnapshot,
+  registry$,
+} from './lib/registry';
+export { createState, EmptyConfig, PropsFactory } from './lib/state';
+export {
+  Reducer,
+  ReducerContext,
+  Store,
+  StoreDef,
+  StoreValue,
+} from './lib/store';
+export { OrArray, Query, StateOf } from './lib/types';
+export {
+  capitalize,
   coerceArray,
+  isFunction,
   isObject,
   isString,
   isUndefined,
-  capitalize,
 } from './lib/utils';
-export { StateOf, Query, OrArray } from './lib/types';

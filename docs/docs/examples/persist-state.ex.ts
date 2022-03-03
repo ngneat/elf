@@ -1,13 +1,14 @@
-import { Store, createState, withProps, select } from '@ngneat/elf';
-import { persistState, localStorageStrategy } from '@ngneat/elf-persist-state';
+import { createStore, select, withProps } from '@ngneat/elf';
+import { localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
 
 interface AuthProps {
   user: { id: string } | null;
 }
 
-const { state, config } = createState(withProps<AuthProps>({ user: null }));
-
-const authStore = new Store({ state, name: 'auth', config });
+const authStore = createStore(
+  { name: 'auth' },
+  withProps<AuthProps>({ user: null })
+);
 
 export const persist = persistState(authStore, {
   key: 'auth',

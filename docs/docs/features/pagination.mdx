@@ -19,10 +19,10 @@ the CLI command `elf-cli install` and selecting the pagination package, or via n
 npm i @ngneat/elf-pagination
 ```
 
-To use this feature, provide the `withPagination` props factory function in the `createState` call:
+To use this feature, provide the `withPagination` props factory function in the `createStore` call:
 
 ```ts
-import { createState, Store } from '@ngneat/elf';
+import { createStore } from '@ngneat/elf';
 import { withEntities } from '@ngneat/elf-entities';
 import { withPagination } from '@ngneat/elf-pagination';
 
@@ -31,9 +31,11 @@ interface Todo {
   label: string;
 }
 
-const { state, config } = createState(withEntities<Todo>(), withPagination());
-
-const todosStore = new Store({ name: 'todos', state, config });
+const todosStore = createStore(
+  { name: 'todos' },
+  withEntities<Todo>(),
+  withPagination()
+);
 ```
 
 Call `updatePaginationData()` with a configuration object that determines the various pagination settings, and call `setPage()` whenever you want to define the `ids` that belong to a certain page number.
