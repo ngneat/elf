@@ -76,9 +76,9 @@ describe('entities props factory', () => {
 
     try {
       store.update(
-        // @ts-expect-error - The deault entities isn't declared
+        // @ts-expect-error - The default entities isn't declared
         addEntities({ id: '1', label: 'foo' }),
-        addEntities({ id: 1, title: 'foo' }, { ref: cartEntitiesRef })
+        addEntities({ id: 2, title: 'foo' }, { ref: cartEntitiesRef })
       );
     } catch {
       //
@@ -88,7 +88,7 @@ describe('entities props factory', () => {
       // @ts-expect-error - id should be a number
       addEntities({ id: '1', title: 'foo' }, { ref: cartEntitiesRef }),
       // @ts-expect-error - nope isn't exists on type of cart entity
-      addEntities({ id: 1, title: 'foo', nope: '' }, { ref: cartEntitiesRef })
+      addEntities({ id: 2, title: 'foo', nope: '' }, { ref: cartEntitiesRef })
     );
   });
 

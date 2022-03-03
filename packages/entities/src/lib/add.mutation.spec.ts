@@ -1,3 +1,4 @@
+import { createState, Store } from '@ngneat/elf';
 import {
   createEntitiesStore,
   createTodo,
@@ -7,7 +8,6 @@ import {
 } from '@ngneat/elf-mocks';
 import { addEntities, addEntitiesFifo } from './add.mutation';
 import { UIEntitiesRef, withEntities, withUIEntities } from './entity.state';
-import { createState, Store } from '@ngneat/elf';
 
 describe('add', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -88,5 +88,28 @@ describe('add', () => {
       store.update(addEntitiesFifo([], { limit }));
       expect(store.getValue()).toMatchSnapshot('should be 7 6 5 empty array');
     });
+  });
+
+  it('should throw if id already exists', () => {
+    let error;
+    try {
+      store.update(addEntities(createTodo(1)));
+      store.update(addEntities(createTodo(1)));
+    } catch (err: any) {
+      error = err;
+    }
+
+    expect(error?.message).toBe('Entity already exists. id 1');
+  });
+
+  it('should throw if duplicate ids are provided', () => {
+    let error;
+    try {
+      store.update(addEntities([createTodo(1), createTodo(1)]));
+    } catch (err: any) {
+      error = err;
+    }
+
+    expect(error?.message).toBe('Duplicate entity id provided. id 1');
   });
 });

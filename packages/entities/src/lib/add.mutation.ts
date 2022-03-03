@@ -47,6 +47,7 @@ export function addEntities<
     if (!asArray.length) return state;
 
     throwIfEntityExists(asArray, idKey, state, entitiesKey);
+    throwIfDuplicateIdKey(asArray, idKey);
 
     const { ids, asObject } = buildEntities<S, Ref>(asArray, idKey);
 
@@ -89,7 +90,7 @@ export function addEntitiesFifo<
     let newState: S = state;
 
     if (normalizedEntities.length > limit) {
-      // Remove new entities that passes the limit
+      // Remove new entities that pass the limit
       normalizedEntities = normalizedEntities.slice(
         normalizedEntities.length - limit
       );
@@ -127,5 +128,18 @@ function throwIfEntityExists(
     if (state[entitiesKey][id]) {
       throw Error(`Entity already exists. ${idKey} ${id}`);
     }
+  });
+}
+
+function throwIfDuplicateIdKey(entities: any[], idKey: string) {
+  const check = new Set();
+
+  entities.forEach((entity) => {
+    const id = entity[idKey];
+    if (check.has(id)) {
+      throw Error(`Duplicate entity id provided. ${idKey} ${id}`);
+    }
+
+    check.add(id);
   });
 }
