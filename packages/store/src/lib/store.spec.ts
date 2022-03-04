@@ -1,15 +1,15 @@
-import { createTodo, createUITodo, Todo } from '@ngneat/elf-mocks';
 import {
   addEntities,
   selectAll,
+  UIEntitiesRef,
   updateEntities,
   withEntities,
   withUIEntities,
-  UIEntitiesRef,
 } from '@ngneat/elf-entities';
+import { createTodo, createUITodo, Todo } from '@ngneat/elf-mocks';
 import { withProps } from './props.state';
-import { Store } from './store';
 import { createState } from './state';
+import { Store } from './store';
 
 type UIEntity = { id: number; open: boolean };
 
