@@ -1,5 +1,6 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Query } from '..';
+import { elfHooksRegistry } from './elf-hooks';
 import { addStore, removeStore } from './registry';
 
 export class Store<
@@ -33,11 +34,19 @@ export class Store<
   update(...reducers: Array<Reducer<State>>) {
     const currentState = this.getValue();
 
-    const nextState = reducers.reduce((value, reducer) => {
+    let nextState = reducers.reduce((value, reducer) => {
       value = reducer(value, this.context);
 
       return value;
     }, currentState);
+
+    if (elfHooksRegistry.preStoreUpdate) {
+      nextState = elfHooksRegistry.preStoreUpdate(
+        currentState,
+        nextState,
+        this.name
+      );
+    }
 
     if (nextState !== currentState) {
       super.next(nextState);

@@ -1,4 +1,5 @@
 export { createStore, StoreConfig } from './lib/create-store';
+export { elfHooks } from './lib/elf-hooks';
 export { setProp, setProps } from './lib/mutations';
 export {
   asap,
@@ -28,6 +29,7 @@ export { OrArray, Query, StateOf } from './lib/types';
 export {
   capitalize,
   coerceArray,
+  deepFreeze,
   isFunction,
   isObject,
   isString,
