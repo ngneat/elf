@@ -1,6 +1,25 @@
 # Changelog
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
+
+# [4.0.0](https://github.com/ngneat/elf/compare/entities-3.4.0...entities-4.0.0) (2022-03-09)
+
+
+### Features
+
+* **entities:** 🔥 change getEntities to getAllEntities ([f20cb19](https://github.com/ngneat/elf/commit/f20cb19f1a27df4e73feb4ce4e339915956c9a26))
+* **entities:** 🔥 change selectAll to selectAllEntities ([e30b6d1](https://github.com/ngneat/elf/commit/e30b6d19ccac7759b9587edfff01c8c29248a738))
+* **entities:** 🔥 change selectAllApply to selectAllEntitiesApp ([b5a6566](https://github.com/ngneat/elf/commit/b5a6566b896ae2bb6e32e26fdae8fac7f1af12ce))
+
+
+### BREAKING CHANGES
+
+* **entities:** 🧨 change getEntities to getAllEntities
+* **entities:** 🧨 change selectAllApply to selectAllEntitiesApp
+* **entities:** 🧨 change selectAll to selectAllEntities
+
+
+
 # [3.4.0](https://github.com/ngneat/elf/compare/entities-3.3.0...entities-3.4.0) (2022-03-09)
 
 
