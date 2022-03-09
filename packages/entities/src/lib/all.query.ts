@@ -75,14 +75,14 @@ export function selectEntities<
  *
  * @example
  *
- * store.pipe(selectAllApply({
+ * store.pipe(selectAllEntitiesApply({
  *   map: (entity) => new Todo(entity),
  *   filter: entity => entity.completed
  * }))
  *
  *
  */
-export function selectAllApply<
+export function selectAllEntitiesApply<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef,
   R = getEntityType<S, Ref>

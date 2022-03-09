@@ -6,7 +6,11 @@ import {
   Todo,
 } from '@ngneat/elf-mocks';
 import { addEntities } from './add.mutation';
-import { selectAllEntities, selectAllApply, selectEntities } from './all.query';
+import {
+  selectAllEntities,
+  selectAllEntitiesApply,
+  selectEntities,
+} from './all.query';
 import { UIEntitiesRef } from './entity.state';
 import { expectTypeOf } from 'expect-type';
 import { updateEntities } from '@ngneat/elf-entities';
@@ -50,7 +54,7 @@ describe('selectAllEntities', () => {
     store.update(addEntities(createTodo(1)));
   });
 
-  describe('selectAllApply', () => {
+  describe('selectAllEntitiesApply', () => {
     const store = createEntitiesStore();
 
     store.update(
@@ -61,7 +65,7 @@ describe('selectAllEntities', () => {
 
     it('should map', () => {
       store
-        .pipe(selectAllApply({ mapEntity: (e) => e.title }))
+        .pipe(selectAllEntitiesApply({ mapEntity: (e) => e.title }))
         .subscribe((v) => {
           expectTypeOf(v).toEqualTypeOf<string[]>();
           expect(v).toStrictEqual(['todo 1', 'todo 2']);
@@ -70,7 +74,7 @@ describe('selectAllEntities', () => {
 
     it('should filter', () => {
       store
-        .pipe(selectAllApply({ filterEntity: (e) => e.completed }))
+        .pipe(selectAllEntitiesApply({ filterEntity: (e) => e.completed }))
         .subscribe((v) => {
           expectTypeOf(v).toEqualTypeOf<Todo[]>();
           expect(v).toStrictEqual([
@@ -82,7 +86,7 @@ describe('selectAllEntities', () => {
     it('should filter and then map', () => {
       store
         .pipe(
-          selectAllApply({
+          selectAllEntitiesApply({
             mapEntity: (e) => e.title,
             filterEntity: (e) => e.completed,
           })
@@ -104,7 +108,7 @@ describe('selectAllEntities', () => {
 
       store
         .pipe(
-          selectAllApply({
+          selectAllEntitiesApply({
             mapEntity: (e) => e.id,
             filterEntity: (e) => e.open,
             ref: UIEntitiesRef,

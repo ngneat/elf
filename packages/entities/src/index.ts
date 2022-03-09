@@ -16,7 +16,7 @@ export {
 export {
   selectAllEntities,
   selectEntities,
-  selectAllApply,
+  selectAllEntitiesApply,
 } from './lib/all.query';
 export { selectEntity, selectEntityByPredicate } from './lib/entity.query';
 export { selectFirst } from './lib/first.query';

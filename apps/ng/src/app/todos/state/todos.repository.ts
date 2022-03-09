@@ -3,7 +3,7 @@ import { createStore, select, withProps } from '@ngneat/elf';
 import {
   addEntities,
   selectAllEntities,
-  selectAllApply,
+  selectAllEntitiesApply,
   selectEntityByPredicate,
   selectManyByPredicate,
   updateEntities,
@@ -36,7 +36,7 @@ export class TodosRepository {
   visibleTodos$ = this.filter$.pipe(
     switchMap((filter) => {
       return store.pipe(
-        selectAllApply({
+        selectAllEntitiesApply({
           filterEntity({ completed }) {
             if (filter === 'ALL') return true;
             return filter === 'COMPLETED' ? completed : !completed;

@@ -45,15 +45,15 @@ import { selectAllEntities } from '@ngneat/elf-entities';
 const todos$ = todosStore.pipe(selectAllEntities());
 ```
 
-### `selectAllApply`
+### `selectAllEntitiesApply`
 
 Select the entire store's entity collection, and apply a `filter/map`:
 
 ```ts
-import { selectAllApply } from '@ngneat/elf-entities';
+import { selectAllEntitiesApply } from '@ngneat/elf-entities';
 
 const titles$ = todosStore.pipe(
-  selectAllApply({
+  selectAllEntitiesApply({
     mapEntity: (e) => e.title,
     filterEntity: (e) => e.completed,
   })

@@ -2,7 +2,7 @@ import { createStore, select, withProps } from '@ngneat/elf';
 import {
   addEntities,
   deleteEntities,
-  selectAllApply,
+  selectAllEntitiesApply,
   setEntities,
   updateEntities,
   withEntities,
@@ -30,7 +30,7 @@ const filter$ = store.pipe(select(({ filter }) => filter));
 export const visibleTodos$ = filter$.pipe(
   switchMap((filter) => {
     return store.pipe(
-      selectAllApply({
+      selectAllEntitiesApply({
         filterEntity({ completed }) {
           if (filter === 'ALL') return true;
           return filter === 'COMPLETED' ? completed : !completed;
