@@ -35,14 +35,14 @@ This will allow you to use the following ready-made mutations and queries:
 
 ## Queries
 
-### `selectAll`
+### `selectAllEntities`
 
 Select the entire store's entity collection:
 
 ```ts
-import { selectAll } from '@ngneat/elf-entities';
+import { selectAllEntities } from '@ngneat/elf-entities';
 
-const todos$ = todosStore.pipe(selectAll());
+const todos$ = todosStore.pipe(selectAllEntities());
 ```
 
 ### `selectAllApply`

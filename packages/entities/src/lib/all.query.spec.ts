@@ -6,12 +6,12 @@ import {
   Todo,
 } from '@ngneat/elf-mocks';
 import { addEntities } from './add.mutation';
-import { selectAll, selectAllApply, selectEntities } from './all.query';
+import { selectAllEntities, selectAllApply, selectEntities } from './all.query';
 import { UIEntitiesRef } from './entity.state';
 import { expectTypeOf } from 'expect-type';
 import { updateEntities } from '@ngneat/elf-entities';
 
-describe('selectAll', () => {
+describe('selectAllEntities', () => {
   let store: ReturnType<typeof createEntitiesStore>;
 
   beforeEach(() => {
@@ -21,7 +21,7 @@ describe('selectAll', () => {
   it('should select all', () => {
     let count = 1;
 
-    store.pipe(selectAll()).subscribe((value) => {
+    store.pipe(selectAllEntities()).subscribe((value) => {
       expect(value).toMatchSnapshot(`calls: ${count++}`);
     });
 
@@ -33,7 +33,7 @@ describe('selectAll', () => {
 
     const store = createUIEntityStore();
 
-    store.pipe(selectAll({ ref: UIEntitiesRef })).subscribe((value) => {
+    store.pipe(selectAllEntities({ ref: UIEntitiesRef })).subscribe((value) => {
       expect(value).toMatchSnapshot(`calls: ${count++}`);
     });
 

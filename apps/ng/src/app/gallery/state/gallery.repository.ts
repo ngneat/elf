@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { createStore } from '@ngneat/elf';
 import {
   addEntities,
-  selectAll,
+  selectAllEntities,
   selectEntities,
   UIEntitiesRef,
   unionEntities,
@@ -33,7 +33,7 @@ const store = createStore(
 export class GalleryRepository {
   items$ = this.store
     .combine({
-      entities: store.pipe(selectAll()),
+      entities: store.pipe(selectAllEntities()),
       UIEntities: store.pipe(selectEntities({ ref: UIEntitiesRef })),
     })
     .pipe(unionEntities());

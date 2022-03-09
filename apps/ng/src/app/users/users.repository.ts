@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { createStore } from '@ngneat/elf';
 import {
   addEntities,
-  selectAll,
+  selectAllEntities,
   selectEntity,
   setEntities,
   withEntities,
@@ -30,7 +30,7 @@ const store = createStore(
 export class UsersRepository {
   dataSource = createRequestDataSource({
     store,
-    data$: () => store.pipe(selectAll()),
+    data$: () => store.pipe(selectAllEntities()),
     requestKey: 'users',
     dataKey: 'users',
   });

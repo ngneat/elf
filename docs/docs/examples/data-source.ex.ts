@@ -1,5 +1,9 @@
 import { createStore } from '@ngneat/elf';
-import { selectAll, setEntities, withEntities } from '@ngneat/elf-entities';
+import {
+  selectAllEntities,
+  setEntities,
+  withEntities,
+} from '@ngneat/elf-entities';
 import {
   createRequestDataSource,
   withRequestsStatus,
@@ -20,7 +24,7 @@ const store = createStore(
 
 const dataSource = createRequestDataSource({
   store,
-  data$: () => store.pipe(selectAll()),
+  data$: () => store.pipe(selectAllEntities()),
   requestKey: 'todos',
   dataKey: 'todos',
   idleAsPending: true,

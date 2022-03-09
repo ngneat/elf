@@ -9,7 +9,7 @@ Beware of premature optimizations
 Imagine we have a `todos` store and we subscribe to the following selectors twice, at two different places simultaneously:
 
 ```ts title="todos.repository.ts"
-export const todos$ = store.pipe(selectAll());
+export const todos$ = store.pipe(selectAllEntities());
 
 // One component
 useObservable(todos$) // React
@@ -20,15 +20,15 @@ useObservable(todos$) // React
 todos$ | async // Angular
 ```
 
-Due to the nature of observables, the `selectAll()` operator will map over the entities twice, once for each subscription. We can use the `shareReplay` operator to optimize it:
+Due to the nature of observables, the `selectAllEntities()` operator will map over the entities twice, once for each subscription. We can use the `shareReplay` operator to optimize it:
 
 ```ts title="todos.repository.ts"
 import { shareReplay } from 'rxjs/operators';
 
-export const todos$ = store.pipe(selectAll(), shareReplay({ refCount: true }))
+export const todos$ = store.pipe(selectAllEntities(), shareReplay({ refCount: true }))
 ```
 
-With this change, the `selectAll` operator will now share the result with every subscriber.
+With this change, the `selectAllEntities` operator will now share the result with every subscriber.
 
 ## Reset Stores
 

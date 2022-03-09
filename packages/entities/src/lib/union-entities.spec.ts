@@ -1,6 +1,6 @@
 import { createState, Store } from '@ngneat/elf';
 import { createTodo, Todo, UITodo } from '@ngneat/elf-mocks';
-import { selectAll, selectEntities } from './all.query';
+import { selectAllEntities, selectEntities } from './all.query';
 import { UIEntitiesRef, withEntities, withUIEntities } from './entity.state';
 import { unionEntities } from './union-entities';
 import { addEntities } from './add.mutation';
@@ -19,7 +19,7 @@ describe('unionEntities', () => {
 
     store
       .combine({
-        entities: store.pipe(selectAll()),
+        entities: store.pipe(selectAllEntities()),
         UIEntities: store.pipe(selectEntities({ ref: UIEntitiesRef })),
       })
       .pipe(unionEntities())

@@ -1,6 +1,6 @@
 import {
   addEntities,
-  selectAll,
+  selectAllEntities,
   UIEntitiesRef,
   updateEntities,
   withEntities,
@@ -47,8 +47,8 @@ describe('store', () => {
 
     store
       .combine({
-        todos: store.pipe(selectAll()),
-        ui: store.pipe(selectAll({ ref: UIEntitiesRef })),
+        todos: store.pipe(selectAllEntities()),
+        ui: store.pipe(selectAllEntities({ ref: UIEntitiesRef })),
       })
       .subscribe(spy);
 

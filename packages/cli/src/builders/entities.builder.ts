@@ -51,7 +51,7 @@ export class EntitiesBuilder extends FeatureBuilder {
 
   run() {
     this.addImport(
-      ['withEntities', 'selectAll', ...this.options.crud],
+      ['withEntities', 'selectAllEntities', ...this.options.crud],
       '@ngneat/elf-entities'
     );
 
@@ -66,7 +66,7 @@ export class EntitiesBuilder extends FeatureBuilder {
       ],
     });
 
-    const initializer = `${this.storeVariableName}.pipe(selectAll())`;
+    const initializer = `${this.storeVariableName}.pipe(selectAllEntities())`;
     const memberData: ClassMemberStructures = {
       name: `${this.storeNames.propertyName}$`,
       kind: StructureKind.Property,

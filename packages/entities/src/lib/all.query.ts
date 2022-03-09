@@ -26,12 +26,12 @@ export function untilEntitiesChanges<T extends EntitiesRecord>(
  *
  * @example
  *
- * store.pipe(selectAll())
+ * store.pipe(selectAllEntities())
  *
- * store.pipe(selectAll({ ref: UIEntitiesRef }))
+ * store.pipe(selectAllEntities({ ref: UIEntitiesRef }))
  *
  */
-export function selectAll<
+export function selectAllEntities<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(

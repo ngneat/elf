@@ -13,7 +13,11 @@ export {
   upsertEntities,
   updateEntitiesIds,
 } from './lib/update.mutation';
-export { selectAll, selectEntities, selectAllApply } from './lib/all.query';
+export {
+  selectAllEntities,
+  selectEntities,
+  selectAllApply,
+} from './lib/all.query';
 export { selectEntity, selectEntityByPredicate } from './lib/entity.query';
 export { selectFirst } from './lib/first.query';
 export { selectLast } from './lib/last.query';

@@ -1,7 +1,7 @@
 import { createStore, withProps } from '@ngneat/elf';
 import {
   addEntities,
-  selectAll,
+  selectAllEntities,
   selectEntitiesCount,
   selectEntitiesCountByPredicate,
   selectEntity,
@@ -27,19 +27,19 @@ describe('Entities Types', () => {
     );
 
     // @ts-expect-error - We didn't provide withEntities
-    store.pipe(selectAll());
+    store.pipe(selectAllEntities());
 
     // @ts-expect-error - We didn't provide withUIEntities
-    store.pipe(selectAll({ ref: UIEntitiesRef }));
+    store.pipe(selectAllEntities({ ref: UIEntitiesRef }));
   });
 
   it('should assert createState with withEntities', () => {
     const store = createStore({ name: '' }, withEntities());
 
-    store.pipe(selectAll());
+    store.pipe(selectAllEntities());
 
     // @ts-expect-error - We didn't provide withUIEntities
-    store.pipe(selectAll({ ref: UIEntitiesRef }));
+    store.pipe(selectAllEntities({ ref: UIEntitiesRef }));
   });
 
   it('should assert idKey', () => {
@@ -53,7 +53,7 @@ describe('Entities Types', () => {
     const store = createEntitiesStore();
 
     it('should set the correct types', () => {
-      store.pipe(selectAll()).subscribe((v) => {
+      store.pipe(selectAllEntities()).subscribe((v) => {
         expectTypeOf(v).toEqualTypeOf<Todo[]>();
       });
 
@@ -125,7 +125,7 @@ describe('Entities Types', () => {
     const store = createUIEntityStore();
 
     it('should set the correct types', () => {
-      store.pipe(selectAll({ ref: UIEntitiesRef })).subscribe((v) => {
+      store.pipe(selectAllEntities({ ref: UIEntitiesRef })).subscribe((v) => {
         expectTypeOf(v).toEqualTypeOf<UITodo[]>();
       });
 

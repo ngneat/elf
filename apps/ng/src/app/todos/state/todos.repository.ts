@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { createStore, select, withProps } from '@ngneat/elf';
 import {
   addEntities,
-  selectAll,
+  selectAllEntities,
   selectAllApply,
   selectEntityByPredicate,
   selectManyByPredicate,
@@ -30,7 +30,7 @@ const store = createStore(
 
 @Injectable({ providedIn: 'root' })
 export class TodosRepository {
-  todos$ = store.pipe(selectAll());
+  todos$ = store.pipe(selectAllEntities());
   filter$ = store.pipe(select((state) => state.filter));
 
   visibleTodos$ = this.filter$.pipe(
