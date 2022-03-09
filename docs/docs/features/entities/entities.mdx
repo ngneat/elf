@@ -62,6 +62,21 @@ const titles$ = todosStore.pipe(
 
 In the above example, it'll first apply the `filter` and then the `map` function.
 
+### `getAllEntitiesApply`
+
+Get the entire store's entity collection, and apply a `filter/map`:
+
+```ts
+import { getAllEntitiesApply } from '@ngneat/elf-entities';
+
+const titles = todosStore.query(
+  getAllEntitiesApply({
+    mapEntity: (e) => e.title,
+    filterEntity: (e) => e.completed,
+  })
+);
+```
+
 ### `selectEntities`
 
 Select the entire store's entity collection as object:

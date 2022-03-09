@@ -31,6 +31,45 @@ export function getEntities<
 
 /**
  *
+ * Get the entities and apply filter/map
+ *
+ * @example
+ *
+ * store.query(getAllEntitiesApply())
+ *
+ */
+export function getAllEntitiesApply<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef,
+  R = getEntityType<S, Ref>
+>(
+  options: {
+    mapEntity?(entity: getEntityType<S, Ref>): R;
+    filterEntity?(entity: getEntityType<S, Ref>): boolean;
+  } & BaseEntityOptions<Ref>
+): Query<S, getEntityType<S, Ref>[]> {
+  const {
+    ref: { entitiesKey, idsKey } = defaultEntitiesRef,
+    filterEntity = () => true,
+    mapEntity = (e) => e,
+  } = options;
+
+  return function (state) {
+    const result = [];
+
+    for (const id of state[idsKey]) {
+      const entity = state[entitiesKey][id];
+      if (filterEntity(entity)) {
+        result.push(mapEntity(entity));
+      }
+    }
+
+    return result;
+  };
+}
+
+/**
+ *
  * Get an entity
  *
  * @example
