@@ -1,17 +1,12 @@
 # Changelog
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
-
-# [3.3.0](https://github.com/ngneat/elf/compare/entities-3.2.1...entities-3.3.0) (2022-03-09)
+# [3.4.0](https://github.com/ngneat/elf/compare/entities-3.3.0...entities-3.4.0) (2022-03-09)
 
 
 ### Features
 
 * **entities:** 🔥 add getAllEntitiesApply query ([368871b](https://github.com/ngneat/elf/commit/368871bd52139e0c59d4ff6ed789282264d68bc9))
-* **store:** 🔥 introduce createStore function ([#174](https://github.com/ngneat/elf/issues/174)) ([fbc68ff](https://github.com/ngneat/elf/commit/fbc68ff1dd91190486a74dea9637ce34a47fb9ea))
-
-
-
 # [3.3.0](https://github.com/ngneat/elf/compare/entities-3.2.1...entities-3.3.0) (2022-02-23)
 
 
