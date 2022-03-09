@@ -40,4 +40,4 @@ export {
 export { unionEntities as unionEntities } from './lib/union-entities';
 export { unionEntitiesAsMap as unionEntitiesAsMap } from './lib/union-entities-as-map';
 export * from './lib/active/active';
-export { getEntity, hasEntity, getEntities } from './lib/queries';
+export { getEntity, hasEntity, getAllEntities } from './lib/queries';

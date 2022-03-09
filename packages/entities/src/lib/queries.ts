@@ -15,10 +15,10 @@ import { Query } from '@ngneat/elf';
  *
  * @example
  *
- * store.query(getEntities())
+ * store.query(getAllEntities())
  *
  */
-export function getEntities<
+export function getAllEntities<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(options: BaseEntityOptions<Ref> = {}): Query<S, getEntityType<S, Ref>[]> {

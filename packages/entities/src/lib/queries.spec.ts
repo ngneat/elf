@@ -7,7 +7,7 @@ import {
 } from '@ngneat/elf-mocks';
 import {
   getAllEntitiesApply,
-  getEntities,
+  getAllEntities,
   getEntity,
   hasEntity,
 } from './queries';
@@ -46,11 +46,11 @@ describe('queries', () => {
     });
   });
 
-  describe('getEntities', () => {
+  describe('getAllEntities', () => {
     it('should return the collection', () => {
       const store = createEntitiesStore();
       store.update(addEntities(createTodo(1)));
-      expect(store.query(getEntities())).toMatchInlineSnapshot(`
+      expect(store.query(getAllEntities())).toMatchInlineSnapshot(`
         Array [
           Object {
             "completed": false,
@@ -65,7 +65,7 @@ describe('queries', () => {
       const store = createUIEntityStore();
 
       store.update(addEntities(createUITodo(1), { ref: UIEntitiesRef }));
-      expect(store.query(getEntities({ ref: UIEntitiesRef })))
+      expect(store.query(getAllEntities({ ref: UIEntitiesRef })))
         .toMatchInlineSnapshot(`
         Array [
           Object {
