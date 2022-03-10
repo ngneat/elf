@@ -25,7 +25,7 @@ import { withVersion, updateVersion, selectVersion } from '@app/store-props.ts';
 const store = createStore({ name: 'todos' }, withVersion());
 
 store.update(updateVersion(2));
-store.select(selectVersion());
+store.pipe(selectVersion());
 store.query(getVersion);
 ```
 
