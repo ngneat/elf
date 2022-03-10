@@ -35,3 +35,4 @@ export {
   isString,
   isUndefined,
 } from './lib/utils';
+export { emitOnce } from './lib/batch';

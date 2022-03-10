@@ -1,5 +1,6 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Query } from '..';
+import { batchInProgress, batchDone$ } from './batch';
 import { elfHooksRegistry } from './elf-hooks';
 import { addStore, removeStore } from './registry';
 
@@ -8,6 +9,8 @@ export class Store<
   State = SDef['state']
 > extends BehaviorSubject<State> {
   initialState!: State;
+  state!: State;
+  private batchInProgress = false;
 
   private context: ReducerContext = {
     config: this.getConfig(),
@@ -15,6 +18,7 @@ export class Store<
 
   constructor(private storeDef: SDef) {
     super(storeDef.state);
+    this.state = storeDef.state;
     this.initialState = this.getValue();
     addStore(this);
   }
@@ -49,8 +53,23 @@ export class Store<
     }
 
     if (nextState !== currentState) {
-      super.next(nextState);
+      this.state = nextState;
+
+      if (batchInProgress.getValue() && !this.batchInProgress) {
+        this.batchInProgress = true;
+
+        batchDone$.subscribe(() => {
+          super.next(this.state);
+          this.batchInProgress = false;
+        });
+      } else {
+        super.next(this.state);
+      }
     }
+  }
+
+  getValue(): State {
+    return this.state;
   }
 
   reset() {

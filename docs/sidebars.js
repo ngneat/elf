@@ -51,6 +51,7 @@ module.exports = {
         'miscellaneous/operators',
         'miscellaneous/registry',
         'miscellaneous/hooks',
+        'miscellaneous/batching',
       ],
     },
     'recipes',
