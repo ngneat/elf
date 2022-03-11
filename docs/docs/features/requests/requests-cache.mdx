@@ -27,7 +27,7 @@ const todosStore = createStore(
   withEntities<Todo>(),
   // You can pass the keys type
   // highlight-next-line
-  withRequestsCache<`todo-${string}`>()
+  withRequestsCache<'todo'|'todo-${string}'>()
 );
 ```
 
