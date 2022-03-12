@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [4.1.0](https://github.com/ngneat/elf/compare/entities-4.0.1...entities-4.1.0) (2022-03-12)
+
+
+### Features
+
+* **entities:** add getActiveEntity and getActiveEntities ([#192](https://github.com/ngneat/elf/issues/192)) ([9e4c16e](https://github.com/ngneat/elf/commit/9e4c16eb4ebd8e1917a240418b0069b828f85539))
+
+
+
 ## [4.0.1](https://github.com/ngneat/elf/compare/entities-4.0.0...entities-4.0.1) (2022-03-09)
 
 
