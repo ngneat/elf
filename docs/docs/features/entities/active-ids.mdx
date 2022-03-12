@@ -57,6 +57,16 @@ import { selectActiveId } from '@ngneat/elf-entities';
 const activeId$ = todosStore.pipe(selectActiveId());
 ```
 
+### `getActiveEntity`
+
+Get active entity:
+
+```ts
+import { getActiveEntity } from '@ngneat/elf-entities';
+
+const active = todosStore.query(getActiveEntity());
+```
+
 ### `getActiveId`
 
 Get the active id:
@@ -64,7 +74,7 @@ Get the active id:
 ```ts
 import { getActiveId } from '@ngneat/elf-entities';
 
-const active = todosStore.query(getActiveId);
+const activeId = todosStore.query(getActiveId);
 ```
 
 ## Mutations
@@ -123,6 +133,16 @@ import { selectActiveIds } from '@ngneat/elf-entities';
 const activeIds$ = todosStore.pipe(selectActiveIds());
 ```
 
+### `getActiveEntities`
+
+Get active entities:
+
+```ts
+import { getActiveEntities } from '@ngneat/elf-entities';
+
+const actives = todosStore.query(getActiveEntities());
+```
+
 ### `getActiveIds`
 
 Get active ids:
@@ -130,7 +150,7 @@ Get active ids:
 ```ts
 import { getActiveIds } from '@ngneat/elf-entities';
 
-const actives = todosStore.query(getActiveIds);
+const activeIds = todosStore.query(getActiveIds);
 ```
 
 ### Mutations

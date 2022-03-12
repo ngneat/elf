@@ -8,7 +8,7 @@ import {
   getEntityType,
 } from '../entity.state';
 import { switchMap } from 'rxjs/operators';
-import { propsArrayFactory, propsFactory, StateOf } from '@ngneat/elf';
+import { propsArrayFactory, propsFactory, Query, StateOf } from '@ngneat/elf';
 import { selectEntity } from '../entity.query';
 import { selectMany } from '../many.query';
 
@@ -35,6 +35,19 @@ export function selectActiveEntity<
   };
 }
 
+export function getActiveEntity<
+  S extends EntitiesState<Ref> & StateOf<typeof withActiveId>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(
+  options: BaseEntityOptions<Ref> = {}
+): Query<S, getEntityType<S, Ref> | undefined> {
+  const { ref: { entitiesKey } = defaultEntitiesRef } = options;
+
+  return function (state: S) {
+    return state[entitiesKey][getActiveId(state)];
+  };
+}
+
 export const {
   setActiveIds,
   resetActiveIds,
@@ -58,5 +71,25 @@ export function selectActiveEntities<
     return source
       .pipe(selectActiveIds())
       .pipe(switchMap((ids) => source.pipe(selectMany(ids, { ref }))));
+  };
+}
+
+export function getActiveEntities<
+  S extends EntitiesState<Ref> & StateOf<typeof withActiveIds>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(options: BaseEntityOptions<Ref> = {}): Query<S, getEntityType<S, Ref>[]> {
+  const { ref: { entitiesKey } = defaultEntitiesRef } = options;
+
+  return function (state: S) {
+    const result = [];
+
+    for (const id of getActiveIds(state)) {
+      const entity = state[entitiesKey][id];
+      if (entity) {
+        result.push(entity);
+      }
+    }
+
+    return result;
   };
 }
