@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.2.1](https://github.com/ngneat/elf/compare/devtools-1.2.0...devtools-1.2.1) (2022-03-16)
+
+
+### Bug Fixes
+
+* **devtools:** 🐞 should support JUMP_TO_ACTION ([a4697b5](https://github.com/ngneat/elf/commit/a4697b5245691e30576e15c428f012a7b27cb2e5)), closes [#195](https://github.com/ngneat/elf/issues/195)
+
+
 # [1.2.0](https://github.com/ngneat/elf/compare/devtools-1.1.0...devtools-1.2.0) (2021-12-19)
 
 
