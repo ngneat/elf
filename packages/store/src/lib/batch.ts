@@ -1,4 +1,5 @@
-import { BehaviorSubject, filter, take } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { filter, take } from 'rxjs/operators'; 
 
 export const batchInProgress = new BehaviorSubject<boolean>(false);
 export const batchDone$ = batchInProgress.asObservable().pipe(
