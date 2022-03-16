@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.5.1](https://github.com/ngneat/elf/compare/store-1.5.0...store-1.5.1) (2022-03-16)
+
+### Bug Fixes
+
+* **store:** 🐞 fix imports
+
+
 # [1.5.0](https://github.com/ngneat/elf/compare/store-1.4.0...store-1.5.0) (2022-03-08)
 
 
