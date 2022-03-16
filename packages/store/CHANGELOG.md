@@ -4,9 +4,11 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ## [1.5.1](https://github.com/ngneat/elf/compare/store-1.5.0...store-1.5.1) (2022-03-16)
 
+
 ### Bug Fixes
 
-* **store:** 🐞 fix imports
+* **store:** fixes incorrect operator imports from rxjs ([#197](https://github.com/ngneat/elf/issues/197)) ([c8764f8](https://github.com/ngneat/elf/commit/c8764f8ae04bbe5aa89520f329461232d90f7d88))
+
 
 
 # [1.5.0](https://github.com/ngneat/elf/compare/store-1.4.0...store-1.5.0) (2022-03-08)
