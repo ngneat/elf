@@ -81,9 +81,17 @@ describe('queries', () => {
     const store = createEntitiesStore();
     store.update(addEntities([createTodo(1), createTodo(2)]));
 
-    const v = store.query(getAllEntitiesApply({ mapEntity: (e) => e.title }));
+    const entities = store.query(
+      getAllEntitiesApply({ filterEntity: (e) => e.id === 1 })
+    );
 
-    expectTypeOf(v).toEqualTypeOf<Todo[]>();
+    expectTypeOf(entities).toEqualTypeOf<Todo[]>();
+
+    const titles = store.query(
+      getAllEntitiesApply({ mapEntity: (e) => e.title })
+    );
+
+    expectTypeOf(titles).toEqualTypeOf<string[]>();
 
     expect(store.query(getAllEntitiesApply({ mapEntity: (e) => e.title })))
       .toMatchInlineSnapshot(`

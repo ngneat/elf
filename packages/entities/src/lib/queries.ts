@@ -47,7 +47,7 @@ export function getAllEntitiesApply<
     mapEntity?(entity: getEntityType<S, Ref>): R;
     filterEntity?(entity: getEntityType<S, Ref>): boolean;
   } & BaseEntityOptions<Ref>
-): Query<S, getEntityType<S, Ref>[]> {
+): Query<S, R[]> {
   const {
     ref: { entitiesKey, idsKey } = defaultEntitiesRef,
     filterEntity = () => true,
