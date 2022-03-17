@@ -230,6 +230,28 @@ if (todosStore.query(hasEntity(id))) {
 }
 ```
 
+### `getEntitiesCount`
+
+Get the store's entity collection size:
+
+```ts
+import { getEntitiesCount } from '@ngneat/elf-entities';
+
+const count = todosStore.pipe(getEntitiesCount());
+```
+
+### `getEntitiesCountByPredicate`
+
+Get the store's entity collection size:
+
+```ts
+import { getEntitiesCountByPredicate } from '@ngneat/elf-entities';
+
+const count = todosStore.pipe(
+  getEntitiesCountByPredicate((entity) => entity.completed)
+);
+```
+
 ## Mutations
 
 ### `setEntities`

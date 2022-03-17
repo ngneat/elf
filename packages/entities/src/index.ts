@@ -25,6 +25,8 @@ export { selectMany, selectManyByPredicate } from './lib/many.query';
 export {
   selectEntitiesCount,
   selectEntitiesCountByPredicate,
+  getEntitiesCount,
+  getEntitiesCountByPredicate,
 } from './lib/count.query';
 export {
   withUIEntities,
