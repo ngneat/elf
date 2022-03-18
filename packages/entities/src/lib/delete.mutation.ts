@@ -8,7 +8,7 @@ import {
   getIdType,
   ItemPredicate,
 } from './entity.state';
-import { OrArray, Reducer, coerceArray } from '@ngneat/elf';
+import { coerceArray, OrArray, Reducer } from '@ngneat/elf';
 import { findIdsByPredicate } from './entity.utils';
 
 /**
@@ -40,7 +40,15 @@ export function deleteEntities<
 
     for (const id of idsToRemove) {
       Reflect.deleteProperty(newEntities, id);
+      state.activeId === id && Reflect.set(state, 'activeId', undefined);
     }
+
+    state.activeIds &&
+      Reflect.set(
+        state,
+        'activeIds',
+        state.activeIds.filter((id: string) => !idsToRemove.includes(id))
+      );
 
     return {
       ...state,
@@ -96,6 +104,9 @@ export function deleteAllEntities<
 >(options: BaseEntityOptions<Ref> = {}): Reducer<S> {
   return function reducer(state: S) {
     const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
+
+    state.activeId && Reflect.set(state, 'activeId', undefined);
+    state.activeIds && Reflect.set(state, 'activeIds', []);
 
     return {
       ...state,

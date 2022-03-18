@@ -2,6 +2,8 @@ import { createState, Store } from '@ngneat/elf';
 import {
   addActiveIds,
   addEntities,
+  deleteAllEntities,
+  deleteEntities,
   entitiesPropsFactory,
   getActiveEntities,
   getActiveEntity,
@@ -20,6 +22,7 @@ import {
   withActiveIds,
 } from './active';
 import { expectTypeOf } from 'expect-type';
+import { createTodo, toMatchSnapshot } from '@ngneat/elf-mocks';
 
 describe('activeId', () => {
   it('should select the active entity', () => {
@@ -118,6 +121,20 @@ describe('activeId', () => {
     expectTypeOf(activeRefEntity).toEqualTypeOf<
       { id: number; name: string } | undefined
     >();
+  });
+
+  it('should delete active id on entity removal', () => {
+    const { state, config } = createState(
+      withEntities<{ id: number; title: string }>(),
+      withActiveId()
+    );
+    const store = new Store({ state, config, name: '' });
+
+    store.update(addEntities([createTodo(1), createTodo(2)]));
+    store.update(setActiveId(1));
+    toMatchSnapshot(expect, store, 'should have two entities and one active');
+    store.update(deleteEntities(1));
+    toMatchSnapshot(expect, store, 'should delete one entity and one active');
   });
 });
 
@@ -225,5 +242,47 @@ describe('activeIds', () => {
     expectTypeOf(activeRefEntities).toEqualTypeOf<
       { id: number; name: string }[]
     >();
+  });
+
+  it('should delete active id on entity removal', () => {
+    const { state, config } = createState(
+      withEntities<{ id: number; title: string }>(),
+      withActiveIds()
+    );
+    const store = new Store({ state, config, name: '' });
+
+    store.update(
+      addEntities([createTodo(1), createTodo(2), createTodo(3), createTodo(4)])
+    );
+    store.update(setActiveIds([1, 3]));
+    toMatchSnapshot(expect, store, 'should have four entities and two active');
+    store.update(deleteEntities([1, 4]));
+    toMatchSnapshot(expect, store, 'should delete two entity and one active');
+    store.update(deleteEntities([3]));
+    toMatchSnapshot(expect, store, 'should delete one entity and one active');
+  });
+
+  it('should delete all active ids on store clear', () => {
+    const { state, config } = createState(
+      withEntities<{ id: number; title: string }>(),
+      withActiveIds()
+    );
+    const store = new Store({ state, config, name: '' });
+
+    store.update(
+      addEntities([createTodo(1), createTodo(2), createTodo(3), createTodo(4)])
+    );
+    store.update(setActiveIds([1, 3, 4]));
+    toMatchSnapshot(
+      expect,
+      store,
+      'should have four entities and three active'
+    );
+    store.update(deleteAllEntities());
+    toMatchSnapshot(
+      expect,
+      store,
+      'should delete four entity and three active'
+    );
   });
 });
