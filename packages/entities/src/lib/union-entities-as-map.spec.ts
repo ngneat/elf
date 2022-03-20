@@ -1,7 +1,7 @@
 import { createState, Store } from '@ngneat/elf';
 import {
   addEntities,
-  selectAll,
+  selectAllEntities,
   selectEntities,
   UIEntitiesRef,
   unionEntitiesAsMap,
@@ -24,7 +24,7 @@ describe('unionEntitiesAsMap', () => {
 
     store
       .combine({
-        entities: store.pipe(selectAll()),
+        entities: store.pipe(selectAllEntities()),
         UIEntities: store.pipe(selectEntities({ ref: UIEntitiesRef })),
       })
       .pipe(unionEntitiesAsMap())

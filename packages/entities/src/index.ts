@@ -13,7 +13,11 @@ export {
   upsertEntities,
   updateEntitiesIds,
 } from './lib/update.mutation';
-export { selectAll, selectEntities, selectAllApply } from './lib/all.query';
+export {
+  selectAllEntities,
+  selectEntities,
+  selectAllEntitiesApply,
+} from './lib/all.query';
 export { selectEntity, selectEntityByPredicate } from './lib/entity.query';
 export { selectFirst } from './lib/first.query';
 export { selectLast } from './lib/last.query';
@@ -21,6 +25,8 @@ export { selectMany, selectManyByPredicate } from './lib/many.query';
 export {
   selectEntitiesCount,
   selectEntitiesCountByPredicate,
+  getEntitiesCount,
+  getEntitiesCountByPredicate,
 } from './lib/count.query';
 export {
   withUIEntities,
@@ -36,4 +42,9 @@ export {
 export { unionEntities as unionEntities } from './lib/union-entities';
 export { unionEntitiesAsMap as unionEntitiesAsMap } from './lib/union-entities-as-map';
 export * from './lib/active/active';
-export { getEntity, hasEntity, getEntities } from './lib/queries';
+export {
+  getEntity,
+  hasEntity,
+  getAllEntities,
+  getAllEntitiesApply,
+} from './lib/queries';

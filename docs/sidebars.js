@@ -50,7 +50,9 @@ module.exports = {
         'miscellaneous/props-factory',
         'miscellaneous/operators',
         'miscellaneous/registry',
-      ]
+        'miscellaneous/hooks',
+        'miscellaneous/batching',
+      ],
     },
     'recipes',
     'faq',

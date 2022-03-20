@@ -1,5 +1,9 @@
 import { createStore } from '@ngneat/elf';
-import { selectAll, setEntities, withEntities } from '@ngneat/elf-entities';
+import {
+  selectAllEntities,
+  setEntities,
+  withEntities,
+} from '@ngneat/elf-entities';
 
 interface Todo {
   id: number;
@@ -8,7 +12,7 @@ interface Todo {
 
 const todosStore = createStore({ name: 'todos' }, withEntities<Todo>());
 
-todosStore.pipe(selectAll()).subscribe((todos) => {
+todosStore.pipe(selectAllEntities()).subscribe((todos) => {
   console.log(todos);
 });
 

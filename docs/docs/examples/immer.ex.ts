@@ -1,5 +1,9 @@
 import { createStore, withProps } from '@ngneat/elf';
-import { selectAll, updateEntities, withEntities } from '@ngneat/elf-entities';
+import {
+  selectAllEntities,
+  updateEntities,
+  withEntities,
+} from '@ngneat/elf-entities';
 import { produce } from 'immer';
 
 export function write<S>(updater: (state: S) => void): (state: S) => S {
@@ -26,7 +30,7 @@ const store = createStore(
   withProps<TodosProps>({ filter: 'ALL' })
 );
 
-export const todos$ = store.pipe(selectAll());
+export const todos$ = store.pipe(selectAllEntities());
 
 export function updateFilter(filter: TodosProps['filter']) {
   store.update(

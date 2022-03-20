@@ -26,12 +26,12 @@ export function untilEntitiesChanges<T extends EntitiesRecord>(
  *
  * @example
  *
- * store.pipe(selectAll())
+ * store.pipe(selectAllEntities())
  *
- * store.pipe(selectAll({ ref: UIEntitiesRef }))
+ * store.pipe(selectAllEntities({ ref: UIEntitiesRef }))
  *
  */
-export function selectAll<
+export function selectAllEntities<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
@@ -75,14 +75,14 @@ export function selectEntities<
  *
  * @example
  *
- * store.pipe(selectAllApply({
+ * store.pipe(selectAllEntitiesApply({
  *   map: (entity) => new Todo(entity),
  *   filter: entity => entity.completed
  * }))
  *
  *
  */
-export function selectAllApply<
+export function selectAllEntitiesApply<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef,
   R = getEntityType<S, Ref>

@@ -41,7 +41,7 @@ Elf encourages simplicity. It saves you the hassle of creating boilerplate code 
 
 ```ts
 import { createStore, withProps, select } from '@ngneat/elf';
-import { withEntities, selectAll, setEntities } from '@ngneat/elf-entities';
+import { withEntities, selectAllEntities, setEntities } from '@ngneat/elf-entities';
 
 interface TodosProps {
   filter: 'ALL' | 'ACTIVE' | 'COMPLETED';
@@ -60,7 +60,7 @@ const store = createStore(
 );
 
 export const filter$ = store.pipe(select(({ filter }) => filter));
-export const todos$ = store.pipe(selectAll());
+export const todos$ = store.pipe(selectAllEntities());
 
 export function setTodos(todos: Todo[]) {
   store.update(setEntities(todos));

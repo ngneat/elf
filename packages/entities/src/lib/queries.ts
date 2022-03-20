@@ -15,10 +15,10 @@ import { Query } from '@ngneat/elf';
  *
  * @example
  *
- * store.query(getEntities())
+ * store.query(getAllEntities())
  *
  */
-export function getEntities<
+export function getAllEntities<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(options: BaseEntityOptions<Ref> = {}): Query<S, getEntityType<S, Ref>[]> {
@@ -26,6 +26,45 @@ export function getEntities<
 
   return function (state) {
     return state[idsKey].map((id: getIdType<S, Ref>) => state[entitiesKey][id]);
+  };
+}
+
+/**
+ *
+ * Get the entities and apply filter/map
+ *
+ * @example
+ *
+ * store.query(getAllEntitiesApply())
+ *
+ */
+export function getAllEntitiesApply<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef,
+  R = getEntityType<S, Ref>
+>(
+  options: {
+    mapEntity?(entity: getEntityType<S, Ref>): R;
+    filterEntity?(entity: getEntityType<S, Ref>): boolean;
+  } & BaseEntityOptions<Ref>
+): Query<S, R[]> {
+  const {
+    ref: { entitiesKey, idsKey } = defaultEntitiesRef,
+    filterEntity = () => true,
+    mapEntity = (e) => e,
+  } = options;
+
+  return function (state) {
+    const result = [];
+
+    for (const id of state[idsKey]) {
+      const entity = state[entitiesKey][id];
+      if (filterEntity(entity)) {
+        result.push(mapEntity(entity));
+      }
+    }
+
+    return result;
   };
 }
 

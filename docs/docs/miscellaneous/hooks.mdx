@@ -1,0 +1,25 @@
+# Hooks
+
+Elf allows customizing some of the behavior via `elfHooks`
+
+## registerPreStoreUpdate
+
+Provide a function to modify the store value after reducers has run.
+
+The callback function takes three arguments:
+
+- `currentState` - state before reducers has run
+- `nextState` - state after reducers has run
+- `storeName` - the name of the store
+
+One scenario when this functionality could be useful is when a developer wants to prevent bugs associated with mutability by freezing the store value during the development:
+
+```ts
+import { elfHooks, deepFreeze } from '@ngneat/elf';
+
+if (!environment.production) {
+  elfHooks.registerPreStoreUpdate((currentState, nextState, storeName) => {
+    return deepFreeze(nextState);
+  });
+}
+```

@@ -35,25 +35,25 @@ This will allow you to use the following ready-made mutations and queries:
 
 ## Queries
 
-### `selectAll`
+### `selectAllEntities`
 
 Select the entire store's entity collection:
 
 ```ts
-import { selectAll } from '@ngneat/elf-entities';
+import { selectAllEntities } from '@ngneat/elf-entities';
 
-const todos$ = todosStore.pipe(selectAll());
+const todos$ = todosStore.pipe(selectAllEntities());
 ```
 
-### `selectAllApply`
+### `selectAllEntitiesApply`
 
 Select the entire store's entity collection, and apply a `filter/map`:
 
 ```ts
-import { selectAllApply } from '@ngneat/elf-entities';
+import { selectAllEntitiesApply } from '@ngneat/elf-entities';
 
 const titles$ = todosStore.pipe(
-  selectAllApply({
+  selectAllEntitiesApply({
     mapEntity: (e) => e.title,
     filterEntity: (e) => e.completed,
   })
@@ -61,6 +61,21 @@ const titles$ = todosStore.pipe(
 ```
 
 In the above example, it'll first apply the `filter` and then the `map` function.
+
+### `getAllEntitiesApply`
+
+Get the entire store's entity collection, and apply a `filter/map`:
+
+```ts
+import { getAllEntitiesApply } from '@ngneat/elf-entities';
+
+const titles = todosStore.query(
+  getAllEntitiesApply({
+    mapEntity: (e) => e.title,
+    filterEntity: (e) => e.completed,
+  })
+);
+```
 
 ### `selectEntities`
 
@@ -184,14 +199,14 @@ const count$ = todosStore.pipe(
 );
 ```
 
-### `getEntities`
+### `getAllEntities`
 
 Get the entity collection:
 
 ```ts
-import { getEntities } from '@ngneat/elf-entities';
+import { getAllEntities } from '@ngneat/elf-entities';
 
-const todos = todosStore.query(getEntities());
+const todos = todosStore.query(getAllEntities());
 ```
 
 ### `getEntity`
@@ -213,6 +228,28 @@ import { hasEntity } from '@ngneat/elf-entities';
 
 if (todosStore.query(hasEntity(id))) {
 }
+```
+
+### `getEntitiesCount`
+
+Get the store's entity collection size:
+
+```ts
+import { getEntitiesCount } from '@ngneat/elf-entities';
+
+const count = todosStore.pipe(getEntitiesCount());
+```
+
+### `getEntitiesCountByPredicate`
+
+Get the store's entity collection size:
+
+```ts
+import { getEntitiesCountByPredicate } from '@ngneat/elf-entities';
+
+const count = todosStore.pipe(
+  getEntitiesCountByPredicate((entity) => entity.completed)
+);
 ```
 
 ## Mutations

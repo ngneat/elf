@@ -13,7 +13,7 @@ import {
   // highlight-next-line
   createRequestDataSource,
 } from '@ngneat/elf-requests';
-import { selectAll, withEntities } from '@ngneat/elf-entities';
+import { selectAllEntities, withEntities } from '@ngneat/elf-entities';
 
 const store = createStore(
   { name: 'todos' },
@@ -24,7 +24,7 @@ const store = createStore(
 
 // highlight-start
 export const todosDataSource = createRequestDataSource({
-  data$: () => store.pipe(selectAll()),
+  data$: () => store.pipe(selectAllEntities()),
   requestKey: 'todos',
   dataKey: 'todos',
   store,

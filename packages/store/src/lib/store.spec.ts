@@ -1,15 +1,15 @@
-import { createTodo, createUITodo, Todo } from '@ngneat/elf-mocks';
 import {
   addEntities,
-  selectAll,
+  selectAllEntities,
+  UIEntitiesRef,
   updateEntities,
   withEntities,
   withUIEntities,
-  UIEntitiesRef,
 } from '@ngneat/elf-entities';
+import { createTodo, createUITodo, Todo } from '@ngneat/elf-mocks';
 import { withProps } from './props.state';
-import { Store } from './store';
 import { createState } from './state';
+import { Store } from './store';
 
 type UIEntity = { id: number; open: boolean };
 
@@ -47,8 +47,8 @@ describe('store', () => {
 
     store
       .combine({
-        todos: store.pipe(selectAll()),
-        ui: store.pipe(selectAll({ ref: UIEntitiesRef })),
+        todos: store.pipe(selectAllEntities()),
+        ui: store.pipe(selectAllEntities({ ref: UIEntitiesRef })),
       })
       .subscribe(spy);
 

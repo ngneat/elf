@@ -1,4 +1,4 @@
-import { select } from '@ngneat/elf';
+import { Query, select } from '@ngneat/elf';
 import { OperatorFunction, pipe } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { untilEntitiesChanges } from './all.query';
@@ -15,7 +15,7 @@ import { findIdsByPredicate } from './entity.utils';
 
 /**
  *
- * Observe the entities size
+ * Observe the entities collection size
  *
  * @example
  *
@@ -33,7 +33,7 @@ export function selectEntitiesCount<
 
 /**
  *
- * Observe the entities size
+ * Observe the entities collection size  that pass the predicate
  *
  * @example
  *
@@ -54,4 +54,47 @@ export function selectEntitiesCountByPredicate<
     map((state) => findIdsByPredicate(state, ref, predicate).length),
     distinctUntilChanged()
   );
+}
+
+/**
+ *
+ * Return the entities collection size
+ *
+ * @example
+ *
+ * store.query(getEntitiesCount())
+ *
+ */
+export function getEntitiesCount<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(options: BaseEntityOptions<Ref> = {}): Query<S, number> {
+  return function (state) {
+    const { ref: { idsKey } = defaultEntitiesRef } = options;
+
+    return state[idsKey].length;
+  };
+}
+
+/**
+ *
+ * Return the entities collection size that pass the predicate
+ *
+ * @example
+ *
+ * store.query(getEntitiesCountByPredicate(entity => entity.completed))
+ *
+ */
+export function getEntitiesCountByPredicate<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(
+  predicate: ItemPredicate<getEntityType<S, Ref>>,
+  options: BaseEntityOptions<Ref> = {}
+): Query<S, number> {
+  return function (state) {
+    const ref = options.ref || (defaultEntitiesRef as Ref);
+
+    return findIdsByPredicate(state, ref, predicate).length;
+  };
 }

@@ -2,6 +2,32 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.5.2](https://github.com/ngneat/elf/compare/store-1.5.0...store-1.5.2) (2022-03-16)
+
+
+### Bug Fixes
+
+* **store:** fixes incorrect operator imports from rxjs ([#197](https://github.com/ngneat/elf/issues/197)) ([c8764f8](https://github.com/ngneat/elf/commit/c8764f8ae04bbe5aa89520f329461232d90f7d88))
+
+
+
+# [1.5.0](https://github.com/ngneat/elf/compare/store-1.4.0...store-1.5.0) (2022-03-08)
+
+
+### Features
+
+* **store:** 🔥 add emitOnce function ([3256d5f](https://github.com/ngneat/elf/commit/3256d5fbd1603ded8365c01c518862b3b6d6f3bf))
+
+
+# [1.4.0](https://github.com/ngneat/elf/compare/store-1.3.3...store-1.4.0) (2022-03-08)
+
+
+### Features
+
+* **store:** 🔥 elfHooks with preStoreUpdate hook ([#182](https://github.com/ngneat/elf/issues/182)) ([0704c33](https://github.com/ngneat/elf/commit/0704c3399c58008fa33702276943832a54d5dd49))
+
+
+
 ## [1.3.3](https://github.com/ngneat/elf/compare/store-1.3.2...store-1.3.3) (2022-02-24)
 
 

@@ -1,6 +1,6 @@
 import { createStore } from '@ngneat/elf';
 import { expectTypeOf } from 'expect-type';
-import { selectAll, selectEntities, withEntities } from '..';
+import { selectAllEntities, selectEntities, withEntities } from '..';
 import { addEntities } from './add.mutation';
 import { entitiesPropsFactory } from './entity.state';
 
@@ -125,7 +125,7 @@ describe('entities props factory', () => {
 
     store
       .combine({
-        movies: store.pipe(selectAll()),
+        movies: store.pipe(selectAllEntities()),
         generes: store.pipe(selectEntities({ ref: genresEntitiesRef })),
         actors: store.pipe(selectEntities({ ref: actorsEntitiesRef })),
       })

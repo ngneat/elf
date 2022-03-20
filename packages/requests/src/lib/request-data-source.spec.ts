@@ -6,7 +6,7 @@ import {
 } from './requests-status';
 import {
   addEntities,
-  selectAll,
+  selectAllEntities,
   selectEntity,
   setEntities,
   withEntities,
@@ -41,7 +41,7 @@ describe('createRequestDataSource', () => {
       skipWhileCached,
     } = createRequestDataSource({
       store,
-      data$: () => store.pipe(selectAll()),
+      data$: () => store.pipe(selectAllEntities()),
       requestKey: 'todos',
       dataKey: 'todos',
     });
@@ -174,7 +174,7 @@ describe('createRequestDataSource', () => {
       dataKey: 'todos',
       requestKey: 'todos',
       idleAsPending: true,
-      data$: () => store.pipe(selectAll()),
+      data$: () => store.pipe(selectAllEntities()),
     });
 
     const spy = jest.fn();
@@ -237,7 +237,7 @@ describe('createRequestDataSource', () => {
       dataKey: 'todos',
       requestKey: 'todos',
       idleAsPending: true,
-      data$: () => store.pipe(selectAll()),
+      data$: () => store.pipe(selectAllEntities()),
     });
 
     const spy = jest.fn();
@@ -263,7 +263,7 @@ describe('createRequestDataSource', () => {
       store: store,
       dataKey: 'todos',
       requestKey: 'todos',
-      data$: () => store.pipe(selectAll()),
+      data$: () => store.pipe(selectAllEntities()),
     });
 
     const todoDataSource = createRequestDataSource({
@@ -309,7 +309,7 @@ describe('createRequestDataSource', () => {
       store: store,
       dataKey: 'todos',
       requestKey: 'get',
-      data$: () => store.pipe(selectAll()),
+      data$: () => store.pipe(selectAllEntities()),
     });
 
     const todoDataSource = createRequestDataSource({

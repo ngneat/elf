@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`selectAll should observe entities object: should be an object 1`] = `Object {}`;
+exports[`selectAllEntities should observe entities object: should be an object 1`] = `Object {}`;
 
-exports[`selectAll should observe entities object: should be an object 2`] = `
+exports[`selectAllEntities should observe entities object: should be an object 2`] = `
 Object {
   "1": Object {
     "completed": false,
@@ -12,9 +12,9 @@ Object {
 }
 `;
 
-exports[`selectAll should select all: calls: 1 1`] = `Array []`;
+exports[`selectAllEntities should select all: calls: 1 1`] = `Array []`;
 
-exports[`selectAll should select all: calls: 2 1`] = `
+exports[`selectAllEntities should select all: calls: 2 1`] = `
 Array [
   Object {
     "completed": false,
@@ -24,9 +24,9 @@ Array [
 ]
 `;
 
-exports[`selectAll should work with ref: calls: 1 1`] = `Array []`;
+exports[`selectAllEntities should work with ref: calls: 1 1`] = `Array []`;
 
-exports[`selectAll should work with ref: calls: 2 1`] = `
+exports[`selectAllEntities should work with ref: calls: 2 1`] = `
 Array [
   Object {
     "id": 1,

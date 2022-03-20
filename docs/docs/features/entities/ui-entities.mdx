@@ -45,14 +45,14 @@ We can use the `unionEntities()` or `unionEntitiesAsMap()` operator to get a com
 ```ts
 import {
   unionEntities,
-  selectAll,
+  selectAllEntities,
   selectEntities,
   UIEntitiesRef,
 } from '@ngneat/elf-entities';
 
 todos$ = todosStore
   .combine({
-    entities: todosStore.pipe(selectAll()),
+    entities: todosStore.pipe(selectAllEntities()),
     UIEntities: todosStore.pipe(selectEntities({ ref: UIEntitiesRef })),
   })
   .pipe(unionEntities());

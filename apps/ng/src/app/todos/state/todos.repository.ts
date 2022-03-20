@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { createStore, select, withProps } from '@ngneat/elf';
 import {
   addEntities,
-  selectAll,
-  selectAllApply,
+  selectAllEntities,
+  selectAllEntitiesApply,
   selectEntityByPredicate,
   selectManyByPredicate,
   updateEntities,
@@ -30,13 +30,13 @@ const store = createStore(
 
 @Injectable({ providedIn: 'root' })
 export class TodosRepository {
-  todos$ = store.pipe(selectAll());
+  todos$ = store.pipe(selectAllEntities());
   filter$ = store.pipe(select((state) => state.filter));
 
   visibleTodos$ = this.filter$.pipe(
     switchMap((filter) => {
       return store.pipe(
-        selectAllApply({
+        selectAllEntitiesApply({
           filterEntity({ completed }) {
             if (filter === 'ALL') return true;
             return filter === 'COMPLETED' ? completed : !completed;

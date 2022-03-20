@@ -2,7 +2,7 @@
 
 exports[`Repo Builder all in a class: all in a class 1`] = `
 "import { createStore, withProps } from '@ngneat/elf';
-import { withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
+import { withEntities, selectAllEntities, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
 import { Observable } from 'rxjs';
 import { withRequestsCache, withRequestsStatus } from '@ngneat/elf-requests';
 
@@ -27,7 +27,7 @@ export class TodosRepository {
 
   constructor() {
     this.store = this.createStore();
-    this.todos$ = this.store.pipe(selectAll());
+    this.todos$ = this.store.pipe(selectAllEntities());
     this.activeTodo$ = this.store.pipe(selectActiveEntity());
     this.activeTodos$ = this.store.pipe(selectActiveEntities());
   }
@@ -63,7 +63,7 @@ export class TodosRepository {
 
 exports[`Repo Builder all: all 1`] = `
 "import { createStore, withProps } from '@ngneat/elf';
-import { withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
+import { withEntities, selectAllEntities, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
 import { withRequestsCache, withRequestsStatus } from '@ngneat/elf-requests';
 
 export interface TodoUI {
@@ -83,7 +83,7 @@ const store = createStore({ name: 'todos' }, withProps<TodosProps>({}), withEnti
 export class TodosRepository {
   activeTodos$ = store.pipe(selectActiveEntities());
   activeTodo$ = store.pipe(selectActiveEntity());
-  todos$ = store.pipe(selectAll());
+  todos$ = store.pipe(selectAllEntities());
 
   deleteTodo(id: Todo['id']) {
     store.update(deleteEntities(id));
@@ -110,7 +110,7 @@ export class TodosRepository {
 
 exports[`Repo Builder should support function template: all 1`] = `
 "import { createStore, withProps } from '@ngneat/elf';
-import { withEntities, selectAll, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
+import { withEntities, selectAllEntities, deleteEntities, addEntities, updateEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
 import { withRequestsCache, withRequestsStatus } from '@ngneat/elf-requests';
 
 export interface TodoUI {
@@ -131,7 +131,7 @@ export const activeTodos$ = todosStore.pipe(selectActiveEntities());
 
 export const activeTodo$ = todosStore.pipe(selectActiveEntity());
 
-export const todos$ = todosStore.pipe(selectAll());
+export const todos$ = todosStore.pipe(selectAllEntities());
 
 export function deleteTodo(id: Todo['id']) {
   todosStore.update(deleteEntities(id));
@@ -243,7 +243,7 @@ export class TodosRepository {
 
 exports[`Repo Builder withEntities idKey in a class: withEntities in a class 1`] = `
 "import { createStore } from '@ngneat/elf';
-import { withEntities, selectAll, addEntities, updateEntities, deleteEntities } from '@ngneat/elf-entities';
+import { withEntities, selectAllEntities, addEntities, updateEntities, deleteEntities } from '@ngneat/elf-entities';
 import { Observable } from 'rxjs';
 
 export interface Todo {
@@ -257,7 +257,7 @@ export class TodosRepository {
 
   constructor() {
     this.store = this.createStore();
-    this.todos$ = this.store.pipe(selectAll());
+    this.todos$ = this.store.pipe(selectAllEntities());
   }
 
   addTodo(todo: Todo) {
@@ -283,7 +283,7 @@ export class TodosRepository {
 
 exports[`Repo Builder withEntities idKey: withEntities 1`] = `
 "import { createStore } from '@ngneat/elf';
-import { withEntities, selectAll, addEntities, updateEntities, deleteEntities } from '@ngneat/elf-entities';
+import { withEntities, selectAllEntities, addEntities, updateEntities, deleteEntities } from '@ngneat/elf-entities';
 
 export interface Todo {
   _id: number;
@@ -292,7 +292,7 @@ export interface Todo {
 const store = createStore({ name: 'todos' }, withEntities<Todo, '_id'>({ idKey: '_id' }));
 
 export class TodosRepository {
-  todos$ = store.pipe(selectAll());
+  todos$ = store.pipe(selectAllEntities());
 
   addTodo(todo: Todo) {
     store.update(addEntities(todo));
@@ -311,7 +311,7 @@ export class TodosRepository {
 
 exports[`Repo Builder withEntities in a class: withEntities in a class 1`] = `
 "import { createStore } from '@ngneat/elf';
-import { withEntities, selectAll } from '@ngneat/elf-entities';
+import { withEntities, selectAllEntities } from '@ngneat/elf-entities';
 import { Observable } from 'rxjs';
 
 export interface Todo {
@@ -325,7 +325,7 @@ export class TodosRepository {
 
   constructor() {
     this.store = this.createStore();
-    this.todos$ = this.store.pipe(selectAll());
+    this.todos$ = this.store.pipe(selectAllEntities());
   }
 
   private createStore(): typeof store {
@@ -339,7 +339,7 @@ export class TodosRepository {
 
 exports[`Repo Builder withEntities: withEntities 1`] = `
 "import { createStore } from '@ngneat/elf';
-import { withEntities, selectAll, addEntities, updateEntities, deleteEntities } from '@ngneat/elf-entities';
+import { withEntities, selectAllEntities, addEntities, updateEntities, deleteEntities } from '@ngneat/elf-entities';
 
 export interface Todo {
   id: number;
@@ -348,7 +348,7 @@ export interface Todo {
 const store = createStore({ name: 'todos' }, withEntities<Todo>());
 
 export class TodosRepository {
-  todos$ = store.pipe(selectAll());
+  todos$ = store.pipe(selectAllEntities());
 
   addTodo(todo: Todo) {
     store.update(addEntities(todo));

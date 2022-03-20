@@ -3,10 +3,17 @@ import {
   createTodo,
   createUIEntityStore,
   createUITodo,
+  Todo,
 } from '@ngneat/elf-mocks';
-import { getEntities, getEntity, hasEntity } from './queries';
+import {
+  getAllEntitiesApply,
+  getAllEntities,
+  getEntity,
+  hasEntity,
+} from './queries';
 import { addEntities } from './add.mutation';
 import { UIEntitiesRef } from './entity.state';
+import { expectTypeOf } from 'expect-type';
 
 describe('queries', () => {
   describe('getEntity', () => {
@@ -39,11 +46,11 @@ describe('queries', () => {
     });
   });
 
-  describe('getEntities', () => {
+  describe('getAllEntities', () => {
     it('should return the collection', () => {
       const store = createEntitiesStore();
       store.update(addEntities(createTodo(1)));
-      expect(store.query(getEntities())).toMatchInlineSnapshot(`
+      expect(store.query(getAllEntities())).toMatchInlineSnapshot(`
         Array [
           Object {
             "completed": false,
@@ -58,7 +65,7 @@ describe('queries', () => {
       const store = createUIEntityStore();
 
       store.update(addEntities(createUITodo(1), { ref: UIEntitiesRef }));
-      expect(store.query(getEntities({ ref: UIEntitiesRef })))
+      expect(store.query(getAllEntities({ ref: UIEntitiesRef })))
         .toMatchInlineSnapshot(`
         Array [
           Object {
@@ -68,5 +75,43 @@ describe('queries', () => {
         ]
       `);
     });
+  });
+
+  it('should getAllEntitiesApply', () => {
+    const store = createEntitiesStore();
+    store.update(addEntities([createTodo(1), createTodo(2)]));
+
+    const entities = store.query(
+      getAllEntitiesApply({ filterEntity: (e) => e.id === 1 })
+    );
+
+    expectTypeOf(entities).toEqualTypeOf<Todo[]>();
+
+    const titles = store.query(
+      getAllEntitiesApply({ mapEntity: (e) => e.title })
+    );
+
+    expectTypeOf(titles).toEqualTypeOf<string[]>();
+
+    expect(store.query(getAllEntitiesApply({ mapEntity: (e) => e.title })))
+      .toMatchInlineSnapshot(`
+      Array [
+        "todo 1",
+        "todo 2",
+      ]
+    `);
+
+    expect(
+      store.query(
+        getAllEntitiesApply({
+          mapEntity: (e) => e.title,
+          filterEntity: (e) => e.id === 1,
+        })
+      )
+    ).toMatchInlineSnapshot(`
+      Array [
+        "todo 1",
+      ]
+    `);
   });
 });

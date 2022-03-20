@@ -116,7 +116,7 @@ export function devTools(options: DevtoolsOptions = {}) {
         return;
       }
 
-      if (payloadType === 'JUMP_TO_STATE') {
+      if (payloadType === 'JUMP_TO_STATE' || payloadType === 'JUMP_TO_ACTION') {
         const state = JSON.parse(message.state);
 
         for (const [name, value] of Object.entries(state)) {

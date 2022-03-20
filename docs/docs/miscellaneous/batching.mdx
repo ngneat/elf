@@ -1,0 +1,41 @@
+# Batching
+
+When using the store's `update` function, you can pass multiple mutation functions:
+
+```ts
+store.update(
+  setProp('count', 1),
+  addEntities([todo, todo]),
+  deleteEntities(1)
+)
+```
+
+In this case, subscribers will only receive **one** emission instead of three.
+
+There are cases where you have multiple update functions of the **same** store that you want to batch together. To do so you can use the `emitOnce` function:
+
+```ts title=todos.repository.ts
+export function updateCount() {
+  store.update(
+    setProp('count', 1),
+  )
+}
+
+export function updateUser() {
+  store.update(
+    setProp('user', null),
+  )
+}
+```
+
+```ts
+import { emitOnce } from '@elf/store';
+import { updateCount, updateUser } from './todos.repository';
+
+emitOnce(() => {
+  updateCount();
+  updateUser();
+})
+```
+
+In this case, subscribers will only receive **one** emission instead of two.

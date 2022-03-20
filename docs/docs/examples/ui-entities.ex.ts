@@ -1,7 +1,7 @@
 import { createStore } from '@ngneat/elf';
 import {
   addEntities,
-  selectAll,
+  selectAllEntities,
   selectEntities,
   selectEntity,
   UIEntitiesRef,
@@ -36,7 +36,7 @@ todosStore.pipe(selectEntity(1, { ref: UIEntitiesRef })).subscribe((todo) => {
 
 todosStore
   .combine({
-    entities: todosStore.pipe(selectAll()),
+    entities: todosStore.pipe(selectAllEntities()),
     UIEntities: todosStore.pipe(selectEntities({ ref: UIEntitiesRef })),
   })
   .pipe(unionEntities())
