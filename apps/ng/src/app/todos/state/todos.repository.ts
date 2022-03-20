@@ -59,7 +59,13 @@ export class TodosRepository {
   }
 
   addTodo(title: Todo['title']) {
-    store.update(addEntities({ id: Math.random(), title, completed: false }));
+    store.update(addEntities({ id: 1, title, completed: false }));
+    store.update(
+      addEntities([
+        { id: 1, title, completed: false },
+        { id: 2, title, completed: false },
+      ])
+    );
   }
 
   updateFilter(filter: TodosProps['filter']) {

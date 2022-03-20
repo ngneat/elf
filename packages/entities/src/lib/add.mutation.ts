@@ -1,3 +1,5 @@
+import { coerceArray, isDev, OrArray, Reducer } from '@ngneat/elf';
+import { deleteEntities } from './delete.mutation';
 import {
   BaseEntityOptions,
   DefaultEntitiesRef,
@@ -8,9 +10,7 @@ import {
   getIdKey,
   getIdType,
 } from './entity.state';
-import { OrArray, Reducer, coerceArray } from '@ngneat/elf';
 import { buildEntities } from './entity.utils';
-import { deleteEntities } from './delete.mutation';
 
 export interface AddEntitiesOptions {
   prepend?: boolean;
@@ -40,15 +40,18 @@ export function addEntities<
     const { prepend = false, ref = defaultEntitiesRef } = options;
 
     const { entitiesKey, idsKey } = ref!;
+    const idKey = getIdKey<any>(context, ref);
 
     const asArray = coerceArray(entities);
 
     if (!asArray.length) return state;
 
-    const { ids, asObject } = buildEntities<S, Ref>(
-      asArray,
-      getIdKey(context, ref)
-    );
+    if (isDev()) {
+      throwIfEntityExists(asArray, idKey, state, entitiesKey);
+      throwIfDuplicateIdKey(asArray, idKey);
+    }
+
+    const { ids, asObject } = buildEntities<S, Ref>(asArray, idKey);
 
     return {
       ...state,
@@ -89,7 +92,7 @@ export function addEntitiesFifo<
     let newState: S = state;
 
     if (normalizedEntities.length > limit) {
-      // Remove new entities that passes the limit
+      // Remove new entities that pass the limit
       normalizedEntities = normalizedEntities.slice(
         normalizedEntities.length - limit
       );
@@ -114,4 +117,31 @@ export function addEntitiesFifo<
       [idsKey]: [...newState[idsKey], ...ids],
     };
   };
+}
+
+function throwIfEntityExists(
+  entities: any[],
+  idKey: string,
+  state: Record<any, any>,
+  entitiesKey: string
+) {
+  entities.forEach((entity) => {
+    const id = entity[idKey];
+    if (state[entitiesKey][id]) {
+      throw Error(`Entity already exists. ${idKey} ${id}`);
+    }
+  });
+}
+
+function throwIfDuplicateIdKey(entities: any[], idKey: string) {
+  const check = new Set();
+
+  entities.forEach((entity) => {
+    const id = entity[idKey];
+    if (check.has(id)) {
+      throw Error(`Duplicate entity id provided. ${idKey} ${id}`);
+    }
+
+    check.add(id);
+  });
 }
