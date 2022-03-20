@@ -1,4 +1,4 @@
-import { coerceArray, OrArray, Reducer } from '@ngneat/elf';
+import { coerceArray, isDev, OrArray, Reducer } from '@ngneat/elf';
 import { deleteEntities } from './delete.mutation';
 import {
   BaseEntityOptions,
@@ -46,8 +46,10 @@ export function addEntities<
 
     if (!asArray.length) return state;
 
-    throwIfEntityExists(asArray, idKey, state, entitiesKey);
-    throwIfDuplicateIdKey(asArray, idKey);
+    if (isDev()) {
+      throwIfEntityExists(asArray, idKey, state, entitiesKey);
+      throwIfDuplicateIdKey(asArray, idKey);
+    }
 
     const { ids, asObject } = buildEntities<S, Ref>(asArray, idKey);
 

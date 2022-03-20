@@ -33,3 +33,4 @@ export {
   isString,
   isUndefined,
 } from './lib/utils';
+export { isDev } from './lib/env';
