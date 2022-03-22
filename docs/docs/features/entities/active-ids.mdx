@@ -89,6 +89,16 @@ import { setActiveId } from '@ngneat/elf-entities';
 todosStore.update(setActiveId(id));
 ```
 
+### `resetActiveId`
+
+Reset the active id:
+
+```ts
+import { resetActiveId } from '@ngneat/elf-entities';
+
+todosStore.update(resetActiveId());
+```
+
 ## Active Ids
 
 To use this feature, provide the `withActiveIds` props factory function in the `createStore` call:
@@ -193,4 +203,14 @@ Remove active ids:
 import { removeActiveIds } from '@ngneat/elf-entities';
 
 todosStore.update(removeActiveIds([id, id]));
+```
+
+### `resetActiveIds`
+
+Reset the active ids:
+
+```ts
+import { resetActiveIds } from '@ngneat/elf-entities';
+
+todosStore.update(resetActiveIds());
 ```
