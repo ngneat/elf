@@ -47,6 +47,7 @@ module.exports = {
       label: 'Miscellaneous',
       collapsed: false,
       items: [
+        'miscellaneous/production',
         'miscellaneous/props-factory',
         'miscellaneous/operators',
         'miscellaneous/registry',
