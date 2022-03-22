@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [4.2.1](https://github.com/ngneat/elf/compare/entities-4.2.0...entities-4.2.1) (2022-03-22)
+
+
+### Bug Fixes
+
+* **entities:** fix duplicate ids ([#153](https://github.com/ngneat/elf/issues/153)) ([95b9440](https://github.com/ngneat/elf/commit/95b9440f4822c40ebb45374077153f23ce38119d))
+
+
+
 # [4.2.0](https://github.com/ngneat/elf/compare/entities-4.1.1...entities-4.2.0) (2022-03-17)
 
 
