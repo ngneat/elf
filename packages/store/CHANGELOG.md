@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.5.3](https://github.com/ngneat/elf/compare/store-1.5.2...store-1.5.3) (2022-03-22)
+
+
+### Bug Fixes
+
+* **store:** add enableElfProdMode
+
+
+
 ## [1.5.2](https://github.com/ngneat/elf/compare/store-1.5.0...store-1.5.2) (2022-03-16)
 
 
