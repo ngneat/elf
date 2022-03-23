@@ -36,4 +36,4 @@ export {
   isUndefined,
 } from './lib/utils';
 export { emitOnce } from './lib/batch';
-export { isDev } from './lib/env';
+export { isDev, enableElfProdMode } from './lib/env';
