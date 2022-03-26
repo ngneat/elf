@@ -2,6 +2,20 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [3.0.0](https://github.com/ngneat/elf/compare/cli-2.2.0...cli-3.0.0) (2022-03-26)
+
+
+### Features
+
+* **entities:** 🔥 change selectAll to selectAllEntities ([e30b6d1](https://github.com/ngneat/elf/commit/e30b6d19ccac7759b9587edfff01c8c29248a738))
+
+
+### BREAKING CHANGES
+
+* **entities:** 🧨 change selectAll to selectAllEntities
+
+
+
 # [2.2.0](https://github.com/ngneat/elf/compare/cli-2.1.0...cli-2.2.0) (2022-02-23)
 
 
