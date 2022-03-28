@@ -55,13 +55,15 @@ export class Store<
     if (nextState !== currentState) {
       this.state = nextState;
 
-      if (batchInProgress.getValue() && !this.batchInProgress) {
-        this.batchInProgress = true;
+      if (batchInProgress.getValue()) {
+        if (!this.batchInProgress) {
+          this.batchInProgress = true;
 
-        batchDone$.subscribe(() => {
-          super.next(this.state);
-          this.batchInProgress = false;
-        });
+          batchDone$.subscribe(() => {
+            super.next(this.state);
+            this.batchInProgress = false;
+          });
+        }
       } else {
         super.next(this.state);
       }

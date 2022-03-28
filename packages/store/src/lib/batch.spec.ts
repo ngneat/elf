@@ -54,3 +54,31 @@ test('batch', () => {
     }
   `);
 });
+
+test('batch loop', () => {
+  const store = createStore(
+    {
+      name: 'todos2',
+    },
+    withProps<{ count: number }>({ count: 1 })
+  );
+
+  const spy = jest.fn();
+  store.pipe(select((s) => s.count)).subscribe(spy);
+
+  emitOnce(() => {
+    for (let i = 0; i < 10; i++) {
+      store.update((s) => ({ count: s.count + 1 }));
+    }
+  });
+
+  expect(store.getValue()).toMatchInlineSnapshot(`
+    Object {
+      "count": 11,
+    }
+  `);
+
+  expect(spy).toHaveBeenCalledTimes(2);
+  expect(spy).toHaveBeenCalledWith(1);
+  expect(spy).toHaveBeenCalledWith(11);
+});
