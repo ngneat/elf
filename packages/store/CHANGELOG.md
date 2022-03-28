@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.5.5](https://github.com/ngneat/elf/compare/store-1.5.4...store-1.5.5) (2022-03-28)
+
+
+### Bug Fixes
+
+* **store:** 🐞 fix emitOnce condition ([46d2bf4](https://github.com/ngneat/elf/commit/46d2bf4a7f284ae117783330ab44857a918fad1e))
+
+
 
 ## [1.5.4](https://github.com/ngneat/elf/compare/store-1.5.3...store-1.5.4) (2022-03-23)
 
