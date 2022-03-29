@@ -7,8 +7,10 @@ export const batchDone$ = batchInProgress.asObservable().pipe(
   take(1)
 );
 
-export function emitOnce(cb: VoidFunction) {
+export function emitOnce<T>(cb: () => T) {
   batchInProgress.next(true);
-  cb();
+  const value = cb();
   batchInProgress.next(false);
+
+  return value;
 }

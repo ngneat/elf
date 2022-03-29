@@ -32,11 +32,15 @@ test('batch', () => {
   expect(spy).toHaveBeenCalledTimes(1);
   expect(spy2).toHaveBeenCalledTimes(1);
 
-  emitOnce(() => {
+  const v = emitOnce(() => {
     updateOne();
     store2.update((s) => ({ count: s.count + 1 }));
     store2.update((s) => ({ count: s.count + 1 }));
+
+    return 10;
   });
+
+  expect(v).toEqual(10);
 
   expect(spy).toHaveBeenCalledTimes(2);
 
