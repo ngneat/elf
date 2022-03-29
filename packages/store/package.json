@@ -1,6 +1,6 @@
 {
   "name": "@ngneat/elf",
-  "version": "1.5.5",
+  "version": "1.5.6",
   "description": "A reactive state management for JS applications",
   "publishConfig": {
     "access": "public"

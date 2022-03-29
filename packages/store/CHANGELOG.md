@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.5.6](https://github.com/ngneat/elf/compare/store-1.5.5...store-1.5.6) (2022-03-29)
+
+
+### Bug Fixes
+
+* **store:** 🐞 return emitOnce cb value ([4718f37](https://github.com/ngneat/elf/commit/4718f3766b0c89851b506301a9c6c1c4be52ddb9))
+
+
+
 ## [1.5.5](https://github.com/ngneat/elf/compare/store-1.5.4...store-1.5.5) (2022-03-28)
 
 
