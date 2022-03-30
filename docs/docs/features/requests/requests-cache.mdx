@@ -27,7 +27,7 @@ const todosStore = createStore(
   withEntities<Todo>(),
   // You can pass the keys type
   // highlight-next-line
-  withRequestsCache<'todo'|'todo-${string}'>()
+  withRequestsCache<'todo'|`todo-${string}`>()
 );
 ```
 
@@ -39,7 +39,11 @@ import {
   createRequestsCacheOperator,
 } from '@ngneat/elf-requests';
 
-export const todosStore = createStore({ name: 'todos' }, withEntities<Todo>());
+const todosStore = createStore(
+  { name: 'todos' },
+  withEntities<Todo>(),
+  withRequestsCache<'todo'|`todo-${string}`>()
+);
 
 export const skipWhileTodosCached = createRequestsCacheOperator(todosStore);
 ```
