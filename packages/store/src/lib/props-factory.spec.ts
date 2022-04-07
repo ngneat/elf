@@ -12,6 +12,7 @@ import {
   propsArrayFactory,
 } from './props-array-factory';
 import { expectTypeOf } from 'expect-type';
+import { createStore } from './create-store';
 
 type StatusValue = Record<string | number, StatusState>;
 type StatusState = 'pending' | 'success' | 'error';
@@ -97,6 +98,27 @@ describe('propsFactory', () => {
     store.update(setRequestsStatus((state) => state.requestsStatus));
 
     expect(spy).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('propsFactory with initial value passed to `with` prop', () => {
+  const { withRequestsStatus, updateRequestsStatus, resetRequestsStatus } =
+    propsFactory('requestsStatus', {
+      initialValue: {} as StatusValue,
+    });
+
+  const initialValue: StatusValue = { 1: 'pending' };
+  const store = createStore({ name: '' }, withRequestsStatus(initialValue));
+
+  it('should work', () => {
+    expect(store.getValue()).toEqual({ requestsStatus: initialValue });
+  });
+
+  it('should reset', () => {
+    store.update(updateRequestsStatus({ 1: 'success' }));
+    expect(store.getValue()).toEqual({ requestsStatus: { 1: 'success' } });
+    store.update(resetRequestsStatus());
+    expect(store.getValue()).toEqual({ requestsStatus: initialValue });
   });
 });
 

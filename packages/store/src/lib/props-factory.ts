@@ -9,65 +9,79 @@ export function propsFactory<
   K extends string,
   Props extends { [Key in K]: T },
   Config = EmptyConfig
->(key: K, { initialValue, config }: { initialValue: T; config?: Config }) {
+>(
+  key: K,
+  {
+    initialValue: propsFactoryInitialValue,
+    config,
+  }: { initialValue: T; config?: Config }
+) {
   const normalizedKey = capitalize(key);
 
-  return {
-    [`with${normalizedKey}`](value = initialValue) {
-      return {
-        props: {
-          [key]: value,
-        },
-        config,
-      };
-    },
-    [`set${normalizedKey}`](value: any) {
-      return function (state: any) {
-        const newVal = isFunction(value) ? value(state) : value;
+  return (() => {
+    let initialValue = propsFactoryInitialValue;
 
-        if (newVal === state[key]) {
-          return state;
+    return {
+      [`with${normalizedKey}`](value?: T) {
+        if (value) {
+          initialValue = value;
         }
 
         return {
-          ...state,
-          [key]: newVal,
+          props: {
+            [key]: initialValue,
+          },
+          config,
         };
-      };
-    },
-    [`update${normalizedKey}`](value: any) {
-      return function (state: any) {
-        const newVal = isFunction(value) ? value(state) : value;
-        if (newVal === state[key]) {
-          return state;
-        }
+      },
+      [`set${normalizedKey}`](value: any) {
+        return function (state: any) {
+          const newVal = isFunction(value) ? value(state) : value;
 
-        return {
-          ...state,
-          [key]: isObject(newVal)
-            ? {
-                ...state[key],
-                ...newVal,
-              }
-            : newVal,
+          if (newVal === state[key]) {
+            return state;
+          }
+
+          return {
+            ...state,
+            [key]: newVal,
+          };
         };
-      };
-    },
-    [`reset${normalizedKey}`]() {
-      return function (state: any) {
-        return {
-          ...state,
-          [key]: initialValue,
+      },
+      [`update${normalizedKey}`](value: any) {
+        return function (state: any) {
+          const newVal = isFunction(value) ? value(state) : value;
+          if (newVal === state[key]) {
+            return state;
+          }
+
+          return {
+            ...state,
+            [key]: isObject(newVal)
+              ? {
+                  ...state[key],
+                  ...newVal,
+                }
+              : newVal,
+          };
         };
-      };
-    },
-    [`select${normalizedKey}`]() {
-      return select((state: any) => state[key]);
-    },
-    [`get${normalizedKey}`](state: any) {
-      return state[key];
-    },
-  } as unknown as {
+      },
+      [`reset${normalizedKey}`]() {
+        return function (state: any) {
+          return {
+            ...state,
+            [key]: initialValue,
+          };
+        };
+      },
+      [`select${normalizedKey}`]() {
+        return select((state: any) => state[key]);
+      },
+      [`get${normalizedKey}`](state: any) {
+        return state[key];
+      },
+    };
+  })() as unknown as {
     [P in
       | `with${Capitalize<K>}`
       | `update${Capitalize<K>}`
