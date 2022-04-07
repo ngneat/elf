@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`elfHooks METHOD: registerPreStoreUpdate preStoreUpdate should be called if defined 1`] = `
-Object {
-  "filter": "elf",
-}
-`;
