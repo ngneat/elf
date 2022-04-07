@@ -1,9 +1,0 @@
-<ng-container *ngIf="dataSource | async as data">
-  <h1>{{ data.loading ? 'Loading' : 'Fetched' }}</h1>
-
-  <ul>
-    <li *ngFor="let user of data.users">
-      <a [routerLink]="user.id.toString()">{{ user.name }}</a>
-    </li>
-  </ul>
-</ng-container>
