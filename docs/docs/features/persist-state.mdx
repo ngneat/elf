@@ -41,7 +41,8 @@ As the second parameter you should pass a `Options` object, which can be used to
 - `source`: a method that receives the store and return what to save from it (by default - the entire store).
 - `preStoreInit`: a method that run upon initializing the store with a saved value, used for any required modifications before the value is set.
 - `key`: the name under which the store state is saved (by default - the store name plus a `@store` suffix).
-- `runGuard` - returns whether the actual implementation should be run. The default is `() => typeof window !== 'undefined'`
+- `runGuard`: returns whether the actual implementation should be run. The default is `() => typeof window !== 'undefined'`
+- `preStorageUpdateOperator`: custom operators that will run before storage update
 
 <LiveDemo src={index} packages={['persist']} />
 
@@ -95,5 +96,21 @@ persistState(todoStore, {
   key: 'todos',
   storage: localStorageStrategy,
   source: () => todoStore.pipe(excludeKeys(['ids', 'entities'])),
+});
+```
+
+## Performance Optimization
+
+By default, the plugin will update the storage upon each store's change. Some applications perform multiple updates in a second, and update the storage on each change can be costly.
+
+For such cases, it's recommended to use the `preStorageUpdateOperator` option and add a `debounceTime`. For example:
+
+```ts
+import { persistState, localStorageStrategy } from '@ngneat/elf-persist-state';
+import { debounceTime } from 'rxjs/operators';
+
+persistState({
+  storage: localStorageStrategy,
+  preStorageUpdateOperator: () => debounceTime(2000),
 });
 ```
