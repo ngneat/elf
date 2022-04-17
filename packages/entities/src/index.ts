@@ -47,4 +47,5 @@ export {
   hasEntity,
   getAllEntities,
   getAllEntitiesApply,
+  getEntitiesIds,
 } from './lib/queries';

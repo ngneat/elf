@@ -10,12 +10,42 @@ import {
   getAllEntities,
   getEntity,
   hasEntity,
+  getEntitiesIds,
 } from './queries';
 import { addEntities } from './add.mutation';
 import { UIEntitiesRef } from './entity.state';
 import { expectTypeOf } from 'expect-type';
+import { deleteEntities } from './delete.mutation';
 
 describe('queries', () => {
+  describe('getEntitiesIds', () => {
+    it('should return all the entities ids', () => {
+      const store = createEntitiesStore();
+      expect(store.query(getEntitiesIds())).toEqual([]);
+      const todos = Array.from(Array(3), (_, i) => createTodo(i + 1));
+
+      store.update(addEntities(todos));
+      expect(store.query(getEntitiesIds())).toEqual([1, 2, 3]);
+      store.update(deleteEntities([2]));
+      expect(store.query(getEntitiesIds())).toEqual([1, 3]);
+    });
+
+    it('should work with ref', () => {
+      const store = createUIEntityStore();
+      expect(store.query(getEntitiesIds({ ref: UIEntitiesRef }))).toEqual([]);
+      const todos = Array.from(Array(3), (_, i) => createUITodo(i + 1));
+
+      store.update(addEntities(todos, { ref: UIEntitiesRef }));
+      expect(store.query(getEntitiesIds({ ref: UIEntitiesRef }))).toEqual([
+        1, 2, 3,
+      ]);
+      store.update(deleteEntities([2], { ref: UIEntitiesRef }));
+      expect(store.query(getEntitiesIds({ ref: UIEntitiesRef }))).toEqual([
+        1, 3,
+      ]);
+    });
+  });
+
   describe('getEntity', () => {
     it('should return an entity', () => {
       const store = createEntitiesStore();
@@ -24,6 +54,17 @@ describe('queries', () => {
       const todo = createTodo(1);
       store.update(addEntities(todo));
       expect(store.query(getEntity(1))).toEqual(todo);
+    });
+
+    it('should work with ref', () => {
+      const store = createUIEntityStore();
+      expect(store.query(getEntity(1, { ref: UIEntitiesRef }))).toEqual(
+        undefined
+      );
+
+      const todo = createUITodo(1);
+      store.update(addEntities(todo, { ref: UIEntitiesRef }));
+      expect(store.query(getEntity(1, { ref: UIEntitiesRef }))).toEqual(todo);
     });
   });
 

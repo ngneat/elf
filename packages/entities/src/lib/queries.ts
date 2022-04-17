@@ -115,3 +115,23 @@ export function hasEntity<
     return Reflect.has(state[entitiesKey], id);
   };
 }
+
+/**
+ *
+ * Get the entities ids
+ *
+ * @example
+ *
+ * store.query(getEntitiesIds())
+ *
+ */
+export function getEntitiesIds<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(options: BaseEntityOptions<Ref> = {}): Query<S, getIdType<S, Ref>[]> {
+  return function (state) {
+    const { ref: { idsKey } = defaultEntitiesRef } = options;
+
+    return state[idsKey];
+  };
+}
