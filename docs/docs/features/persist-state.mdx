@@ -97,3 +97,19 @@ persistState(todoStore, {
   source: () => todoStore.pipe(excludeKeys(['ids', 'entities'])),
 });
 ```
+
+## Performance Optimization
+
+By default, the plugin will update the storage upon each store's change. Some applications perform multiple updates in a second, and update the storage on each change can be costly.
+
+For such cases, it's recommended to use the `debounceTime` operator. For example:
+
+```ts
+import { persistState, localStorageStrategy } from '@ngneat/elf-persist-state';
+import { debounceTime } from 'rxjs/operators';
+persistState(todoStore, {
+  key: 'todos',
+  storage: localStorageStrategy,
+  source: () => todoStore.pipe(debounceTime(1000)),
+});
+```
