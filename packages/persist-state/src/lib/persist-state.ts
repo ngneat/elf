@@ -1,4 +1,4 @@
-import { from, Observable, OperatorFunction, of, ReplaySubject } from 'rxjs';
+import { from, Observable, of, ReplaySubject } from 'rxjs';
 import { StateStorage } from './storage';
 import { skip, switchMap } from 'rxjs/operators';
 import { Store, StoreValue } from '@ngneat/elf';
@@ -7,7 +7,6 @@ interface Options<S extends Store> {
   storage: StateStorage;
   source?: (store: S) => Observable<Partial<StoreValue<S>>>;
   preStoreInit?: (value: StoreValue<S>) => Partial<StoreValue<S>>;
-  preStorageUpdateOperator?: () => OperatorFunction<any, any>;
   key?: string;
   runGuard?(): boolean;
 }
@@ -17,7 +16,6 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
     source: (store) => store,
     preStoreInit: (value) => value,
     key: options.key ?? `${store.name}@store`,
-    preStorageUpdateOperator: () => (source) => source,
     runGuard() {
       return typeof window !== 'undefined';
     },
@@ -56,7 +54,6 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
   const saveToStorageSubscription = merged.source!(store)
     .pipe(
       skip(1),
-      merged.preStorageUpdateOperator!(),
       switchMap((value) => setItem(merged.key!, value))
     )
     .subscribe();
