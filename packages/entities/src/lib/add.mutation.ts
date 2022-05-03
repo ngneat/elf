@@ -1,5 +1,6 @@
 import { coerceArray, isDev, OrArray, Reducer } from '@ngneat/elf';
 import { deleteEntities } from './delete.mutation';
+import { EntityActions } from './entity-actions';
 import {
   BaseEntityOptions,
   DefaultEntitiesRef,
@@ -36,7 +37,7 @@ export function addEntities<
   entities: OrArray<getEntityType<S, Ref>>,
   options: AddEntitiesOptions & BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state, context) {
+  return function (state, context, action) {
     const { prepend = false, ref = defaultEntitiesRef } = options;
 
     const { entitiesKey, idsKey } = ref!;
@@ -52,6 +53,8 @@ export function addEntities<
     }
 
     const { ids, asObject } = buildEntities<S, Ref>(asArray, idKey);
+
+    action.next({ type: EntityActions.Add, ids });
 
     return {
       ...state,
@@ -82,7 +85,7 @@ export function addEntitiesFifo<
     limit: number;
   } & BaseEntityOptions<Ref>
 ): Reducer<S> {
-  return function (state, context) {
+  return function (state, context, action) {
     const { ref = defaultEntitiesRef, limit } = options;
 
     const { entitiesKey, idsKey } = ref!;
@@ -103,13 +106,15 @@ export function addEntitiesFifo<
     // Remove exiting entities that passes the limit
     if (total > limit) {
       const idsRemove = currentIds.slice(0, total - limit);
-      newState = deleteEntities<S, Ref>(idsRemove)(state, context);
+      newState = deleteEntities<S, Ref>(idsRemove)(state, context, action);
     }
 
     const { ids, asObject } = buildEntities<S, Ref>(
       normalizedEntities,
       getIdKey(context, ref)
     );
+
+    action.next({ type: EntityActions.Add, ids });
 
     return {
       ...state,

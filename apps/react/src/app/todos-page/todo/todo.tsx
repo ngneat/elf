@@ -13,13 +13,15 @@ export const TodoItem = React.memo(function TodoItem({
   ...todo
 }: TodoProps) {
   return (
-    <div style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-      <span onClick={() => onClick(todo.id)} style={{ marginRight: '10px' }}>
-        {todo.text}
-      </span>
-      <button onClick={() => onDelete(todo.id)} className="btn btn-danger">
-        Delete
-      </button>
-    </div>
+    <li className="list-group-item">
+      <div style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+        <span onClick={() => onClick(todo.id)} style={{ marginRight: '10px' }}>
+          {todo.text}
+        </span>
+        <button onClick={() => onDelete(todo.id)} className="btn btn-danger">
+          Delete
+        </button>
+      </div>
+    </li>
   );
 });

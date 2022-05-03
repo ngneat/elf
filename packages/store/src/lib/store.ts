@@ -1,8 +1,9 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Query } from '..';
 import { batchInProgress, batchDone$ } from './batch';
 import { elfHooksRegistry } from './elf-hooks';
 import { addStore, removeStore } from './registry';
+import { EntityAction } from '../../../entities/src';
 
 export class Store<
   SDef extends StoreDef = any,
@@ -11,6 +12,9 @@ export class Store<
   initialState!: State;
   state!: State;
   private batchInProgress = false;
+
+  // TODO Infer the EntityAction type
+  private entityActions = new Subject<EntityAction<string | number>>();
 
   private context: ReducerContext = {
     config: this.getConfig(),
@@ -21,6 +25,11 @@ export class Store<
     this.state = storeDef.state;
     this.initialState = this.getValue();
     addStore(this);
+  }
+
+  // TODO Infer the EntityAction type
+  get actions$(): Observable<EntityAction<string | number>> {
+    return this.entityActions.asObservable();
   }
 
   get name(): StoreDef['name'] {
@@ -39,7 +48,7 @@ export class Store<
     const currentState = this.getValue();
 
     let nextState = reducers.reduce((value, reducer) => {
-      value = reducer(value, this.context);
+      value = reducer(value, this.context, this.entityActions);
 
       return value;
     }, currentState);
@@ -128,8 +137,13 @@ export class Store<
   complete() {}
 }
 
+export type EntityAction$ = Subject<EntityAction<string | number>>;
 export type StoreValue<T extends Store> = ReturnType<T['getValue']>;
-export type Reducer<State> = (state: State, context: ReducerContext) => State;
+export type Reducer<State> = (
+  state: State,
+  context: ReducerContext,
+  action: EntityAction$
+) => State;
 export type ReducerContext = { config: Record<PropertyKey, any> };
 
 export interface StoreDef<State = any> {

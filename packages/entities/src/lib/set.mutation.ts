@@ -10,6 +10,7 @@ import {
 } from './entity.state';
 import { Reducer } from '@ngneat/elf';
 import { buildEntities } from './entity.utils';
+import { EntityActions } from './entity-actions';
 
 /**
  *
@@ -27,13 +28,15 @@ export function setEntities<
   entities: getEntityType<S, Ref>[],
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state, context) {
+  return function (state, context, action) {
     const { ref = defaultEntitiesRef } = options;
     const { entitiesKey, idsKey } = ref!;
     const { ids, asObject } = buildEntities<S, Ref>(
       entities,
       getIdKey<getIdType<S, Ref>>(context, ref)
     );
+
+    action.next({ type: EntityActions.Set, ids });
 
     return {
       ...state,

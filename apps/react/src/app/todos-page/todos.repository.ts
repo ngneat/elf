@@ -1,12 +1,16 @@
 import { createStore, select, withProps } from '@ngneat/elf';
 import {
   addEntities,
+  deleteAllEntities,
   deleteEntities,
+  EntityActions,
   selectAllEntitiesApply,
   setEntities,
+  updateAllEntities,
   updateEntities,
   withEntities,
 } from '@ngneat/elf-entities';
+import { ofTypes } from 'packages/store/src/lib/operators';
 import { switchMap } from 'rxjs/operators';
 
 export interface Todo {
@@ -26,6 +30,19 @@ const store = createStore(
 );
 
 const filter$ = store.pipe(select(({ filter }) => filter));
+
+export const addOrRemoveEntities$ = store.actions$.pipe(
+  ofTypes([EntityActions.Add, EntityActions.Remove])
+);
+export const removedEntities$ = store.actions$.pipe(
+  ofTypes(EntityActions.Remove)
+);
+export const updatedEntities$ = store.actions$.pipe(
+  ofTypes(EntityActions.Update)
+);
+export const settedEntities$ = store.actions$.pipe(ofTypes(EntityActions.Set));
+export const addedEntities$ = store.actions$.pipe(ofTypes(EntityActions.Add));
+export const actions$ = store.actions$;
 
 export const visibleTodos$ = filter$.pipe(
   switchMap((filter) => {
@@ -70,6 +87,14 @@ export function updateTodoCompleted(id: Todo['id']) {
   );
 }
 
+export function completeAllTodos() {
+  store.update(updateAllEntities({ completed: true }));
+}
+
 export function deleteTodo(id: Todo['id']) {
   store.update(deleteEntities(id));
+}
+
+export function removeAll(): void {
+  store.update(deleteAllEntities());
 }

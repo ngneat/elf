@@ -1,5 +1,6 @@
 import { coerceArray, isFunction, OrArray, Reducer } from '@ngneat/elf';
 import { addEntities, AddEntitiesOptions } from './add.mutation';
+import { EntityActions } from './entity-actions';
 import {
   BaseEntityOptions,
   defaultEntitiesRef,
@@ -47,18 +48,25 @@ export function updateEntities<
   updater: U,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state) {
+  return function (state, context, action) {
     const { ref: { entitiesKey } = defaultEntitiesRef } = options;
     const updatedEntities = {} as Record<
       getIdType<S, Ref>,
       getEntityType<S, Ref>
     >;
 
-    for (const id of coerceArray(ids)) {
+    const coerceIds = coerceArray(ids);
+    for (const id of coerceIds) {
       updatedEntities[id] = toModel<getEntityType<S, Ref>>(
         updater,
         state[entitiesKey][id]
       );
+    }
+
+    // TODO @NetanelBasal
+    // Should we check if entity exist and have been realy update
+    if (coerceIds.length) {
+      action.next({ type: EntityActions.Update, ids: coerceIds });
     }
 
     return {
@@ -86,7 +94,7 @@ export function updateEntitiesByPredicate<
   updater: U,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state, context) {
+  return function (state, context, action) {
     const ids = findIdsByPredicate(
       state,
       options.ref || (defaultEntitiesRef as Ref),
@@ -94,7 +102,7 @@ export function updateEntitiesByPredicate<
     );
 
     if (ids.length) {
-      return updateEntities(ids, updater, options)(state, context) as S;
+      return updateEntities(ids, updater, options)(state, context, action) as S;
     }
 
     return state;
@@ -116,10 +124,14 @@ export function updateAllEntities<
   U extends UpdateFn<getEntityType<S, Ref>>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(updater: U, options: BaseEntityOptions<Ref> = {}): Reducer<S> {
-  return function (state, context) {
+  return function (state, context, action) {
     const { ref: { idsKey } = defaultEntitiesRef } = options;
 
-    return updateEntities(state[idsKey], updater, options)(state, context) as S;
+    return updateEntities(state[idsKey], updater, options)(
+      state,
+      context,
+      action
+    ) as S;
   };
 }
 
@@ -151,7 +163,7 @@ export function upsertEntitiesById<
   } & AddEntitiesOptions &
     BaseEntityOptions<Ref>
 ): Reducer<S> {
-  return function (state, context) {
+  return function (state, context, action) {
     const updatedEntitiesIds = [];
     const newEntities = [];
 
@@ -170,13 +182,13 @@ export function upsertEntitiesById<
         newEntities.push(newEntity);
       }
     }
-    const newState = updateEntities(
-      updatedEntitiesIds,
-      updater,
-      options
-    )(state, context);
+    const newState = updateEntities(updatedEntitiesIds, updater, options)(
+      state,
+      context,
+      action
+    );
 
-    return addEntities(newEntities, options)(newState, context) as S;
+    return addEntities(newEntities, options)(newState, context, action) as S;
   };
 }
 
@@ -204,7 +216,7 @@ export function upsertEntities<
   entities: OrArray<Partial<getEntityType<S, Ref>>>,
   options: AddEntitiesOptions & BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state, context) {
+  return function (state, context, action) {
     const { prepend = false, ref = defaultEntitiesRef } = options;
     const { entitiesKey, idsKey } = ref!;
     const idKey = getIdKey<getIdType<S, Ref>>(context, ref);
@@ -235,6 +247,10 @@ export function upsertEntities<
             ? [...ids, ...state[idsKey]]
             : [...state[idsKey], ...ids],
         };
+
+    if (ids.length) {
+      action.next({ type: EntityActions.Update, ids });
+    }
 
     return {
       ...state,
@@ -317,6 +333,10 @@ export function updateEntitiesIds<
         break;
       }
     }
+
+    // TODO @NetanelBasal
+    // Should we propagate the old or the new ids
+    // action.next({ type: EntityActions.Update, ids });
 
     return {
       ...state,

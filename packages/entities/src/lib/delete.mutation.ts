@@ -10,6 +10,7 @@ import {
 } from './entity.state';
 import { OrArray, Reducer, coerceArray } from '@ngneat/elf';
 import { findIdsByPredicate } from './entity.utils';
+import { EntityActions } from './entity-actions';
 
 /**
  *
@@ -29,7 +30,7 @@ export function deleteEntities<
   ids: OrArray<getIdType<S, Ref>>,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state) {
+  return function (state, context, action) {
     const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
 
     const idsToRemove = coerceArray(ids);
@@ -41,6 +42,8 @@ export function deleteEntities<
     for (const id of idsToRemove) {
       Reflect.deleteProperty(newEntities, id);
     }
+
+    action.next({ type: EntityActions.Remove, ids: idsToRemove });
 
     return {
       ...state,
@@ -66,7 +69,7 @@ export function deleteEntitiesByPredicate<
   predicate: ItemPredicate<getEntityType<S, Ref>>,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function reducer(state, context) {
+  return function reducer(state, context, action) {
     const ids = findIdsByPredicate(
       state,
       options.ref || (defaultEntitiesRef as Ref),
@@ -74,7 +77,9 @@ export function deleteEntitiesByPredicate<
     );
 
     if (ids.length) {
-      return deleteEntities(ids, options)(state, context) as S;
+      action.next({ type: EntityActions.Remove, ids: ids });
+
+      return deleteEntities(ids, options)(state, context, action) as S;
     }
 
     return state;
@@ -94,8 +99,12 @@ export function deleteAllEntities<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(options: BaseEntityOptions<Ref> = {}): Reducer<S> {
-  return function reducer(state: S) {
+  return function reducer(state: S, context, action) {
     const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
+
+    if (state.ids.length) {
+      action.next({ type: EntityActions.Remove, ids: state.ids });
+    }
 
     return {
       ...state,
