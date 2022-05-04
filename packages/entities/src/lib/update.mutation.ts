@@ -286,6 +286,8 @@ export function updateEntitiesIds<
       throw new Error('The number of old and new ids must be equal');
     }
 
+    if (!oldIds.length || !newIds.length) return state;
+
     const { ref = defaultEntitiesRef } = options;
     const idProp = getIdKey<string>(context, ref);
     const updatedEntities = { ...state[ref.entitiesKey] };
@@ -329,9 +331,7 @@ export function updateEntitiesIds<
       }
     }
 
-    // TODO @NetanelBasal
-    // Should we propagate the old or the new ids
-    // action.next({ type: EntityActions.Update, ids });
+    context.actions.next({ type: EntityActions.Update, ids: newIds });
 
     return {
       ...state,
