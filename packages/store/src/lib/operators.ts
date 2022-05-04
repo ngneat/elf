@@ -10,7 +10,7 @@ import {
   filter,
   map,
 } from 'rxjs/operators';
-import { coerceArray, isUndefined } from './utils';
+import { coerceArray } from './utils';
 import { EntityAction, EntityActions } from '../../../entities/src';
 
 export function select<T, R>(mapFn: (state: T) => R): OperatorFunction<T, R> {
@@ -57,20 +57,8 @@ export function filterNil<T>(): OperatorFunction<T, NonNullable<T>> {
 // TODO infer the IDType
 type IDType = string | number;
 
-export function ofTypes<T extends EntityAction<IDType>>(
-  actionOrActions?: EntityActions | EntityActions[]
-): OperatorFunction<T, IDType[] | EntityAction<IDType>> {
-  if (isUndefined(actionOrActions)) {
-    return map((action) => action);
-  }
-
-  const transform = Array.isArray(actionOrActions)
-    ? (action: EntityAction<IDType>) => action
-    : ({ ids }: EntityAction<IDType>) => ids;
-  const actions = coerceArray(actionOrActions);
-
-  return pipe(
-    filter(({ type }) => actions.includes(type)),
-    map((action) => transform(action))
-  );
+export function ofType<T extends EntityAction<IDType>>(
+  actions: EntityActions | EntityActions[]
+): OperatorFunction<T, EntityAction<IDType>> {
+  return pipe(filter(({ type }) => coerceArray(actions).includes(type)));
 }
