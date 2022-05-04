@@ -49,13 +49,16 @@ export function updateEntities<
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
   return function (state, context) {
+    const coerceIds = coerceArray(ids);
+
+    if (!coerceIds.length) return state;
+
     const { ref: { entitiesKey } = defaultEntitiesRef } = options;
     const updatedEntities = {} as Record<
       getIdType<S, Ref>,
       getEntityType<S, Ref>
     >;
 
-    const coerceIds = coerceArray(ids);
     for (const id of coerceIds) {
       updatedEntities[id] = toModel<getEntityType<S, Ref>>(
         updater,
@@ -63,11 +66,7 @@ export function updateEntities<
       );
     }
 
-    // TODO @NetanelBasal
-    // Should we check if entity exist and have been realy update
-    if (coerceIds.length) {
-      context.actions.next({ type: EntityActions.Update, ids: coerceIds });
-    }
+    context.actions.next({ type: EntityActions.Update, ids: coerceIds });
 
     return {
       ...state,
