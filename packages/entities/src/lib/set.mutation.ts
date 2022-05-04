@@ -28,7 +28,7 @@ export function setEntities<
   entities: getEntityType<S, Ref>[],
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state, context, action) {
+  return function (state, context) {
     const { ref = defaultEntitiesRef } = options;
     const { entitiesKey, idsKey } = ref!;
     const { ids, asObject } = buildEntities<S, Ref>(
@@ -36,7 +36,7 @@ export function setEntities<
       getIdKey<getIdType<S, Ref>>(context, ref)
     );
 
-    action.next({ type: EntityActions.Set, ids });
+    context.actions.next({ type: EntityActions.Set, ids });
 
     return {
       ...state,

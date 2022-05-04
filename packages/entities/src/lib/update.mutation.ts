@@ -48,7 +48,7 @@ export function updateEntities<
   updater: U,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state, context, action) {
+  return function (state, context) {
     const { ref: { entitiesKey } = defaultEntitiesRef } = options;
     const updatedEntities = {} as Record<
       getIdType<S, Ref>,
@@ -66,7 +66,7 @@ export function updateEntities<
     // TODO @NetanelBasal
     // Should we check if entity exist and have been realy update
     if (coerceIds.length) {
-      action.next({ type: EntityActions.Update, ids: coerceIds });
+      context.actions.next({ type: EntityActions.Update, ids: coerceIds });
     }
 
     return {
@@ -94,7 +94,7 @@ export function updateEntitiesByPredicate<
   updater: U,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state, context, action) {
+  return function (state, context) {
     const ids = findIdsByPredicate(
       state,
       options.ref || (defaultEntitiesRef as Ref),
@@ -102,7 +102,7 @@ export function updateEntitiesByPredicate<
     );
 
     if (ids.length) {
-      return updateEntities(ids, updater, options)(state, context, action) as S;
+      return updateEntities(ids, updater, options)(state, context) as S;
     }
 
     return state;
@@ -124,14 +124,10 @@ export function updateAllEntities<
   U extends UpdateFn<getEntityType<S, Ref>>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(updater: U, options: BaseEntityOptions<Ref> = {}): Reducer<S> {
-  return function (state, context, action) {
+  return function (state, context) {
     const { ref: { idsKey } = defaultEntitiesRef } = options;
 
-    return updateEntities(state[idsKey], updater, options)(
-      state,
-      context,
-      action
-    ) as S;
+    return updateEntities(state[idsKey], updater, options)(state, context) as S;
   };
 }
 
@@ -163,7 +159,7 @@ export function upsertEntitiesById<
   } & AddEntitiesOptions &
     BaseEntityOptions<Ref>
 ): Reducer<S> {
-  return function (state, context, action) {
+  return function (state, context) {
     const updatedEntitiesIds = [];
     const newEntities = [];
 
@@ -182,13 +178,13 @@ export function upsertEntitiesById<
         newEntities.push(newEntity);
       }
     }
-    const newState = updateEntities(updatedEntitiesIds, updater, options)(
-      state,
-      context,
-      action
-    );
+    const newState = updateEntities(
+      updatedEntitiesIds,
+      updater,
+      options
+    )(state, context);
 
-    return addEntities(newEntities, options)(newState, context, action) as S;
+    return addEntities(newEntities, options)(newState, context) as S;
   };
 }
 
@@ -216,7 +212,7 @@ export function upsertEntities<
   entities: OrArray<Partial<getEntityType<S, Ref>>>,
   options: AddEntitiesOptions & BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state, context, action) {
+  return function (state, context) {
     const { prepend = false, ref = defaultEntitiesRef } = options;
     const { entitiesKey, idsKey } = ref!;
     const idKey = getIdKey<getIdType<S, Ref>>(context, ref);
@@ -249,7 +245,7 @@ export function upsertEntities<
         };
 
     if (ids.length) {
-      action.next({ type: EntityActions.Update, ids });
+      context.actions.next({ type: EntityActions.Update, ids });
     }
 
     return {

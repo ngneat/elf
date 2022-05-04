@@ -37,7 +37,7 @@ export function addEntities<
   entities: OrArray<getEntityType<S, Ref>>,
   options: AddEntitiesOptions & BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state, context, action) {
+  return function (state, context) {
     const { prepend = false, ref = defaultEntitiesRef } = options;
 
     const { entitiesKey, idsKey } = ref!;
@@ -54,7 +54,7 @@ export function addEntities<
 
     const { ids, asObject } = buildEntities<S, Ref>(asArray, idKey);
 
-    action.next({ type: EntityActions.Add, ids });
+    context.actions.next({ type: EntityActions.Add, ids });
 
     return {
       ...state,
@@ -85,7 +85,7 @@ export function addEntitiesFifo<
     limit: number;
   } & BaseEntityOptions<Ref>
 ): Reducer<S> {
-  return function (state, context, action) {
+  return function (state, context) {
     const { ref = defaultEntitiesRef, limit } = options;
 
     const { entitiesKey, idsKey } = ref!;
@@ -106,7 +106,7 @@ export function addEntitiesFifo<
     // Remove exiting entities that passes the limit
     if (total > limit) {
       const idsRemove = currentIds.slice(0, total - limit);
-      newState = deleteEntities<S, Ref>(idsRemove)(state, context, action);
+      newState = deleteEntities<S, Ref>(idsRemove)(state, context);
     }
 
     const { ids, asObject } = buildEntities<S, Ref>(
@@ -114,7 +114,7 @@ export function addEntitiesFifo<
       getIdKey(context, ref)
     );
 
-    action.next({ type: EntityActions.Add, ids });
+    context.actions.next({ type: EntityActions.Add, ids });
 
     return {
       ...state,

@@ -30,7 +30,7 @@ export function deleteEntities<
   ids: OrArray<getIdType<S, Ref>>,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state, context, action) {
+  return function (state, context) {
     const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
 
     const idsToRemove = coerceArray(ids);
@@ -43,7 +43,7 @@ export function deleteEntities<
       Reflect.deleteProperty(newEntities, id);
     }
 
-    action.next({ type: EntityActions.Remove, ids: idsToRemove });
+    context.actions.next({ type: EntityActions.Remove, ids: idsToRemove });
 
     return {
       ...state,
@@ -69,7 +69,7 @@ export function deleteEntitiesByPredicate<
   predicate: ItemPredicate<getEntityType<S, Ref>>,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function reducer(state, context, action) {
+  return function reducer(state, context) {
     const ids = findIdsByPredicate(
       state,
       options.ref || (defaultEntitiesRef as Ref),
@@ -77,9 +77,9 @@ export function deleteEntitiesByPredicate<
     );
 
     if (ids.length) {
-      action.next({ type: EntityActions.Remove, ids: ids });
+      context.actions.next({ type: EntityActions.Remove, ids: ids });
 
-      return deleteEntities(ids, options)(state, context, action) as S;
+      return deleteEntities(ids, options)(state, context) as S;
     }
 
     return state;
@@ -99,11 +99,11 @@ export function deleteAllEntities<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(options: BaseEntityOptions<Ref> = {}): Reducer<S> {
-  return function reducer(state: S, context, action) {
+  return function reducer(state: S, context) {
     const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
 
     if (state.ids.length) {
-      action.next({ type: EntityActions.Remove, ids: state.ids });
+      context.actions.next({ type: EntityActions.Remove, ids: state.ids });
     }
 
     return {

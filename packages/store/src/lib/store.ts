@@ -13,23 +13,21 @@ export class Store<
   state!: State;
   private batchInProgress = false;
 
-  // TODO Infer the EntityAction type
-  private entityActions = new Subject<EntityAction<string | number>>();
-
   private context: ReducerContext = {
     config: this.getConfig(),
+    // TODO Infer the EntityAction type
+    actions: new Subject<EntityAction<string | number>>(),
   };
+
+  // TODO Infer the EntityAction type
+  actions$: Observable<EntityAction<string | number>> =
+    this.context.actions.asObservable();
 
   constructor(private storeDef: SDef) {
     super(storeDef.state);
     this.state = storeDef.state;
     this.initialState = this.getValue();
     addStore(this);
-  }
-
-  // TODO Infer the EntityAction type
-  get actions$(): Observable<EntityAction<string | number>> {
-    return this.entityActions.asObservable();
   }
 
   get name(): StoreDef['name'] {
@@ -48,7 +46,7 @@ export class Store<
     const currentState = this.getValue();
 
     let nextState = reducers.reduce((value, reducer) => {
-      value = reducer(value, this.context, this.entityActions);
+      value = reducer(value, this.context);
 
       return value;
     }, currentState);
@@ -139,12 +137,11 @@ export class Store<
 
 export type EntityAction$ = Subject<EntityAction<string | number>>;
 export type StoreValue<T extends Store> = ReturnType<T['getValue']>;
-export type Reducer<State> = (
-  state: State,
-  context: ReducerContext,
-  action: EntityAction$
-) => State;
-export type ReducerContext = { config: Record<PropertyKey, any> };
+export type Reducer<State> = (state: State, context: ReducerContext) => State;
+export type ReducerContext = {
+  config: Record<PropertyKey, any>;
+  actions: EntityAction$;
+};
 
 export interface StoreDef<State = any> {
   name: string;
