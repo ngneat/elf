@@ -20,7 +20,6 @@ Elf encourages simplicity. It saves you the hassle of creating boilerplate code 
 ✅ &nbsp;Pagination  
 ✅ &nbsp;Devtools
 
-
 <hr />
 
 <p align="center">
