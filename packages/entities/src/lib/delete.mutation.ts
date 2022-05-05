@@ -8,9 +8,8 @@ import {
   getIdType,
   ItemPredicate,
 } from './entity.state';
-import { OrArray, Reducer, coerceArray } from '@ngneat/elf';
+import { OrArray, Reducer, coerceArray, Actions } from '@ngneat/elf';
 import { findIdsByPredicate } from './entity.utils';
-import { EntityActions } from './entity-actions';
 
 /**
  *
@@ -43,7 +42,7 @@ export function deleteEntities<
       Reflect.deleteProperty(newEntities, id);
     }
 
-    context.actions.next({ type: EntityActions.Remove, ids: idsToRemove });
+    context.actions.next({ type: Actions.Remove, ids: idsToRemove });
 
     return {
       ...state,
@@ -77,7 +76,7 @@ export function deleteEntitiesByPredicate<
     );
 
     if (ids.length) {
-      context.actions.next({ type: EntityActions.Remove, ids: ids });
+      context.actions.next({ type: Actions.Remove, ids: ids });
 
       return deleteEntities(ids, options)(state, context) as S;
     }
@@ -103,7 +102,7 @@ export function deleteAllEntities<
     const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
 
     if (state.ids.length) {
-      context.actions.next({ type: EntityActions.Remove, ids: state.ids });
+      context.actions.next({ type: Actions.Remove, ids: state.ids });
     }
 
     return {

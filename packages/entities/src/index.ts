@@ -49,4 +49,3 @@ export {
   getAllEntitiesApply,
   getEntitiesIds,
 } from './lib/queries';
-export { EntityAction, EntityActions } from './lib/entity-actions';

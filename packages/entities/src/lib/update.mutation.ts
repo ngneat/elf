@@ -1,6 +1,11 @@
-import { coerceArray, isFunction, OrArray, Reducer } from '@ngneat/elf';
+import {
+  coerceArray,
+  Actions,
+  isFunction,
+  OrArray,
+  Reducer,
+} from '@ngneat/elf';
 import { addEntities, AddEntitiesOptions } from './add.mutation';
-import { EntityActions } from './entity-actions';
 import {
   BaseEntityOptions,
   defaultEntitiesRef,
@@ -66,7 +71,7 @@ export function updateEntities<
       );
     }
 
-    context.actions.next({ type: EntityActions.Update, ids: coerceIds });
+    context.actions.next({ type: Actions.Update, ids: coerceIds });
 
     return {
       ...state,
@@ -244,7 +249,7 @@ export function upsertEntities<
         };
 
     if (ids.length) {
-      context.actions.next({ type: EntityActions.Update, ids });
+      context.actions.next({ type: Actions.Update, ids });
     }
 
     return {
@@ -331,7 +336,7 @@ export function updateEntitiesIds<
       }
     }
 
-    context.actions.next({ type: EntityActions.Update, ids: newIds });
+    context.actions.next({ type: Actions.Update, ids: newIds });
 
     return {
       ...state,

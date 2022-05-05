@@ -37,3 +37,4 @@ export {
 } from './lib/utils';
 export { emitOnce } from './lib/batch';
 export { isDev, enableElfProdMode } from './lib/env';
+export { Action, Actions } from './lib/actions';

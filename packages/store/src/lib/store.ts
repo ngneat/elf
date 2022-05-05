@@ -1,9 +1,8 @@
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { Query } from '..';
+import { Action, Query } from '..';
 import { batchInProgress, batchDone$ } from './batch';
 import { elfHooksRegistry } from './elf-hooks';
 import { addStore, removeStore } from './registry';
-import { EntityAction } from '../../../entities/src';
 
 export class Store<
   SDef extends StoreDef = any,
@@ -15,12 +14,12 @@ export class Store<
 
   private context: ReducerContext = {
     config: this.getConfig(),
-    // TODO Infer the EntityAction type
-    actions: new Subject<EntityAction<string | number>>(),
+    // TODO Infer the Action type
+    actions: new Subject<Action<string | number>>(),
   };
 
-  // TODO Infer the EntityAction type
-  actions$: Observable<EntityAction<string | number>> =
+  // TODO Infer the Action type
+  actions$: Observable<Action<string | number>> =
     this.context.actions.asObservable();
 
   constructor(private storeDef: SDef) {
@@ -135,12 +134,13 @@ export class Store<
   complete() {}
 }
 
-export type EntityAction$ = Subject<EntityAction<string | number>>;
+// TODO Action type
+export type Action$ = Subject<Action<string | number>>;
 export type StoreValue<T extends Store> = ReturnType<T['getValue']>;
 export type Reducer<State> = (state: State, context: ReducerContext) => State;
 export type ReducerContext = {
   config: Record<PropertyKey, any>;
-  actions: EntityAction$;
+  actions: Action$;
 };
 
 export interface StoreDef<State = any> {
