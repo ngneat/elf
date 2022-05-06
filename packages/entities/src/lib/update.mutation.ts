@@ -223,6 +223,7 @@ export function upsertEntities<
 
     const asObject = {} as Record<getIdType<S, Ref>, getEntityType<S, Ref>>;
     const ids = [] as getIdType<S, Ref>;
+    const updatedEntitiesId = [];
 
     const entitiesArray = coerceArray(entities);
     if (!entitiesArray.length) {
@@ -233,6 +234,7 @@ export function upsertEntities<
       const id: getIdType<S, Ref> = entity[idKey];
       // if entity exists, merge update, else add
       if (hasEntity(id, options)(state)) {
+        updatedEntitiesId.push(id);
         asObject[id] = { ...state[entitiesKey][id], ...entity };
       } else {
         ids.push(id);
@@ -249,7 +251,10 @@ export function upsertEntities<
         };
 
     if (ids.length) {
-      context.actions.next({ type: Actions.Update, ids });
+      context.actions.next({ type: Actions.Add, ids });
+    }
+    if (updatedEntitiesId.length) {
+      context.actions.next({ type: Actions.Update, ids: updatedEntitiesId });
     }
 
     return {
