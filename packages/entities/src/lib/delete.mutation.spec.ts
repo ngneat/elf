@@ -1,3 +1,4 @@
+import { Actions } from '@ngneat/elf';
 import {
   createEntitiesStore,
   createTodo,
@@ -27,6 +28,17 @@ describe('delete', () => {
     toMatchSnapshot(expect, store, 'should delete one entity');
   });
 
+  it('should send remove entity action', (done) => {
+    store.update(addEntities([createTodo(1), createTodo(2)]));
+
+    store.actions$.subscribe((data) => {
+      expect(data).toStrictEqual({ type: Actions.Remove, ids: [1] });
+      done();
+    });
+
+    store.update(deleteEntities(1));
+  });
+
   it('should delete entities', () => {
     store.update(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
     toMatchSnapshot(expect, store, 'should have three entities');
@@ -34,11 +46,33 @@ describe('delete', () => {
     toMatchSnapshot(expect, store, 'should delete two entities');
   });
 
+  it('should send remove entity action', (done) => {
+    store.update(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
+
+    store.actions$.subscribe((data) => {
+      expect(data).toStrictEqual({ type: Actions.Remove, ids: [1, 2] });
+      done();
+    });
+
+    store.update(deleteEntities([1, 2]));
+  });
+
   it('should delete all the entities', () => {
     store.update(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
     toMatchSnapshot(expect, store, 'should have three entities');
     store.update(deleteAllEntities());
     toMatchSnapshot(expect, store, 'should delete all');
+  });
+
+  it('should send remove entity action with all ids', (done) => {
+    store.update(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
+
+    store.actions$.subscribe((data) => {
+      expect(data).toStrictEqual({ type: Actions.Remove, ids: [1, 2, 3] });
+      done();
+    });
+
+    store.update(deleteAllEntities());
   });
 
   it('should delete by predicate', () => {
