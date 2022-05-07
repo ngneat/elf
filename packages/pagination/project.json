@@ -1,5 +1,4 @@
 {
-  "root": "packages/pagination",
   "sourceRoot": "packages/pagination/src",
   "projectType": "library",
   "targets": {
@@ -43,7 +42,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/pagination"],
       "options": {
-        "jestConfig": "packages/pagination/jest.config.js",
+        "jestConfig": "packages/pagination/jest.config.ts",
         "passWithNoTests": true
       }
     },

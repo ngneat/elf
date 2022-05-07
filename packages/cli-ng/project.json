@@ -1,5 +1,4 @@
 {
-  "root": "packages/cli-ng",
   "sourceRoot": "packages/cli-ng/src",
   "projectType": "library",
   "targets": {
@@ -33,7 +32,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/cli-ng"],
       "options": {
-        "jestConfig": "packages/cli-ng/jest.config.js",
+        "jestConfig": "packages/cli-ng/jest.config.ts",
         "passWithNoTests": true
       }
     },

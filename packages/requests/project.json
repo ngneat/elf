@@ -1,5 +1,4 @@
 {
-  "root": "packages/requests",
   "sourceRoot": "packages/requests/src",
   "projectType": "library",
   "targets": {
@@ -43,7 +42,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/requests"],
       "options": {
-        "jestConfig": "packages/requests/jest.config.js",
+        "jestConfig": "packages/requests/jest.config.ts",
         "passWithNoTests": true
       }
     },

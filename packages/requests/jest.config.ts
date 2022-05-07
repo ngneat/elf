@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'cli-ng',
-  preset: '../../jest.preset.js',
+  displayName: 'requests',
+
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -11,5 +11,6 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/packages/devtools',
+  coverageDirectory: '../../coverage/packages/requests',
+  preset: '../../jest.preset.ts',
 };

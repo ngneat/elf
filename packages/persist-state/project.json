@@ -1,5 +1,4 @@
 {
-  "root": "packages/persist-state",
   "sourceRoot": "packages/persist-state/src",
   "projectType": "library",
   "targets": {
@@ -43,7 +42,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/persist-state"],
       "options": {
-        "jestConfig": "packages/persist-state/jest.config.js",
+        "jestConfig": "packages/persist-state/jest.config.ts",
         "passWithNoTests": true
       }
     },

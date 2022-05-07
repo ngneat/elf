@@ -1,5 +1,4 @@
 {
-  "root": "packages/devtools",
   "sourceRoot": "packages/devtools/src",
   "projectType": "library",
   "targets": {
@@ -43,7 +42,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/devtools"],
       "options": {
-        "jestConfig": "packages/devtools/jest.config.js",
+        "jestConfig": "packages/devtools/jest.config.ts",
         "passWithNoTests": true
       }
     },

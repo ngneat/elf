@@ -1,6 +1,5 @@
 {
   "projectType": "application",
-  "root": "apps/ng",
   "sourceRoot": "apps/ng/src",
   "prefix": "elf",
   "targets": {
@@ -80,7 +79,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/ng"],
       "options": {
-        "jestConfig": "apps/ng/jest.config.js",
+        "jestConfig": "apps/ng/jest.config.ts",
         "passWithNoTests": true
       }
     }

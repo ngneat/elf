@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'pagination',
-  preset: '../../jest.preset.js',
+  displayName: 'cli-ng',
+
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -11,5 +11,6 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/packages/pagination',
+  coverageDirectory: '../../coverage/packages/devtools',
+  preset: '../../jest.preset.ts',
 };

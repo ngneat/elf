@@ -1,5 +1,4 @@
 {
-  "root": "packages/state-history",
   "sourceRoot": "packages/state-history/src",
   "projectType": "library",
   "targets": {
@@ -43,7 +42,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/state-history"],
       "options": {
-        "jestConfig": "packages/state-history/jest.config.js",
+        "jestConfig": "packages/state-history/jest.config.ts",
         "passWithNoTests": true
       }
     },

@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'mocks',
-  preset: '../../jest.preset.js',
+  displayName: 'devtools',
+
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -11,5 +11,6 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/packages/mocks',
+  coverageDirectory: '../../coverage/packages/devtools',
+  preset: '../../jest.preset.ts',
 };

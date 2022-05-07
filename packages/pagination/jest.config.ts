@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'persist-state',
-  preset: '../../jest.preset.js',
+  displayName: 'pagination',
+
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -11,5 +11,6 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/packages/persist-state',
+  coverageDirectory: '../../coverage/packages/pagination',
+  preset: '../../jest.preset.ts',
 };

@@ -1,5 +1,4 @@
 {
-  "root": "apps/react",
   "sourceRoot": "apps/react/src",
   "projectType": "application",
   "targets": {
@@ -39,8 +38,15 @@
               "maximumError": "1mb"
             }
           ]
+        },
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
         }
-      }
+      },
+      "defaultConfiguration": "production"
     },
     "serve": {
       "executor": "@nrwl/web:dev-server",
@@ -52,8 +58,12 @@
         "production": {
           "buildTarget": "react:build:production",
           "hmr": false
+        },
+        "development": {
+          "buildTarget": "react:build:development"
         }
-      }
+      },
+      "defaultConfiguration": "development"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
