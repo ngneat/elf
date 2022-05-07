@@ -1,6 +1,7 @@
 import { createStore, withProps } from '@ngneat/elf';
 import {
   addEntities,
+  getEntity,
   selectAllEntities,
   selectEntitiesCount,
   selectEntitiesCountByPredicate,
@@ -18,6 +19,7 @@ import {
   UITodo,
 } from '@ngneat/elf-mocks';
 import { expectTypeOf } from 'expect-type';
+import { Observable } from 'rxjs';
 
 describe('Entities Types', () => {
   it('should assert createState', () => {
@@ -192,6 +194,55 @@ describe('Entities Types', () => {
       } catch {
         //
       }
+    });
+  });
+
+  describe('ids', () => {
+    it('should work with enums', () => {
+      enum FooType {
+        A = 'a',
+        B = 'b',
+        C = 'c',
+      }
+
+      interface Foo {
+        type: FooType;
+        value: number;
+      }
+
+      const store = createStore(
+        { name: 'foo' },
+        withEntities<Foo, 'type'>({
+          idKey: 'type',
+        })
+      );
+
+      const entity = store.query(getEntity(FooType.C));
+      const entity$ = store.pipe(selectEntity(FooType.C));
+
+      expectTypeOf(entity).toEqualTypeOf<Foo | undefined>();
+      expectTypeOf(entity$).toEqualTypeOf<Observable<Foo | undefined>>();
+    });
+
+    it('should work with literal strings', () => {
+      type ID = 'service' | 'resource';
+
+      interface Todo<T = string> {
+        id: ID;
+        title: T;
+        completed: boolean;
+      }
+
+      const store = createStore({ name: 'todos' }, withEntities<Todo>());
+
+      const entities$ = store.pipe(selectAllEntities());
+      expectTypeOf(entities$).toEqualTypeOf<Observable<Todo[]>>();
+
+      // @ts-expect-error - should be typed
+      store.query(getEntity('host'));
+
+      const entity = store.query(getEntity('service'));
+      expectTypeOf(entity).toEqualTypeOf<Todo | undefined>();
     });
   });
 });

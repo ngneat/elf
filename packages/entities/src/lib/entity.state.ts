@@ -8,11 +8,13 @@ export function getIdKey<T>(context: ReducerContext, ref: EntitiesRef): T {
 export type getEntityType<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef
-> = S[Ref['entitiesKey']][0];
+> = S[Ref['entitiesKey']][getIdType<S, Ref>];
+
 export type getIdType<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef
 > = S[Ref['idsKey']][0];
+
 export type ItemPredicate<Item> = (item: Item, index?: number) => boolean;
 export type EntitiesRecord = Record<any, any>;
 export type DefaultEntitiesRef = typeof defaultEntitiesRef;
