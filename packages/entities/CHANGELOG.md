@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [4.3.1](https://github.com/ngneat/elf/compare/entities-4.3.0...entities-4.3.1) (2022-05-07)
+
+
+### Bug Fixes
+
+* **entities:** 🐞 should infer the correct type ([ce699de](https://github.com/ngneat/elf/commit/ce699def3bf31809b3f5fe76989ebae9b92ae10b)), closes [#254](https://github.com/ngneat/elf/issues/254)
+
+
+
 # [4.3.0](https://github.com/ngneat/elf/compare/entities-4.2.1...entities-4.3.0) (2022-04-17)
 
 
