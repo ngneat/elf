@@ -1,0 +1,67 @@
+# The Facade Pattern
+
+A facade is a simple public interface that hides more complex usage. Facades encapsulate all interactions in one place, including queries, updates, and side effects, allowing components to only ever interact with the Facade.
+
+For example, we can create a `products.facade.ts`:
+
+```ts title="products.facade.ts"
+
+import { createEffectFn } from '@ngneat/effects';
+import { createStore } from '@ngneat/elf';
+import {
+  withEntities,
+  selectAllEntities,
+  setEntities,
+} from '@ngneat/elf-entities';
+import {
+  createRequestDataSource,
+  withRequestsStatus,
+} from '@ngneat/elf-requests';
+import { mergeMap, Observable, tap } from 'rxjs';
+import { http } from '../http';
+
+export interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  category: 'vegetables' | 'fruits' | 'nuts';
+}
+
+export const store = createStore(
+  { name: 'products' },
+  withEntities<Product>(),
+  withRequestsStatus()
+);
+
+const { setSuccess, trackRequestStatus, data$ } =
+  createRequestDataSource({
+    data$: () => store.pipe(selectAllEntities()),
+    requestKey: 'products',
+    dataKey: 'products',
+    store,
+  });
+
+export const productsDataSource = data$();
+
+function setProducts(products: Product[]) {
+  store.update(setEntities(products), setSuccess());
+}
+
+export const getProductsEffect = createEffectFn(($: Observable<void>) => {
+  return $.pipe(
+    trackRequestStatus(),
+    mergeMap(() =>
+      http<Product[]>('assets/products.json', {
+        selector: (res) => res.json(),
+      })
+    ),
+    tap(setProducts)
+  );
+});
+
+```
+
+### Creating a Facade with the CLI
+
+Coming soon.

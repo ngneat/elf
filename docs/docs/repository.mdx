@@ -1,6 +1,6 @@
 # The Repository Pattern
 
-The recommended way to use Elf is following the Repository Design Pattern. Implementing the Repository pattern is relatively simple. It's a file that encapsulates the store queries and mutations:
+One way to use Elf is following the Repository Design Pattern. Implementing the Repository pattern is relatively simple. It's a file that encapsulates the store queries and mutations:
 
 ```ts title="auth.repository.ts"
 import { createStore, withProps, select } from '@ngneat/elf';
@@ -26,7 +26,7 @@ The Repository pattern provides 2 main benefits:
 1. Using the pattern, you can replace your data store without changing your business code.
 2. It encourages you to implement all store operations in one place, making your code more reusable and easy to find.
 
-You can also use the `class` pattern:
+You can also use the `OOP` approach:
 
 ```ts title="auth.repository.ts"
 // ...

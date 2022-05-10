@@ -13,7 +13,11 @@ module.exports = {
   docs: [
     'installation',
     'store',
-    'repository',
+    {
+      type: 'category',
+      label: 'Design Patterns',
+      items: ['repository', 'facade']
+    },
     {
       type: 'category',
       label: 'Entities',
