@@ -1,6 +1,6 @@
 # The Facade Pattern
 
-A facade is a simple public interface that hides more complex usage. Facades encapsulate all interactions in one place, including queries, updates, and side effects, allowing components to only ever interact with the Facade.
+A Facade is a simple public interface that hides more complex usage. Facades encapsulate all interactions in one place, including queries, updates, and side effects, allowing components to only ever interact with the Facade.
 
 For example, we can create a `products.facade.ts`:
 
@@ -28,7 +28,7 @@ export interface Product {
   category: 'vegetables' | 'fruits' | 'nuts';
 }
 
-export const store = createStore(
+const store = createStore(
   { name: 'products' },
   withEntities<Product>(),
   withRequestsStatus()
