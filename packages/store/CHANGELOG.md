@@ -2,6 +2,20 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [2.0.0](https://github.com/ngneat/elf/compare/store-1.5.6...store-2.0.0) (2022-05-12)
+
+
+### Bug Fixes
+
+* **store:** destroy should reset the store state ([558e4c0](https://github.com/ngneat/elf/commit/558e4c0e24b63ddfbe35162725d6c7bcc24d45a0))
+
+
+### BREAKING CHANGES
+
+* **store:** Calling the destroy method will also reset the state
+
+
+
 ## [1.5.6](https://github.com/ngneat/elf/compare/store-1.5.5...store-1.5.6) (2022-03-29)
 
 
