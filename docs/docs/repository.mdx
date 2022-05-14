@@ -9,7 +9,10 @@ interface AuthProps {
   user: { id: string } | null;
 }
 
-const authStore = createStore({ name }, withProps<AuthProps>({ user: null }));
+const authStore = createStore(
+  { name: 'auth' },
+  withProps<AuthProps>({ user: null })
+);
 
 export const user$ = authStore.pipe(select((state) => state.user));
 
@@ -26,21 +29,45 @@ The Repository pattern provides 2 main benefits:
 1. Using the pattern, you can replace your data store without changing your business code.
 2. It encourages you to implement all store operations in one place, making your code more reusable and easy to find.
 
-You can also use the `OOP` approach:
+If working in Angular, you can also use the object-oriented programming (OOP) approach:
 
 ```ts title="auth.repository.ts"
-// ...
+import { createStore, select, withProps } from '@ngneat/elf';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
-const authStore = createStore({ name }, withProps<AuthProps>({ user: null }));
+interface AuthProps {
+  user: { id: string } | null;
+}
 
+@Injectable({ providedIn: 'root' })
 export class AuthRepository {
-  user$ = authStore.pipe(select((state) => state.user));
+  user$: Observable<AuthProps['user']>;
 
-  updateUser(user: AuthProps['user']) {
-    authStore.update((state) => ({
-      ...state,
-      user,
-    }));
+  private store;
+
+  constructor() {
+    this.store = this.createStore();
+
+    this.user$ = this.store.pipe(select((state) => state.user));
+  }
+
+  public updateUser(user: AuthProps['user']) {
+    this.store.update((state) => {
+      return {
+        ...state,
+        user,
+      };
+    });
+  }
+
+  private createStore(): typeof store {
+    const store = createStore(
+      { name: 'auth' },
+      withProps<AuthProps>({ user: null })
+    );
+
+    return store;
   }
 }
 ```
