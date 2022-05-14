@@ -30,7 +30,7 @@ const todosStore = createStore(
   withEntities<Todo>(),
   // You can pass the keys type
   // highlight-next-line
-  withRequestsStatus<`todos`, `todo-${string}`>()
+  withRequestsStatus<`todos` | `todo-${string}`>()
 );
 ```
 
