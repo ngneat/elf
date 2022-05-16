@@ -16,7 +16,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Design Patterns',
-      items: ['repository', 'facade']
+      items: ['repository', 'facade'],
     },
     {
       type: 'category',
@@ -60,6 +60,12 @@ module.exports = {
       ],
     },
     'recipes',
+    {
+      type: 'category',
+      label: 'Third Party Libraries',
+      collapsed: false,
+      items: ['third-party/sync-state'],
+    },
     'faq',
   ],
 };
