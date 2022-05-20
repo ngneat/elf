@@ -68,9 +68,7 @@ export function updateRequestsCache<S extends RequestsCacheState>(
 
   if (value) {
     normalized = requestsOrKeys.reduce((acc: any, key: string) => {
-      acc[key] = {
-        value,
-      };
+      acc[key] = { ...value };
 
       return acc;
     }, {});
