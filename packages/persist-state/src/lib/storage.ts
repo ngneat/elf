@@ -1,6 +1,6 @@
 import { Observable, of } from 'rxjs';
 
-type MaybeAsync<T> = Promise<T> | Observable<T>;
+export type MaybeAsync<T> = Promise<T> | Observable<T>;
 
 export interface StateStorage {
   getItem<T extends Record<string, any>>(
