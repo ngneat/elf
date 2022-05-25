@@ -1,15 +1,13 @@
 import { Observable, of } from 'rxjs';
 
-export type MaybeAsync<T> = Promise<T> | Observable<T>;
+export type Async<T> = Promise<T> | Observable<T>;
 
 export interface StateStorage {
-  getItem<T extends Record<string, any>>(
-    key: string
-  ): MaybeAsync<T | undefined>;
+  getItem<T extends Record<string, any>>(key: string): Async<T | undefined>;
 
-  setItem(key: string, value: Record<string, any>): MaybeAsync<boolean>;
+  setItem(key: string, value: Record<string, any>): Async<boolean>;
 
-  removeItem(key: string): MaybeAsync<boolean>;
+  removeItem(key: string): Async<boolean>;
 }
 
 function createStorage(storage: Storage | undefined): StateStorage | undefined {

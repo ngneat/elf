@@ -3,6 +3,6 @@ export {
   StateStorage,
   localStorageStrategy,
   sessionStorageStrategy,
-  MaybeAsync,
+  Async,
 } from './lib/storage';
 export { excludeKeys } from './lib/exclude-keys';
