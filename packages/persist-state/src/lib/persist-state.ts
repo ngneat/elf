@@ -32,29 +32,29 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
     };
   }
 
-  const { setItem, getItem } = options.storage;
+  const { storage } = options;
   const initialized = new ReplaySubject<boolean>(1);
 
-  const loadFromStorageSubscription = from(getItem(merged.key!)).subscribe(
-    (value) => {
-      if (value) {
-        store.update((state) => {
-          return merged.preStoreInit!({
-            ...state,
-            ...value,
-          });
+  const loadFromStorageSubscription = from(
+    storage.getItem(merged.key!)
+  ).subscribe((value) => {
+    if (value) {
+      store.update((state) => {
+        return merged.preStoreInit!({
+          ...state,
+          ...value,
         });
-      }
-
-      initialized.next(true);
-      initialized.complete();
+      });
     }
-  );
+
+    initialized.next(true);
+    initialized.complete();
+  });
 
   const saveToStorageSubscription = merged.source!(store)
     .pipe(
       skip(1),
-      switchMap((value) => setItem(merged.key!, value))
+      switchMap((value) => storage.setItem(merged.key!, value))
     )
     .subscribe();
 
