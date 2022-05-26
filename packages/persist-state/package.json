@@ -1,6 +1,6 @@
 {
   "name": "@ngneat/elf-persist-state",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Persist state in storage for elf store",
   "publishConfig": {
     "access": "public"
