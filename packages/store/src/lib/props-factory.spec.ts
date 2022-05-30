@@ -24,6 +24,7 @@ describe('propsFactory', () => {
     resetRequestsStatus,
     getRequestsStatus,
     setRequestsStatus,
+    setRequestsStatusInitialValue,
   } = propsFactory('requestsStatus', {
     initialValue: {} as StatusValue,
   });
@@ -97,6 +98,12 @@ describe('propsFactory', () => {
     store.update(setRequestsStatus((state) => state.requestsStatus));
 
     expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should set initial value', () => {
+    setRequestsStatusInitialValue({ 1: 'pending' });
+    store.update(resetRequestsStatus());
+    expect(store.getValue()).toEqual({ requestsStatus: { 1: 'pending' } });
   });
 });
 
