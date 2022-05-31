@@ -9,8 +9,9 @@ import {
   StructureKind,
   SyntaxKind,
   VariableDeclarationKind,
+  ScriptTarget,
 } from 'ts-morph';
-import { CallExpression, factory, ScriptTarget } from 'typescript';
+import { CallExpression, factory } from 'typescript';
 import { Options } from '../types';
 import { names, resolveStoreVariableName } from '../utils';
 import { ActiveIdBuilder } from './active-id.builder';
