@@ -84,5 +84,5 @@ function toFileName(s: string): string {
  * Capitalizes the first letter of a string
  */
 function toCapitalCase([first, ...rest]: string): string {
-  return first.toUpperCase() + rest;
+  return first.toUpperCase() + rest.join('');
 }
