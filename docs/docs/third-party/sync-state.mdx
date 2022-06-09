@@ -34,8 +34,8 @@ syncState(authStore);
 As the second parameter you can pass an optional `Options` object, which can be used to define the following:
 
 - `channel`: the name of the channel (by default - the store name plus a `@store` suffix).
-- `source`: a function that receives the store and return what to sync from it. The default is `(store) => store`
-- `preUpdate`: a function to map the even message and get the data. The default is `(event) => event.data`.
+- `source`: a function that receives the store and return what to sync from it. The default is `(store) => store`.
+- `preUpdate`: a function to map the event message and get the data. The default is `(event) => event.data`.
 - `runGuard`: a function that returns whether the actual implementation should be run. The default is `() => typeof window !== 'undefined' && typeof window.BroadcastChannel !== 'undefined'`.
 
 ```ts
@@ -63,7 +63,7 @@ import { includeKeys, syncState } from 'elf-sync-state';
 import { authStore } from './auth.store';
 
 syncState(authStore, {
-  source: () => todoStore.pipe(includeKeys(['user'])),
+  source: (store) => store.pipe(includeKeys(['user'])),
 });
 ```
 
@@ -88,6 +88,6 @@ syncState(authStore, {
 
 The use of this library has been tested together with other Elf libraries, such as [elf-entities](https://ngneat.github.io/elf/docs/features/entities/entities), [elf-persist-state](https://ngneat.github.io/elf/docs/features/persist-state) or [elf-state-history](https://ngneat.github.io/elf/docs/features/history). I have also tried to be consistent with their programming style and documentation to help with integration.
 
-[Here](https://stackblitz.com/edit/angular-elf-sync-state?devToolsHeight=33&file=src/app/todo.repository.ts) is an example of using all of these in an Angular application. Just open the result in two different tabs to see the library in action.
+[Here](https://stackblitz.com/edit/angular-elf-sync-state?devToolsHeight=33&file=src/app/todo.repository.ts) you can see an example of using all of these in an Angular application. Just open the result in two different tabs to see the library in action.
 
 > :warning: There may be a desync due to hot reload
