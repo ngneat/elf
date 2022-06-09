@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [2.1.0](https://github.com/ngneat/elf/compare/store-2.0.0...store-2.1.0) (2022-05-30)
+
+
+### Features
+
+* **store:** add  setPropsInitialValue to have ability update initial value passed to propsFactory ([#275](https://github.com/ngneat/elf/issues/275)) ([c8be676](https://github.com/ngneat/elf/commit/c8be676dbf8418bb075630ef049f5c16c86bb1f5))
+
+
+
 # [2.0.0](https://github.com/ngneat/elf/compare/store-1.5.6...store-2.0.0) (2022-05-12)
 
 

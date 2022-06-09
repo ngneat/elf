@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.2](https://github.com/ngneat/elf/compare/persist-state-1.1.1...persist-state-1.1.2) (2022-05-26)
+
+
+### Bug Fixes
+
+* **persist-state:** added missing export "MaybeAsync" type ([#267](https://github.com/ngneat/elf/issues/267)) ([5402ad9](https://github.com/ngneat/elf/commit/5402ad96c4f81ffdc09ecce0f79bed0d05b7d1ee))
+* **persist-state:** implementation of StateStorage should work with class instances ([#271](https://github.com/ngneat/elf/issues/271)) ([822f411](https://github.com/ngneat/elf/commit/822f41172f45637dfc2508e784f2ae3f4322961d))
+
+
+
 ## [1.1.1](https://github.com/ngneat/elf/compare/persist-state-1.1.0...persist-state-1.1.1) (2022-02-16)
 
 

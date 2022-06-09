@@ -58,4 +58,6 @@ todos$ = todosStore
   .pipe(unionEntities());
 ```
 
+You can also pass a different `idKey`: `unionEntities('_id')`.
+
 <LiveDemo src={index} packages={['entities']} />

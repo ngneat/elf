@@ -1,6 +1,6 @@
 {
   "name": "@ngneat/elf-pagination",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Server side pagination for elf store",
   "publishConfig": {
     "access": "public"

@@ -9,7 +9,14 @@ export function propsFactory<
   K extends string,
   Props extends { [Key in K]: T },
   Config = EmptyConfig
->(key: K, { initialValue, config }: { initialValue: T; config?: Config }) {
+>(
+  key: K,
+  {
+    initialValue: propsFactoryInitialValue,
+    config,
+  }: { initialValue: T; config?: Config }
+) {
+  let initialValue = propsFactoryInitialValue;
   const normalizedKey = capitalize(key);
 
   return {
@@ -20,6 +27,9 @@ export function propsFactory<
         },
         config,
       };
+    },
+    [`set${normalizedKey}InitialValue`](value: T) {
+      initialValue = value;
     },
     [`set${normalizedKey}`](value: any) {
       return function (state: any) {
@@ -71,6 +81,7 @@ export function propsFactory<
     [P in
       | `with${Capitalize<K>}`
       | `update${Capitalize<K>}`
+      | `set${Capitalize<K>}InitialValue`
       | `set${Capitalize<K>}`
       | `reset${Capitalize<K>}`
       | `select${Capitalize<K>}`
@@ -80,6 +91,8 @@ export function propsFactory<
       ? <S extends Props>() => OperatorFunction<S, T>
       : P extends `reset${Capitalize<K>}`
       ? <S extends Props>() => Reducer<S>
+      : P extends `set${Capitalize<K>}InitialValue`
+      ? (value: T) => void
       : P extends `set${Capitalize<K>}`
       ? <S extends Props>(value: T | ((state: S) => T)) => Reducer<S>
       : P extends `update${Capitalize<K>}`

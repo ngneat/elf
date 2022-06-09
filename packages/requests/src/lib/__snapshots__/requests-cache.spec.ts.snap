@@ -27,14 +27,10 @@ exports[`updateRequestsCache 3`] = `
 Object {
   "requestsCache": Object {
     "bar": Object {
-      "value": Object {
-        "value": "partial",
-      },
+      "value": "partial",
     },
     "foo": Object {
-      "value": Object {
-        "value": "partial",
-      },
+      "value": "partial",
     },
   },
 }

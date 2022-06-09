@@ -54,7 +54,7 @@ export function withPagination<
 export function setPage<
   S extends StateOf<typeof withPagination> & EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
->(key: getIdType<S, Ref>, ids: Array<getIdType<S, Ref>>): Reducer<S> {
+>(key: string | number, ids: Array<getIdType<S, Ref>>): Reducer<S> {
   return function (state: S) {
     return {
       ...state,
@@ -103,7 +103,7 @@ export function updatePaginationData<
 export function deletePage<
   S extends StateOf<typeof withPagination> & EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
->(id: getIdType<S, Ref>): Reducer<S> {
+>(id: string | number): Reducer<S> {
   return function (state: S) {
     const pages = { ...state.pagination.pages };
     Reflect.deleteProperty(pages, id);

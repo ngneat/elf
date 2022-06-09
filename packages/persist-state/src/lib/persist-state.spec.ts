@@ -1,8 +1,12 @@
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { addEntities } from '@ngneat/elf-entities';
+import {
+  addEntities,
+  deleteEntities,
+  updateEntities,
+} from '@ngneat/elf-entities';
 import { createEntitiesStore, createTodo } from '@ngneat/elf-mocks';
-import { StateStorage } from './storage';
+import { Async, StateStorage } from './storage';
 import { persistState } from './persist-state';
 
 describe('persist state', () => {
@@ -89,5 +93,38 @@ describe('persist state', () => {
     unsubscribe();
 
     expect(subscriptions.size).toBe(0);
+  });
+
+  it('should work with class instances', () => {
+    class CustomStateStorage implements StateStorage {
+      private readonly _storage: Record<string, string> = {};
+
+      getItem<T extends Record<string, any>>(
+        key: string
+      ): Async<T | undefined> {
+        const value = this._storage[key];
+        return Promise.resolve(value && JSON.parse(value));
+      }
+
+      removeItem(key: string): Async<boolean> {
+        delete this._storage[key];
+        return Promise.resolve(true);
+      }
+
+      setItem(key: string, value: Record<string, any>): Async<boolean> {
+        this._storage[key] = JSON.stringify(value);
+        return Promise.resolve(true);
+      }
+    }
+    const customStateStorage = new CustomStateStorage();
+    const store = createEntitiesStore();
+    expect(() => {
+      persistState(store, { storage: customStateStorage });
+      store.update(addEntities(createTodo(1)));
+      store.update(updateEntities(1, { title: 'new-title' }));
+      store.update(deleteEntities(1));
+    }).not.toThrowError(
+      new TypeError(`Cannot read properties of undefined (reading '_storage')`)
+    );
   });
 });

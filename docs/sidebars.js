@@ -66,6 +66,12 @@ module.exports = {
       collapsed: false,
       items: ['third-party/sync-state'],
     },
+    {
+      type: 'category',
+      label: 'Troubleshooting',
+      collapsed: false,
+      items: ['troubleshooting/stale-emission'],
+    },
     'faq',
   ],
 };
