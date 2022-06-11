@@ -9,6 +9,7 @@ import {
 import { addEntities } from './add.mutation';
 import { UIEntitiesRef } from './entity.state';
 import {
+  DELETE_ENTITY,
   updateAllEntities,
   updateEntities,
   updateEntitiesByPredicate,
@@ -45,6 +46,32 @@ describe('update', () => {
       updateEntities(1, (todo) => ({ ...todo, completed: !todo.completed }))
     );
     toMatchSnapshot(expect, store, 'completed true');
+  });
+
+  it('should delete when DELETE_ENTITY is used instead of partial object', () => {
+    store.update(addEntities(createTodo(1)));
+    toMatchSnapshot(expect, store, 'entity present');
+    store.update(updateEntities(1, DELETE_ENTITY));
+    toMatchSnapshot(expect, store, 'entity deleted');
+  });
+
+  it('should delete when DELETE_ENTITY is returned from the callback', () => {
+    store.update(addEntities([createTodo(1), createTodo(2)]));
+    toMatchSnapshot(expect, store, '2 entities present');
+    store.update(updateEntities([1, 2], () => DELETE_ENTITY));
+    toMatchSnapshot(expect, store, '2 entities deleted');
+  });
+
+  it('should either update or delete based on value returned from the callback', () => {
+    store.update(addEntities([createTodo(1), createTodo(2)]));
+    store.update(updateEntities(1, { completed: true }));
+    toMatchSnapshot(expect, store, '2 entities present, entity 1 is completed');
+    store.update(
+      updateEntities([1, 2], (todo) =>
+        todo.completed ? DELETE_ENTITY : { ...todo, completed: true }
+      )
+    );
+    toMatchSnapshot(expect, store, '1 entity present and it is completed');
   });
 
   it('should update by predicate', () => {

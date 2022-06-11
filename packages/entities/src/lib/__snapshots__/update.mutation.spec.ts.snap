@@ -268,6 +268,92 @@ Object {
 }
 `;
 
+exports[`update should delete when DELETE_SYMBOL is returned from the callback: 2 entities deleted 1`] = `
+Object {
+  "entities": Object {},
+  "ids": Array [],
+}
+`;
+
+exports[`update should delete when DELETE_SYMBOL is returned from the callback: 2 entities present 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update should delete when DELETE_SYMBOL is used instead of partial object: entity absent 1`] = `
+Object {
+  "entities": Object {},
+  "ids": Array [],
+}
+`;
+
+exports[`update should delete when DELETE_SYMBOL is used instead of partial object: entity present 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": false,
+      "id": 1,
+      "title": "todo 1",
+    },
+  },
+  "ids": Array [
+    1,
+  ],
+}
+`;
+
+exports[`update should either update or delete based on value returned from the callback: 1 entity present and it is completed 1`] = `
+Object {
+  "entities": Object {
+    "2": Object {
+      "completed": true,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    2,
+  ],
+}
+`;
+
+exports[`update should either update or delete based on value returned from the callback: 2 entities present, entity 1 is completed 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": true,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
 exports[`update should update all: completed false 1`] = `
 Object {
   "entities": Object {

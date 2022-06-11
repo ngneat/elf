@@ -1,5 +1,6 @@
 import { coerceArray, isFunction, OrArray, Reducer } from '@ngneat/elf';
 import { addEntities, AddEntitiesOptions } from './add.mutation';
+import { deleteEntities } from './delete.mutation';
 import {
   BaseEntityOptions,
   defaultEntitiesRef,
@@ -14,11 +15,27 @@ import {
 import { findIdsByPredicate } from './entity.utils';
 import { hasEntity } from './queries';
 
-export type UpdateFn<Entity> = Partial<Entity> | ((entity: Entity) => Entity);
+/**
+ * Return this symbol from an updater to remove the entity from the store
+ */
+export const DELETE_ENTITY = Symbol();
+export type DeleteEntitySymbol = typeof DELETE_ENTITY;
 
-function toModel<Entity>(updater: UpdateFn<Entity>, entity: Entity): Entity {
+export type UpdateFn<Entity> =
+  | Partial<Entity>
+  | ((entity: Entity) => Entity | DeleteEntitySymbol)
+  | DeleteEntitySymbol;
+
+function toModel<Entity>(
+  updater: UpdateFn<Entity>,
+  entity: Entity
+): Entity | DeleteEntitySymbol {
   if (isFunction(updater)) {
     return updater(entity);
+  }
+
+  if (updater === DELETE_ENTITY) {
+    return DELETE_ENTITY;
   }
 
   return {
@@ -47,24 +64,34 @@ export function updateEntities<
   updater: U,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state) {
+  return function (state, context) {
     const { ref: { entitiesKey } = defaultEntitiesRef } = options;
     const updatedEntities = {} as Record<
       getIdType<S, Ref>,
       getEntityType<S, Ref>
     >;
+    const idsToDelete = [];
 
     for (const id of coerceArray(ids)) {
-      updatedEntities[id] = toModel<getEntityType<S, Ref>>(
+      const entityOrDelete = toModel<getEntityType<S, Ref>>(
         updater,
         state[entitiesKey][id]
       );
+      if (entityOrDelete !== DELETE_ENTITY) {
+        updatedEntities[id] = entityOrDelete;
+      } else {
+        idsToDelete.push(id);
+      }
     }
 
-    return {
+    let newState = {
       ...state,
       [entitiesKey]: { ...state[entitiesKey], ...updatedEntities },
     };
+    if (idsToDelete.length > 0) {
+      newState = deleteEntities(idsToDelete, options)(newState, context);
+    }
+    return newState;
   };
 }
 
@@ -165,7 +192,8 @@ export function upsertEntitiesById<
       } else {
         let newEntity = creator(id);
         if (options.mergeUpdaterWithCreator) {
-          newEntity = toModel(updater, newEntity);
+          // FIXME: resolve type error here
+          // newEntity = toModel(updater, newEntity);
         }
         newEntities.push(newEntity);
       }
