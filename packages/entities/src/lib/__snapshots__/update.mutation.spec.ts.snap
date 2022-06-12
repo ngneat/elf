@@ -268,6 +268,42 @@ Object {
 }
 `;
 
+exports[`update mutateEntities should either update or delete based on the reducer returned from the callback: 2 entities present, entity 1 is completed 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": true,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": false,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
+exports[`update mutateEntities should either update or delete based on the reducer returned from the callback: only entity 2 is present and it is completed 1`] = `
+Object {
+  "entities": Object {
+    "2": Object {
+      "completed": true,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    2,
+  ],
+}
+`;
+
 exports[`update should update all: completed false 1`] = `
 Object {
   "entities": Object {

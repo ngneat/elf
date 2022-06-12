@@ -325,3 +325,27 @@ export function updateEntitiesIds<
     };
   };
 }
+
+export type MutateFn<State, Entity, Id> = (
+  id: Id,
+  maybeEntity: Entity | undefined
+) => Reducer<State>;
+
+export function mutateEntities<
+  S extends EntitiesState<Ref>,
+  M extends MutateFn<S, getEntityType<S, Ref>, getIdType<S, Ref>>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(
+  ids: OrArray<getIdType<S, Ref>>,
+  mutator: M,
+  options: BaseEntityOptions<Ref> = {}
+): Reducer<S> {
+  return function (state, context) {
+    const { ref: { entitiesKey } = defaultEntitiesRef } = options;
+
+    return coerceArray(ids).reduce((prevState, id) => {
+      let entity = prevState[entitiesKey][id];
+      return mutator(id, entity)(prevState, context);
+    }, state);
+  };
+}

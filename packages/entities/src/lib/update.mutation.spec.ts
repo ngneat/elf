@@ -7,8 +7,10 @@ import {
   toMatchSnapshot,
 } from '@ngneat/elf-mocks';
 import { addEntities } from './add.mutation';
+import { deleteEntities } from './delete.mutation';
 import { UIEntitiesRef } from './entity.state';
 import {
+  mutateEntities,
   updateAllEntities,
   updateEntities,
   updateEntitiesByPredicate,
@@ -228,6 +230,30 @@ describe('update', () => {
         updateEntities(2, { completed: true })
       );
       toMatchSnapshot(expect, store, 'id updated true, completed true');
+    });
+  });
+
+  describe('mutateEntities', () => {
+    it('should either update or delete based on the reducer returned from the callback', () => {
+      store.update(addEntities([createTodo(1), createTodo(2)]));
+      store.update(updateEntities(1, { completed: true }));
+      toMatchSnapshot(
+        expect,
+        store,
+        '2 entities present, entity 1 is completed'
+      );
+      store.update(
+        mutateEntities([1, 2], (id, todo) =>
+          todo?.completed
+            ? deleteEntities(id)
+            : updateEntities(id, { completed: true })
+        )
+      );
+      toMatchSnapshot(
+        expect,
+        store,
+        'only entity 2 is present and it is completed'
+      );
     });
   });
 });
