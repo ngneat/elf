@@ -22,6 +22,8 @@ The plugin supports the following options passed as the second function paramete
 
 `preAction` - A method that's called before each action.
 
+`actionsDispatcher` - Observable of actions. For example actions created by [@ngeat/effects](https://github.com/ngneat/effects)
+
 `postTimelineUpdate` - A function that'll be invoked after the devtools timeline updates. For example, you can run a change detection when working with Angular:
 
 ```ts
@@ -37,4 +39,39 @@ platformBrowserDynamic()
       postTimelineUpdate: () => moduleRef.injector.get(ApplicationRef).tick()
     });
 })
+```
+## Display actions from [@ngeat/effects](https://github.com/ngneat/effects)
+
+### Angular
+
+```ts
+import { EffectsNgModule, Actions } from '@ngneat/effects-ng';
+import { SampleEffects } from 'sample/sample.effect.ts';
+import { devTools } from '@ngneat/elf-devtools';
+
+export function initElfDevTools(actions: Actions) {
+  return () => {
+    devTools({
+      name: 'Sample Application',
+      actionsDispatcher: actions
+    })
+  };
+}
+
+@NgModule({
+  imports: [
+    // other modules
+    EffectsNgModule.forRoot([SampleEffects]),
+  ],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      useFactory: initElfDevTools,
+      deps: [Actions]
+    }
+  ]
+})
+export class AppModule {
+}
 ```
