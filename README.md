@@ -73,3 +73,13 @@ export function updateFilter(filter: TodosProps['filter']) {
   }));
 }
 ```
+
+### CHANGE LOGS
+- [`@ngneat/elf`](https://github.com/ngneat/elf/blob/master/packages/store/CHANGELOG.md)
+- [`@ngneat/elf-cli`](https://github.com/ngneat/elf/blob/master/packages/cli/CHANGELOG.md)
+- [`@ngneat/elf-devtools`](https://github.com/ngneat/elf/blob/master/packages/devtools/CHANGELOG.md)
+- [`@ngneat/elf-entities`](https://github.com/ngneat/elf/blob/master/packages/entities/CHANGELOG.md)
+- [`@ngneat/pagination`](https://github.com/ngneat/elf/blob/master/packages/pagination/CHANGELOG.md)
+- [`@ngneat/persist-state`](https://github.com/ngneat/elf/blob/master/packages/persist-state/CHANGELOG.md)
+- [`@ngneat/requests`](https://github.com/ngneat/elf/blob/master/packages/requests/CHANGELOG.md)
+- [`@ngneat/state-history`](https://github.com/ngneat/elf/blob/master/packages/state-history/CHANGELOG.md)
