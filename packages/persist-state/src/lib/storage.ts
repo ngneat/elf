@@ -7,7 +7,7 @@ export interface StateStorage {
 
   setItem(key: string, value: Record<string, any>): Async<boolean>;
 
-  removeItem(key: string): Async<boolean>;
+  removeItem(key: string): Async<boolean | void>;
 }
 
 function createStorage(storage: Storage | undefined): StateStorage | undefined {
