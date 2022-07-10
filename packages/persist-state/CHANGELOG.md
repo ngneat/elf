@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.3](https://github.com/ngneat/elf/compare/persist-state-1.1.2...persist-state-1.1.3) (2022-07-10)
+
+
+### Bug Fixes
+
+* **persist-state:** 🐞 fix remove item type ([a99da06](https://github.com/ngneat/elf/commit/a99da06d6be30a1bed78cbbe3c18f6d3b5d65c4a)), closes [#297](https://github.com/ngneat/elf/issues/297)
+
+
+
 ## [1.1.2](https://github.com/ngneat/elf/compare/persist-state-1.1.1...persist-state-1.1.2) (2022-05-26)
 
 
