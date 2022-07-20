@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [3.0.1](https://github.com/ngneat/elf/compare/cli-3.0.0...cli-3.0.1) (2022-07-20)
+
+
+### Bug Fixes
+
+* **cli:** 🐞 allow folders that contains dots ([b2a44ac](https://github.com/ngneat/elf/commit/b2a44ace826042e91913ae62c72eea22d80d9b76))
+
+
+
 # [3.0.0](https://github.com/ngneat/elf/compare/cli-2.2.0...cli-3.0.0) (2022-03-26)
 
 
