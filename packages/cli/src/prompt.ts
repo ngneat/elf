@@ -11,6 +11,8 @@ import { cosmiconfigSync } from 'cosmiconfig';
 
 inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'));
 
+const basePath = process.cwd();
+
 export async function prompt(options: GlobalConfig | undefined) {
   return inquirer.prompt<Options>([
     {
@@ -86,7 +88,9 @@ export async function prompt(options: GlobalConfig | undefined) {
       itemType: 'directory',
       message: 'Where you like to put this repository?',
       rootPath: process.cwd(),
-      excludeFilter: (nodePath: string) => nodePath.includes('.'),
+      excludeFilter: (nodePath: string) => {
+        return nodePath.replace(basePath, '').startsWith('/.');
+      },
       excludePath: (nodePath: string) => nodePath.includes('node_modules'),
       ...(options?.cli?.fuzzypath || {}),
     },
