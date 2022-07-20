@@ -43,7 +43,6 @@ export function withRequestsCache<Keys extends string>(
   };
 }
 
-distinctUntilKeyChanged('');
 export function selectRequestCache<S extends RequestsCacheState>(
   key: CacheRecordKeys<S>
 ): OperatorFunction<S, CacheState> {
