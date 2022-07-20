@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.4](https://github.com/ngneat/elf/compare/requests-1.1.3...requests-1.1.4) (2022-07-20)
+
+
+### Bug Fixes
+
+* **requests-cache:** 🐞 remove redunant code ([94306fc](https://github.com/ngneat/elf/commit/94306fc09c54f4208d6cad165bf7a8696fbf6062))
+
+
+
 # [1.1.3](https://github.com/ngneat/elf/compare/requests-1.1.2...requests-1.1.3) (2022-05-26)
 
 
