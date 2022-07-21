@@ -1,4 +1,10 @@
-import { coerceArray, isFunction, OrArray, Reducer } from '@ngneat/elf';
+import {
+  coerceArray,
+  Actions,
+  isFunction,
+  OrArray,
+  Reducer,
+} from '@ngneat/elf';
 import { addEntities, AddEntitiesOptions } from './add.mutation';
 import {
   BaseEntityOptions,
@@ -47,19 +53,25 @@ export function updateEntities<
   updater: U,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state) {
+  return function (state, context) {
+    const coerceIds = coerceArray(ids);
+
+    if (!coerceIds.length) return state;
+
     const { ref: { entitiesKey } = defaultEntitiesRef } = options;
     const updatedEntities = {} as Record<
       getIdType<S, Ref>,
       getEntityType<S, Ref>
     >;
 
-    for (const id of coerceArray(ids)) {
+    for (const id of coerceIds) {
       updatedEntities[id] = toModel<getEntityType<S, Ref>>(
         updater,
         state[entitiesKey][id]
       );
     }
+
+    context.actions.next({ type: Actions.Update, ids: coerceIds });
 
     return {
       ...state,
@@ -211,6 +223,7 @@ export function upsertEntities<
 
     const asObject = {} as Record<getIdType<S, Ref>, getEntityType<S, Ref>>;
     const ids = [] as getIdType<S, Ref>;
+    const updatedEntitiesId = [];
 
     const entitiesArray = coerceArray(entities);
     if (!entitiesArray.length) {
@@ -221,6 +234,7 @@ export function upsertEntities<
       const id: getIdType<S, Ref> = entity[idKey];
       // if entity exists, merge update, else add
       if (hasEntity(id, options)(state)) {
+        updatedEntitiesId.push(id);
         asObject[id] = { ...state[entitiesKey][id], ...entity };
       } else {
         ids.push(id);
@@ -235,6 +249,13 @@ export function upsertEntities<
             ? [...ids, ...state[idsKey]]
             : [...state[idsKey], ...ids],
         };
+
+    if (ids.length) {
+      context.actions.next({ type: Actions.Add, ids });
+    }
+    if (updatedEntitiesId.length) {
+      context.actions.next({ type: Actions.Update, ids: updatedEntitiesId });
+    }
 
     return {
       ...state,
@@ -274,6 +295,8 @@ export function updateEntitiesIds<
     if (oldIds.length !== newIds.length) {
       throw new Error('The number of old and new ids must be equal');
     }
+
+    if (!oldIds.length || !newIds.length) return state;
 
     const { ref = defaultEntitiesRef } = options;
     const idProp = getIdKey<string>(context, ref);
@@ -317,6 +340,8 @@ export function updateEntitiesIds<
         break;
       }
     }
+
+    context.actions.next({ type: Actions.Update, ids: newIds });
 
     return {
       ...state,

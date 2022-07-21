@@ -21,7 +21,7 @@ export const AddTodo = React.memo(function AddTodo({ onAdd }: AddTodoProps) {
   };
 
   return (
-    <form onSubmit={onSubmit} className="flex">
+    <form onSubmit={onSubmit} className="input-group">
       <input value={text} onChange={onChange} className="form-control" />
       <button type="submit" className="btn btn-info flex-shrink-0">
         Add Todo

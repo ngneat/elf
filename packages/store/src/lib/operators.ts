@@ -10,6 +10,8 @@ import {
   filter,
   map,
 } from 'rxjs/operators';
+import { Action, Actions } from './actions';
+import { coerceArray } from './utils';
 
 export function select<T, R>(mapFn: (state: T) => R): OperatorFunction<T, R> {
   return pipe(map(mapFn), distinctUntilChanged());
@@ -50,4 +52,13 @@ export function filterNil<T>(): OperatorFunction<T, NonNullable<T>> {
   return filter(
     (value: T): value is NonNullable<T> => value !== null && value !== undefined
   );
+}
+
+// TODO infer the IDType
+type IDType = string | number;
+
+export function ofType<T extends Action<IDType>>(
+  actions: Actions | Actions[]
+): OperatorFunction<T, Action<IDType>> {
+  return pipe(filter(({ type }) => coerceArray(actions).includes(type)));
 }

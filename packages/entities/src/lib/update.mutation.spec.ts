@@ -1,3 +1,4 @@
+import { Actions } from '@ngneat/elf';
 import {
   createEntitiesStore,
   createTodo,
@@ -31,11 +32,33 @@ describe('update', () => {
     toMatchSnapshot(expect, store, 'completed true');
   });
 
+  it('should send update entity action', (done) => {
+    store.update(addEntities(createTodo(1)));
+
+    store.actions$.subscribe((data) => {
+      expect(data).toStrictEqual({ type: Actions.Update, ids: [1] });
+      done();
+    });
+
+    store.update(updateEntities(1, { completed: true }));
+  });
+
   it('should update multiple entities', () => {
     store.update(addEntities([createTodo(1), createTodo(2)]));
     toMatchSnapshot(expect, store, 'multi completed false');
     store.update(updateEntities([1, 2], { completed: true }));
     toMatchSnapshot(expect, store, 'multi completed true');
+  });
+
+  it('should send update entity action with multiple ids', (done) => {
+    store.update(addEntities([createTodo(1), createTodo(2)]));
+
+    store.actions$.subscribe((data) => {
+      expect(data).toStrictEqual({ type: Actions.Update, ids: [1, 2] });
+      done();
+    });
+
+    store.update(updateEntities([1, 2], { completed: true }));
   });
 
   it('should update by callback', () => {
@@ -102,6 +125,18 @@ describe('update', () => {
       toMatchSnapshot(expect, store, 'two entities');
     });
 
+    it(`should send add entity action if it doesn't exists`, (done) => {
+      const store = createEntitiesStore();
+      store.update(addEntities([createTodo(1)]));
+
+      store.actions$.subscribe((data) => {
+        expect(data).toStrictEqual({ type: Actions.Add, ids: [2] });
+        done();
+      });
+
+      store.update(upsertEntitiesById(2, options));
+    });
+
     it('should update an entity if exists', () => {
       const store = createEntitiesStore();
       store.update(
@@ -109,6 +144,18 @@ describe('update', () => {
         upsertEntitiesById(1, options)
       );
       toMatchSnapshot(expect, store, 'one entity, title "elf"');
+    });
+
+    it(`should send uptdate entity if exists`, (done) => {
+      const store = createEntitiesStore();
+      store.update(addEntities([createTodo(1)]));
+
+      store.actions$.subscribe((data) => {
+        expect(data).toStrictEqual({ type: Actions.Update, ids: [1] });
+        done();
+      });
+
+      store.update(upsertEntitiesById(1, options));
     });
 
     it('should add the missing entities and update existing', () => {
@@ -158,6 +205,17 @@ describe('update', () => {
       toMatchSnapshot(expect, store, 'one entities');
     });
 
+    it(`should send add action if it doesn't exists`, (done) => {
+      const store = createEntitiesStore();
+
+      store.actions$.subscribe((data) => {
+        expect(data).toStrictEqual({ type: Actions.Add, ids: [1] });
+        done();
+      });
+
+      store.update(upsertEntities([createTodo(1)]));
+    });
+
     it(`should update the entity if it has the same id`, () => {
       const store = createEntitiesStore();
 
@@ -168,6 +226,21 @@ describe('update', () => {
       store.update(upsertEntities([{ id: 1, completed: true }]));
 
       toMatchSnapshot(expect, store, 'updated entity with completed: true');
+    });
+
+    it(`should send update action if the entity exists`, (done) => {
+      const store = createEntitiesStore();
+
+      const todo = createTodo(1);
+      store.update(addEntities([todo]));
+
+      store.actions$.subscribe((data) => {
+        expect(data).toStrictEqual({ type: Actions.Update, ids: [1] });
+        done();
+      });
+
+      // update the todo
+      store.update(upsertEntities([{ id: 1, completed: true }]));
     });
 
     it('should work with ref', () => {
@@ -199,11 +272,33 @@ describe('update', () => {
       toMatchSnapshot(expect, store, 'id updated true');
     });
 
+    it('should send update actions with new entity id', (done) => {
+      store.update(addEntities([createTodo(1)]));
+
+      store.actions$.subscribe((data) => {
+        expect(data).toStrictEqual({ type: Actions.Update, ids: [2] });
+        done();
+      });
+
+      store.update(updateEntitiesIds(1, 2));
+    });
+
     it('should update multiple ids', () => {
       store.update(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
       toMatchSnapshot(expect, store, 'ids updated false');
       store.update(updateEntitiesIds([2, 3], [4, 5]));
       toMatchSnapshot(expect, store, 'ids updated true');
+    });
+
+    it('should send update actions with new entities ids', (done) => {
+      store.update(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
+
+      store.actions$.subscribe((data) => {
+        expect(data).toStrictEqual({ type: Actions.Update, ids: [4, 5] });
+        done();
+      });
+
+      store.update(updateEntitiesIds([2, 3], [4, 5]));
     });
 
     it('should throw if new id already exists in the store', () => {

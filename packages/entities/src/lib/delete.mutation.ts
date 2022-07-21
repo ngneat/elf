@@ -8,7 +8,7 @@ import {
   getIdType,
   ItemPredicate,
 } from './entity.state';
-import { OrArray, Reducer, coerceArray } from '@ngneat/elf';
+import { OrArray, Reducer, coerceArray, Actions } from '@ngneat/elf';
 import { findIdsByPredicate } from './entity.utils';
 
 /**
@@ -29,7 +29,7 @@ export function deleteEntities<
   ids: OrArray<getIdType<S, Ref>>,
   options: BaseEntityOptions<Ref> = {}
 ): Reducer<S> {
-  return function (state) {
+  return function (state, context) {
     const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
 
     const idsToRemove = coerceArray(ids);
@@ -41,6 +41,8 @@ export function deleteEntities<
     for (const id of idsToRemove) {
       Reflect.deleteProperty(newEntities, id);
     }
+
+    context.actions.next({ type: Actions.Remove, ids: idsToRemove });
 
     return {
       ...state,
@@ -74,6 +76,8 @@ export function deleteEntitiesByPredicate<
     );
 
     if (ids.length) {
+      context.actions.next({ type: Actions.Remove, ids: ids });
+
       return deleteEntities(ids, options)(state, context) as S;
     }
 
@@ -94,8 +98,12 @@ export function deleteAllEntities<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(options: BaseEntityOptions<Ref> = {}): Reducer<S> {
-  return function reducer(state: S) {
+  return function reducer(state: S, context) {
     const { ref: { idsKey, entitiesKey } = defaultEntitiesRef } = options;
+
+    if (state.ids.length) {
+      context.actions.next({ type: Actions.Remove, ids: state.ids });
+    }
 
     return {
       ...state,

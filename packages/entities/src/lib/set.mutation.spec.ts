@@ -7,6 +7,7 @@ import {
 } from '@ngneat/elf-mocks';
 import { setEntities, setEntitiesMap } from './set.mutation';
 import { UIEntitiesRef } from './entity.state';
+import { Actions } from '@ngneat/elf';
 
 describe('set', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -21,6 +22,15 @@ describe('set', () => {
 
     store.update(setEntities([createTodo(2)]));
     toMatchSnapshot(expect, store, 'set one');
+  });
+
+  it('should send set entity action', (done) => {
+    store.actions$.subscribe((data) => {
+      expect(data).toStrictEqual({ type: Actions.Set, ids: [1, 10] });
+      done();
+    });
+
+    store.update(setEntities([createTodo(1), createTodo(10)]));
   });
 
   it('should set entities in key-value structure', () => {
