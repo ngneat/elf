@@ -15,7 +15,7 @@ type History<State> = {
   future: State[];
 };
 
-class StateHistory<T extends Store, State extends StoreValue<T>> {
+export class StateHistory<T extends Store, State extends StoreValue<T>> {
   private paused = false;
 
   private history: History<State> = {
