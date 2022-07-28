@@ -40,7 +40,7 @@ Elf encourages simplicity. It saves you the hassle of creating boilerplate code 
 <br >
 
 ```ts
-import { createStore, withProps, select } from '@ngneat/elf';
+import { createStore, withProps, select, setProp } from '@ngneat/elf';
 import { withEntities, selectAllEntities, setEntities } from '@ngneat/elf-entities';
 
 interface TodosProps {
@@ -67,10 +67,7 @@ export function setTodos(todos: Todo[]) {
 }
 
 export function updateFilter(filter: TodosProps['filter']) {
-  store.update((state) => ({
-    ...state,
-    filter
-  }));
+  store.update(setProp('filter', filter));
 }
 ```
 
