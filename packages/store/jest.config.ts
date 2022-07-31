@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'store',
 
   globals: {
@@ -13,5 +13,5 @@ module.exports = {
   testPathIgnorePatterns: ['stale'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/packages/store',
-  preset: '../../jest.preset.ts',
+  preset: '../../jest.preset.js',
 };

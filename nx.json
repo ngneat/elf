@@ -22,20 +22,9 @@
       }
     }
   },
-  "targetDependencies": {
-    "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ]
-  },
   "workspaceLayout": {
     "appsDir": "apps",
     "libsDir": "packages"
-  },
-  "cli": {
-    "defaultCollection": "@nrwl/angular"
   },
   "generators": {
     "@nrwl/angular:application": {
@@ -66,5 +55,11 @@
       }
     }
   },
-  "defaultProject": "react"
+  "defaultProject": "react",
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"]
+    }
+  }
 }

@@ -13,5 +13,6 @@
     "requests": "packages/requests",
     "state-history": "packages/state-history",
     "store": "packages/store"
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

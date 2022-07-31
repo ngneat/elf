@@ -1,10 +1,14 @@
 import './app.scss';
 
-import { Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Nav from './nav/nav';
 import LoginPage from './login-page/login-page';
 import ProductsPage from './products-page/products-page';
 import TodosPage from './todos-page/todos-page';
+
+function Home() {
+  return <h1>Home</h1>;
+}
 
 export function App() {
   return (
@@ -12,13 +16,15 @@ export function App() {
       <Nav />
 
       <div className="container py-4">
-        <Route path="/" exact render={() => <h1>Home</h1>} />
+        <Routes>
+          <Route path="/" element={<Home />} />
 
-        <Route path="/todos" exact component={TodosPage} />
+          <Route path="/todos" element={<TodosPage />} />
 
-        <Route path="/products" exact component={ProductsPage} />
+          <Route path="/products" element={<ProductsPage />} />
 
-        <Route path="/login" exact component={LoginPage} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
       </div>
     </div>
   );

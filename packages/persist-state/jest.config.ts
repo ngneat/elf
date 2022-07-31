@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'persist-state',
 
   globals: {
@@ -12,5 +12,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/packages/persist-state',
-  preset: '../../jest.preset.ts',
+  preset: '../../jest.preset.js',
 };
