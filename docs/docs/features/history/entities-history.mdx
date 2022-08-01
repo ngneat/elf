@@ -27,8 +27,12 @@ const todosStore = createStore(
 );
 
 export const todosStateHistory = entitiesStateHistory(todosStore);
-export const todosUIStateHistory = entitiesStateHistory(todosStore, { entitiesRef: UIEntitiesRef });
-export const cartsStateHistory = entitiesStateHistory(todosStore, { entitiesRef: cartEntitiesRef });
+export const todosUIStateHistory = entitiesStateHistory(todosStore, {
+  entitiesRef: UIEntitiesRef,
+});
+export const cartsStateHistory = entitiesStateHistory(todosStore, {
+  entitiesRef: cartEntitiesRef,
+});
 ```
 
 As the second parameter you can pass a `EntitiesStateHistoryOptions` object:
@@ -40,8 +44,11 @@ export const todosUIStateHistory = entitiesStateHistory(todosStore, {
   // Ref to entities plugin
   entitiesRef: UIEntitiesRef,
 
-  //Define which entities should be monitoring. By default, all entities are monitored.
+  // Define which entities should be monitoring. By default, all entities are monitored.
   entityIds: [1, 5, 15]
+
+  // entitiesStateHistory always checks entity changes by top level refs. You can pass comparatorFn to perform extra checks, e.g. deep equal checks.
+  comparatorFn: deepEqual,
 });
 ```
 

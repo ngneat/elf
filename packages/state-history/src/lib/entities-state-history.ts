@@ -19,10 +19,19 @@ import {
   selectEntities,
 } from '@ngneat/elf-entities';
 
-export interface EntitiesStateHistoryOptions<E extends EntitiesRef> {
+export interface EntitiesStateHistoryOptions<
+  T extends Store<any, StoreValue<any> & EntitiesState<E>>,
+  E extends EntitiesRef,
+  S extends StoreValue<T> = StoreValue<T>
+> {
   maxAge: number;
   entitiesRef?: E;
   entityIds?: OrArray<getIdType<EntitiesState<E>, E>>;
+  // comparatorFn: (prev, current) => isEqual(prev, current) === false
+  comparatorFn: (
+    prevState: getEntityType<S, E>,
+    currentState: getEntityType<S, E>
+  ) => boolean;
 }
 
 type EntityHistory<E extends EntitiesRef> = {
@@ -49,14 +58,15 @@ export class EntitiesStateHistory<
   private skipUpdate = false;
   private subscription: Subscription | undefined;
 
-  private mergedOptions: EntitiesStateHistoryOptions<E>;
+  private mergedOptions: EntitiesStateHistoryOptions<T, E, S>;
 
   constructor(
     protected store: T,
-    private options: Partial<EntitiesStateHistoryOptions<E>> = {}
+    private options: Partial<EntitiesStateHistoryOptions<T, E, S>> = {}
   ) {
     this.mergedOptions = {
       maxAge: 10,
+      comparatorFn: () => true,
       ...options,
     };
     this.activate();
@@ -338,7 +348,8 @@ export class EntitiesStateHistory<
         const entityHistory =
           this.entitiesHistory.get(id) || this.getDefaultHistory();
         const prevEntity = entityHistory.present;
-        const shouldUpdate = !prevEntity || prevEntity !== entity;
+        const shouldUpdate =
+          !prevEntity || this.mergedOptions.comparatorFn(prevEntity, entity);
 
         if (shouldUpdate) {
           if (entityHistory.past.length === this.mergedOptions.maxAge) {
@@ -399,6 +410,6 @@ type WithEntitiesState<
 export function entitiesStateHistory<
   T extends Store<any, WithEntitiesState<StoreValue<T>, E>>,
   E extends EntitiesRef = DefaultEntitiesRef
->(store: T, options: Partial<EntitiesStateHistoryOptions<E>> = {}) {
+>(store: T, options: Partial<EntitiesStateHistoryOptions<T, E>> = {}) {
   return new EntitiesStateHistory<T, E>(store, options);
 }

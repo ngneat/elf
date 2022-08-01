@@ -369,6 +369,33 @@ describe('entities state history', () => {
     ]);
   });
 
+  it('should update history if only comparatorFn allows', () => {
+    const store = createStore(
+      { name: '' },
+      withEntities<{ id: number; nested: { nestedTwo: { name: string } } }>()
+    );
+    const history = entitiesStateHistory(store, {
+      comparatorFn: (prevState, currentState) =>
+        prevState.nested.nestedTwo !== currentState.nested.nestedTwo,
+    });
+
+    store.update(
+      setEntities([{ id: 1, nested: { nestedTwo: { name: 'first' } } }])
+    );
+    store.update(updateEntities(1, (entity) => ({ ...entity })));
+
+    expect(history.hasPast(1)).toBeFalsy();
+
+    store.update(
+      updateEntities(1, (entity) => ({
+        ...entity,
+        nested: { nestedTwo: { name: 'updated first' } },
+      }))
+    );
+
+    expect(history.hasPast(1)).toBeTruthy();
+  });
+
   it('should track only passed entitiesRef', () => {
     const store = createStore(
       { name: '' },
