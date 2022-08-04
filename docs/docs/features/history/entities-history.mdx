@@ -1,0 +1,193 @@
+# Entities State History
+
+import index from '!!raw-loader!@site/docs/examples/entities-state-history.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
+The `entitiesStateHistory` function provides a convenient way for `undo` and `redo` functionality for specific entity, saving you the trouble of maintaining a history of the entity yourself.
+
+First, you need to install the package by using the CLI command `elf-cli install` and selecting the stat-history package, or via npm:
+
+```bash
+npm i @ngneat/elf-state-history
+```
+
+Then, call the `entitiesStateHistory` method when you want to start monitoring.
+
+```ts
+import { createStore } from '@ngneat/elf';
+import { entitiesStateHistory } from '@ngneat/elf-state-history';
+
+const { withCartEntities, cartEntitiesRef } = entitiesPropsFactory('cart');
+
+const todosStore = createStore(
+  { name },
+  withEntities<Todo>(),
+  withUIEntities<TodoUI>(),
+  withCartEntities<CartItem>()
+);
+
+export const todosStateHistory = entitiesStateHistory(todosStore);
+export const todosUIStateHistory = entitiesStateHistory(todosStore, {
+  entitiesRef: UIEntitiesRef,
+});
+export const cartsStateHistory = entitiesStateHistory(todosStore, {
+  entitiesRef: cartEntitiesRef,
+});
+```
+
+As the second parameter you can pass a `EntitiesStateHistoryOptions` object:
+
+```ts
+export const todosUIStateHistory = entitiesStateHistory(todosStore, {
+  maxAge: 15,
+
+  // Ref to entities plugin
+  entitiesRef: UIEntitiesRef,
+
+  // Define which entities should be monitoring. By default, all entities are monitored.
+  entityIds: [1, 5, 15]
+
+  // entitiesStateHistory always checks entity changes by top level refs. You can pass comparatorFn to perform extra checks, e.g. deep equal checks.
+  comparatorFn: deepEqual,
+});
+```
+
+<LiveDemo src={index} packages={['history', 'entities']} />
+
+## API
+
+### `undo`
+
+Undo the last change:
+
+```ts
+// Performs `undo` for each entity.
+todosStateHistory.undo();
+
+todosStateHistory.undo(id);
+
+todosStateHistory.undo([id, id]);
+```
+
+### `redo`
+
+redo the last change:
+
+```ts
+// Performs `redo` for each entity.
+todosStateHistory.redo();
+
+todosStateHistory.redo(id);
+
+todosStateHistory.redo([id, id]);
+```
+
+### `jumpToPast`
+
+Jump to the provided index in the past (assuming index is valid):
+
+```ts
+// Performs `jumpToPast` for each entity.
+todosStateHistory.jumpToPast(number);
+
+todosStateHistory.jumpToPast(number, id);
+
+todosStateHistory.jumpToPast(number, [id, id]);
+```
+
+### `jumpToFuture`
+
+Jump to the provided index in the future (assuming index is valid):
+
+```ts
+// Performs `jumpToFuture` for each entity.
+todosStateHistory.jumpToFuture(number);
+
+todosStateHistory.jumpToFuture(number, id);
+
+todosStateHistory.jumpToFuture(number, [id, id]);
+```
+
+### `clearPast`
+
+Clear the past history:
+
+```ts
+// Clear past for each entity.
+todosStateHistory.clearPast();
+
+todosStateHistory.clearPast(id);
+
+todosStateHistory.clearPast([id, id]);
+```
+
+### `clearFuture`
+
+Clear the future history:
+
+```ts
+// Clear future for each entity.
+todosStateHistory.clearFuture();
+
+todosStateHistory.clearFuture(id);
+
+todosStateHistory.clearFuture([id, id]);
+```
+
+### `clear`
+
+Clear the history:
+
+```ts
+// Clear history for each entity.
+todosStateHistory.clear();
+todosStateHistory.clear([], customUpdateFn);
+
+todosStateHistory.clear(id);
+todosStateHistory.clear(id, customUpdateFn);
+
+todosStateHistory.clear([id, id]);
+todosStateHistory.clear([id, id], customUpdateFn);
+```
+
+### `pause`
+
+Stop monitoring the entity changes:
+
+```ts
+// Pause monitoring of changes for each entity.
+todosStateHistory.pause();
+
+todosStateHistory.pause(id);
+
+todosStateHistory.pause([id, id]);
+```
+
+### `resume`
+
+Continue monitoring the entity changes:
+
+```ts
+// Resume monitoring of changes for each entity.
+todosStateHistory.resume();
+
+todosStateHistory.resume(id);
+
+todosStateHistory.resume([id, id]);
+```
+
+### `hasPast`
+
+A boolean flag that returns whether the entity history is not empty:
+
+```ts
+todosStateHistory.hasPast(id);
+```
+
+### `hasFuture`
+
+A boolean flag that returns whether entity is not in the latest step in the history:
+
+```ts
+todosStateHistory.hasFuture(id);
+```

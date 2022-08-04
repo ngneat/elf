@@ -1,0 +1,119 @@
+# State History
+
+import index from '!!raw-loader!@site/docs/examples/state-history.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
+The `stateHistory` function provides a convenient way for `undo` and `redo` functionality, saving you the trouble of maintaining a history in the app yourself.
+
+First, you need to install the package by using the CLI command `elf-cli install` and selecting the stat-history package, or via npm:
+
+```bash
+npm i @ngneat/elf-state-history
+```
+
+Then, call the `stateHistory` method when you want to start monitoring.
+
+```ts
+import { createStore } from '@ngneat/elf';
+import { stateHistory } from '@ngneat/elf-state-history';
+
+const propsStore = createStore({ name }, withProps<Props>());
+
+export const propsStateHistory = stateHistory(propsStore);
+```
+
+As the second parameter you can pass a `StateHistoryOptions` object, which can be used to define the store's maximum age and state comparator function.
+
+<LiveDemo src={index} packages={['history']} />
+
+## API
+
+### `undo`
+
+Undo the last change:
+
+```ts
+propsStateHistory.undo();
+```
+
+### `redo`
+
+redo the last change:
+
+```ts
+propsStateHistory.redo();
+```
+
+### `jumpToPast`
+
+Jump to the provided index in the past (assuming index is valid):
+
+```ts
+propsStateHistory.jumpToPast(number);
+```
+
+### `jumpToFuture`
+
+Jump to the provided index in the future (assuming index is valid):
+
+```ts
+propsStateHistory.jumpToFuture(number);
+```
+
+### `clear`
+
+Clear the history:
+
+```ts
+propsStateHistory.clear();
+
+propsStateHistory.clear(customUpdateFn);
+```
+
+### `pause`
+
+Stop monitoring the state changes:
+
+```ts
+propsStateHistory.pause();
+```
+
+### `resume`
+
+Continue monitoring the state changes:
+
+```ts
+propsStateHistory.resume();
+```
+
+### `hasPast`
+
+A boolean flag that returns whether the history is not empty:
+
+```ts
+propsStateHistory.hasPast;
+```
+
+### `hasPast$`
+
+An observable that returns whether the history is not empty:
+
+```ts
+propsStateHistory.hasPast$;
+```
+
+### `hasFuture`
+
+A boolean flag that returns whether you're not in the latest step in the history:
+
+```ts
+propsStateHistory.hasFuture;
+```
+
+### `hasFuture$`
+
+An observable that returns whether you're not in the latest step in the history:
+
+```ts
+propsStateHistory.hasFuture$;
+```

@@ -41,7 +41,15 @@ module.exports = {
     },
     'features/pagination',
     'features/persist-state',
-    'features/history',
+    {
+      type: 'category',
+      label: 'History',
+      collapsed: false,
+      items: [
+        'features/history/history',
+        'features/history/entities-history',
+      ],
+    },
     'dev-tools',
     'immer',
     'cli',
