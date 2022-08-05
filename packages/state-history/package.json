@@ -29,5 +29,8 @@
     "url": "https://netbasal.com"
   },
   "sideEffects": false,
+  "peerDependencies": {
+    "@ngneat/elf-entities": "*"
+  },
   "license": "MIT"
 }
