@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.2.0](https://github.com/ngneat/elf/compare/state-history-1.1.0...state-history-1.2.0) (2022-08-05)
+
+
+### Features
+
+* **state-history:** add entitiesStateHistory ([#303](https://github.com/ngneat/elf/issues/303)) ([9cb14cb](https://github.com/ngneat/elf/commit/9cb14cb653b394d8c641c33bd26fabf8b1050deb))
+
+
+
 # [1.1.0](https://github.com/ngneat/elf/compare/state-history-1.0.1...state-history-1.1.0) (2022-07-27)
 
 
