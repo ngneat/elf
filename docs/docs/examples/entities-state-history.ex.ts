@@ -1,5 +1,6 @@
 import { createStore } from '@ngneat/elf';
 import {
+  selectAllEntities,
   withEntities,
   withUIEntities,
   UIEntitiesRef,
@@ -38,7 +39,12 @@ export const todosUIStateHistory = entitiesStateHistory(todosStore, {
   entitiesRef: UIEntitiesRef,
 });
 
-todosStore.subscribe(console.log);
+todosStore
+  .pipe(selectAllEntities())
+  .subscribe((entities) => console.log('Entities: ', entities));
+todosStore
+  .pipe(selectAllEntities({ ref: UIEntitiesRef }))
+  .subscribe((entities) => console.log('UI Entities: ', entities));
 
 todosStore.update(
   updateEntities([0, 1], { label: 'Renamed Todo' }),

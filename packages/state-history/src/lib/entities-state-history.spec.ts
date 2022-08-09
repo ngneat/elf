@@ -322,6 +322,28 @@ describe('entities state history', () => {
     expect(history.hasPast(2)).toBeFalsy();
   });
 
+  it('should work with initial entities', function () {
+    const store = createStore(
+      { name: '' },
+      withEntities<Entity>({
+        initialValue: [
+          { id: 1, label: 'first' },
+          { id: 2, label: 'second' },
+        ],
+      })
+    );
+    const history = entitiesStateHistory(store);
+
+    store.update(updateEntities([1, 2], { label: 'Renamed entity' }));
+
+    history.undo(1);
+
+    expect(store.query(getAllEntities())).toEqual([
+      { id: 1, label: 'first' },
+      { id: 2, label: 'Renamed entity' },
+    ]);
+  });
+
   it('should track only passed ids', () => {
     const store = createStore({ name: '' }, withEntities<Entity>());
     const history = entitiesStateHistory(store, { entityIds: [2] });
