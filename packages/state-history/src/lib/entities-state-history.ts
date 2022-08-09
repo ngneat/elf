@@ -6,7 +6,7 @@ import {
   filterNil,
   StoreValue,
 } from '@ngneat/elf';
-import { Subscription, pairwise, filter, map } from 'rxjs';
+import { Subscription, pairwise, filter, map, startWith } from 'rxjs';
 import {
   EntitiesState,
   getIdType,
@@ -81,13 +81,21 @@ export class EntitiesStateHistory<
         this.subscribeToEntityChanges(id);
       });
     } else {
+      const getIds = () =>
+        this.store.query(getEntitiesIds(this.entitiesRef)) ?? [];
+
       this.subscription = this.store
         .pipe(
           selectEntities(this.entitiesRef),
-          map(() => this.store.query(getEntitiesIds(this.entitiesRef))),
+          map(getIds),
+          startWith(getIds()),
           pairwise()
         )
         .subscribe(([prevEntities, currentEntities]) => {
+          if (!prevEntities.length && !currentEntities.length) {
+            return;
+          }
+
           const currentIdsMap = new Set<getIdType<S, E>>(currentEntities);
           const allChangedIdsMap = new Set<getIdType<S, E>>([
             ...prevEntities,
