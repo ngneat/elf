@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.2.1](https://github.com/ngneat/elf/compare/state-history-1.2.0...state-history-1.2.1) (2022-08-09)
+
+
+### Bug Fixes
+
+* **state-history:** fix `EntitiesStateHistory` to make it consider initial entities ([#309](https://github.com/ngneat/elf/issues/309)) ([e78a364](https://github.com/ngneat/elf/commit/e78a36410f5b2a2f772fa0da8cf68f9319c4857e))
+
+
+
 # [1.2.0](https://github.com/ngneat/elf/compare/state-history-1.1.0...state-history-1.2.0) (2022-08-05)
 
 

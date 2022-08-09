@@ -1,6 +1,6 @@
 {
   "name": "@ngneat/elf-state-history",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "State history management for elf store",
   "publishConfig": {
     "access": "public"
