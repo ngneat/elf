@@ -1,0 +1,35 @@
+{
+  "name": "@ngneat/elf-dirty-check",
+  "version": "1.0.0",
+  "description": "dirty check management for elf store",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/ngneat/elf/issues"
+  },
+  "homepage": "https://github.com/ngneat/elf#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ngneat/elf"
+  },
+  "keywords": [
+    "rxjs",
+    "state management",
+    "reactive state management",
+    "js state management",
+    "reactive store",
+    "elf",
+    "dirty check"
+  ],
+  "author": {
+    "name": "Leon Radley",
+    "email": "leon@radley.se",
+    "url": "https://leon.id"
+  },
+  "sideEffects": false,
+  "peerDependencies": {
+    "@ngneat/elf-entities": "*"
+  },
+  "license": "MIT"
+}

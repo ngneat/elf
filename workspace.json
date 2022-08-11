@@ -4,6 +4,7 @@
     "cli": "packages/cli",
     "cli-ng": "packages/cli-ng",
     "devtools": "packages/devtools",
+    "dirty-check": "packages/dirty-check",
     "entities": "packages/entities",
     "mocks": "packages/mocks",
     "ng": "apps/ng",
