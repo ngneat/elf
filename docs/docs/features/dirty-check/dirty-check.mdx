@@ -1,0 +1,92 @@
+# Dirty Check
+
+import index from '!!raw-loader!@site/docs/examples/dirty-check.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
+The `dirtyCheck` function provides a convenient way for comparing state against a head revision and if it has changed it is marked as dirty.
+
+First, you need to install the package by using the CLI command `elf-cli install` and selecting the dirty-check package, or via npm:
+
+```bash
+npm i @ngneat/elf-dirty-check
+```
+
+Then, call the `dirtyCheck` method when you want to start monitoring.
+
+```ts
+import { createStore } from '@ngneat/elf';
+import { stateHistory } from '@ngneat/elf-dirty-check';
+
+const propsStore = createStore({ name }, withProps<Props>());
+
+export const dirty = dirtyCheck(propsStore);
+```
+
+As the second parameter you can pass a `DirtyCheckOptions` object, which can be used to define if you only want cetain paths to be watched or if you want to use another state compare function.
+
+<LiveDemo src={index} packages={['dirty-check']} />
+
+## API
+
+### `setHead`
+
+Sets the current state as the revision you want to compare against:
+
+```ts
+dirty.setHead();
+```
+
+### `isDirty`
+
+Check if the current state is dirty:
+
+```ts
+dirty.isDirty();
+```
+
+### `isDirty$`
+
+same as isDirty but is an observable
+
+```ts
+dirty.isDirty$.subscribe(console.log);
+```
+
+### `dispose`
+
+when you dispose of the component that instancied the dirty checker, you need to call dispose so that the subscription that is listening gets disposed.
+
+```ts
+// for example in an angular component
+ngOnInit() {
+  this.dirty = dirtyCheck(store);
+}
+
+ngOnDestroy() {
+  this.dirty.dispose();
+}
+```
+
+### `reset`
+
+Resets the dirty state and head:
+
+```ts
+dirty.reset();
+```
+
+### `pause`
+
+Stop monitoring the state changes:
+
+```ts
+dirty.pause();
+```
+
+### `resume`
+
+Continue monitoring the state changes:
+
+```ts
+dirty.resume();
+```
