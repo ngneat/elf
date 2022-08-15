@@ -486,6 +486,16 @@ import { deleteAllEntities } from '@ngneat/elf-entities';
 todosStore.update(deleteAllEntities());
 ```
 
+### `moveEntity`
+
+Moves an entity within the store:
+
+```ts
+import { moveEntity } from '@ngneat/elf-entities';
+
+todosStore.update(moveEntity({ fromIndex: 0, toIndex: 1 }));
+```
+
 ## idKey
 
 By default, Elf takes the `id` key from the entity `id` field. To change it, you can pass the `idKey` option to
