@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [4.4.0](https://github.com/ngneat/elf/compare/entities-4.3.1...entities-4.4.0) (2022-08-15)
+
+
+### Features
+
+* **entities:** moveEntity ([#313](https://github.com/ngneat/elf/issues/313)) ([517bf71](https://github.com/ngneat/elf/commit/517bf71216ea36b6e5f223c7eac6d5ad3b324211))
+
+
+
 ## [4.3.1](https://github.com/ngneat/elf/compare/entities-4.3.0...entities-4.3.1) (2022-05-07)
 
 
