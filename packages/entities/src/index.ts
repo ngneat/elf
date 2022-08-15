@@ -13,6 +13,7 @@ export {
   upsertEntities,
   updateEntitiesIds,
 } from './lib/update.mutation';
+export { moveEntity } from './lib/move.mutation';
 export {
   selectAllEntities,
   selectEntities,
