@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [4.4.1](https://github.com/ngneat/elf/compare/entities-4.4.0...entities-4.4.1) (2022-08-15)
+
+
+### Bug Fixes
+
+* **entities:** export moveEntity in index.ts ([#314](https://github.com/ngneat/elf/issues/314)) ([0e769d4](https://github.com/ngneat/elf/commit/0e769d46ce7b7297f5cce5446460d7d8bd02554e))
+
+
+
 # [4.4.0](https://github.com/ngneat/elf/compare/entities-4.3.1...entities-4.4.0) (2022-08-15)
 
 
