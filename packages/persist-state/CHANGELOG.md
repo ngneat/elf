@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.4](https://github.com/ngneat/elf/compare/persist-state-1.1.3...persist-state-1.1.4) (2022-08-21)
+
+
+### Bug Fixes
+
+* **state-history:** 🐞 align type with localforge ([214abec](https://github.com/ngneat/elf/commit/214abec5da8f15d0d9a22c75be90fcc5a5f3a79c))
+
+
+
 ## [1.1.3](https://github.com/ngneat/elf/compare/persist-state-1.1.2...persist-state-1.1.3) (2022-07-10)
 
 
