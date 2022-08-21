@@ -3,6 +3,7 @@ import {
   updateRequestStatus,
   withRequestsStatus,
   StatusState,
+  getRequestStatus,
 } from './requests-status';
 import {
   addEntities,
@@ -18,7 +19,7 @@ import {
   DynamicKeyDataSource,
 } from './request-data-source';
 import { expectTypeOf } from 'expect-type';
-import { mapTo, tap, timer } from 'rxjs';
+import { catchError, EMPTY, map, mapTo, tap, timer } from 'rxjs';
 import { withRequestsCache } from '..';
 
 describe('createRequestDataSource', () => {
@@ -89,6 +90,59 @@ describe('createRequestDataSource', () => {
 
     // it's cached
     expect(spy).toHaveBeenCalledTimes(3);
+  });
+
+  it('should set an error', () => {
+    jest.useFakeTimers();
+
+    const { state, config } = createState(
+      withEntities<Todo>(),
+      withRequestsStatus(),
+      withRequestsCache()
+    );
+
+    const store = new Store({ state, config, name: 'todos' });
+
+    const { setCached, setSuccess, data$, trackRequestStatus } =
+      createRequestDataSource({
+        store,
+        data$: () => store.pipe(selectAllEntities()),
+        requestKey: 'todos',
+        dataKey: 'todos',
+      });
+
+    const spy = jest.fn();
+
+    data$().subscribe(spy);
+
+    function getTodos() {
+      return timer(1000).pipe(
+        map(() => {
+          throw new Error('This is not valid');
+        }),
+        tap((todos) =>
+          store.update(setEntities(todos), setSuccess(), setCached())
+        ),
+        trackRequestStatus(),
+        catchError(() => EMPTY)
+      );
+    }
+
+    getTodos().subscribe();
+    jest.runAllTimers();
+
+    expect(spy).toHaveBeenLastCalledWith({
+      loading: false,
+      error: new Error('This is not valid'),
+      todos: [],
+    });
+
+    expect(store.query(getRequestStatus('todos'))).toMatchInlineSnapshot(`
+      Object {
+        "error": [Error: This is not valid],
+        "value": "error",
+      }
+    `);
   });
 
   it('should work with dynamic source', () => {

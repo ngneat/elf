@@ -24,7 +24,7 @@ export function moveEntity<
     toIndex: number;
   } & BaseEntityOptions<Ref>
 ): Reducer<S> {
-  return function (state, context) {
+  return function (state) {
     const {
       fromIndex,
       toIndex,

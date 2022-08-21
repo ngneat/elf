@@ -101,7 +101,7 @@ describe('persist state', () => {
 
       getItem<T extends Record<string, any>>(
         key: string
-      ): Async<T | undefined> {
+      ): Async<T | undefined | null> {
         const value = this._storage[key];
         return Promise.resolve(value && JSON.parse(value));
       }
