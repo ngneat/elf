@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [4.4.2](https://github.com/ngneat/elf/compare/entities-4.4.1...entities-4.4.2) (2022-08-22)
+
+
+### Bug Fixes
+
+* **entities:** 🐞 add support for cjs ([f478dc1](https://github.com/ngneat/elf/commit/f478dc15d77df8c6b5bbfda94d0c6a3d59151fbe))
+
+
+
 ## [4.4.1](https://github.com/ngneat/elf/compare/entities-4.4.0...entities-4.4.1) (2022-08-15)
 
 
