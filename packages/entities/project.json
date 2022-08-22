@@ -13,6 +13,7 @@
         "project": "packages/entities/package.json",
         "entryFile": "packages/entities/src/index.ts",
         "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "format": ["esm", "cjs"],
         "globals": [
           {
             "global": "Rx",
