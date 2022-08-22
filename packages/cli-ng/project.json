@@ -12,6 +12,7 @@
         "tsConfig": "packages/cli-ng/tsconfig.lib.json",
         "project": "packages/cli-ng/package.json",
         "entryFile": "packages/cli-ng/src/index.ts",
+        "format": ["esm", "cjs"],
         "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
         "assets": [
           {

@@ -12,6 +12,7 @@
         "tsConfig": "packages/store/tsconfig.lib.json",
         "project": "packages/store/package.json",
         "entryFile": "packages/store/src/index.ts",
+        "format": ["esm", "cjs"],
         "globals": [
           {
             "global": "Rx",
