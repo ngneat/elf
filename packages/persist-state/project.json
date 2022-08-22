@@ -13,6 +13,7 @@
         "project": "packages/persist-state/package.json",
         "entryFile": "packages/persist-state/src/index.ts",
         "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "format": ["esm", "cjs"],
         "globals": [
           {
             "global": "Rx",
