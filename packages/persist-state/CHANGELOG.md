@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.5](https://github.com/ngneat/elf/compare/persist-state-1.1.4...persist-state-1.1.5) (2022-08-22)
+
+
+### Bug Fixes
+
+* **persist-state:** 🐞 add support for cjs ([982205b](https://github.com/ngneat/elf/commit/982205b4c5c04795dff66065d5454fb7bddf59a9))
+
+
+
 ## [1.1.4](https://github.com/ngneat/elf/compare/persist-state-1.1.3...persist-state-1.1.4) (2022-08-21)
 
 
