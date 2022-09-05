@@ -33,9 +33,26 @@ function createStorage(storage: Storage | undefined): StateStorage | undefined {
   };
 }
 
-export const localStorageStrategy = createStorage(
-  typeof localStorage !== 'undefined' ? localStorage : undefined
-)!;
-export const sessionStorageStrategy = createStorage(
-  typeof sessionStorage !== 'undefined' ? sessionStorage : undefined
-)!;
+const tryGetLocalStorage = () => {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      return localStorage;
+    }
+  } catch {
+    // eslint-disable-next-line no-empty
+  }
+  return undefined;
+};
+export const localStorageStrategy = createStorage(tryGetLocalStorage())!;
+
+const tryGetSessionStorage = () => {
+  try {
+    if (typeof sessionStorage !== 'undefined') {
+      return sessionStorage;
+    }
+  } catch {
+    // eslint-disable-next-line no-empty
+  }
+  return undefined;
+};
+export const sessionStorageStrategy = createStorage(tryGetSessionStorage())!;
