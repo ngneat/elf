@@ -33,6 +33,9 @@ function createStorage(storage: Storage | undefined): StateStorage | undefined {
   };
 }
 
+// we need to wrap the access to window.localStorage and window.sessionStorage in a try catch
+// because localStorage can be disabled, or be denied by a security rule
+// as soon as we access the property, it throws an error
 const tryGetLocalStorage = () => {
   try {
     if (typeof localStorage !== 'undefined') {
