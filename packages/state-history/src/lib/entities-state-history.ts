@@ -391,7 +391,7 @@ export class EntitiesStateHistory<
         return coerceArray(this.mergedOptions.entityIds);
       }
 
-      return this.store.query(getEntitiesIds());
+      return this.store.query(getEntitiesIds(this.entitiesRef));
     }
 
     return coerceArray(ids);
