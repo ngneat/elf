@@ -235,7 +235,7 @@ describe('entities state history', () => {
       { id: 3, label: 'upsert test' },
     ]);
 
-    // id: 2 - to 2 update
+    // id: 2 - to 1 update
     history.jumpToPast(1, 2);
 
     expect(store.query(getAllEntities())).toEqual([
@@ -258,7 +258,7 @@ describe('entities state history', () => {
       { id: 3, label: 'upsert test' },
     ]);
 
-    // id: 1 - to 2 update
+    // id: 1 - to 1 update
     history.jumpToFuture(2, 1);
 
     expect(store.query(getAllEntities())).toEqual([
@@ -318,6 +318,241 @@ describe('entities state history', () => {
     expect(history.hasPast(3)).toBeTruthy();
 
     // id: 2 still paused
+    expect(history.hasFuture(2)).toBeFalsy();
+    expect(history.hasPast(2)).toBeFalsy();
+  });
+
+  it('should work with entityRef', () => {
+    const store = createStore(
+      { name: '' },
+      withUIEntities<
+        {
+          uiId: number;
+          status: 'loading' | 'idle' | 'error' | 'success';
+        },
+        'uiId'
+      >({ idKey: 'uiId' })
+    );
+    const history = entitiesStateHistory(store, { entitiesRef: UIEntitiesRef });
+
+    store.update(
+      // uiId: 1 - base; uiId: 2 - base
+      setEntities(
+        [
+          { uiId: 1, status: 'idle' },
+          { uiId: 2, status: 'idle' },
+        ],
+        { ref: UIEntitiesRef }
+      )
+    );
+
+    // uiId: 1 - 1 update
+    store.update(
+      updateEntities(1, { status: 'loading' }, { ref: UIEntitiesRef })
+    );
+    // uiId: 2 - 1 update
+    store.update(
+      updateEntities(2, { status: 'loading' }, { ref: UIEntitiesRef })
+    );
+    // uiId: 2 - 2 update
+    store.update(
+      updateEntities(2, { status: 'success' }, { ref: UIEntitiesRef })
+    );
+
+    // uiId: 2 - to 1 update
+    history.undo(2);
+
+    expect(history.hasFuture(2)).toBeTruthy();
+    expect(history.hasPast(2)).toBeTruthy();
+
+    expect(store.query(getAllEntities({ ref: UIEntitiesRef }))).toEqual([
+      { uiId: 1, status: 'loading' },
+      { uiId: 2, status: 'loading' },
+    ]);
+
+    // uiId: 1 - 2 update; uiId: 2 - 2 update
+    store.update(
+      updateEntities([1, 2], { status: 'error' }, { ref: UIEntitiesRef })
+    );
+
+    expect(history.hasPast(1)).toBeTruthy();
+    expect(history.hasPast(2)).toBeTruthy();
+
+    // uiId: 1 - to 1 update
+    history.undo(1);
+    // uiId: 1 - to base; uiId: 2 - to 1 update
+    history.undo([1, 2]);
+
+    expect(history.hasFuture(1)).toBeTruthy();
+    expect(history.hasPast(1)).toBeFalsy();
+    expect(history.hasFuture(2)).toBeTruthy();
+    expect(history.hasPast(2)).toBeTruthy();
+    expect(store.query(getAllEntities({ ref: UIEntitiesRef }))).toEqual([
+      { uiId: 1, status: 'idle' },
+      { uiId: 2, status: 'loading' },
+    ]);
+
+    // uiId: 1 - to 1 update;
+    history.redo(1);
+    // uiId: 1 - to 2 update; uiId: 2 - to 2 update
+    history.redo([1, 2]);
+
+    expect(history.hasFuture(1)).toBeFalsy();
+    expect(history.hasFuture(2)).toBeTruthy();
+    expect(store.query(getAllEntities({ ref: UIEntitiesRef }))).toEqual([
+      { uiId: 1, status: 'error' },
+      { uiId: 2, status: 'error' },
+    ]);
+
+    // uiId: 1 - to 1 update; uiId: 2 - to 1 update
+    history.undo();
+    // uiId: 1 - to base; uiId: 2 - to base
+    history.undo();
+
+    expect(history.hasFuture(1)).toBeTruthy();
+    expect(history.hasFuture(2)).toBeTruthy();
+    expect(history.hasPast(1)).toBeFalsy();
+    expect(history.hasPast(2)).toBeFalsy();
+    expect(store.query(getAllEntities({ ref: UIEntitiesRef }))).toEqual([
+      { uiId: 1, status: 'idle' },
+      { uiId: 2, status: 'idle' },
+    ]);
+
+    // uiId: 1 - to 1 update; uiId: 2 - to 1 update
+    history.redo();
+    // uiId: 1 - base; uiId: 2 - base
+    history.clearPast();
+
+    expect(history.hasFuture(1)).toBeTruthy();
+    expect(history.hasPast(1)).toBeFalsy();
+    expect(history.hasFuture(2)).toBeTruthy();
+    expect(history.hasPast(2)).toBeFalsy();
+    expect(store.query(getAllEntities({ ref: UIEntitiesRef }))).toEqual([
+      { uiId: 1, status: 'loading' },
+      { uiId: 2, status: 'loading' },
+    ]);
+
+    // uiId: 2 - 1 update
+    store.update(
+      updateEntities(2, { status: 'error' }, { ref: UIEntitiesRef })
+    );
+    // uiId: 2 - 2 update
+    store.update(
+      updateEntities(2, { status: 'success' }, { ref: UIEntitiesRef })
+    );
+    // uiId: 2 - 3 update
+    store.update(
+      updateEntities(2, { status: 'loading' }, { ref: UIEntitiesRef })
+    );
+    // uiId: 2 - 4 update
+    store.update(updateEntities(2, { status: 'idle' }, { ref: UIEntitiesRef }));
+
+    expect(history.hasPast(2)).toBeTruthy();
+
+    // nothing changed because index is invalid
+    history.jumpToPast(8, 2);
+
+    expect(store.query(getAllEntities({ ref: UIEntitiesRef }))).toEqual([
+      { uiId: 1, status: 'loading' },
+      { uiId: 2, status: 'idle' },
+    ]);
+
+    // uiId: 2 - to 1 update
+    history.jumpToPast(1, 2);
+
+    expect(store.query(getAllEntities({ ref: UIEntitiesRef }))).toEqual([
+      { uiId: 1, status: 'loading' },
+      { uiId: 2, status: 'error' },
+    ]);
+
+    // uiId: 1 - 1 update
+    store.update(
+      updateEntities(1, { status: 'error' }, { ref: UIEntitiesRef })
+    );
+    // uiId: 1 - 2 update
+    store.update(
+      updateEntities(1, { status: 'success' }, { ref: UIEntitiesRef })
+    );
+
+    // uiId: 1 - to base; uiId: 2 - to base
+    history.jumpToPast(0);
+
+    expect(store.query(getAllEntities({ ref: UIEntitiesRef }))).toEqual([
+      { uiId: 1, status: 'loading' },
+      { uiId: 2, status: 'loading' },
+    ]);
+
+    // uiId: 1 - to 1 update
+    history.jumpToFuture(2, 1);
+
+    expect(store.query(getAllEntities({ ref: UIEntitiesRef }))).toEqual([
+      { uiId: 1, status: 'error' },
+      { uiId: 2, status: 'loading' },
+    ]);
+
+    history.clear();
+
+    // uiId: 1 - base; uiId: 2 - base
+    store.update(
+      updateEntities([1, 2], { status: 'error' }, { ref: UIEntitiesRef })
+    );
+    // uiId: 1 - update 1; uiId: 2 - update 1
+    store.update(
+      updateEntities([1, 2], { status: 'success' }, { ref: UIEntitiesRef })
+    );
+    // uiId: 1 - update 2; uiId: 2 - update 2
+    store.update(
+      updateEntities([1, 2], { status: 'idle' }, { ref: UIEntitiesRef })
+    );
+
+    // uiId: 1 - to base; uiId: 2 - to base
+    history.jumpToPast(0);
+
+    expect(store.query(getAllEntities({ ref: UIEntitiesRef }))).toEqual([
+      { uiId: 1, status: 'error' },
+      { uiId: 2, status: 'error' },
+    ]);
+
+    history.clearFuture(2);
+
+    expect(history.hasFuture(2)).toBeFalsy();
+
+    history.clear();
+    history.pause();
+
+    store.update(
+      updateEntities([1, 2], { status: 'idle' }, { ref: UIEntitiesRef })
+    );
+    store.update(
+      updateEntities([1, 2], { status: 'success' }, { ref: UIEntitiesRef })
+    );
+    store.update(
+      updateEntities([1, 2], { status: 'loading' }, { ref: UIEntitiesRef })
+    );
+
+    expect(history.hasFuture(1)).toBeFalsy();
+    expect(history.hasPast(1)).toBeFalsy();
+    expect(history.hasFuture(2)).toBeFalsy();
+    expect(history.hasPast(2)).toBeFalsy();
+
+    history.resume(1);
+
+    store.update(
+      updateEntities([1, 2], { status: 'idle' }, { ref: UIEntitiesRef })
+    );
+    store.update(
+      updateEntities([1, 2], { status: 'success' }, { ref: UIEntitiesRef })
+    );
+    store.update(
+      updateEntities([1, 2], { status: 'loading' }, { ref: UIEntitiesRef })
+    );
+
+    history.undo(1);
+
+    expect(history.hasFuture(1)).toBeTruthy();
+    expect(history.hasPast(1)).toBeTruthy();
+
+    // uiId: 2 still paused
     expect(history.hasFuture(2)).toBeFalsy();
     expect(history.hasPast(2)).toBeFalsy();
   });
