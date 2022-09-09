@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.6](https://github.com/ngneat/elf/compare/persist-state-1.1.5...persist-state-1.1.6) (2022-09-09)
+
+
+### Bug Fixes
+
+* **persist-state:** wrap storage in try catch ([#327](https://github.com/ngneat/elf/issues/327)) ([21803c6](https://github.com/ngneat/elf/commit/21803c672c50dd9b95ef6898cace69518c20e7b4))
+
+
+
 ## [1.1.5](https://github.com/ngneat/elf/compare/persist-state-1.1.4...persist-state-1.1.5) (2022-08-22)
 
 
