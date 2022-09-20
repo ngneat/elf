@@ -40,6 +40,8 @@ const todosStore = createStore(
 
 Call `updatePaginationData()` with a configuration object that determines the various pagination settings, and call `setPage()` whenever you want to define the `ids` that belong to a certain page number.
 
+`Note: pagination can start at index 0 or 1.`
+
 ```ts title="todos.repository"
 import { PaginationData } from '@ngneat/elf-pagination';
 
