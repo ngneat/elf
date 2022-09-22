@@ -218,7 +218,7 @@ export function initializeAsPending<T extends string>(keys: OrArray<T>) {
     };
 
     return acc;
-  }, {} as Record<string, PendingState>);
+  }, {} as Record<T, PendingState>);
 }
 
 export function clearRequestsStatus<
