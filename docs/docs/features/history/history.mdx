@@ -86,6 +86,14 @@ Continue monitoring the state changes:
 propsStateHistory.resume();
 ```
 
+### `getPast`
+
+Get the whole past history:
+
+```ts
+propsStateHistory.getPast();
+```
+
 ### `hasPast`
 
 A boolean flag that returns whether the history is not empty:
@@ -100,6 +108,14 @@ An observable that returns whether the history is not empty:
 
 ```ts
 propsStateHistory.hasPast$;
+```
+
+### `getFuture`
+
+Get the whole future history:
+
+```ts
+propsStateHistory.getFuture();
 ```
 
 ### `hasFuture`

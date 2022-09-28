@@ -19,6 +19,10 @@ import {
   selectEntities,
 } from '@ngneat/elf-entities';
 
+export interface EntitiesTimelineOptions {
+  showIfEmpty: boolean;
+}
+
 export interface EntitiesStateHistoryOptions<
   T extends Store<any, StoreValue<any> & EntitiesState<E>>,
   E extends EntitiesRef,
@@ -123,6 +127,46 @@ export class EntitiesStateHistory<
     const historyById = this.entitiesHistory.get(id);
 
     return historyById ? historyById.future.length > 0 : false;
+  }
+
+  getEntitiesPast(
+    options: EntitiesTimelineOptions = { showIfEmpty: false }
+  ): Record<
+    getIdType<EntitiesState<E>, E>,
+    Array<getEntityType<EntitiesState<E>, E>>
+  > {
+    const pastByIds = {} as Record<
+      getIdType<EntitiesState<E>, E>,
+      Array<getEntityType<EntitiesState<E>, E>>
+    >;
+
+    this.entitiesHistory.forEach((history, id) => {
+      if (options.showIfEmpty || history.past.length) {
+        pastByIds[id] = history.past;
+      }
+    });
+
+    return pastByIds;
+  }
+
+  getEntitiesFuture(
+    options: EntitiesTimelineOptions = { showIfEmpty: false }
+  ): Record<
+    getIdType<EntitiesState<E>, E>,
+    Array<getEntityType<EntitiesState<E>, E>>
+  > {
+    const futureByIds = {} as Record<
+      getIdType<EntitiesState<E>, E>,
+      Array<getEntityType<EntitiesState<E>, E>>
+    >;
+
+    this.entitiesHistory.forEach((history, id) => {
+      if (options.showIfEmpty || history.future.length) {
+        futureByIds[id] = history.future;
+      }
+    });
+
+    return futureByIds;
   }
 
   undo(ids?: OrArray<getIdType<S, E>>) {

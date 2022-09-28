@@ -691,4 +691,90 @@ describe('entities state history', () => {
       { id: '2', selected: false },
     ]);
   });
+
+  it('it should return the past of entities', () => {
+    const store = createStore({ name: '' }, withEntities<Entity>());
+    const history = entitiesStateHistory(store);
+
+    store.update(
+      setEntities([
+        { id: 1, label: 'first' },
+        { id: 2, label: 'second' },
+      ])
+    );
+
+    store.update(updateEntities([1, 2], { label: 'updateEntities' }));
+    store.update(updateEntities([1, 2], { label: 'updateEntities 1' }));
+
+    expect(history.getEntitiesPast()).toEqual({
+      1: [
+        { id: 1, label: 'first' },
+        { id: 1, label: 'updateEntities' },
+      ],
+      2: [
+        { id: 2, label: 'second' },
+        { id: 2, label: 'updateEntities' },
+      ],
+    });
+
+    history.clearPast(1);
+
+    expect(history.getEntitiesPast()).toEqual({
+      2: [
+        { id: 2, label: 'second' },
+        { id: 2, label: 'updateEntities' },
+      ],
+    });
+    expect(history.getEntitiesPast({ showIfEmpty: true })).toEqual({
+      1: [],
+      2: [
+        { id: 2, label: 'second' },
+        { id: 2, label: 'updateEntities' },
+      ],
+    });
+  });
+
+  it('it should return the future of entities', () => {
+    const store = createStore({ name: '' }, withEntities<Entity>());
+    const history = entitiesStateHistory(store);
+
+    store.update(
+      setEntities([
+        { id: 1, label: 'first' },
+        { id: 2, label: 'second' },
+      ])
+    );
+
+    store.update(updateEntities([1, 2], { label: 'updateEntities' }));
+    store.update(updateEntities([1, 2], { label: 'updateEntities 1' }));
+    history.undo();
+    history.undo();
+
+    expect(history.getEntitiesFuture()).toEqual({
+      1: [
+        { id: 1, label: 'updateEntities' },
+        { id: 1, label: 'updateEntities 1' },
+      ],
+      2: [
+        { id: 2, label: 'updateEntities' },
+        { id: 2, label: 'updateEntities 1' },
+      ],
+    });
+
+    history.clearFuture(1);
+
+    expect(history.getEntitiesFuture()).toEqual({
+      2: [
+        { id: 2, label: 'updateEntities' },
+        { id: 2, label: 'updateEntities 1' },
+      ],
+    });
+    expect(history.getEntitiesFuture({ showIfEmpty: true })).toEqual({
+      1: [],
+      2: [
+        { id: 2, label: 'updateEntities' },
+        { id: 2, label: 'updateEntities 1' },
+      ],
+    });
+  });
 });

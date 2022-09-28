@@ -53,6 +53,14 @@ export class StateHistory<T extends Store, State extends StoreValue<T>> {
     return this.history.future.length > 0;
   }
 
+  getPast(): History<State>['past'] {
+    return this.history.past;
+  }
+
+  getFuture(): History<State>['future'] {
+    return this.history.future;
+  }
+
   activate() {
     this.subscription = this.store
       .pipe(filter(() => !(this.skipUpdate || this.paused)))

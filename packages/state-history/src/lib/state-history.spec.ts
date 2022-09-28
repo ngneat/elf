@@ -158,4 +158,28 @@ describe('state history', () => {
     });
     expect(store.getValue()).toEqual({ counter: 5 });
   });
+
+  it('should return the past and the future', () => {
+    const { state, config } = createState(withProps({ counter: 5 }));
+    const store = new Store({ state, config, name: '' });
+    const history = stateHistory(store);
+
+    store.update((state) => ({
+      ...state,
+      newProperty: true,
+    }));
+    store.update((state) => ({
+      ...state,
+      newProperty: false,
+    }));
+
+    expect(history.getPast()).toEqual([
+      { counter: 5 },
+      { counter: 5, newProperty: true },
+    ]);
+
+    history.undo();
+
+    expect(history.getFuture()).toEqual([{ counter: 5, newProperty: false }]);
+  });
 });

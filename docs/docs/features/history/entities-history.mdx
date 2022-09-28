@@ -176,6 +176,17 @@ todosStateHistory.resume(id);
 todosStateHistory.resume([id, id]);
 ```
 
+### `getEntitiesPast`
+
+Get an object with past of each entity:
+
+```ts
+todosStateHistory.getEntitiesPast();
+
+// Add an empty array if entity's past is absent.
+todosStateHistory.getEntitiesPast({ showIfEmpty: true });
+```
+
 ### `hasPast`
 
 A boolean flag that returns whether the entity history is not empty:
@@ -190,4 +201,15 @@ A boolean flag that returns whether entity is not in the latest step in the hist
 
 ```ts
 todosStateHistory.hasFuture(id);
+```
+
+### `getEntitiesFuture`
+
+Get an object with past of each entity:
+
+```ts
+todosStateHistory.getEntitiesFuture();
+
+// Add an empty array if entity's future is absent.
+todosStateHistory.getEntitiesFuture({ showIfEmpty: true });
 ```
