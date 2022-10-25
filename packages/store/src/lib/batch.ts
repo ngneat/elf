@@ -8,9 +8,13 @@ export const batchDone$ = batchInProgress.asObservable().pipe(
 );
 
 export function emitOnce<T>(cb: () => T) {
-  batchInProgress.next(true);
-  const value = cb();
-  batchInProgress.next(false);
+  if (!batchInProgress.getValue()) {
+    batchInProgress.next(true);
+    const value = cb();
+    batchInProgress.next(false);
 
-  return value;
+    return value;
+  }
+
+  return cb();
 }

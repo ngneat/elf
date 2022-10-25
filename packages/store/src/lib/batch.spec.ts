@@ -1,4 +1,4 @@
-import { emitOnce } from './batch';
+import { emitOnce, batchInProgress } from './batch';
 import { createStore } from './create-store';
 import { select } from './operators';
 import { withProps } from './props.state';
@@ -79,6 +79,70 @@ test('batch loop', () => {
   expect(store.getValue()).toMatchInlineSnapshot(`
     Object {
       "count": 11,
+    }
+  `);
+
+  expect(spy).toHaveBeenCalledTimes(2);
+  expect(spy).toHaveBeenCalledWith(1);
+  expect(spy).toHaveBeenCalledWith(11);
+});
+
+test('nested batch', () => {
+  const store = createStore(
+    {
+      name: 'todos',
+    },
+    withProps<{ name: string; count: number }>({ name: 'foo', count: 1 })
+  );
+
+  const spy = jest.fn();
+  store.pipe(select((s) => s.count)).subscribe(spy);
+
+  expect(batchInProgress.getValue()).toBeFalsy();
+
+  const v = emitOnce(() => {
+    const count = emitOnce(() => {
+      for (let i = 0; i < 10; i++) {
+        store.update((s) => ({
+          ...s,
+          count: s.count + 1,
+        }));
+      }
+
+      return 'count';
+    });
+
+    // should not stop batching after inner emitOnce
+    expect(batchInProgress.getValue()).toBeTruthy();
+
+    const name = emitOnce(() => {
+      for (let i = 0; i < 10; i++) {
+        store.update((s) => ({
+          ...s,
+          name: `foo${i + 1}`,
+        }));
+      }
+
+      return 'name';
+    });
+
+    // should not stop batching after inner emitOnce
+    expect(batchInProgress.getValue()).toBeTruthy();
+
+    expect(count).toEqual('count');
+    expect(name).toEqual('name');
+
+    return `${name}-${count}`;
+  });
+
+  expect(batchInProgress.getValue()).toBeFalsy();
+
+  expect(v).toEqual('name-count');
+
+  expect(store.getValue()).toMatchInlineSnapshot(`
+    Object {
+      "count": 11,
+      "name": "foo10",
     }
   `);
 

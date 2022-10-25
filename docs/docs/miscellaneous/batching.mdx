@@ -39,3 +39,43 @@ emitOnce(() => {
 ```
 
 In this case, subscribers will only receive **one** emission instead of two.
+
+Also, you might face the need to use functions that use `emitOnce` inside another `emitOnce`:
+
+```ts title=table.repository.ts
+export function restoreFilters() {
+  emitOnce(() => {
+    store.update(
+      setProp('filters', null),
+    )
+    resetPagination();
+  });
+}
+
+export function resetSort() {
+  emitOnce(() => {
+    store.update(
+      setProp('sort', null),
+    );
+    resetPagination();
+  });
+}
+
+export function resetPagination() {
+  store.update(
+    setProp('pagination', null),
+  )
+}
+```
+
+```ts
+import { emitOnce } from '@elf/store';
+import { restoreFilters, resetSort } from './table.repository';
+
+emitOnce(() => {
+  restoreFilters();
+  resetSort();
+});
+```
+
+In this case, subscribers will only receive **one** emission instead of two.
