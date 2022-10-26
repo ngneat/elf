@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [2.2.0](https://github.com/ngneat/elf/compare/store-2.1.0...store-2.2.0) (2022-10-26)
+
+
+### Features
+
+* **store:** change `emitOnce` to emit only once even with all nested `emitOnce` ([#362](https://github.com/ngneat/elf/issues/362)) ([a5b89dd](https://github.com/ngneat/elf/commit/a5b89ddbac3b4766d7dd5d3ab91a974bfd52b5a8))
+
+
+
 # [2.1.0](https://github.com/ngneat/elf/compare/store-2.0.0...store-2.1.0) (2022-05-30)
 
 
