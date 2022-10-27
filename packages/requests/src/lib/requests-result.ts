@@ -36,23 +36,35 @@ export function initialResult(): Result {
   };
 }
 
+function getSource<TValue>(
+  key: unknown[],
+  initialValue: TValue,
+  map: Map<string, BehaviorSubject<TValue>>
+) {
+  const item = map.get(resolveKey(key));
+
+  if (item) {
+    return item.asObservable();
+  }
+
+  const newSource = new BehaviorSubject(initialValue);
+  map.set(resolveKey(key), newSource);
+
+  return newSource.asObservable();
+}
+
 const waiters = new Map<string, BehaviorSubject<boolean>>();
 
 function getWaiter(key: unknown[]): Observable<boolean> {
-  const waiter = waiters.get(JSON.stringify(key));
-
-  if (waiter) {
-    return waiter.asObservable();
-  }
-
-  const newWaiter = new BehaviorSubject(false);
-  waiters.set(JSON.stringify(key), newWaiter);
-
-  return newWaiter.asObservable();
+  return getSource(key, false, waiters);
 }
 
 function setWait(key: unknown[], wait = true) {
-  waiters.get(JSON.stringify(key))?.next(wait);
+  waiters.get(resolveKey(key))?.next(wait);
+}
+
+function resolveKey(key: unknown): string {
+  return JSON.stringify(key);
 }
 
 const emitters = new Map<string, BehaviorSubject<Result>>();
@@ -61,20 +73,13 @@ const emitters = new Map<string, BehaviorSubject<Result>>();
 export function getRequestResult<TData>(
   key: unknown[]
 ): Observable<Result<TData>> {
-  const result = emitters.get(JSON.stringify(key));
-
-  if (result) {
-    return result.asObservable() as Observable<Result<TData>>;
-  }
-
-  const newResult = new BehaviorSubject(initialResult());
-  emitters.set(JSON.stringify(key), newResult);
-
-  return newResult.asObservable() as Observable<Result<TData>>;
+  return getSource<Result>(key, initialResult(), emitters) as Observable<
+    Result<TData>
+  >;
 }
 
 function updateRequestResult(key: unknown[], newValue: Partial<Result>) {
-  const result = emitters.get(JSON.stringify(key));
+  const result = emitters.get(resolveKey(key));
 
   if (result) {
     let hasChange = false;
@@ -98,6 +103,12 @@ function updateRequestResult(key: unknown[], newValue: Partial<Result>) {
   }
 }
 
+// @public
+export function deleteRequestResult(key: unknown[]) {
+  emitters.delete(resolveKey(key));
+}
+
+// @public
 export function joinRequestResult<T>(
   key: unknown[]
 ): OperatorFunction<T, Result<T>> {
@@ -127,6 +138,8 @@ interface Options<TData> {
   staleTime?: number;
   // Auto refetch based on the provided time
   refetchTime?: number;
+  // Ignore everything and perform the request
+  skipCache?: boolean;
   isSuccessPredicateFn?: (data: TData) => boolean;
 }
 
