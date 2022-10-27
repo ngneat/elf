@@ -11,28 +11,47 @@ import {
   tap,
 } from 'rxjs';
 
-// TODO - Make stricter type using overloads. For example, if `status` is loading `data` is undefined
-interface Result<TData = unknown> {
-  // The query has no data yet
-  isLoading: boolean;
-  // The request was successful and data is available
-  isSuccess: boolean;
-  // The request encountered an error
-  isError: boolean;
-  // The status gives information about the data: Do we have any or not?
-  status: 'idle' | 'loading' | 'error' | 'success';
-  data: TData;
-  error: any;
+export interface LoadingRequestResult {
+  isLoading: true;
+  isSuccess: false;
+  isError: false;
+  status: 'loading';
 }
 
-export function initialResult(): Result {
+export interface SuccessRequestResult {
+  isLoading: false;
+  isSuccess: true;
+  isError: false;
+  status: 'success';
+}
+
+export interface ErrorRequestResult<TError = any> {
+  isLoading: false;
+  isSuccess: false;
+  isError: true;
+  status: 'error';
+  error: TError;
+}
+
+export interface IdleRequestResult {
+  isLoading: false;
+  isSuccess: false;
+  isError: false;
+  status: 'idle';
+}
+
+export type RequestResult<TError = any> =
+  | LoadingRequestResult
+  | SuccessRequestResult
+  | ErrorRequestResult<TError>
+  | IdleRequestResult;
+
+export function initialResult(): RequestResult {
   return {
     isError: false,
-    isLoading: true,
+    isLoading: false,
     isSuccess: false,
-    data: undefined,
-    status: 'loading',
-    error: undefined,
+    status: 'idle',
   };
 }
 
@@ -67,18 +86,18 @@ function resolveKey(key: unknown): string {
   return JSON.stringify(key);
 }
 
-const emitters = new Map<string, BehaviorSubject<Result>>();
+const emitters = new Map<string, BehaviorSubject<RequestResult>>();
 
 // @public
-export function getRequestResult<TData>(
+export function getRequestResult<TError>(
   key: unknown[]
-): Observable<Result<TData>> {
-  return getSource<Result>(key, initialResult(), emitters) as Observable<
-    Result<TData>
+): Observable<RequestResult<TError>> {
+  return getSource<RequestResult>(key, initialResult(), emitters) as Observable<
+    RequestResult<TError>
   >;
 }
 
-function updateRequestResult(key: unknown[], newValue: Partial<Result>) {
+function updateRequestResult(key: unknown[], newValue: RequestResult) {
   const result = emitters.get(resolveKey(key));
 
   if (result) {
@@ -88,18 +107,15 @@ function updateRequestResult(key: unknown[], newValue: Partial<Result>) {
 
     for (const key of Object.keys(newValue)) {
       if (
-        currentResult[key as keyof Result] !== newValue[key as keyof Result]
+        currentResult[key as keyof RequestResult] !==
+        newValue[key as keyof RequestResult]
       ) {
         hasChange = true;
         break;
       }
     }
 
-    hasChange &&
-      result.next({
-        ...currentResult,
-        ...newValue,
-      });
+    hasChange && result.next(newValue);
   }
 }
 
@@ -109,11 +125,11 @@ export function deleteRequestResult(key: unknown[]) {
 }
 
 // @public
-export function joinRequestResult<T>(
+export function joinRequestResult<T, TError = any>(
   key: unknown[]
-): OperatorFunction<T, Result<T>> {
+): OperatorFunction<T, RequestResult<TError> & { data: T }> {
   return function (source: Observable<T>) {
-    const source$ = combineLatest([source, getRequestResult(key)]).pipe(
+    const source$ = combineLatest([source, getRequestResult<TError>(key)]).pipe(
       map(([data, result]) => {
         return {
           ...result,
@@ -151,11 +167,16 @@ export function trackRequestResult<TData>(
     return getRequestResult(key).pipe(
       take(1),
       switchMap((result) => {
-        if (result.isSuccess) {
+        if (result.isSuccess && !options?.skipCache) {
           return EMPTY;
         }
 
-        updateRequestResult(key, { isLoading: true });
+        updateRequestResult(key, {
+          isLoading: true,
+          isError: false,
+          isSuccess: false,
+          status: 'loading',
+        });
 
         setWait(key, true);
 
@@ -168,15 +189,18 @@ export function trackRequestResult<TData>(
               updateRequestResult(key, {
                 isError: true,
                 isLoading: false,
-                status: 'idle',
+                isSuccess: false,
+                status: 'error',
                 error,
               });
             },
+            // TODO: the source can be closed before receiving the response. Is it a 'success' status?
             complete() {
               updateRequestResult(key, {
                 isLoading: false,
                 isSuccess: true,
-                status: 'idle',
+                isError: false,
+                status: 'success',
               });
             },
           })
