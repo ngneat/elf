@@ -4,7 +4,7 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:rollup",
+      "executor": "@nrwl/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "updateBuildableProjectDepsInPackageJson": false,
@@ -42,7 +42,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/entities"],
+      "outputs": ["{workspaceRoot}/coverage/packages/entities"],
       "options": {
         "jestConfig": "packages/entities/jest.config.ts",
         "passWithNoTests": true

@@ -12,7 +12,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/mocks"],
+      "outputs": ["{workspaceRoot}/coverage/packages/mocks"],
       "options": {
         "jestConfig": "packages/mocks/jest.config.ts",
         "passWithNoTests": true

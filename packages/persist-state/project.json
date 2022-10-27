@@ -4,7 +4,7 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:rollup",
+      "executor": "@nrwl/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/persist-state",
@@ -42,7 +42,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/persist-state"],
+      "outputs": ["{workspaceRoot}/coverage/packages/persist-state"],
       "options": {
         "jestConfig": "packages/persist-state/jest.config.ts",
         "passWithNoTests": true

@@ -4,7 +4,7 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:rollup",
+      "executor": "@nrwl/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/state-history",
@@ -42,7 +42,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/state-history"],
+      "outputs": ["{workspaceRoot}/coverage/packages/state-history"],
       "options": {
         "jestConfig": "packages/state-history/jest.config.ts",
         "passWithNoTests": true

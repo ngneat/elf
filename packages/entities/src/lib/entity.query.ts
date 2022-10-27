@@ -78,10 +78,10 @@ export function selectEntity<
   options?: BaseEntityOptions<Ref>
 ): OperatorFunction<S, getEntityType<S, Ref> | undefined>;
 
-export function selectEntity<S extends EntitiesState<Ref>, Ref>(
-  id: any,
-  options: Options = {}
-) {
+export function selectEntity<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(id: any, options: Options = {}) {
   const { ref: { entitiesKey } = defaultEntitiesRef, pluck } = options;
 
   return pipe(

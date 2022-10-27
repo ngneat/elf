@@ -76,10 +76,10 @@ export function selectMany<
   options?: BaseEntityOptions<Ref>
 ): OperatorFunction<S, getEntityType<S, Ref>[]>;
 
-export function selectMany<S extends EntitiesState<Ref>, Ref>(
-  ids: any[],
-  options: Options = {}
-): any {
+export function selectMany<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(ids: any[], options: Options = {}): any {
   const { ref: { entitiesKey } = defaultEntitiesRef, pluck } = options;
 
   return pipe(
