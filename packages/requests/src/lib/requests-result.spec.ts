@@ -55,6 +55,7 @@ describe('requests result', () => {
         Array [
           Object {
             "data": Array [],
+            "error": undefined,
             "isError": false,
             "isLoading": true,
             "isSuccess": false,
@@ -70,6 +71,7 @@ describe('requests result', () => {
                 "title": "todo 1",
               },
             ],
+            "error": undefined,
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
@@ -90,6 +92,7 @@ describe('requests result', () => {
                 "title": "todo 2",
               },
             ],
+            "error": undefined,
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
