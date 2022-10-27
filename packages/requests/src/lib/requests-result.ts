@@ -11,6 +11,7 @@ import {
   tap,
 } from 'rxjs';
 
+// TODO - Make stricter type using overloads. For example, if `status` is loading `data` is undefined
 interface Result<TData = unknown> {
   // The query has no data yet
   isLoading: boolean;
@@ -21,6 +22,7 @@ interface Result<TData = unknown> {
   // The status gives information about the data: Do we have any or not?
   status: 'idle' | 'loading' | 'error' | 'success';
   data: TData;
+  error: any;
 }
 
 export function initialResult(): Result {
@@ -30,6 +32,7 @@ export function initialResult(): Result {
     isSuccess: false,
     data: undefined,
     status: 'loading',
+    error: undefined,
   };
 }
 
@@ -148,11 +151,12 @@ export function trackRequestResult<TData>(
             finalize() {
               setWait(key, false);
             },
-            error() {
+            error(error) {
               updateRequestResult(key, {
                 isError: true,
                 isLoading: false,
                 status: 'idle',
+                error,
               });
             },
             complete() {

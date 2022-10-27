@@ -17,8 +17,6 @@ describe('requests result', () => {
 
     const store = new Store({ state, config, name: 'todos' });
 
-    expect(true).toBeTruthy();
-
     const entities$ = store.pipe(
       selectAllEntities(),
       joinRequestResult(['todos'])
