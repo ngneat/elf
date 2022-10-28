@@ -11,21 +11,25 @@ import {
   tap,
 } from 'rxjs';
 
-export interface LoadingRequestResult {
+export interface BaseRequestResult {
+  staleTime?: number;
+}
+
+export interface LoadingRequestResult extends BaseRequestResult {
   isLoading: true;
   isSuccess: false;
   isError: false;
   status: 'loading';
 }
 
-export interface SuccessRequestResult {
+export interface SuccessRequestResult extends BaseRequestResult {
   isLoading: false;
   isSuccess: true;
   isError: false;
   status: 'success';
 }
 
-export interface ErrorRequestResult<TError = any> {
+export interface ErrorRequestResult<TError = any> extends BaseRequestResult {
   isLoading: false;
   isSuccess: false;
   isError: true;
@@ -33,7 +37,7 @@ export interface ErrorRequestResult<TError = any> {
   error: TError;
 }
 
-export interface IdleRequestResult {
+export interface IdleRequestResult extends BaseRequestResult {
   isLoading: false;
   isSuccess: false;
   isError: false;
@@ -120,6 +124,12 @@ function updateRequestResult(key: unknown[], newValue: RequestResult) {
 }
 
 // @public
+export function clearRequestsResult() {
+  emitters.clear();
+  waiters.clear();
+}
+
+// @public
 export function deleteRequestResult(key: unknown[]) {
   emitters.delete(resolveKey(key));
 }
@@ -148,7 +158,6 @@ export function joinRequestResult<T, TError = any>(
   };
 }
 
-// TODO
 interface Options {
   // When we should refetch
   staleTime?: number;
@@ -164,7 +173,11 @@ export function trackRequestResult<TData>(
     return getRequestResult(key).pipe(
       take(1),
       switchMap((result) => {
-        if (result.isSuccess && !options?.skipCache) {
+        const stale = options?.staleTime
+          ? result.staleTime! < Date.now()
+          : false;
+
+        if (!options?.skipCache && result.isSuccess && !stale) {
           return EMPTY;
         }
 
@@ -192,12 +205,18 @@ export function trackRequestResult<TData>(
               });
             },
             complete() {
-              updateRequestResult(key, {
+              const result: SuccessRequestResult = {
                 isLoading: false,
                 isSuccess: true,
                 isError: false,
                 status: 'success',
-              });
+              };
+
+              if (options?.staleTime) {
+                result.staleTime = Date.now() + options.staleTime;
+              }
+
+              updateRequestResult(key, result);
             },
           })
         );

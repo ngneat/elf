@@ -7,9 +7,17 @@ import {
 } from '@ngneat/elf-entities';
 import { createTodo, Todo } from '@ngneat/elf-mocks';
 import { map, tap, timer } from 'rxjs';
-import { joinRequestResult, trackRequestResult } from './requests-result';
+import {
+  clearRequestsResult,
+  joinRequestResult,
+  trackRequestResult,
+} from './requests-result';
 
 describe('requests result', () => {
+  afterEach(() => {
+    clearRequestsResult();
+  });
+
   it('should work', () => {
     jest.useFakeTimers();
 
@@ -132,6 +140,42 @@ describe('requests result', () => {
   });
 
   it('should request when staleTime pass', () => {
-    expect(true).toBeTruthy();
+    jest.useFakeTimers();
+
+    const { state, config } = createState(withEntities<Todo>());
+
+    const store = new Store({ state, config, name: 'todos' });
+    const reqSpy = jest.fn();
+
+    function getTodos() {
+      return timer(1000).pipe(
+        map(() => [createTodo(1)]),
+        tap((todos) => reqSpy() && store.update(setEntities(todos))),
+        trackRequestResult(['todos'], { staleTime: 5000 })
+      );
+    }
+
+    getTodos().subscribe();
+
+    jest.runAllTimers();
+
+    expect(reqSpy).toHaveBeenCalledTimes(1);
+
+    jest.advanceTimersByTime(6000);
+    getTodos().subscribe();
+    jest.runAllTimers();
+
+    expect(reqSpy).toHaveBeenCalledTimes(2);
+
+    getTodos().subscribe();
+    jest.runAllTimers();
+
+    expect(reqSpy).toHaveBeenCalledTimes(2);
+
+    jest.advanceTimersByTime(6000);
+    getTodos().subscribe();
+    jest.runAllTimers();
+
+    expect(reqSpy).toHaveBeenCalledTimes(3);
   });
 });

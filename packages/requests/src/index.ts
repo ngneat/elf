@@ -28,4 +28,5 @@ export {
   trackRequestResult,
   getRequestResult,
   deleteRequestResult,
+  clearRequestsResult,
 } from './lib/requests-result';
