@@ -49,9 +49,9 @@ export type RequestResult<TError = any> =
 export function initialResult(): RequestResult {
   return {
     isError: false,
-    isLoading: false,
+    isLoading: true,
     isSuccess: false,
-    status: 'idle',
+    status: 'loading',
   };
 }
 
@@ -194,7 +194,6 @@ export function trackRequestResult<TData>(
                 error,
               });
             },
-            // TODO: the source can be closed before receiving the response. Is it a 'success' status?
             complete() {
               updateRequestResult(key, {
                 isLoading: false,
