@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { UsersRepository } from './users.repository';
 import { UsersService } from './users.service';
 
@@ -8,12 +8,9 @@ import { UsersService } from './users.service';
   styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
-  dataSource = this.usersRepo.dataSource.data$();
+  private usersService = inject(UsersService);
 
-  constructor(
-    public usersRepo: UsersRepository,
-    private usersService: UsersService
-  ) {}
+  users$ = inject(UsersRepository).users$;
 
   ngOnInit() {
     this.usersService.getUsers().subscribe();

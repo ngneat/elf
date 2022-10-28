@@ -1,8 +1,8 @@
-<ng-container *ngIf="dataSource | async as data">
-  <h1>{{ data.loading ? 'Loading' : 'Fetched' }}</h1>
+<ng-container *ngIf="users$ | async as users">
+  <h1>{{ users.isLoading ? 'Loading' : 'Fetched' }}</h1>
 
-  <ul>
-    <li *ngFor="let user of data.users">
+  <ul *ngIf="users.isSuccess">
+    <li *ngFor="let user of users.data">
       <a [routerLink]="user.id.toString()">{{ user.name }}</a>
     </li>
   </ul>

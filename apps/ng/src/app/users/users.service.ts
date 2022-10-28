@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { trackRequestResult } from '@ngneat/elf-requests';
 import { tap } from 'rxjs/operators';
 import { User, UsersRepository } from './users.repository';
 
@@ -7,15 +8,15 @@ import { User, UsersRepository } from './users.repository';
   providedIn: 'root',
 })
 export class UsersService {
-  constructor(private http: HttpClient, private usersRepo: UsersRepository) {}
+  private http = inject(HttpClient);
+  private usersRepo = inject(UsersRepository);
 
   getUsers() {
     return this.http
       .get<User[]>('https://jsonplaceholder.typicode.com/users')
       .pipe(
         tap((users) => this.usersRepo.setUsers(users)),
-        this.usersRepo.dataSource.trackRequestStatus(),
-        this.usersRepo.dataSource.skipWhileCached()
+        trackRequestResult(['users'])
       );
   }
 
@@ -24,8 +25,7 @@ export class UsersService {
       .get<User>(`https://jsonplaceholder.typicode.com/users/${id}`)
       .pipe(
         tap((user) => this.usersRepo.addUser(user)),
-        this.usersRepo.userDataSource.trackRequestStatus({ key: id }),
-        this.usersRepo.userDataSource.skipWhileCached({ key: [id, 'users'] })
+        trackRequestResult(['users', id])
       );
   }
 }

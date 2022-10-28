@@ -23,3 +23,9 @@ export {
   updateRequestsStatus,
 } from './lib/requests-status';
 export { createRequestDataSource } from './lib/request-data-source';
+export {
+  joinRequestResult,
+  trackRequestResult,
+  getRequestResult,
+  deleteRequestResult,
+} from './lib/requests-result';
