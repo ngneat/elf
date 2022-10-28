@@ -134,12 +134,4 @@ describe('requests result', () => {
   it('should request when staleTime pass', () => {
     expect(true).toBeTruthy();
   });
-
-  it('should refetch when refetchTime pass', () => {
-    expect(true).toBeTruthy();
-  });
-
-  it('should work with isSuccessPredicateFn', () => {
-    expect(true).toBeTruthy();
-  });
 });

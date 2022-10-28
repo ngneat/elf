@@ -149,19 +149,16 @@ export function joinRequestResult<T, TError = any>(
 }
 
 // TODO
-interface Options<TData> {
+interface Options {
   // When we should refetch
   staleTime?: number;
-  // Auto refetch based on the provided time
-  refetchTime?: number;
   // Ignore everything and perform the request
   skipCache?: boolean;
-  isSuccessPredicateFn?: (data: TData) => boolean;
 }
 
 export function trackRequestResult<TData>(
   key: unknown[],
-  options?: Options<TData>
+  options?: Options
 ): MonoTypeOperatorFunction<TData> {
   return function (source: Observable<TData>) {
     return getRequestResult(key).pipe(
