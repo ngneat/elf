@@ -47,6 +47,8 @@ describe('requests result', () => {
     expect(spy).toHaveBeenCalledTimes(3);
     getTodos().subscribe();
 
+    jest.runAllTimers();
+
     // It's cached
     expect(spy).toHaveBeenCalledTimes(3);
 
