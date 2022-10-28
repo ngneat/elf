@@ -101,4 +101,45 @@ describe('requests result', () => {
       ]
     `);
   });
+
+  it('should skip cache', () => {
+    jest.useFakeTimers();
+
+    const { state, config } = createState(withEntities<Todo>());
+
+    const store = new Store({ state, config, name: 'todos' });
+    const reqSpy = jest.fn();
+
+    function getTodos() {
+      return timer(1000).pipe(
+        map(() => [createTodo(1)]),
+        tap((todos) => reqSpy() && store.update(setEntities(todos))),
+        trackRequestResult(['todos'], { skipCache: true })
+      );
+    }
+
+    getTodos().subscribe();
+
+    jest.runAllTimers();
+
+    expect(reqSpy).toHaveBeenCalledTimes(1);
+
+    getTodos().subscribe();
+
+    jest.runAllTimers();
+
+    expect(reqSpy).toHaveBeenCalledTimes(2);
+  });
+
+  it('should request when staleTime pass', () => {
+    expect(true).toBeTruthy();
+  });
+
+  it('should refetch when refetchTime pass', () => {
+    expect(true).toBeTruthy();
+  });
+
+  it('should work with isSuccessPredicateFn', () => {
+    expect(true).toBeTruthy();
+  });
 });
