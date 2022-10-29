@@ -1,28 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UsersService } from '../users.service';
 import { UsersRepository } from '../users.repository';
 
 @Component({
   template: `
-    <ng-container *ngIf="userDataSource | async as data">
-      <h1>Loading: {{ data.loading }}</h1>
+    <ng-container *ngIf="user$ | async as user">
+      <h1>Loading: {{ user.isLoading }}</h1>
 
-      <code>User: {{ data.user | json }}</code>
+      <code>User: {{ user.data | json }}</code>
     </ng-container>
   `,
 })
 export class UserComponent implements OnInit {
-  id = this.router.snapshot.params.id;
-  userDataSource = this.usersRepository.userDataSource.data$({ key: this.id });
+  private usersService = inject(UsersService);
 
-  constructor(
-    private router: ActivatedRoute,
-    private usersService: UsersService,
-    private usersRepository: UsersRepository
-  ) {}
+  id = inject(ActivatedRoute).snapshot.params.id;
+  user$ = inject(UsersRepository).getUser(this.id);
 
   ngOnInit() {
-    this.usersService.getUser(this.id).subscribe();
+    setTimeout(() => {
+      this.usersService.getUser(this.id).subscribe();
+    }, 1500);
   }
 }

@@ -23,3 +23,10 @@ export {
   updateRequestsStatus,
 } from './lib/requests-status';
 export { createRequestDataSource } from './lib/request-data-source';
+export {
+  joinRequestResult,
+  trackRequestResult,
+  getRequestResult,
+  deleteRequestResult,
+  clearRequestsResult,
+} from './lib/requests-result';
