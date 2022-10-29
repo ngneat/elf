@@ -11,7 +11,6 @@ export default {
   transform: {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
-  setupFiles: ['jest-date-mock'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/packages/requests',
   preset: '../../jest.preset.js',
