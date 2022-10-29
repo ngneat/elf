@@ -14,7 +14,7 @@ import {
 } from './requests-result';
 
 describe('requests result', () => {
-  afterEach(() => {
+  beforeEach(() => {
     clearRequestsResult();
   });
 
@@ -69,6 +69,7 @@ describe('requests result', () => {
             "isLoading": true,
             "isSuccess": false,
             "status": "loading",
+            "successfulRequestsCount": 0,
           },
         ],
         Array [
@@ -84,6 +85,7 @@ describe('requests result', () => {
             "isLoading": false,
             "isSuccess": true,
             "status": "success",
+            "successfulRequestsCount": 1,
           },
         ],
         Array [
@@ -104,6 +106,7 @@ describe('requests result', () => {
             "isLoading": false,
             "isSuccess": true,
             "status": "success",
+            "successfulRequestsCount": 1,
           },
         ],
       ]
@@ -146,6 +149,16 @@ describe('requests result', () => {
 
     const store = new Store({ state, config, name: 'todos' });
     const reqSpy = jest.fn();
+    const entities$ = store.pipe(
+      selectAllEntities(),
+      joinRequestResult(['todos'])
+    );
+
+    const spy = jest.fn();
+
+    entities$.subscribe((value) => {
+      spy(value);
+    });
 
     function getTodos() {
       return timer(1000).pipe(
@@ -177,5 +190,75 @@ describe('requests result', () => {
     jest.runAllTimers();
 
     expect(reqSpy).toHaveBeenCalledTimes(3);
+
+    expect(spy.mock.calls).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          Object {
+            "data": Array [],
+            "isError": false,
+            "isLoading": true,
+            "isSuccess": false,
+            "status": "loading",
+            "successfulRequestsCount": 0,
+          },
+        ],
+        Array [
+          Object {
+            "data": Array [],
+            "isError": false,
+            "isLoading": false,
+            "isSuccess": true,
+            "staleTime": 1667064474623,
+            "status": "success",
+            "successfulRequestsCount": 1,
+          },
+        ],
+        Array [
+          Object {
+            "data": Array [],
+            "isError": false,
+            "isLoading": true,
+            "isSuccess": false,
+            "staleTime": 1667064474623,
+            "status": "loading",
+            "successfulRequestsCount": 1,
+          },
+        ],
+        Array [
+          Object {
+            "data": Array [],
+            "isError": false,
+            "isLoading": false,
+            "isSuccess": true,
+            "staleTime": 1667064481623,
+            "status": "success",
+            "successfulRequestsCount": 2,
+          },
+        ],
+        Array [
+          Object {
+            "data": Array [],
+            "isError": false,
+            "isLoading": true,
+            "isSuccess": false,
+            "staleTime": 1667064481623,
+            "status": "loading",
+            "successfulRequestsCount": 2,
+          },
+        ],
+        Array [
+          Object {
+            "data": Array [],
+            "isError": false,
+            "isLoading": false,
+            "isSuccess": true,
+            "staleTime": 1667064488623,
+            "status": "success",
+            "successfulRequestsCount": 3,
+          },
+        ],
+      ]
+    `);
   });
 });

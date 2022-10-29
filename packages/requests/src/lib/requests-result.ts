@@ -13,6 +13,7 @@ import {
 
 export interface BaseRequestResult {
   staleTime?: number;
+  successfulRequestsCount: number;
 }
 
 export interface LoadingRequestResult extends BaseRequestResult {
@@ -56,6 +57,7 @@ export function initialResult(): RequestResult {
     isLoading: true,
     isSuccess: false,
     status: 'loading',
+    successfulRequestsCount: 0,
   };
 }
 
@@ -101,7 +103,7 @@ export function getRequestResult<TError>(
   >;
 }
 
-function updateRequestResult(key: unknown[], newValue: RequestResult) {
+function updateRequestResult(key: unknown[], newValue: Partial<RequestResult>) {
   const result = emitters.get(resolveKey(key));
 
   if (result) {
@@ -119,7 +121,11 @@ function updateRequestResult(key: unknown[], newValue: RequestResult) {
       }
     }
 
-    hasChange && result.next(newValue);
+    hasChange &&
+      result.next({
+        ...currentResult,
+        ...newValue,
+      } as RequestResult);
   }
 }
 
@@ -205,18 +211,19 @@ export function trackRequestResult<TData>(
               });
             },
             complete() {
-              const result: SuccessRequestResult = {
+              const newResult: SuccessRequestResult = {
                 isLoading: false,
                 isSuccess: true,
                 isError: false,
                 status: 'success',
+                successfulRequestsCount: result.successfulRequestsCount + 1,
               };
 
               if (options?.staleTime) {
-                result.staleTime = Date.now() + options.staleTime;
+                newResult.staleTime = Date.now() + options.staleTime;
               }
 
-              updateRequestResult(key, result);
+              updateRequestResult(key, newResult);
             },
           })
         );
