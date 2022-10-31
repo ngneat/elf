@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.2.0](https://github-personal/ngneat/elf/compare/requests-1.1.4...requests-1.2.0) (2022-10-31)
+
+
+### Features
+
+* **requests:** 🔥 a simpler api for managing request result ([ba1af9a](https://github-personal/ngneat/elf/commit/ba1af9a4dffcdfeb92f1da4ca4dc7944dd1735df))
+* **requests:** 🔥 add successfull requests count to result ([1b4abfb](https://github-personal/ngneat/elf/commit/1b4abfb30ad717c940e46b10cffdaa63f78f4662))
+
+
+
 ## [1.1.4](https://github.com/ngneat/elf/compare/requests-1.1.3...requests-1.1.4) (2022-07-20)
 
 
