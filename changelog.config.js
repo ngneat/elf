@@ -17,10 +17,7 @@ module.exports = {
   scopes: [
     'store',
     'entities',
-    'requests',
-    'requests-cache',
-    'requests-status',
-    'requests-data-source',
+    'requests-result',
     'state-history',
     'persist-state',
     'pagination',

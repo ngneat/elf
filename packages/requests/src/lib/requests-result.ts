@@ -51,7 +51,7 @@ export type RequestResult<TError = any> =
   | ErrorRequestResult<TError>
   | IdleRequestResult;
 
-export function initialResult(): RequestResult {
+function initialResult(): RequestResult {
   return {
     isError: false,
     isLoading: true,

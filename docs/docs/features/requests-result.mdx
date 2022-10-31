@@ -1,0 +1,110 @@
+# Requests Result
+
+Elf provides a convenient way to track the `status` of async requests and combine it with your store selectors. First, you need to install the package by
+using the CLI command `elf-cli install` and selecting the requests package, or via npm:
+
+```bash
+npm i @ngneat/elf-requests
+```
+
+Now, simply add to your source request the `trackRequestResult` operator, and give it a unique `key`:
+
+```ts title="todos.service.ts"
+import { trackRequestResult } from '@ngneat/elf-requests';
+import { setTodos } from './todos.repository';
+
+export function fetchTodos() {
+  return http.get(todosUrl).pipe(
+    tap(setTodos),
+    // highlight-next-line
+    trackRequestResult(['todos'])
+  );
+}
+```
+
+Now, we can use the `joinRequestResult` operator with our store selectors:
+
+```ts title="todos.repository"
+import { createStore } from '@ngneat/elf';
+import { withEntities } from '@ngneat/elf-entities';
+import { joinRequestResult } from '@ngneat/elf-requests';
+
+interface Todo {
+  id: number;
+  label: string;
+}
+
+const todosStore = createStore({ name: 'todos' }, withEntities<Todo>());
+
+export const entities$ = store.pipe(
+  selectAllEntities(),
+  // highlight-next-line
+  joinRequestResult(['todos'])
+);
+```
+
+The `entities$` selector will now track the `todos` request and will provide the following information:
+
+```ts
+entities$.subscribe(
+  ({ isLoading, isError, isSuccess, data, error, status }) => {
+    console.log(
+      isLoading,
+      isError,
+      isSuccess,
+      status,
+      successfulRequestsCount,
+      data, // typed as Todo[]
+      error
+    );
+  }
+);
+```
+
+Here is an example of a `dynamic` selector:
+
+```ts
+export const selectTodo = (id: Todo['id]) => store.pipe(
+  selectEntity(id),
+  // highlight-next-line
+  joinRequestResult(['todos', id])
+);
+```
+
+### Additional Options
+
+- `staleTime` - When we should refetch
+
+```ts title="todos.service.ts"
+import { trackRequestResult } from '@ngneat/elf-requests';
+import { setTodos } from './todos.repository';
+
+export function fetchTodos() {
+  return http.get(todosUrl).pipe(
+    tap(setTodos),
+    // highlight-next-line
+    trackRequestResult(['todos'], { staleTime: 10_000 })
+  );
+}
+```
+
+- `skipCache` - Ignore everything and perform the request
+
+```ts title="todos.service.ts"
+import { trackRequestResult } from '@ngneat/elf-requests';
+import { setTodos } from './todos.repository';
+
+export function fetchTodos() {
+  return http.get(todosUrl).pipe(
+    tap(setTodos),
+    // highlight-next-line
+    trackRequestResult(['todos'], { skipCache: true })
+  );
+}
+```
+
+### API
+
+- `getRequestResult` - `getRequestResult(key): Observable<RequestResult>`
+- `deleteRequestResult` - `deleteRequestResult(key): void`
+- `clearRequestsResult` - `clearRequestsResult(key): void`

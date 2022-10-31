@@ -29,26 +29,24 @@ module.exports = {
         'features/entities/entities-props-factory',
       ],
     },
-    {
-      type: 'category',
-      label: 'Requests',
-      collapsed: false,
-      items: [
-        'features/requests/requests-status',
-        'features/requests/requests-cache',
-        'features/requests/requests-data-source',
-      ],
-    },
+    // {
+    //   type: 'category',
+    //   label: 'Requests',
+    //   collapsed: false,
+    //   items: [
+    //     'features/requests/requests-status',
+    //     'features/requests/requests-cache',
+    //     'features/requests/requests-data-source',
+    //   ],
+    // },
+    'features/requests-result',
     'features/pagination',
     'features/persist-state',
     {
       type: 'category',
       label: 'History',
       collapsed: false,
-      items: [
-        'features/history/history',
-        'features/history/entities-history',
-      ],
+      items: ['features/history/history', 'features/history/entities-history'],
     },
     'dev-tools',
     'immer',

@@ -59,11 +59,11 @@ export const baseFeatures = [
     value: 'withActiveIds',
   },
   {
-    name: 'Requests Cache',
+    name: 'Requests Cache  - deprecated (use requests-result)',
     value: 'withRequestsCache',
   },
   {
-    name: 'Requests Status',
+    name: 'Requests Status - deprecated (use requests-result)',
     value: 'withRequestsStatus',
   },
 ] as const;
