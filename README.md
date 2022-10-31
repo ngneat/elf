@@ -71,7 +71,7 @@ export function updateFilter(filter: TodosProps['filter']) {
 }
 ```
 
-### CHANGE LOGS
+## 🗒️ Review the Change Logs
 - [`@ngneat/elf`](https://github.com/ngneat/elf/blob/master/packages/store/CHANGELOG.md)
 - [`@ngneat/elf-cli`](https://github.com/ngneat/elf/blob/master/packages/cli/CHANGELOG.md)
 - [`@ngneat/elf-devtools`](https://github.com/ngneat/elf/blob/master/packages/devtools/CHANGELOG.md)
