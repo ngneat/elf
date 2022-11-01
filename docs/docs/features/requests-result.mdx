@@ -1,5 +1,8 @@
 # Requests Result
 
+import index from '!!raw-loader!@site/docs/examples/requests-result.ex';
+import { LiveDemo } from '@site/components/LiveDemo';
+
 Elf provides a convenient way to track the `status` of async requests and combine it with your store selectors. First, you need to install the package by
 using the CLI command `elf-cli install` and selecting the requests package, or via npm:
 
@@ -60,6 +63,9 @@ entities$.subscribe(
   }
 );
 ```
+
+<LiveDemo src={index} packages={['entities', 'requests']} />
+<br />
 
 Here is an example of a `dynamic` selector:
 
