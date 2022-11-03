@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+                       xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>Elf | A Reactive Store with Magical Powers</ShortName>
+  <Description>Search Elf | A Reactive Store with Magical Powers</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="16" height="16" type="image/x-icon">https://ngneat.github.io/elf/img/favicon.ico</Image>
+  <Url type="text/html" method="get" template="https://ngneat.github.io/elf/search?q={searchTerms}"/>
+  <Url type="application/opensearchdescription+xml" rel="self" template="https://ngneat.github.io/elf/opensearch.xml" />
+  <moz:SearchForm>https://ngneat.github.io/elf/</moz:SearchForm>
+</OpenSearchDescription>
