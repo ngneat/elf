@@ -1,6 +1,6 @@
 import {
   coerceArray,
-  Actions,
+  EntityActions,
   isFunction,
   OrArray,
   Reducer,
@@ -71,7 +71,7 @@ export function updateEntities<
       );
     }
 
-    context.actions.next({ type: Actions.Update, ids: coerceIds });
+    context.actions.next({ type: EntityActions.Update, ids: coerceIds });
 
     return {
       ...state,
@@ -251,10 +251,13 @@ export function upsertEntities<
         };
 
     if (ids.length) {
-      context.actions.next({ type: Actions.Add, ids });
+      context.actions.next({ type: EntityActions.Add, ids });
     }
     if (updatedEntitiesId.length) {
-      context.actions.next({ type: Actions.Update, ids: updatedEntitiesId });
+      context.actions.next({
+        type: EntityActions.Update,
+        ids: updatedEntitiesId,
+      });
     }
 
     return {
@@ -341,7 +344,7 @@ export function updateEntitiesIds<
       }
     }
 
-    context.actions.next({ type: Actions.Update, ids: newIds });
+    context.actions.next({ type: EntityActions.Update, ids: newIds });
 
     return {
       ...state,

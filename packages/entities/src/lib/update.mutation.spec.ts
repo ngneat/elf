@@ -1,4 +1,4 @@
-import { Actions } from '@ngneat/elf';
+import { EntityActions } from '@ngneat/elf';
 import {
   createEntitiesStore,
   createTodo,
@@ -36,7 +36,7 @@ describe('update', () => {
     store.update(addEntities(createTodo(1)));
 
     store.actions$.subscribe((data) => {
-      expect(data).toStrictEqual({ type: Actions.Update, ids: [1] });
+      expect(data).toStrictEqual({ type: EntityActions.Update, ids: [1] });
       done();
     });
 
@@ -54,7 +54,7 @@ describe('update', () => {
     store.update(addEntities([createTodo(1), createTodo(2)]));
 
     store.actions$.subscribe((data) => {
-      expect(data).toStrictEqual({ type: Actions.Update, ids: [1, 2] });
+      expect(data).toStrictEqual({ type: EntityActions.Update, ids: [1, 2] });
       done();
     });
 
@@ -130,7 +130,7 @@ describe('update', () => {
       store.update(addEntities([createTodo(1)]));
 
       store.actions$.subscribe((data) => {
-        expect(data).toStrictEqual({ type: Actions.Add, ids: [2] });
+        expect(data).toStrictEqual({ type: EntityActions.Add, ids: [2] });
         done();
       });
 
@@ -151,7 +151,7 @@ describe('update', () => {
       store.update(addEntities([createTodo(1)]));
 
       store.actions$.subscribe((data) => {
-        expect(data).toStrictEqual({ type: Actions.Update, ids: [1] });
+        expect(data).toStrictEqual({ type: EntityActions.Update, ids: [1] });
         done();
       });
 
@@ -209,7 +209,7 @@ describe('update', () => {
       const store = createEntitiesStore();
 
       store.actions$.subscribe((data) => {
-        expect(data).toStrictEqual({ type: Actions.Add, ids: [1] });
+        expect(data).toStrictEqual({ type: EntityActions.Add, ids: [1] });
         done();
       });
 
@@ -235,7 +235,7 @@ describe('update', () => {
       store.update(addEntities([todo]));
 
       store.actions$.subscribe((data) => {
-        expect(data).toStrictEqual({ type: Actions.Update, ids: [1] });
+        expect(data).toStrictEqual({ type: EntityActions.Update, ids: [1] });
         done();
       });
 
@@ -276,7 +276,7 @@ describe('update', () => {
       store.update(addEntities([createTodo(1)]));
 
       store.actions$.subscribe((data) => {
-        expect(data).toStrictEqual({ type: Actions.Update, ids: [2] });
+        expect(data).toStrictEqual({ type: EntityActions.Update, ids: [2] });
         done();
       });
 
@@ -294,7 +294,7 @@ describe('update', () => {
       store.update(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
 
       store.actions$.subscribe((data) => {
-        expect(data).toStrictEqual({ type: Actions.Update, ids: [4, 5] });
+        expect(data).toStrictEqual({ type: EntityActions.Update, ids: [4, 5] });
         done();
       });
 

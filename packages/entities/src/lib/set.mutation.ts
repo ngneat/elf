@@ -1,3 +1,4 @@
+import { EntityActions, Reducer } from '@ngneat/elf';
 import {
   BaseEntityOptions,
   DefaultEntitiesRef,
@@ -8,7 +9,6 @@ import {
   getIdKey,
   getIdType,
 } from './entity.state';
-import { Actions, Reducer } from '@ngneat/elf';
 import { buildEntities } from './entity.utils';
 
 /**
@@ -35,7 +35,7 @@ export function setEntities<
       getIdKey<getIdType<S, Ref>>(context, ref)
     );
 
-    context.actions.next({ type: Actions.Set, ids });
+    context.actions.next({ type: EntityActions.Set, ids });
 
     return {
       ...state,

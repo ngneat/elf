@@ -486,6 +486,38 @@ import { deleteAllEntities } from '@ngneat/elf-entities';
 todosStore.update(deleteAllEntities());
 ```
 
+## `Entity Actions`
+
+Listen for any store action:
+
+```ts
+import {
+  EntityActions,
+  createStore,
+  ofType,
+  select,
+  withProps,
+} from '@ngneat/elf';
+
+// Listen for a specific action
+todosStore.actions$.pipe(ofType(EntityActions.Set)).subscribe((newIds) => {});
+todosStore.actions$.pipe(ofType(EntityActions.Add)).subscribe((addedIds) => {});
+todosStore.actions$
+  .pipe(ofType(EntityActions.Update))
+  .subscribe((updatedIds) => {});
+todosStore.actions$
+  .pipe(ofType(EntityActions.Remote))
+  .subscribe((removedIds) => {});
+
+// listen for a subset of actions
+todosStore.actions$
+  .pipe(ofType([EntityActions.Add, EntityActions.Remove]))
+  .subscribe((action) => {});
+
+// listen for all actions
+todosStore.actions$.subscribe((action) => {});
+```
+
 ## idKey
 
 By default, Elf takes the `id` key from the entity `id` field. To change it, you can pass the `idKey` option to

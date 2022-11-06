@@ -17,11 +17,9 @@ export class Store<
 
   private context: ReducerContext<IdKeyType<SDef>> = {
     config: this.getConfig(),
-    // TODO Infer the Action type
     actions: new Subject<Action<IdKeyType<SDef>>>(),
   };
 
-  // TODO Infer the Action type
   actions$: Observable<Action<IdKeyType<SDef>>> =
     this.context.actions.asObservable();
 

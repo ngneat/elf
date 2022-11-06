@@ -10,7 +10,7 @@ import {
   filter,
   map,
 } from 'rxjs/operators';
-import { Action, Actions } from './actions';
+import { Action, EntityActions } from './actions';
 import { coerceArray } from './utils';
 
 export function select<T, R>(mapFn: (state: T) => R): OperatorFunction<T, R> {
@@ -55,10 +55,14 @@ export function filterNil<T>(): OperatorFunction<T, NonNullable<T>> {
 }
 
 export function ofType<T extends Action<IdType>, IdType>(
-  actions: Actions | Actions[]
-): OperatorFunction<T, T['ids']> {
+  action: EntityActions
+): OperatorFunction<T, T['ids']>;
+export function ofType<T extends Action<IdType>, IdType>(
+  actions: EntityActions[]
+): MonoTypeOperatorFunction<T>;
+export function ofType(...actions: any[]): any {
   return pipe(
-    filter(({ type }) => coerceArray(actions).includes(type)),
-    map(({ ids }) => ids)
+    filter(({ type, ids }) => coerceArray(actions).includes(type)),
+    map((action) => (Array.isArray(actions) ? action : action.ids))
   );
 }

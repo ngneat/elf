@@ -1,4 +1,4 @@
-import { Actions } from '@ngneat/elf';
+import { EntityActions } from '@ngneat/elf';
 import {
   createEntitiesStore,
   createTodo,
@@ -32,7 +32,7 @@ describe('delete', () => {
     store.update(addEntities([createTodo(1), createTodo(2)]));
 
     store.actions$.subscribe((data) => {
-      expect(data).toStrictEqual({ type: Actions.Remove, ids: [1] });
+      expect(data).toStrictEqual({ type: EntityActions.Remove, ids: [1] });
       done();
     });
 
@@ -50,7 +50,7 @@ describe('delete', () => {
     store.update(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
 
     store.actions$.subscribe((data) => {
-      expect(data).toStrictEqual({ type: Actions.Remove, ids: [1, 2] });
+      expect(data).toStrictEqual({ type: EntityActions.Remove, ids: [1, 2] });
       done();
     });
 
@@ -68,7 +68,10 @@ describe('delete', () => {
     store.update(addEntities([createTodo(1), createTodo(2), createTodo(3)]));
 
     store.actions$.subscribe((data) => {
-      expect(data).toStrictEqual({ type: Actions.Remove, ids: [1, 2, 3] });
+      expect(data).toStrictEqual({
+        type: EntityActions.Remove,
+        ids: [1, 2, 3],
+      });
       done();
     });
 

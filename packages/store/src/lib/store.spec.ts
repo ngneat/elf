@@ -1,12 +1,19 @@
 import {
   addEntities,
+  deleteEntities,
   selectAllEntities,
   UIEntitiesRef,
   updateEntities,
   withEntities,
   withUIEntities,
 } from '@ngneat/elf-entities';
-import { createTodo, createUITodo, Todo } from '@ngneat/elf-mocks';
+import {
+  createEntitiesStore,
+  createTodo,
+  createUITodo,
+  Todo,
+} from '@ngneat/elf-mocks';
+import { EntityActions, ofType } from '..';
 import { withProps } from './props.state';
 import { createState } from './state';
 import { Store } from './store';
@@ -76,5 +83,20 @@ describe('store', () => {
 
     expect(store.getValue()).toMatchSnapshot();
     expect(spy).toHaveBeenCalledTimes(3);
+  });
+
+  it.each([
+    [() => addEntities(createTodo(1)), { type: EntityActions.Add, ids: [1] }],
+    [() => deleteEntities(1), { type: EntityActions.Remove, ids: [1] }],
+  ])('should listen to multiple actions type', (actionFn, actionEvent) => {
+    const store = createEntitiesStore();
+
+    store.actions$
+      .pipe(ofType([EntityActions.Add, EntityActions.Remove]))
+      .subscribe((data) => {
+        expect(data).toStrictEqual(actionEvent);
+      });
+
+    store.update(actionFn());
   });
 });

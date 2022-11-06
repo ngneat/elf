@@ -1,4 +1,4 @@
-export enum Actions {
+export enum EntityActions {
   Set = 'Set',
   Add = 'Add',
   Update = 'Update',
@@ -6,6 +6,6 @@ export enum Actions {
 }
 
 export interface Action<IDType> {
-  type: Actions;
+  type: EntityActions;
   ids: IDType[];
 }

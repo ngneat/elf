@@ -1,3 +1,4 @@
+import { EntityActions } from '@ngneat/elf';
 import {
   createEntitiesStore,
   createTodo,
@@ -5,9 +6,8 @@ import {
   createUITodo,
   toMatchSnapshot,
 } from '@ngneat/elf-mocks';
-import { setEntities, setEntitiesMap } from './set.mutation';
 import { UIEntitiesRef } from './entity.state';
-import { Actions } from '@ngneat/elf';
+import { setEntities, setEntitiesMap } from './set.mutation';
 
 describe('set', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -26,7 +26,7 @@ describe('set', () => {
 
   it('should send set entity action', (done) => {
     store.actions$.subscribe((data) => {
-      expect(data).toStrictEqual({ type: Actions.Set, ids: [1, 10] });
+      expect(data).toStrictEqual({ type: EntityActions.Set, ids: [1, 10] });
       done();
     });
 

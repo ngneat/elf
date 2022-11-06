@@ -1,11 +1,15 @@
+export { Action, EntityActions } from './lib/actions';
+export { emitOnce } from './lib/batch';
 export { createStore, StoreConfig } from './lib/create-store';
 export { elfHooks } from './lib/elf-hooks';
+export { enableElfProdMode, isDev } from './lib/env';
 export { setProp, setProps } from './lib/mutations';
 export {
   asap,
   distinctUntilArrayItemChanged,
   filterNil,
   head,
+  ofType,
   select,
 } from './lib/operators';
 export { propsArrayFactory } from './lib/props-array-factory';
@@ -35,6 +39,3 @@ export {
   isString,
   isUndefined,
 } from './lib/utils';
-export { emitOnce } from './lib/batch';
-export { isDev, enableElfProdMode } from './lib/env';
-export { Action, Actions } from './lib/actions';

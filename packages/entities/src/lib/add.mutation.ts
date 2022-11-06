@@ -1,4 +1,10 @@
-import { coerceArray, Actions, isDev, OrArray, Reducer } from '@ngneat/elf';
+import {
+  coerceArray,
+  EntityActions,
+  isDev,
+  OrArray,
+  Reducer,
+} from '@ngneat/elf';
 import { deleteEntities } from './delete.mutation';
 import {
   BaseEntityOptions,
@@ -53,7 +59,7 @@ export function addEntities<
 
     const { ids, asObject } = buildEntities<S, Ref>(asArray, idKey);
 
-    context.actions.next({ type: Actions.Add, ids });
+    context.actions.next({ type: EntityActions.Add, ids });
 
     return {
       ...state,
@@ -113,7 +119,7 @@ export function addEntitiesFifo<
       getIdKey(context, ref)
     );
 
-    context.actions.next({ type: Actions.Add, ids });
+    context.actions.next({ type: EntityActions.Add, ids });
 
     return {
       ...state,

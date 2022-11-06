@@ -1,4 +1,4 @@
-import { Actions, createStore } from '@ngneat/elf';
+import { createStore, EntityActions } from '@ngneat/elf';
 import {
   createEntitiesStore,
   createTodo,
@@ -24,7 +24,7 @@ describe('add', () => {
 
   it('should send add entity action', (done) => {
     store.actions$.subscribe((data) => {
-      expect(data).toStrictEqual({ type: Actions.Add, ids: [1] });
+      expect(data).toStrictEqual({ type: EntityActions.Add, ids: [1] });
       done();
     });
 
@@ -38,7 +38,7 @@ describe('add', () => {
 
   it('should send add entity action with multiple ids', (done) => {
     store.actions$.subscribe((data) => {
-      expect(data).toStrictEqual({ type: Actions.Add, ids: [1, 2] });
+      expect(data).toStrictEqual({ type: EntityActions.Add, ids: [1, 2] });
       done();
     });
 
