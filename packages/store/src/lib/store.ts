@@ -1,25 +1,28 @@
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Action, Query } from '..';
-import { batchInProgress, batchDone$ } from './batch';
+import { batchDone$, batchInProgress } from './batch';
 import { elfHooksRegistry } from './elf-hooks';
 import { addStore, removeStore } from './registry';
 
+type IdKeyType<SDef extends StoreDef<any>> =
+  Store<SDef>['state']['ids'] extends Array<infer ID> ? ID : never;
+
 export class Store<
-  SDef extends StoreDef = any,
+  SDef extends StoreDef<any> = any,
   State = SDef['state']
 > extends BehaviorSubject<State> {
   initialState!: State;
   state!: State;
   private batchInProgress = false;
 
-  private context: ReducerContext = {
+  private context: ReducerContext<IdKeyType<SDef>> = {
     config: this.getConfig(),
     // TODO Infer the Action type
-    actions: new Subject<Action<string | number>>(),
+    actions: new Subject<Action<IdKeyType<SDef>>>(),
   };
 
   // TODO Infer the Action type
-  actions$: Observable<Action<string | number>> =
+  actions$: Observable<Action<IdKeyType<SDef>>> =
     this.context.actions.asObservable();
 
   constructor(private storeDef: SDef) {
@@ -134,13 +137,15 @@ export class Store<
   complete() {}
 }
 
-// TODO Action type
-export type Action$ = Subject<Action<string | number>>;
-export type StoreValue<T extends Store> = ReturnType<T['getValue']>;
-export type Reducer<State> = (state: State, context: ReducerContext) => State;
-export type ReducerContext = {
+export type Action$<IdKey> = Subject<Action<IdKey>>;
+export type StoreValue<T extends Store<any>> = ReturnType<T['getValue']>;
+export type Reducer<State> = (
+  state: State,
+  context: ReducerContext<any>
+) => State;
+export type ReducerContext<IdKey> = {
   config: Record<PropertyKey, any>;
-  actions: Action$;
+  actions: Action$<IdKey>;
 };
 
 export interface StoreDef<State = any> {

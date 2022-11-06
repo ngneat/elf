@@ -54,11 +54,11 @@ export function filterNil<T>(): OperatorFunction<T, NonNullable<T>> {
   );
 }
 
-// TODO infer the IDType
-type IDType = string | number;
-
-export function ofType<T extends Action<IDType>>(
+export function ofType<T extends Action<IdType>, IdType>(
   actions: Actions | Actions[]
-): OperatorFunction<T, Action<IDType>> {
-  return pipe(filter(({ type }) => coerceArray(actions).includes(type)));
+): OperatorFunction<T, T['ids']> {
+  return pipe(
+    filter(({ type }) => coerceArray(actions).includes(type)),
+    map(({ ids }) => ids)
+  );
 }

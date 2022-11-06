@@ -1,7 +1,7 @@
-import { ReducerContext, capitalize } from '@ngneat/elf';
+import { capitalize, ReducerContext } from '@ngneat/elf';
 import { buildEntities } from './entity.utils';
 
-export function getIdKey<T>(context: ReducerContext, ref: EntitiesRef): T {
+export function getIdKey<T>(context: ReducerContext<any>, ref: EntitiesRef): T {
   return context.config[ref.idKeyRef];
 }
 

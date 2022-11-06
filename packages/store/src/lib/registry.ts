@@ -1,5 +1,5 @@
-import { Store, StoreDef } from './store';
 import { Subject } from 'rxjs';
+import { Store, StoreDef } from './store';
 
 const registry = new Map<string, Store>();
 const registryActions = new Subject<{ type: 'add' | 'remove'; store: Store }>();
