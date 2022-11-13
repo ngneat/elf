@@ -20,13 +20,13 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Entities',
+      label: 'Entities Management',
       collapsed: false,
       items: [
-        'features/entities/entities',
-        'features/entities/ui-entities',
-        'features/entities/active-ids',
-        'features/entities/entities-props-factory',
+        'features/entities-management/entities',
+        'features/entities-management/ui-entities',
+        'features/entities-management/active-ids',
+        'features/entities-management/entities-props-factory',
       ],
     },
     // {

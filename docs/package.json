@@ -15,11 +15,11 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "2.0.0-beta.8",
-    "@docusaurus/preset-classic": "2.0.0-beta.8",
-    "@docusaurus/theme-search-algolia": "2.0.0-beta.8",
+    "@docusaurus/core": "2.2.0",
+    "@docusaurus/preset-classic": "2.2.0",
+    "@docusaurus/plugin-client-redirects": "2.2.0",
     "@mdx-js/react": "1.6.22",
-    "@stackblitz/sdk": "1.5.2",
+    "@stackblitz/sdk": "1.8.0",
     "@svgr/webpack": "5.5.0",
     "clsx": "1.1.1",
     "file-loader": "6.2.0",
@@ -30,8 +30,8 @@
     "url-loader": "4.1.1"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "2.0.0-beta.8",
-    "@tsconfig/docusaurus": "1.0.4",
+    "@docusaurus/module-type-aliases": "2.2.0",
+    "@tsconfig/docusaurus": "1.0.6",
     "@types/react": "17.0.19",
     "@types/react-helmet": "6.1.2",
     "@types/react-router-dom": "5.1.8",
