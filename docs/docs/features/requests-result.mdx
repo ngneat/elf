@@ -67,6 +67,8 @@ entities$.subscribe(
 <LiveDemo src={index} packages={['entities', 'requests']} />
 <br />
 
+We can also initialize the selector as `idle` by using `joinRequestResult(['todos'], { initialStatus: 'idle' })`
+
 Here is an example of a `dynamic` selector:
 
 ```ts

@@ -113,6 +113,125 @@ describe('requests result', () => {
     `);
   });
 
+  it('should work with idle status', () => {
+    jest.useFakeTimers();
+
+    const { state, config } = createState(withEntities<Todo>());
+
+    const store = new Store({ state, config, name: 'todos' });
+
+    const entities$ = store.pipe(
+      selectAllEntities(),
+      joinRequestResult(['todos'], { initialStatus: 'idle' })
+    );
+
+    const spy = jest.fn();
+
+    entities$.subscribe((value) => {
+      spy(value);
+    });
+
+    function getTodos() {
+      return timer(1000).pipe(
+        map(() => [createTodo(1)]),
+        tap((todos) => store.update(setEntities(todos))),
+        trackRequestResult(['todos'])
+      );
+    }
+
+    expect(spy.mock.calls).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          Object {
+            "data": Array [],
+            "isError": false,
+            "isLoading": false,
+            "isSuccess": false,
+            "status": "idle",
+            "successfulRequestsCount": 0,
+          },
+        ],
+      ]
+    `);
+    getTodos().subscribe();
+
+    jest.runAllTimers();
+
+    expect(spy).toHaveBeenCalledTimes(3);
+
+    store.update(addEntities(createTodo(2)));
+
+    expect(spy).toHaveBeenCalledTimes(4);
+    getTodos().subscribe();
+
+    jest.runAllTimers();
+
+    // It's cached
+    expect(spy).toHaveBeenCalledTimes(4);
+
+    expect(spy.mock.calls).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          Object {
+            "data": Array [],
+            "isError": false,
+            "isLoading": false,
+            "isSuccess": false,
+            "status": "idle",
+            "successfulRequestsCount": 0,
+          },
+        ],
+        Array [
+          Object {
+            "data": Array [],
+            "isError": false,
+            "isLoading": true,
+            "isSuccess": false,
+            "status": "loading",
+            "successfulRequestsCount": 0,
+          },
+        ],
+        Array [
+          Object {
+            "data": Array [
+              Object {
+                "completed": false,
+                "id": 1,
+                "title": "todo 1",
+              },
+            ],
+            "isError": false,
+            "isLoading": false,
+            "isSuccess": true,
+            "status": "success",
+            "successfulRequestsCount": 1,
+          },
+        ],
+        Array [
+          Object {
+            "data": Array [
+              Object {
+                "completed": false,
+                "id": 1,
+                "title": "todo 1",
+              },
+              Object {
+                "completed": false,
+                "id": 2,
+                "title": "todo 2",
+              },
+            ],
+            "isError": false,
+            "isLoading": false,
+            "isSuccess": true,
+            "status": "success",
+            "successfulRequestsCount": 1,
+          },
+        ],
+      ]
+    `);
+  });
+
   it('should skip cache', () => {
     jest.useFakeTimers();
 

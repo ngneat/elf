@@ -96,9 +96,20 @@ const emitters = new Map<string, BehaviorSubject<RequestResult>>();
 
 // @public
 export function getRequestResult<TError>(
-  key: unknown[]
+  key: unknown[],
+  { initialStatus }: { initialStatus?: 'idle' } = {}
 ): Observable<RequestResult<TError>> {
-  return getSource<RequestResult>(key, initialResult(), emitters) as Observable<
+  let result = initialResult();
+
+  if (initialStatus === 'idle') {
+    result = {
+      ...result,
+      status: 'idle',
+      isLoading: false,
+    } as RequestResult<TError>;
+  }
+
+  return getSource<RequestResult>(key, result, emitters) as Observable<
     RequestResult<TError>
   >;
 }
@@ -142,10 +153,13 @@ export function deleteRequestResult(key: unknown[]) {
 
 // @public
 export function joinRequestResult<T, TError = any>(
-  key: unknown[]
+  ...[key, options]: Parameters<typeof getRequestResult>
 ): OperatorFunction<T, RequestResult<TError> & { data: T }> {
   return function (source: Observable<T>) {
-    const source$ = combineLatest([source, getRequestResult<TError>(key)]).pipe(
+    const source$ = combineLatest([
+      source,
+      getRequestResult<TError>(key, options),
+    ]).pipe(
       map(([data, result]) => {
         return {
           ...result,
