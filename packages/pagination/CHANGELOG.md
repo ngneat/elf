@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.0](https://github-personal/ngneat/elf/compare/pagination-1.0.1...pagination-1.1.0) (2022-11-16)
+
+
+### Features
+
+* **pagination:** exported pagination state ([#378](https://github-personal/ngneat/elf/issues/378)) ([543ad36](https://github-personal/ngneat/elf/commit/543ad36e6bafb8d63ae797d296a05a45893444a1))
+
+
+
 ## [1.0.1](https://github.com/ngneat/elf/compare/pagination-1.0.0...pagination-1.0.1) (2022-05-23)
 
 
