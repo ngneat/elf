@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import sdk from '@stackblitz/sdk';
-import useThemeContext from '@theme/hooks/useThemeContext';
+import { useColorMode } from '@docusaurus/theme-common';
 
 const allPackages = {
   core: { '@ngneat/elf': 'latest' },
@@ -20,11 +20,12 @@ interface Props {
 }
 
 export function LiveDemo({ src, packages = [] }: Props) {
-  const ref = useRef<HTMLDivElement>();
+  const previewEl = useRef<HTMLDivElement>();
+  const editor = useRef<any>();
 
   const include = ['core', 'rxjs', ...packages];
 
-  const { isDarkTheme } = useThemeContext();
+  const { colorMode } = useColorMode();
 
   useEffect(() => {
     const deps = include.reduce((acc, p) => {
@@ -33,35 +34,45 @@ export function LiveDemo({ src, packages = [] }: Props) {
       return acc;
     }, {});
 
-    sdk.embedProject(
-      ref.current,
-      {
-        description: 'this is descrption',
-        title: 'Elf Core',
-        files: {
-          'index.html': '',
-          'index.ts': src,
-        },
-        template: 'typescript',
-        dependencies: deps,
-        settings: {
-          compile: {
-            clearConsole: true,
+    sdk
+      .embedProject(
+        previewEl.current,
+        {
+          description: 'this is descrption',
+          title: 'Elf Core',
+          files: {
+            'index.html': '',
+            'index.ts': src,
+          },
+          template: 'typescript',
+          dependencies: deps,
+          settings: {
+            compile: {
+              clearConsole: true,
+            },
           },
         },
-      },
-      {
-        hideDevTools: false,
-        devToolsHeight: 99,
-        theme: isDarkTheme ? 'dark' : 'light',
-        height: '500px',
-      }
-    );
+        {
+          hideDevTools: false,
+          devToolsHeight: 99,
+          theme: colorMode,
+          height: '500px',
+        }
+      )
+      .then((vm) => {
+        editor.current = vm.editor;
+      });
   }, []);
+
+  useEffect(() => {
+    if (editor.current) {
+      editor.current.setTheme(colorMode);
+    }
+  }, [colorMode]);
 
   return (
     <section style={{ height: '500px' }}>
-      <div ref={ref}></div>
+      <div ref={previewEl}></div>
     </section>
   );
 }

@@ -26,7 +26,7 @@ export interface PaginationData<IdType extends number | string = number> {
   currentPage: IdType;
 }
 
-interface PaginationState<IdType extends number | string = number> {
+export interface PaginationState<IdType extends number | string = number> {
   pagination: {
     pages: Record<IdType, IdType[]>;
   } & PaginationData<IdType>;

@@ -13,8 +13,13 @@ module.exports = {
   organizationName: 'ngneat',
   projectName: 'elf',
   themeConfig: {
+    metadata: [{
+      name: 'google-site-verification',
+      content: 'zLIQAxOp2sGFy10UE51HAMtWTqg7J8z1hpTxZR9G1WA'
+    }],
     algolia: {
-      apiKey: '129bed74e0b4d728358bf7b123274c18',
+      appId: 'GSDPQ4A8PM',
+      apiKey: 'a7655f6472e9024f257027fa9b4e9e7e',
       indexName: 'elf',
     },
     navbar: {
@@ -29,11 +34,19 @@ module.exports = {
           activeBasePath: 'docs',
           label: 'Docs',
           position: 'left',
+          className: "first-nav-element"
         },
         {
-          href: 'https://github.com/ngneat/elf',
-          label: 'GitHub',
+          href: 'https://github.com/sponsors/ngneat',
+          label: 'Sponsor',
           position: 'right',
+          className: 'header-icon-link header-sponsor-link',
+        },
+        {
+          href: 'https://github.com/ngneat/elf/',
+          label: ' ',
+          position: 'right',
+          className: 'header-icon-link header-github-link',
         },
       ],
     },
@@ -56,10 +69,6 @@ module.exports = {
               label: 'Discussions',
               href: 'https://github.com/ngneat/elf/discussions',
             },
-            {
-              label: 'Twitter',
-              href: 'https://twitter.com/NetanelBasal',
-            },
           ],
         },
         {
@@ -68,6 +77,18 @@ module.exports = {
             {
               label: 'GitHub',
               href: 'https://github.com/ngneat/elf',
+            },
+            {
+              label: 'Twitter',
+              href: 'https://twitter.com/ngneat_org',
+            },
+            {
+              label: 'YouTube',
+              href: 'https://youtube.com/@ngneat',
+            },
+            {
+              label: 'Official site',
+              href: 'https://ngneat.com/',
             },
           ],
         },
@@ -95,4 +116,29 @@ module.exports = {
       },
     ],
   ],
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            from: '/docs/features/entities/entities',
+            to: '/docs/features/entities-management/entities',
+          },
+          {
+            from: '/docs/features/entities/ui-entities',
+            to: '/docs/features/entities-management/ui-entities',
+          },
+          {
+            from: '/docs/features/entities/active-ids',
+            to: '/docs/features/entities-management/active-ids',
+          },
+          {
+            from: '/docs/features/entities/entities-props-factory',
+            to: '/docs/features/entities-management/entities-props-factory',
+          }
+        ],
+      }
+    ]
+  ]
 };
