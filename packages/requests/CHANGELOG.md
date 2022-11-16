@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.3.0](https://github-personal/ngneat/elf/compare/requests-1.2.0...requests-1.3.0) (2022-11-16)
+
+
+### Features
+
+* **requests-result:** 🔥 add initialStatus support ([be49f4c](https://github-personal/ngneat/elf/commit/be49f4c5fef831bbf873b7520ed30efa3edb2b37)), closes [#379](https://github-personal/ngneat/elf/issues/379)
+
+
+
 # [1.2.0](https://github-personal/ngneat/elf/compare/requests-1.1.4...requests-1.2.0) (2022-10-31)
 
 
