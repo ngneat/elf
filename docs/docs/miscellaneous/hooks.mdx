@@ -23,3 +23,24 @@ if (!environment.production) {
   });
 }
 ```
+
+## registerPreStateInit
+
+Provide a function to modify initial state of the store.
+
+The callback function takes two arguments:
+
+- `initialState` - the initial state of the store
+- `storeName` - the name of the store
+
+It could be useful is when a developer wants to prevents bugs associated with mutability by freezing initial state value during the development:
+
+```ts
+import { elfHooks, deepFreeze } from '@ngneat/elf';
+
+if (!environment.production) {
+  elfHooks.registerPreStateInit((initialState, storeName) => {
+    return deepFreeze(initialState);
+  });
+}
+```

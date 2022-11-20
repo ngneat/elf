@@ -56,4 +56,23 @@ describe('elfHooks', () => {
       expect(store.getValue().num).toBe(2);
     });
   });
+
+  describe('METHOD: registerPreStateInit', () => {
+    it('preStateInit should be called if defined', () => {
+      elfHooks.registerPreStateInit(() => {
+        return { filter: 'elf' };
+      });
+
+      const spy = jest.spyOn(elfHooksRegistry, 'preStateInit');
+
+      const store = createStore(
+        { name: 'todos' },
+        withProps<{ filter: string }>({ filter: '' })
+      );
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ filter: '' }, 'todos');
+      expect(store.initialState).toMatchSnapshot();
+    });
+  });
 });
