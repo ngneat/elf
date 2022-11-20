@@ -18,7 +18,7 @@ export class Store<
 
   constructor(private storeDef: SDef) {
     super(storeDef.state);
-    this.state = storeDef.state;
+    this.state = this.getInitialState(storeDef.state);
     this.initialState = this.getInitialState();
     addStore(this);
   }
@@ -27,12 +27,12 @@ export class Store<
     return this.storeDef.name;
   }
 
-  private getInitialState(): State {
+  private getInitialState(state: State = this.getValue()): State {
     if (elfHooksRegistry.preStateInit) {
-      return elfHooksRegistry.preStateInit(this.getValue(), this.name);
+      return elfHooksRegistry.preStateInit(state, this.name);
     }
 
-    return this.getValue();
+    return state;
   }
 
   getConfig<Config extends Record<any, any>>(): Config {

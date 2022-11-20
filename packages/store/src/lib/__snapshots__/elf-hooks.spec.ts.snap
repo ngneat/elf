@@ -6,6 +6,12 @@ Object {
 }
 `;
 
+exports[`elfHooks METHOD: registerPreStateInit preStateInit should be called if defined 2`] = `
+Object {
+  "filter": "elf",
+}
+`;
+
 exports[`elfHooks METHOD: registerPreStoreUpdate preStoreUpdate should be called if defined 1`] = `
 Object {
   "filter": "elf",

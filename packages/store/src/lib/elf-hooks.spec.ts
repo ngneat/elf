@@ -70,8 +70,9 @@ describe('elfHooks', () => {
         withProps<{ filter: string }>({ filter: '' })
       );
 
-      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenCalledWith({ filter: '' }, 'todos');
+      expect(store.state).toMatchSnapshot();
       expect(store.initialState).toMatchSnapshot();
     });
   });
