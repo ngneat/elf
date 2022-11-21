@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [2.3.0](https://github-personal/ngneat/elf/compare/store-2.2.0...store-2.3.0) (2022-11-21)
+
+
+### Features
+
+* **store:**  elfHooks with preStateInit  hook ([#383](https://github-personal/ngneat/elf/issues/383)) ([f739139](https://github-personal/ngneat/elf/commit/f73913942396a68163597d90436181f5d04b0307))
+
+
+
 # [2.2.0](https://github.com/ngneat/elf/compare/store-2.1.0...store-2.2.0) (2022-10-26)
 
 
