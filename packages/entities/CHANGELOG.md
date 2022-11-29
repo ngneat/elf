@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [4.4.3](https://github-personal/ngneat/elf/compare/entities-4.4.2...entities-4.4.3) (2022-11-29)
+
+
+### Bug Fixes
+
+* **entities:** 🐞 fix selectByPredicate type ([322067c](https://github-personal/ngneat/elf/commit/322067ce984e4e9e0c703c0dcf300520882973f7)), closes [#390](https://github-personal/ngneat/elf/issues/390)
+
+
+
 ## [4.4.2](https://github.com/ngneat/elf/compare/entities-4.4.1...entities-4.4.2) (2022-08-22)
 
 
