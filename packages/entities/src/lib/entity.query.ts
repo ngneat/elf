@@ -113,9 +113,29 @@ export function getEntity(
  *
  * @example
  *
- * store.pipe(selectEntityByPredicate(entity => entity.title, { pluck: 'title' })
+ * store.pipe(selectEntityByPredicate(entity => entity.title, { pluck: entity => entity.title })
  *
- * store.pipe(selectEntityByPredicate(entity => entity.title, { ref: UIEntitiesRef })
+ */
+export function selectEntityByPredicate<
+  R,
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef,
+  EntityType = getEntityType<S, Ref>
+>(
+  predicate: ItemPredicate<getEntityType<S, Ref>>,
+  options: {
+    pluck: (entity: EntityType) => R;
+  } & BaseEntityOptions<Ref> &
+    IdKey
+): OperatorFunction<S, R | undefined>;
+
+/**
+ *
+ * Observe an entity
+ *
+ * @example
+ *
+ * store.pipe(selectEntityByPredicate(entity => entity.title, { pluck: 'title' })
  *
  */
 export function selectEntityByPredicate<
@@ -124,29 +144,24 @@ export function selectEntityByPredicate<
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
   predicate: ItemPredicate<getEntityType<S, Ref>>,
-  options?: { pluck?: K } & BaseEntityOptions<Ref> & IdKey
-): OperatorFunction<S, getEntityType<S, Ref> | undefined>;
+  options: { pluck: K } & BaseEntityOptions<Ref> & IdKey
+): OperatorFunction<S, getEntityType<S, Ref>[K] | undefined>;
 
 /**
+ *
  * Observe an entity
  *
  * @example
  *
- * store.pipe(selectEntityByPredicate(entity => entity.title, { pluck: entity => entity.title })
- *
- * store.pipe(selectEntity(entity => entity.title, { ref: UIEntitiesRef })
+ * store.pipe(selectEntityByPredicate(entity => entity.title, { ref: UIEntitiesRef })
  *
  */
 export function selectEntityByPredicate<
-  R,
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef
 >(
   predicate: ItemPredicate<getEntityType<S, Ref>>,
-  options?: {
-    pluck?: (entity: getEntityType<S, Ref>) => R;
-  } & BaseEntityOptions<Ref> &
-    IdKey
+  options?: BaseEntityOptions<Ref> & IdKey
 ): OperatorFunction<S, getEntityType<S, Ref> | undefined>;
 
 export function selectEntityByPredicate<

@@ -4,7 +4,10 @@ import {
   createTodo,
   createUIEntityStore,
   createUITodo,
+  Todo,
+  UITodo,
 } from '@ngneat/elf-mocks';
+import { expectTypeOf } from 'expect-type';
 import { addEntities } from './add.mutation';
 import { selectEntity, selectEntityByPredicate } from './entity.query';
 import { UIEntitiesRef, withUIEntities } from './entity.state';
@@ -60,6 +63,8 @@ describe('selectEntity', () => {
     store
       .pipe(selectEntityByPredicate((entity) => entity.title === 'todo 1'))
       .subscribe((entity) => {
+        expectTypeOf(entity).toEqualTypeOf<Todo | undefined>();
+
         expect(entity).toMatchSnapshot(`2 calls`);
       });
 
@@ -75,6 +80,7 @@ describe('selectEntity', () => {
         })
       )
       .subscribe((title) => {
+        expectTypeOf(title).toEqualTypeOf<string | undefined>();
         expect(title).toMatchSnapshot(`2 calls`);
       });
 
@@ -90,6 +96,7 @@ describe('selectEntity', () => {
         })
       )
       .subscribe((title) => {
+        expectTypeOf(title).toEqualTypeOf<string | undefined>();
         expect(title).toMatchSnapshot(`2 calls`);
       });
 
@@ -107,6 +114,7 @@ describe('selectEntity', () => {
         })
       )
       .subscribe((entity) => {
+        expectTypeOf(entity).toEqualTypeOf<UITodo | undefined>();
         expect(entity).toMatchSnapshot(`2 calls`);
       });
 
@@ -126,6 +134,8 @@ describe('selectEntity', () => {
         })
       )
       .subscribe((entity) => {
+        expectTypeOf(entity).toEqualTypeOf<UITodoCustomKey | undefined>();
+
         expect(entity).toMatchSnapshot(`2 calls`);
       });
 
