@@ -6,7 +6,7 @@ import {
   withEntities,
 } from '@ngneat/elf-entities';
 import { createTodo, Todo } from '@ngneat/elf-mocks';
-import { map, tap, timer } from 'rxjs';
+import { defer, map, of, switchMap, tap, timer } from 'rxjs';
 import {
   clearRequestsResult,
   joinRequestResult,
@@ -309,5 +309,96 @@ describe('requests result', () => {
     jest.runAllTimers();
 
     expect(reqSpy).toHaveBeenCalledTimes(3);
+  });
+
+  it('should return loading state when staleTime passes and alwaysReturnCachedResult true', () => {
+    jest.useFakeTimers();
+
+    const { state, config } = createState(withEntities<Todo>());
+
+    const store = new Store({ state, config, name: 'todos' });
+    const reqSpy = jest.fn();
+    const entities$ = store.pipe(
+      selectAllEntities(),
+      joinRequestResult(['todos'])
+    );
+
+    const spy = jest.fn();
+
+    let i = 0;
+    function getTodos() {
+      return timer(1000).pipe(
+        switchMap(() =>
+          defer(() => {
+            i++;
+            return of([createTodo(i)]);
+          })
+        ),
+        tap((todos) => {
+          reqSpy();
+          store.update(setEntities(todos));
+        }),
+        trackRequestResult(['todos'], {
+          staleTime: 5000,
+          alwaysReturnCachedResult: true,
+        })
+      );
+    }
+
+    getTodos().subscribe();
+
+    jest.runAllTimers();
+    expect(reqSpy).toHaveBeenCalledTimes(1);
+
+    getTodos().subscribe();
+    expect(reqSpy).toHaveBeenCalledTimes(1);
+
+    jest.advanceTimersByTime(6000);
+    getTodos().subscribe();
+
+    entities$.subscribe((value) => {
+      spy(value);
+    });
+
+    jest.runAllTimers();
+    expect(reqSpy).toHaveBeenCalledTimes(2);
+
+    expect(spy).toHaveBeenCalledTimes(3);
+
+    expect(spy).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        isError: false,
+        isLoading: true,
+        isSuccess: false,
+        status: 'loading',
+        successfulRequestsCount: 1,
+        staleTime: expect.anything(),
+        data: [expect.objectContaining({ id: 1 })],
+      })
+    );
+    expect(spy).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        isError: false,
+        isLoading: true,
+        isSuccess: false,
+        status: 'loading',
+        successfulRequestsCount: 1,
+        data: [expect.objectContaining({ id: 2 })],
+      })
+    );
+    expect(spy).toHaveBeenNthCalledWith(
+      3,
+      expect.objectContaining({
+        isError: false,
+        isLoading: false,
+        isSuccess: true,
+        status: 'success',
+        successfulRequestsCount: 2,
+        staleTime: expect.anything(),
+        data: [expect.objectContaining({ id: 2 })],
+      })
+    );
   });
 });

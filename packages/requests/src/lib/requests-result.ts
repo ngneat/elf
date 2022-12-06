@@ -183,6 +183,8 @@ interface Options {
   staleTime?: number;
   // Ignore everything and perform the request
   skipCache?: boolean;
+  // Return cached result when cache stale
+  alwaysReturnCachedResult?: boolean;
 }
 
 export function trackRequestResult<TData>(
@@ -208,9 +210,12 @@ export function trackRequestResult<TData>(
           status: 'loading',
         });
 
-        setWait(key, true);
+        if (!options?.alwaysReturnCachedResult) {
+          setWait(key, true);
+        }
 
         return source.pipe(
+          tap(() => options?.alwaysReturnCachedResult && setWait(key, true)),
           tap({
             finalize() {
               setWait(key, false);
