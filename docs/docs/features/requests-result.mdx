@@ -111,6 +111,29 @@ export function fetchTodos() {
 }
 ```
 
+### Operators
+
+```ts
+import { filterSuccess, filterError } from '@ngneat/elf-requests';
+
+entities$.pipe(filterSuccess()).subscribe((result) => {
+  // This will be called only upon success
+});
+
+entities$.pipe(filterError()).subscribe((result) => {
+  // This will be called only upon error
+});
+
+entities$
+  .pipe(
+    mapResultData((data) => {
+      // This will be called only when data is defined (not `null` or `undefined`)
+      return data.filter((todo) => todo.id === 1);
+    })
+  )
+  .subscribe((result) => {});
+```
+
 ### API
 
 - `getRequestResult` - `getRequestResult(key): Observable<RequestResult>`

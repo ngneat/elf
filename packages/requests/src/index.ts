@@ -29,4 +29,7 @@ export {
   getRequestResult,
   deleteRequestResult,
   clearRequestsResult,
+  filterError,
+  filterSuccess,
+  mapResultData,
 } from './lib/requests-result';

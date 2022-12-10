@@ -2,10 +2,12 @@ import {
   BehaviorSubject,
   combineLatest,
   EMPTY,
+  filter,
   map,
   MonoTypeOperatorFunction,
   Observable,
   OperatorFunction,
+  pipe,
   switchMap,
   take,
   tap,
@@ -78,16 +80,6 @@ function getSource<TValue>(
   return newSource.asObservable();
 }
 
-const waiters = new Map<string, BehaviorSubject<boolean>>();
-
-function getWaiter(key: unknown[]): Observable<boolean> {
-  return getSource(key, false, waiters);
-}
-
-function setWait(key: unknown[], wait = true) {
-  waiters.get(resolveKey(key))?.next(wait);
-}
-
 function resolveKey(key: unknown): string {
   return JSON.stringify(key);
 }
@@ -143,7 +135,6 @@ function updateRequestResult(key: unknown[], newValue: Partial<RequestResult>) {
 // @public
 export function clearRequestsResult() {
   emitters.clear();
-  waiters.clear();
 }
 
 // @public
@@ -156,23 +147,12 @@ export function joinRequestResult<T, TError = any>(
   ...[key, options]: Parameters<typeof getRequestResult>
 ): OperatorFunction<T, RequestResult<TError> & { data: T }> {
   return function (source: Observable<T>) {
-    const source$ = combineLatest([
-      source,
-      getRequestResult<TError>(key, options),
-    ]).pipe(
+    return combineLatest([source, getRequestResult<TError>(key, options)]).pipe(
       map(([data, result]) => {
         return {
           ...result,
           data,
         };
-      })
-    );
-
-    return getWaiter(key).pipe(
-      switchMap((shouldWait) => {
-        if (shouldWait) return EMPTY;
-
-        return source$;
       })
     );
   };
@@ -208,13 +188,8 @@ export function trackRequestResult<TData>(
           status: 'loading',
         });
 
-        setWait(key, true);
-
         return source.pipe(
           tap({
-            finalize() {
-              setWait(key, false);
-            },
             error(error) {
               updateRequestResult(key, {
                 isError: true,
@@ -244,4 +219,36 @@ export function trackRequestResult<TData>(
       })
     );
   };
+}
+
+export function filterSuccess<TData>(): OperatorFunction<
+  RequestResult & { data: TData },
+  SuccessRequestResult & { data: TData }
+> {
+  return filter(
+    (result): result is SuccessRequestResult & { data: TData } =>
+      result.status === 'success'
+  );
+}
+
+export function filterError<TError>(): OperatorFunction<
+  RequestResult<TError>,
+  ErrorRequestResult<TError>
+> {
+  return filter(
+    (result): result is ErrorRequestResult<TError> => result.status === 'error'
+  );
+}
+
+export function mapResultData<TData, R>(
+  mapFn: (data: NonNullable<TData>) => R
+): MonoTypeOperatorFunction<RequestResult & { data: TData }> {
+  return pipe(
+    map((result) => {
+      return {
+        ...result,
+        data: result.data != null ? mapFn(result.data as any) : result.data,
+      } as any;
+    })
+  );
 }
