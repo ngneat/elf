@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.4.0](https://github-personal/ngneat/elf/compare/requests-1.3.0...requests-1.4.0) (2022-12-10)
+
+
+### Features
+
+* **requests-result:** 🔥 add new operators ([7990b9d](https://github-personal/ngneat/elf/commit/7990b9deb51df609d5c7451a90d1f5c66284578b)), closes [#398](https://github-personal/ngneat/elf/issues/398)
+
+
+
 # [1.3.0](https://github-personal/ngneat/elf/compare/requests-1.2.0...requests-1.3.0) (2022-11-16)
 
 
