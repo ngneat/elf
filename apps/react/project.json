@@ -74,5 +74,6 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "react"
 }

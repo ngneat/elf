@@ -55,5 +55,6 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "state-history"
 }

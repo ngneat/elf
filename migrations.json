@@ -2,123 +2,89 @@
   "migrations": [
     {
       "cli": "nx",
-      "version": "15.0.0-beta.1",
-      "description": "Replace implicitDependencies with namedInputs + target inputs",
-      "implementation": "./src/migrations/update-15-0-0/migrate-to-inputs",
+      "version": "15.0.12-beta.1",
+      "description": "Set project names in project.json files",
+      "implementation": "./src/migrations/update-15-1-0/set-project-names",
       "package": "nx",
-      "name": "15.0.0-migrate-to-inputs"
+      "name": "15.1.0-set-project-names"
     },
     {
       "cli": "nx",
-      "version": "15.0.0-beta.1",
-      "description": "Prefix outputs with {workspaceRoot}/{projectRoot} if needed",
-      "implementation": "./src/migrations/update-15-0-0/prefix-outputs",
-      "package": "nx",
-      "name": "15.0.0-prefix-outputs"
-    },
-    {
-      "cli": "nx",
-      "version": "14.6.0-beta.0",
-      "description": "Update the @angular/cli package version to ~14.2.0.",
-      "factory": "./src/migrations/update-14-6-0/update-angular-cli",
+      "version": "15.2.0-beta.0",
+      "description": "Update the @angular/cli package version to ~15.0.0.",
+      "factory": "./src/migrations/update-15-2-0/update-angular-cli",
       "package": "@nrwl/angular",
-      "name": "update-angular-cli-version-14-2-0"
+      "name": "update-angular-cli-version-15-0-0"
     },
     {
       "cli": "nx",
-      "version": "15.0.0-beta.0",
-      "description": "Rename @nrwl/angular:webpack-server executor to @nrwl/angular:webpack-dev-server",
-      "factory": "./src/migrations/update-14-8-0/rename-webpack-server",
+      "version": "15.2.0-beta.0",
+      "description": "Remove browserlist config as it's handled by build-angular",
+      "factory": "./src/migrations/update-15-2-0/remove-browserlist-config",
       "package": "@nrwl/angular",
-      "name": "rename-webpack-server-executor"
+      "name": "remove-browserlist-config"
     },
     {
       "cli": "nx",
-      "version": "15.0.0-beta.0",
-      "description": "Update the usages of @nrwl/angular/testing to import jasmine-marbles symbols from jasmine-marbles itself.",
-      "factory": "./src/migrations/update-15-0-0/switch-to-jasmine-marbles",
+      "version": "15.2.0-beta.0",
+      "description": "Update typescript target to ES2022",
+      "factory": "./src/migrations/update-15-2-0/update-typescript-target",
       "package": "@nrwl/angular",
-      "name": "switch-to-jasmine-marbles"
+      "name": "update-typescript-target"
     },
     {
       "cli": "nx",
-      "version": "15.0.0-beta.1",
-      "description": "Stop hashing karma spec files and config files for build targets and dependent tasks",
-      "factory": "./src/migrations/update-15-0-0/add-karma-inputs",
+      "version": "15.2.0-beta.0",
+      "description": "Remove bundleDependencies from server targets",
+      "factory": "./src/migrations/update-15-2-0/update-workspace-config",
       "package": "@nrwl/angular",
-      "name": "add-karma-inputs"
+      "name": "update-workspace-config"
     },
     {
-      "version": "14.6.0-beta.0",
-      "cli": "nx",
-      "description": "Update jest configs to support jest 28 changes (https://jestjs.io/docs/upgrading-to-jest28#configuration-options)",
-      "factory": "./src/migrations/update-14-6-0/update-configs-jest-28",
-      "package": "@nrwl/jest",
-      "name": "update-configs-jest-28"
+      "cli": "ng",
+      "version": "15.2.0-beta.0",
+      "description": "Remove exported `@angular/platform-server` `renderModule` method. The `renderModule` method is now exported by the Angular CLI.",
+      "factory": "./src/migrations/update-15-2-0/remove-platform-server-exports",
+      "package": "@nrwl/angular",
+      "name": "update-platform-server-exports"
     },
     {
-      "version": "14.6.0-beta.0",
-      "cli": "nx",
-      "description": "Update jest test files to support jest 28 changes (https://jestjs.io/docs/upgrading-to-jest28)",
-      "factory": "./src/migrations/update-14-6-0/update-tests-jest-28",
-      "package": "@nrwl/jest",
-      "name": "update-tests-jest-28"
+      "cli": "ng",
+      "version": "15.2.0-beta.0",
+      "description": "Remove no longer needed require calls in Karma builder main file.",
+      "factory": "./src/migrations/update-15-2-0/update-karma-main-file",
+      "package": "@nrwl/angular",
+      "name": "update-karma-main-file"
     },
     {
-      "version": "15.0.0-beta.0",
-      "cli": "nx",
-      "description": "Stop hashing jest spec files and config files for build targets and dependent tasks",
-      "factory": "./src/migrations/update-15-0-0/add-jest-inputs",
-      "package": "@nrwl/jest",
-      "name": "add-jest-inputs"
+      "version": "15.0.0-beta",
+      "description": "Since Angular v15, the `RouterLink` contains the logic of the `RouterLinkWithHref` directive. This migration replaces all `RouterLinkWithHref` references with `RouterLink`.",
+      "factory": "./migrations/router-link-with-href/index",
+      "package": "@angular/core",
+      "name": "migration-v15-router-link-with-href"
     },
     {
-      "cli": "nx",
-      "version": "15.0.0-beta.0",
-      "description": "Stop hashing eslint config files for build targets and dependent tasks",
-      "factory": "./src/migrations/update-15-0-0/add-eslint-inputs",
-      "package": "@nrwl/linter",
-      "name": "add-eslint-inputs"
+      "version": "15.0.0-beta",
+      "description": "In Angular version 15, the deprecated `relativeLinkResolution` config parameter of the Router is removed. This migration removes all `relativeLinkResolution` fields from the Router config objects.",
+      "factory": "./migrations/relative-link-resolution/index",
+      "package": "@angular/core",
+      "name": "migration-v15-relative-link-resolution"
     },
     {
       "cli": "nx",
-      "version": "14.6.0-beta.0",
-      "description": "Update babel-jest to include the @nrwl/react/babel preset in project jest config",
-      "factory": "./src/migrations/update-14-6-0/add-preset-jest-config",
+      "version": "15.3.0-beta.0",
+      "description": "Update projects using @nrwl/web:rollup to @nrwl/rollup:rollup for build.",
+      "factory": "./src/migrations/update-15-3-0/update-rollup-executor",
       "package": "@nrwl/react",
-      "name": "update-babel-jest-transform-option"
-    },
-    {
-      "cli": "nx",
-      "version": "14.7.6-beta.1",
-      "description": "Update usages of webpack executors to @nrwl/webpack",
-      "factory": "./src/migrations/update-14-7-6/update-webpack-executor",
-      "package": "@nrwl/web",
-      "name": "update-webpack-executor"
-    },
-    {
-      "cli": "nx",
-      "version": "15.0.0-beta.0",
-      "description": "Adds babel.config.json to the hash of all tasks",
-      "factory": "./src/migrations/update-15-0-0/add-babel-inputs",
-      "package": "@nrwl/web",
-      "name": "add-babel-inputs"
-    },
-    {
-      "cli": "nx",
-      "version": "15.0.0-beta.1",
-      "description": "Update usages of rollup executors to @nrwl/rollup",
-      "factory": "./src/migrations/update-15-0-0/update-rollup-executor",
-      "package": "@nrwl/web",
       "name": "update-rollup-executor"
     },
     {
-      "version": "14.8.0-beta.0",
-      "description": "Migrates from @nrwl/workspace:run-commands to nx:run-commands",
       "cli": "nx",
-      "implementation": "./src/migrations/update-14-8-0/change-run-commands-executor",
-      "package": "@nrwl/workspace",
-      "name": "14-8-0-change-run-commands-executor"
+      "version": "15.3.0-beta.0",
+      "description": "Install new dependencies for React projects using Webpack or Rollup.",
+      "factory": "./src/migrations/update-15-3-0/install-webpack-rollup-dependencies",
+      "package": "@nrwl/react",
+      "name": "install-webpack-rollup-dependencies"
     }
   ]
 }
