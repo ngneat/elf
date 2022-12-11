@@ -15,7 +15,6 @@ import {
 
 export interface BaseRequestResult {
   staleTime?: number;
-  lastRequestTime?: number;
   successfulRequestsCount: number;
 }
 
@@ -31,6 +30,7 @@ export interface SuccessRequestResult extends BaseRequestResult {
   isSuccess: true;
   isError: false;
   status: 'success';
+  dataUpdatedAt?: number;
 }
 
 export interface ErrorRequestResult<TError = any> extends BaseRequestResult {
@@ -39,6 +39,7 @@ export interface ErrorRequestResult<TError = any> extends BaseRequestResult {
   isError: true;
   status: 'error';
   error: TError;
+  errorUpdatedAt?: number;
 }
 
 export interface IdleRequestResult extends BaseRequestResult {
@@ -204,7 +205,7 @@ export function trackRequestResult<TData>(
                 isLoading: false,
                 isSuccess: false,
                 status: 'error',
-                lastRequestTime: Date.now(),
+                errorUpdatedAt: Date.now(),
                 error,
               });
             },
@@ -214,7 +215,7 @@ export function trackRequestResult<TData>(
                 isSuccess: true,
                 isError: false,
                 status: 'success',
-                lastRequestTime: Date.now(),
+                dataUpdatedAt: Date.now(),
                 successfulRequestsCount: result.successfulRequestsCount + 1,
               };
 
