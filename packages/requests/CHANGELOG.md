@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.5.0](https://github-personal/ngneat/elf/compare/requests-1.4.0...requests-1.5.0) (2022-12-11)
+
+
+### Features
+
+* **requests-result:** add resetStaleTime & track lastRequestTime ([#406](https://github-personal/ngneat/elf/issues/406)) ([d7b4b3a](https://github-personal/ngneat/elf/commit/d7b4b3a34ff6783b3a46e0c21cd375c2c35f1afa))
+
+
+
 # [1.4.0](https://github-personal/ngneat/elf/compare/requests-1.3.0...requests-1.4.0) (2022-12-10)
 
 
