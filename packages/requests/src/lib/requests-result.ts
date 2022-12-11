@@ -30,6 +30,7 @@ export interface SuccessRequestResult extends BaseRequestResult {
   isSuccess: true;
   isError: false;
   status: 'success';
+  dataUpdatedAt?: number;
 }
 
 export interface ErrorRequestResult<TError = any> extends BaseRequestResult {
@@ -38,6 +39,7 @@ export interface ErrorRequestResult<TError = any> extends BaseRequestResult {
   isError: true;
   status: 'error';
   error: TError;
+  errorUpdatedAt?: number;
 }
 
 export interface IdleRequestResult extends BaseRequestResult {
@@ -143,6 +145,13 @@ export function deleteRequestResult(key: unknown[]) {
 }
 
 // @public
+export function resetStaleTime(key: unknown[]) {
+  updateRequestResult(key, {
+    staleTime: undefined,
+  });
+}
+
+// @public
 export function joinRequestResult<T, TError = any>(
   ...[key, options]: Parameters<typeof getRequestResult>
 ): OperatorFunction<T, RequestResult<TError> & { data: T }> {
@@ -196,6 +205,7 @@ export function trackRequestResult<TData>(
                 isLoading: false,
                 isSuccess: false,
                 status: 'error',
+                errorUpdatedAt: Date.now(),
                 error,
               });
             },
@@ -205,6 +215,7 @@ export function trackRequestResult<TData>(
                 isSuccess: true,
                 isError: false,
                 status: 'success',
+                dataUpdatedAt: Date.now(),
                 successfulRequestsCount: result.successfulRequestsCount + 1,
               };
 
