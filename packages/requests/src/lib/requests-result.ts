@@ -15,6 +15,7 @@ import {
 
 export interface BaseRequestResult {
   staleTime?: number;
+  lastRequest?: number;
   successfulRequestsCount: number;
 }
 
@@ -143,6 +144,13 @@ export function deleteRequestResult(key: unknown[]) {
 }
 
 // @public
+export function resetStaleTime(key: unknown[]) {
+  updateRequestResult(key, {
+    staleTime: undefined,
+  });
+}
+
+// @public
 export function joinRequestResult<T, TError = any>(
   ...[key, options]: Parameters<typeof getRequestResult>
 ): OperatorFunction<T, RequestResult<TError> & { data: T }> {
@@ -196,6 +204,7 @@ export function trackRequestResult<TData>(
                 isLoading: false,
                 isSuccess: false,
                 status: 'error',
+                lastRequest: Date.now(),
                 error,
               });
             },
@@ -205,6 +214,7 @@ export function trackRequestResult<TData>(
                 isSuccess: true,
                 isError: false,
                 status: 'success',
+                lastRequest: Date.now(),
                 successfulRequestsCount: result.successfulRequestsCount + 1,
               };
 
