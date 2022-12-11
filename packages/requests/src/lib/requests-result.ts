@@ -15,7 +15,7 @@ import {
 
 export interface BaseRequestResult {
   staleTime?: number;
-  lastRequest?: number;
+  lastRequestTime?: number;
   successfulRequestsCount: number;
 }
 
@@ -204,7 +204,7 @@ export function trackRequestResult<TData>(
                 isLoading: false,
                 isSuccess: false,
                 status: 'error',
-                lastRequest: Date.now(),
+                lastRequestTime: Date.now(),
                 error,
               });
             },
@@ -214,7 +214,7 @@ export function trackRequestResult<TData>(
                 isSuccess: true,
                 isError: false,
                 status: 'success',
-                lastRequest: Date.now(),
+                lastRequestTime: Date.now(),
                 successfulRequestsCount: result.successfulRequestsCount + 1,
               };
 

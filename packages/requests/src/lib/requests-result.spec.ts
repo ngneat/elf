@@ -59,7 +59,7 @@ describe('requests result', () => {
   });
 
   it('should mapResultData only when it is defined', () => {
-    jest.useFakeTimers();
+    jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
 
     const { state, config } = createState(withEntities<Todo>());
 
@@ -136,6 +136,7 @@ describe('requests result', () => {
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
+            "lastRequestTime": 1577836801000,
             "status": "success",
             "successfulRequestsCount": 1,
           },
@@ -145,7 +146,7 @@ describe('requests result', () => {
   });
 
   it('should work', () => {
-    jest.useFakeTimers();
+    jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
 
     const { state, config } = createState(withEntities<Todo>());
 
@@ -226,6 +227,7 @@ describe('requests result', () => {
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
+            "lastRequestTime": 1577836801000,
             "status": "success",
             "successfulRequestsCount": 1,
           },
@@ -247,6 +249,7 @@ describe('requests result', () => {
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
+            "lastRequestTime": 1577836801000,
             "status": "success",
             "successfulRequestsCount": 1,
           },
@@ -256,7 +259,7 @@ describe('requests result', () => {
   });
 
   it('should work with idle status', () => {
-    jest.useFakeTimers();
+    jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
 
     const { state, config } = createState(withEntities<Todo>());
 
@@ -361,6 +364,7 @@ describe('requests result', () => {
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
+            "lastRequestTime": 1577836801000,
             "status": "success",
             "successfulRequestsCount": 1,
           },
@@ -382,6 +386,7 @@ describe('requests result', () => {
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
+            "lastRequestTime": 1577836801000,
             "status": "success",
             "successfulRequestsCount": 1,
           },
