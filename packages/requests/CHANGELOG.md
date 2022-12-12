@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.5.1](https://github-personal/ngneat/elf/compare/requests-1.5.0...requests-1.5.1) (2022-12-12)
+
+
+### Bug Fixes
+
+* **requests-result:** add resetStaleTime to export ([#407](https://github-personal/ngneat/elf/issues/407)) ([0bb1eed](https://github-personal/ngneat/elf/commit/0bb1eedd65795f4797e14035720ce5d01afae417))
+
+
+
 # [1.5.0](https://github-personal/ngneat/elf/compare/requests-1.4.0...requests-1.5.0) (2022-12-11)
 
 
