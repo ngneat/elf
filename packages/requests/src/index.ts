@@ -32,4 +32,5 @@ export {
   filterError,
   filterSuccess,
   mapResultData,
+  resetStaleTime,
 } from './lib/requests-result';
