@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.6.0](https://github-personal/ngneat/elf/compare/requests-1.5.1...requests-1.6.0) (2023-01-09)
+
+
+### Features
+
+* **requests:** support skipping duplicated parellel requests ([#417](https://github-personal/ngneat/elf/issues/417)) ([00000b9](https://github-personal/ngneat/elf/commit/00000b91952fc3670b91ed1b692a7793ae7701ab)), closes [#403](https://github-personal/ngneat/elf/issues/403)
+
+
+
 ## [1.5.1](https://github-personal/ngneat/elf/compare/requests-1.5.0...requests-1.5.1) (2022-12-12)
 
 
