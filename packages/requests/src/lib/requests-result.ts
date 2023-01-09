@@ -23,6 +23,7 @@ export interface LoadingRequestResult extends BaseRequestResult {
   isSuccess: false;
   isError: false;
   status: 'loading';
+  fetchStatus: 'fetching' | 'idle';
 }
 
 export interface SuccessRequestResult extends BaseRequestResult {
@@ -30,6 +31,7 @@ export interface SuccessRequestResult extends BaseRequestResult {
   isSuccess: true;
   isError: false;
   status: 'success';
+  fetchStatus: 'idle';
   dataUpdatedAt?: number;
 }
 
@@ -38,6 +40,7 @@ export interface ErrorRequestResult<TError = any> extends BaseRequestResult {
   isSuccess: false;
   isError: true;
   status: 'error';
+  fetchStatus: 'idle';
   error: TError;
   errorUpdatedAt?: number;
 }
@@ -47,6 +50,7 @@ export interface IdleRequestResult extends BaseRequestResult {
   isSuccess: false;
   isError: false;
   status: 'idle';
+  fetchStatus: 'idle';
 }
 
 export type RequestResult<TError = any> =
@@ -61,6 +65,7 @@ function initialResult(): RequestResult {
     isLoading: true,
     isSuccess: false,
     status: 'loading',
+    fetchStatus: 'idle',
     successfulRequestsCount: 0,
   };
 }
@@ -172,6 +177,8 @@ interface Options {
   staleTime?: number;
   // Ignore everything and perform the request
   skipCache?: boolean;
+  // Skip the request if it's already fetching
+  preventConcurrentRequest?: boolean;
 }
 
 export function trackRequestResult<TData>(
@@ -186,7 +193,17 @@ export function trackRequestResult<TData>(
           ? result.staleTime! < Date.now()
           : false;
 
-        if (!options?.skipCache && result.isSuccess && !stale) {
+        const preventConcurrentRequest =
+          options?.preventConcurrentRequest !== undefined
+            ? options.preventConcurrentRequest
+            : true;
+
+        if (
+          !options?.skipCache &&
+          (result.isSuccess ||
+            (preventConcurrentRequest && result.fetchStatus === 'fetching')) &&
+          !stale
+        ) {
           return EMPTY;
         }
 
@@ -195,6 +212,7 @@ export function trackRequestResult<TData>(
           isError: false,
           isSuccess: false,
           status: 'loading',
+          fetchStatus: 'fetching',
         });
 
         return source.pipe(
@@ -205,6 +223,7 @@ export function trackRequestResult<TData>(
                 isLoading: false,
                 isSuccess: false,
                 status: 'error',
+                fetchStatus: 'idle',
                 errorUpdatedAt: Date.now(),
                 error,
               });
@@ -215,6 +234,7 @@ export function trackRequestResult<TData>(
                 isSuccess: true,
                 isError: false,
                 status: 'success',
+                fetchStatus: 'idle',
                 dataUpdatedAt: Date.now(),
                 successfulRequestsCount: result.successfulRequestsCount + 1,
               };
