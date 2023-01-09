@@ -111,6 +111,21 @@ export function fetchTodos() {
 }
 ```
 
+- `preventConcurrentRequest` - Don't perform the request if there is a pending request, defaults to `true`
+
+```ts title="todos.service.ts"
+import { trackRequestResult } from '@ngneat/elf-requests';
+import { setTodos } from './todos.repository';
+
+export function fetchTodos() {
+  return http.get(todosUrl).pipe(
+    tap(setTodos),
+    // highlight-next-line
+    trackRequestResult(['todos'], { preventConcurrentRequest: false })
+  );
+}
+```
+
 ### Operators
 
 ```ts

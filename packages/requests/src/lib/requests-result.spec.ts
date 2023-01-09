@@ -95,12 +95,24 @@ describe('requests result', () => {
 
     jest.runAllTimers();
 
-    expect(spy).toHaveBeenCalledTimes(3);
+    expect(spy).toHaveBeenCalledTimes(4);
     expect(spy.mock.calls).toMatchInlineSnapshot(`
       Array [
         Array [
           Object {
             "data": Array [],
+            "fetchStatus": "idle",
+            "isError": false,
+            "isLoading": true,
+            "isSuccess": false,
+            "status": "loading",
+            "successfulRequestsCount": 0,
+          },
+        ],
+        Array [
+          Object {
+            "data": Array [],
+            "fetchStatus": "fetching",
             "isError": false,
             "isLoading": true,
             "isSuccess": false,
@@ -117,6 +129,7 @@ describe('requests result', () => {
                 "title": "todo 1",
               },
             ],
+            "fetchStatus": "fetching",
             "isError": false,
             "isLoading": true,
             "isSuccess": false,
@@ -134,6 +147,7 @@ describe('requests result', () => {
               },
             ],
             "dataUpdatedAt": 1577836801000,
+            "fetchStatus": "idle",
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
@@ -158,6 +172,7 @@ describe('requests result', () => {
     );
 
     const spy = jest.fn();
+    const reqSpy = jest.fn();
 
     entities$.subscribe((value) => {
       spy(value);
@@ -166,32 +181,47 @@ describe('requests result', () => {
     function getTodos() {
       return timer(1000).pipe(
         map(() => [createTodo(1)]),
+        tap(() => reqSpy()),
         tap((todos) => store.update(setEntities(todos))),
         trackRequestResult(['todos'])
       );
     }
 
     getTodos().subscribe();
+    getTodos().subscribe();
 
     jest.runAllTimers();
 
-    expect(spy).toHaveBeenCalledTimes(3);
+    expect(reqSpy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(4);
 
     store.update(addEntities(createTodo(2)));
 
-    expect(spy).toHaveBeenCalledTimes(4);
+    expect(spy).toHaveBeenCalledTimes(5);
     getTodos().subscribe();
 
     jest.runAllTimers();
 
     // It's cached
-    expect(spy).toHaveBeenCalledTimes(4);
+    expect(spy).toHaveBeenCalledTimes(5);
 
     expect(spy.mock.calls).toMatchInlineSnapshot(`
       Array [
         Array [
           Object {
             "data": Array [],
+            "fetchStatus": "idle",
+            "isError": false,
+            "isLoading": true,
+            "isSuccess": false,
+            "status": "loading",
+            "successfulRequestsCount": 0,
+          },
+        ],
+        Array [
+          Object {
+            "data": Array [],
+            "fetchStatus": "fetching",
             "isError": false,
             "isLoading": true,
             "isSuccess": false,
@@ -208,6 +238,7 @@ describe('requests result', () => {
                 "title": "todo 1",
               },
             ],
+            "fetchStatus": "fetching",
             "isError": false,
             "isLoading": true,
             "isSuccess": false,
@@ -225,6 +256,7 @@ describe('requests result', () => {
               },
             ],
             "dataUpdatedAt": 1577836801000,
+            "fetchStatus": "idle",
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
@@ -247,6 +279,7 @@ describe('requests result', () => {
               },
             ],
             "dataUpdatedAt": 1577836801000,
+            "fetchStatus": "idle",
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
@@ -289,6 +322,7 @@ describe('requests result', () => {
         Array [
           Object {
             "data": Array [],
+            "fetchStatus": "idle",
             "isError": false,
             "isLoading": false,
             "isSuccess": false,
@@ -319,6 +353,7 @@ describe('requests result', () => {
         Array [
           Object {
             "data": Array [],
+            "fetchStatus": "idle",
             "isError": false,
             "isLoading": false,
             "isSuccess": false,
@@ -329,6 +364,7 @@ describe('requests result', () => {
         Array [
           Object {
             "data": Array [],
+            "fetchStatus": "fetching",
             "isError": false,
             "isLoading": true,
             "isSuccess": false,
@@ -345,6 +381,7 @@ describe('requests result', () => {
                 "title": "todo 1",
               },
             ],
+            "fetchStatus": "fetching",
             "isError": false,
             "isLoading": true,
             "isSuccess": false,
@@ -362,6 +399,7 @@ describe('requests result', () => {
               },
             ],
             "dataUpdatedAt": 1577836801000,
+            "fetchStatus": "idle",
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
@@ -384,6 +422,7 @@ describe('requests result', () => {
               },
             ],
             "dataUpdatedAt": 1577836801000,
+            "fetchStatus": "idle",
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
@@ -406,7 +445,8 @@ describe('requests result', () => {
     function getTodos() {
       return timer(1000).pipe(
         map(() => [createTodo(1)]),
-        tap((todos) => reqSpy() && store.update(setEntities(todos))),
+        tap(() => reqSpy()),
+        tap((todos) => store.update(setEntities(todos))),
         trackRequestResult(['todos'], { skipCache: true })
       );
     }
@@ -416,6 +456,37 @@ describe('requests result', () => {
     jest.runAllTimers();
 
     expect(reqSpy).toHaveBeenCalledTimes(1);
+
+    getTodos().subscribe();
+
+    jest.runAllTimers();
+
+    expect(reqSpy).toHaveBeenCalledTimes(2);
+  });
+
+  it('should skip prevent concurrent requests', () => {
+    jest.useFakeTimers();
+
+    const { state, config } = createState(withEntities<Todo>());
+
+    const store = new Store({ state, config, name: 'todos' });
+    const reqSpy = jest.fn();
+
+    function getTodos() {
+      return timer(1000).pipe(
+        map(() => [createTodo(1)]),
+        tap(() => reqSpy()),
+        tap((todos) => store.update(setEntities(todos))),
+        trackRequestResult(['todos'], { preventConcurrentRequest: false })
+      );
+    }
+
+    getTodos().subscribe();
+    getTodos().subscribe();
+
+    jest.runAllTimers();
+
+    expect(reqSpy).toHaveBeenCalledTimes(2);
 
     getTodos().subscribe();
 
@@ -445,7 +516,8 @@ describe('requests result', () => {
     function getTodos() {
       return timer(1000).pipe(
         map(() => [createTodo(1)]),
-        tap((todos) => reqSpy() && store.update(setEntities(todos))),
+        tap(() => reqSpy()),
+        tap((todos) => store.update(setEntities(todos))),
         trackRequestResult(['todos'], { staleTime: 5000 })
       );
     }
