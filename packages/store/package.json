@@ -29,6 +29,6 @@
   "license": "MIT",
   "sideEffects": false,
   "peerDependencies": {
-    "rxjs": "*"
+    "rxjs": ">=7.0.0"
   }
 }
