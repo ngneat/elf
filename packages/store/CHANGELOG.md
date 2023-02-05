@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.3.1](https://github-personal/ngneat/elf/compare/store-2.3.0...store-2.3.1) (2023-02-05)
+
+
+### Bug Fixes
+
+* store peer dependencies ([#426](https://github-personal/ngneat/elf/issues/426)) ([56c3487](https://github-personal/ngneat/elf/commit/56c3487fdee997bb63089ba37b10ddd37576891c))
+
+
+
 # [2.3.0](https://github-personal/ngneat/elf/compare/store-2.2.0...store-2.3.0) (2022-11-21)
 
 
