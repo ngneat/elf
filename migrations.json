@@ -2,89 +2,19 @@
   "migrations": [
     {
       "cli": "nx",
-      "version": "15.0.12-beta.1",
-      "description": "Set project names in project.json files",
-      "implementation": "./src/migrations/update-15-1-0/set-project-names",
-      "package": "nx",
-      "name": "15.1.0-set-project-names"
+      "version": "15.5.0-beta.0",
+      "description": "Update the @angular/cli package version to ~15.1.0.",
+      "factory": "./src/migrations/update-15-5-0/update-angular-cli",
+      "package": "@nrwl/angular",
+      "name": "update-angular-cli-version-15-1-0"
     },
     {
       "cli": "nx",
-      "version": "15.2.0-beta.0",
-      "description": "Update the @angular/cli package version to ~15.0.0.",
-      "factory": "./src/migrations/update-15-2-0/update-angular-cli",
-      "package": "@nrwl/angular",
-      "name": "update-angular-cli-version-15-0-0"
-    },
-    {
-      "cli": "nx",
-      "version": "15.2.0-beta.0",
-      "description": "Remove browserlist config as it's handled by build-angular",
-      "factory": "./src/migrations/update-15-2-0/remove-browserlist-config",
-      "package": "@nrwl/angular",
-      "name": "remove-browserlist-config"
-    },
-    {
-      "cli": "nx",
-      "version": "15.2.0-beta.0",
-      "description": "Update typescript target to ES2022",
-      "factory": "./src/migrations/update-15-2-0/update-typescript-target",
-      "package": "@nrwl/angular",
-      "name": "update-typescript-target"
-    },
-    {
-      "cli": "nx",
-      "version": "15.2.0-beta.0",
-      "description": "Remove bundleDependencies from server targets",
-      "factory": "./src/migrations/update-15-2-0/update-workspace-config",
-      "package": "@nrwl/angular",
-      "name": "update-workspace-config"
-    },
-    {
-      "cli": "ng",
-      "version": "15.2.0-beta.0",
-      "description": "Remove exported `@angular/platform-server` `renderModule` method. The `renderModule` method is now exported by the Angular CLI.",
-      "factory": "./src/migrations/update-15-2-0/remove-platform-server-exports",
-      "package": "@nrwl/angular",
-      "name": "update-platform-server-exports"
-    },
-    {
-      "cli": "ng",
-      "version": "15.2.0-beta.0",
-      "description": "Remove no longer needed require calls in Karma builder main file.",
-      "factory": "./src/migrations/update-15-2-0/update-karma-main-file",
-      "package": "@nrwl/angular",
-      "name": "update-karma-main-file"
-    },
-    {
-      "version": "15.0.0-beta",
-      "description": "Since Angular v15, the `RouterLink` contains the logic of the `RouterLinkWithHref` directive. This migration replaces all `RouterLinkWithHref` references with `RouterLink`.",
-      "factory": "./migrations/router-link-with-href/index",
-      "package": "@angular/core",
-      "name": "migration-v15-router-link-with-href"
-    },
-    {
-      "version": "15.0.0-beta",
-      "description": "In Angular version 15, the deprecated `relativeLinkResolution` config parameter of the Router is removed. This migration removes all `relativeLinkResolution` fields from the Router config objects.",
-      "factory": "./migrations/relative-link-resolution/index",
-      "package": "@angular/core",
-      "name": "migration-v15-relative-link-resolution"
-    },
-    {
-      "cli": "nx",
-      "version": "15.3.0-beta.0",
-      "description": "Update projects using @nrwl/web:rollup to @nrwl/rollup:rollup for build.",
-      "factory": "./src/migrations/update-15-3-0/update-rollup-executor",
-      "package": "@nrwl/react",
-      "name": "update-rollup-executor"
-    },
-    {
-      "cli": "nx",
-      "version": "15.3.0-beta.0",
-      "description": "Install new dependencies for React projects using Webpack or Rollup.",
-      "factory": "./src/migrations/update-15-3-0/install-webpack-rollup-dependencies",
-      "package": "@nrwl/react",
-      "name": "install-webpack-rollup-dependencies"
+      "version": "15.5.4-beta.0",
+      "description": "Update `@nrwl/web/babel` preset to `@nrwl/js/babel` for projects that have a .babelrc file.",
+      "factory": "./src/migrations/update-15-5-4/update-babel-preset",
+      "package": "@nrwl/web",
+      "name": "update-babel-preset"
     }
   ]
 }
