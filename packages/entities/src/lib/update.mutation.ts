@@ -12,7 +12,7 @@ import {
   ItemPredicate,
 } from './entity.state';
 import { findIdsByPredicate } from './entity.utils';
-import { hasEntity } from './queries';
+import { hasEntity, getEntity } from './queries';
 
 export type UpdateFn<Entity> = Partial<Entity> | ((entity: Entity) => Entity);
 
@@ -55,10 +55,12 @@ export function updateEntities<
     >;
 
     for (const id of coerceArray(ids)) {
-      updatedEntities[id] = toModel<getEntityType<S, Ref>>(
-        updater,
-        state[entitiesKey][id]
-      );
+      if (hasEntity(id, options)(state)) {
+        updatedEntities[id] = toModel<getEntityType<S, Ref>>(
+          updater,
+          getEntity(id, options)(state)
+        );
+      }
     }
 
     return {

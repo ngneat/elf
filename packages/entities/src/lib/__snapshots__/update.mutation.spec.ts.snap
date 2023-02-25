@@ -340,6 +340,21 @@ Object {
 }
 `;
 
+exports[`update should update by callback: completed true 2`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": true,
+      "id": 1,
+      "title": "todo 1",
+    },
+  },
+  "ids": Array [
+    1,
+  ],
+}
+`;
+
 exports[`update should update by predicate: completed false 1`] = `
 Object {
   "entities": Object {
@@ -424,6 +439,27 @@ Object {
 }
 `;
 
+exports[`update should update multiple entities: multi completed true 2`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": true,
+      "id": 1,
+      "title": "todo 1",
+    },
+    "2": Object {
+      "completed": true,
+      "id": 2,
+      "title": "todo 2",
+    },
+  },
+  "ids": Array [
+    1,
+    2,
+  ],
+}
+`;
+
 exports[`update should update one entity: completed false 1`] = `
 Object {
   "entities": Object {
@@ -440,6 +476,21 @@ Object {
 `;
 
 exports[`update should update one entity: completed true 1`] = `
+Object {
+  "entities": Object {
+    "1": Object {
+      "completed": true,
+      "id": 1,
+      "title": "todo 1",
+    },
+  },
+  "ids": Array [
+    1,
+  ],
+}
+`;
+
+exports[`update should update one entity: completed true 2`] = `
 Object {
   "entities": Object {
     "1": Object {

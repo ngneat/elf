@@ -29,12 +29,18 @@ describe('update', () => {
     toMatchSnapshot(expect, store, 'completed false');
     store.update(updateEntities(1, { completed: true }));
     toMatchSnapshot(expect, store, 'completed true');
+    // store shouldn't be changed since there's no entity with id 2
+    store.update(updateEntities(2, { completed: true }));
+    toMatchSnapshot(expect, store, 'completed true');
   });
 
   it('should update multiple entities', () => {
     store.update(addEntities([createTodo(1), createTodo(2)]));
     toMatchSnapshot(expect, store, 'multi completed false');
     store.update(updateEntities([1, 2], { completed: true }));
+    toMatchSnapshot(expect, store, 'multi completed true');
+    // store shouldn't be changed since there's no entities with ids 3 and 4
+    store.update(updateEntities([3, 4], { completed: true }));
     toMatchSnapshot(expect, store, 'multi completed true');
   });
 
@@ -43,6 +49,11 @@ describe('update', () => {
     toMatchSnapshot(expect, store, 'completed false');
     store.update(
       updateEntities(1, (todo) => ({ ...todo, completed: !todo.completed }))
+    );
+    toMatchSnapshot(expect, store, 'completed true');
+    // store shouldn't be changed since there's no entity with id 2
+    store.update(
+      updateEntities(2, (todo) => ({ ...todo, completed: !todo.completed }))
     );
     toMatchSnapshot(expect, store, 'completed true');
   });
