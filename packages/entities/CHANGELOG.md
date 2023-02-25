@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [4.4.4](https://github-personal/ngneat/elf/compare/entities-4.4.3...entities-4.4.4) (2023-02-25)
+
+
+### Bug Fixes
+
+* **entities:** make updateEntities skip updating by ids that do not present in the store ([#438](https://github-personal/ngneat/elf/issues/438)) ([1579b06](https://github-personal/ngneat/elf/commit/1579b065423482fe3c5c985916feccdae34b46e0))
+
+
+
 ## [4.4.3](https://github-personal/ngneat/elf/compare/entities-4.4.2...entities-4.4.3) (2022-11-29)
 
 
