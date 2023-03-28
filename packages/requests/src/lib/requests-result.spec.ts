@@ -151,6 +151,7 @@ describe('requests result', () => {
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
+            "responseData": undefined,
             "status": "success",
             "successfulRequestsCount": 1,
           },
@@ -173,6 +174,7 @@ describe('requests result', () => {
 
     const spy = jest.fn();
     const reqSpy = jest.fn();
+    const subscribeSpy = jest.fn();
 
     entities$.subscribe((value) => {
       spy(value);
@@ -187,22 +189,25 @@ describe('requests result', () => {
       );
     }
 
-    getTodos().subscribe();
-    getTodos().subscribe();
+    getTodos().subscribe((value) => subscribeSpy(value));
+    getTodos().subscribe((value) => subscribeSpy(value));
 
     jest.runAllTimers();
 
+    expect(subscribeSpy).toHaveBeenCalledTimes(2);
     expect(reqSpy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledTimes(4);
 
     store.update(addEntities(createTodo(2)));
 
     expect(spy).toHaveBeenCalledTimes(5);
-    getTodos().subscribe();
+
+    getTodos().subscribe((value) => subscribeSpy(value));
 
     jest.runAllTimers();
 
     // It's cached
+    expect(subscribeSpy).toHaveBeenCalledTimes(3);
     expect(spy).toHaveBeenCalledTimes(5);
 
     expect(spy.mock.calls).toMatchInlineSnapshot(`
@@ -260,6 +265,7 @@ describe('requests result', () => {
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
+            "responseData": undefined,
             "status": "success",
             "successfulRequestsCount": 1,
           },
@@ -283,6 +289,7 @@ describe('requests result', () => {
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
+            "responseData": undefined,
             "status": "success",
             "successfulRequestsCount": 1,
           },
@@ -403,6 +410,7 @@ describe('requests result', () => {
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
+            "responseData": undefined,
             "status": "success",
             "successfulRequestsCount": 1,
           },
@@ -426,9 +434,109 @@ describe('requests result', () => {
             "isError": false,
             "isLoading": false,
             "isSuccess": true,
+            "responseData": undefined,
             "status": "success",
             "successfulRequestsCount": 1,
           },
+        ],
+      ]
+    `);
+  });
+
+  it('should cache response data', () => {
+    jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
+
+    const { state, config } = createState(withEntities<Todo>());
+
+    const store = new Store({ state, config, name: 'todos' });
+
+    const entities$ = store.pipe(selectAllEntities());
+
+    const spy = jest.fn();
+    const subscribeSpy = jest.fn();
+
+    entities$.subscribe((value) => {
+      spy(value);
+    });
+
+    function getTodos() {
+      return timer(1000).pipe(
+        map(() => [createTodo(1)]),
+        tap((todos) => store.update(setEntities(todos))),
+        trackRequestResult(['todos'], { cacheResponseData: true })
+      );
+    }
+
+    getTodos().subscribe((value) => {
+      subscribeSpy(value);
+      expectTypeOf(value).toEqualTypeOf<Todo[]>();
+    });
+    getTodos().subscribe((value) => {
+      subscribeSpy(value);
+      expectTypeOf(value).toEqualTypeOf<Todo[]>();
+    });
+
+    jest.runAllTimers();
+
+    expect(subscribeSpy).toHaveBeenCalledTimes(2);
+    expect(spy).toHaveBeenCalledTimes(2);
+
+    getTodos().subscribe((value) => {
+      subscribeSpy(value);
+      expectTypeOf(value).toEqualTypeOf<Todo[]>();
+    });
+
+    jest.runAllTimers();
+
+    // It's cached
+    expect(subscribeSpy).toHaveBeenCalledTimes(3);
+    expect(spy).toHaveBeenCalledTimes(2);
+
+    expect(subscribeSpy.mock.calls).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          Array [
+            Object {
+              "completed": false,
+              "id": 1,
+              "title": "todo 1",
+            },
+          ],
+        ],
+        Array [
+          Array [
+            Object {
+              "completed": false,
+              "id": 1,
+              "title": "todo 1",
+            },
+          ],
+        ],
+        Array [
+          Array [
+            Object {
+              "completed": false,
+              "id": 1,
+              "title": "todo 1",
+            },
+          ],
+        ],
+      ]
+    `);
+
+    expect(spy.mock.calls).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          Array [],
+        ],
+        Array [
+          Array [
+            Object {
+              "completed": false,
+              "id": 1,
+              "title": "todo 1",
+            },
+          ],
         ],
       ]
     `);
