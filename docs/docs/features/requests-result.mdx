@@ -126,7 +126,7 @@ export function fetchTodos() {
 }
 ```
 
-- `cacheResponseData` - Cache the response data and emit it as data for skipped requests, defaults to `false`
+- `cacheResponseData` - Cache the response data and emit it as responseData for skipped requests, defaults to `false`
 
 ```ts title="todos.service.ts"
 import { trackRequestResult } from '@ngneat/elf-requests';
@@ -139,6 +139,10 @@ export function fetchTodos() {
     trackRequestResult(['todos'], { cacheResponseData: true })
   );
 }
+
+fetchTodos().subscribe((todos) => {
+  // This will be called with the cached result, or once the request is completed
+});
 ```
 
 ### Operators
