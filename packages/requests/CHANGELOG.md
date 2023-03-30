@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.7.0](https://github-personal/ngneat/elf/compare/requests-1.6.0...requests-1.7.0) (2023-03-30)
+
+
+### Features
+
+* **requests:** support caching response data in request result ([#443](https://github-personal/ngneat/elf/issues/443)) ([#445](https://github-personal/ngneat/elf/issues/445)) ([4f2bd45](https://github-personal/ngneat/elf/commit/4f2bd45d6447875df0071569b3c3e686b7272f21))
+
+
+
 # [1.6.0](https://github-personal/ngneat/elf/compare/requests-1.5.1...requests-1.6.0) (2023-01-09)
 
 
