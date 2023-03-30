@@ -112,13 +112,11 @@ const todo$ = todosStore.pipe(
 const title$ = todosStore.pipe(
   selectEntityByPredicate(({ completed }) => !completed, {
     pluck: 'title',
-    idKey: '_id',
   })
 );
 const title$ = todosStore.pipe(
   selectEntityByPredicate(({ completed }) => !completed, {
     pluck: (e) => e.title,
-    idKey: '_id',
   })
 );
 ```

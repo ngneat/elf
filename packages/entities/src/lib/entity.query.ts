@@ -176,18 +176,10 @@ export function selectEntityByPredicate<
   } & BaseEntityOptions<Ref> &
     IdKey
 ): OperatorFunction<S, getEntityType<S, Ref> | undefined> {
-  const { ref = defaultEntitiesRef, pluck, idKey = 'id' } = options || {};
-  const { entitiesKey } = ref;
+  const { ref = defaultEntitiesRef, pluck } = options || {};
 
-  let id: getIdType<S, Ref>;
   return pipe(
-    select<S, Ref>((state) => {
-      if (isUndefined(id)) {
-        const entity = findEntityByPredicate(state, ref, predicate);
-        id = entity && entity[idKey];
-      }
-      return state[entitiesKey][id];
-    }),
+    select<S, Ref>((state) => findEntityByPredicate(state, ref, predicate)),
     map((entity) => (entity ? checkPluck(entity, pluck) : undefined)),
     distinctUntilChanged()
   );
