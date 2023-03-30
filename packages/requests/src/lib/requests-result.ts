@@ -6,11 +6,13 @@ import {
   map,
   MonoTypeOperatorFunction,
   Observable,
+  of,
   OperatorFunction,
   pipe,
   switchMap,
   take,
   tap,
+  throwError,
 } from 'rxjs';
 
 export interface BaseRequestResult {
@@ -26,12 +28,13 @@ export interface LoadingRequestResult extends BaseRequestResult {
   fetchStatus: 'fetching' | 'idle';
 }
 
-export interface SuccessRequestResult extends BaseRequestResult {
+export interface SuccessRequestResult<TData = any> extends BaseRequestResult {
   isLoading: false;
   isSuccess: true;
   isError: false;
   status: 'success';
   fetchStatus: 'idle';
+  responseData?: TData;
   dataUpdatedAt?: number;
 }
 
@@ -53,9 +56,9 @@ export interface IdleRequestResult extends BaseRequestResult {
   fetchStatus: 'idle';
 }
 
-export type RequestResult<TError = any> =
+export type RequestResult<TError = any, TData = any> =
   | LoadingRequestResult
-  | SuccessRequestResult
+  | SuccessRequestResult<TData>
   | ErrorRequestResult<TError>
   | IdleRequestResult;
 
@@ -157,9 +160,9 @@ export function resetStaleTime(key: unknown[]) {
 }
 
 // @public
-export function joinRequestResult<T, TError = any>(
+export function joinRequestResult<T, TError = any, TData = any>(
   ...[key, options]: Parameters<typeof getRequestResult>
-): OperatorFunction<T, RequestResult<TError> & { data: T }> {
+): OperatorFunction<T, RequestResult<TError, TData> & { data: T }> {
   return function (source: Observable<T>) {
     return combineLatest([source, getRequestResult<TError>(key, options)]).pipe(
       map(([data, result]) => {
@@ -179,6 +182,8 @@ interface Options {
   skipCache?: boolean;
   // Skip the request if it's already fetching
   preventConcurrentRequest?: boolean;
+  // Wheteher to cache the response data
+  cacheResponseData?: boolean;
 }
 
 export function trackRequestResult<TData>(
@@ -198,13 +203,31 @@ export function trackRequestResult<TData>(
             ? options.preventConcurrentRequest
             : true;
 
+        const cacheResponseData = options?.cacheResponseData;
+
+        if (result.isSuccess && !options?.skipCache && !stale) {
+          return of(result.responseData);
+        }
+
         if (
+          result.fetchStatus === 'fetching' &&
+          preventConcurrentRequest &&
           !options?.skipCache &&
-          (result.isSuccess ||
-            (preventConcurrentRequest && result.fetchStatus === 'fetching')) &&
           !stale
         ) {
-          return EMPTY;
+          return getRequestResult(key).pipe(
+            filter((requestResult) => requestResult.fetchStatus === 'idle'),
+            switchMap((requestResult) => {
+              if (requestResult.isError) {
+                return throwError(() => requestResult.error);
+              }
+              if (requestResult.isSuccess) {
+                return of(requestResult.responseData);
+              }
+              return EMPTY;
+            }),
+            take(1)
+          );
         }
 
         updateRequestResult(key, {
@@ -215,6 +238,7 @@ export function trackRequestResult<TData>(
           fetchStatus: 'fetching',
         });
 
+        let sourceData: TData;
         return source.pipe(
           tap({
             error(error) {
@@ -228,6 +252,9 @@ export function trackRequestResult<TData>(
                 error,
               });
             },
+            next(data) {
+              sourceData = data;
+            },
             complete() {
               const newResult: SuccessRequestResult = {
                 isLoading: false,
@@ -235,6 +262,7 @@ export function trackRequestResult<TData>(
                 isError: false,
                 status: 'success',
                 fetchStatus: 'idle',
+                responseData: cacheResponseData ? sourceData : undefined,
                 dataUpdatedAt: Date.now(),
                 successfulRequestsCount: result.successfulRequestsCount + 1,
               };
