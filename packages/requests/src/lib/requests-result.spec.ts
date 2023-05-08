@@ -2,7 +2,9 @@ import { createState, Store } from '@ngneat/elf';
 import {
   addEntities,
   selectAllEntities,
+  selectEntity,
   setEntities,
+  upsertEntities,
   withEntities,
 } from '@ngneat/elf-entities';
 import { createTodo, Todo } from '@ngneat/elf-mocks';
@@ -652,5 +654,83 @@ describe('requests result', () => {
     jest.runAllTimers();
 
     expect(reqSpy).toHaveBeenCalledTimes(3);
+  });
+
+  it('should use additional cache keys', () => {
+    jest.useFakeTimers();
+
+    const { state, config } = createState(withEntities<Todo>());
+
+    const store = new Store({ state, config, name: 'todos' });
+
+    const spy = jest.fn();
+
+    function getTodos() {
+      return timer(1000).pipe(
+        map(() => [createTodo(1)]),
+        tap((todos) => store.update(setEntities(todos))),
+        tap(todo => spy(todo)),
+        trackRequestResult(['todos'], { additionalKeys: todos => todos.map(todo => (['todos', todo.id])) })
+      );
+    }
+
+    getTodos().subscribe();
+
+    function getTodo(id: number) {
+      return timer(1000).pipe(
+        map(() => createTodo(id)),
+        tap((todo) => store.update(upsertEntities([todo]))),
+        tap(todo => spy(todo)),
+        trackRequestResult(['todos', id])
+      );
+    }
+
+    // Todos must have been fetched before caching can be done.
+    timer(1000).subscribe(() => getTodo(1).subscribe());
+
+    jest.runAllTimers();
+
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should work with additional cache keys', () => {
+    jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
+
+    const { state, config } = createState(withEntities<Todo>());
+
+    const store = new Store({ state, config, name: 'todos' });
+
+    function getEntity$(id: number) {
+      return store.pipe(
+        selectEntity(id),
+        joinRequestResult(['todos', id])
+      );
+    }
+
+    const spy = jest.fn();
+    const reqSpy = jest.fn();
+    const subscribeSpy = jest.fn();
+
+    getEntity$(1).subscribe((value) => {
+      spy(value);
+    });
+
+    function getTodos() {
+      return timer(1000).pipe(
+        map(() => [createTodo(1)]),
+        tap(() => reqSpy()),
+        tap((todos) => store.update(setEntities(todos))),
+        trackRequestResult(['todos'], { additionalKeys: todos => todos.map(todo => (['todos', todo.id])) })
+      );
+    }
+
+    getTodos().subscribe((value) => subscribeSpy(value));
+    getTodos().subscribe((value) => subscribeSpy(value));
+
+    jest.runAllTimers();
+
+    expect(subscribeSpy).toHaveBeenCalledTimes(2);
+    expect(reqSpy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(2);
   });
 });
