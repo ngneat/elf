@@ -1,5 +1,6 @@
-const lightCodeTheme = require('prism-react-renderer/themes/nightOwlLight');
-const darkCodeTheme = require('prism-react-renderer/themes/oceanicNext');
+const {themes} = require('prism-react-renderer');
+const lightCodeTheme = themes.nightOwlLight;
+const darkCodeTheme = themes.oceanicNext;
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
