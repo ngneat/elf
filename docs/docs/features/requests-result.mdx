@@ -145,6 +145,21 @@ fetchTodos().subscribe((todos) => {
 });
 ```
 
+- `additionalKeys` - Cache the request result for additional keys, e.g. based on properties from the response data
+
+```ts title="todos.service.ts"
+import { trackRequestResult } from '@ngneat/elf-requests';
+import { setTodos } from './todos.repository';
+
+export function fetchTodos() {
+  return http.get(todosUrl).pipe(
+    tap(setTodos),
+    // highlight-next-line
+    trackRequestResult(['todos'], { additionalKeys: todos => todos.map(todo => (['todos', todo.id])) })
+  );
+}
+```
+
 ### Operators
 
 ```ts

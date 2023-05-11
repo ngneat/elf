@@ -175,7 +175,7 @@ export function joinRequestResult<T, TError = any, TData = any>(
   };
 }
 
-interface Options {
+interface Options<TData> {
   // When we should refetch
   staleTime?: number;
   // Ignore everything and perform the request
@@ -184,11 +184,13 @@ interface Options {
   preventConcurrentRequest?: boolean;
   // Wheteher to cache the response data
   cacheResponseData?: boolean;
+  // Whether to cache request result for any additional keys
+  additionalKeys?: (_: TData) => unknown[][],
 }
 
 export function trackRequestResult<TData>(
   key: unknown[],
-  options?: Options
+  options?: Options<TData>,
 ): MonoTypeOperatorFunction<TData> {
   return function (source: Observable<TData>) {
     return getRequestResult(key).pipe(
@@ -272,6 +274,13 @@ export function trackRequestResult<TData>(
               }
 
               updateRequestResult(key, newResult);
+
+              if (options?.additionalKeys) {
+                const mainKey = resolveKey(key);
+                for (const keys of options.additionalKeys(sourceData)) {
+                  emitters.set(resolveKey(keys), emitters.get(mainKey)!);
+                }
+              }
             },
           })
         );
