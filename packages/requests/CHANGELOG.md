@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.8.0](https://github-personal/ngneat/elf/compare/requests-1.7.0...requests-1.8.0) (2023-05-13)
+
+
+### Features
+
+* **requests-result:** 🔥 Track request results with extra keys ([#456](https://github-personal/ngneat/elf/issues/456)) ([7ad547a](https://github-personal/ngneat/elf/commit/7ad547a644b4bf856f713f1e56601ab8cfbb7966))
+
+
+
 # [1.7.0](https://github-personal/ngneat/elf/compare/requests-1.6.0...requests-1.7.0) (2023-03-30)
 
 
