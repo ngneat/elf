@@ -18,6 +18,7 @@ interface DevtoolsOptions {
   postTimelineUpdate?: () => void;
   preAction?: () => void;
   actionsDispatcher?: ActionsDispatcher;
+  logTrace?: boolean;
 }
 
 declare global {
@@ -95,6 +96,13 @@ export function devTools(options: DevtoolsOptions = {}) {
   const subscription = registry$.subscribe(({ store, type }) => {
     const name = store.name;
     const displayName = capitalize(name);
+
+    if (options.logTrace) {
+      const msg = `[${displayName}] - ${type}`;
+      console.groupCollapsed(msg);
+      console.trace();
+      console.groupEnd();
+    }
 
     if (type === 'add') {
       addStore(store);
