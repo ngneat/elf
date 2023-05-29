@@ -107,7 +107,7 @@ export class Store<
       return this.subscribe({
         next() {
           if (hasChange) {
-            observer.next(buffer as any);
+            observer.next({ ...buffer } as any);
             hasChange = false;
           }
         },
