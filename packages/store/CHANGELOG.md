@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.3.2](https://github-personal/ngneat/elf/compare/store-2.3.1...store-2.3.2) (2023-06-02)
+
+
+### Bug Fixes
+
+* **store:** combine should emit a new object ([#462](https://github-personal/ngneat/elf/issues/462)) ([d226a2f](https://github-personal/ngneat/elf/commit/d226a2f8d0823b9b1c130008b10bba34c7b9727c))
+
+
+
 ## [2.3.1](https://github-personal/ngneat/elf/compare/store-2.3.0...store-2.3.1) (2023-02-05)
 
 
