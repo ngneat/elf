@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.3.0](https://github-personal/ngneat/elf/compare/devtools-1.2.1...devtools-1.3.0) (2023-06-02)
+
+
+### Features
+
+* **devtools:** add option for log trace ([#459](https://github-personal/ngneat/elf/issues/459)) ([4cc021f](https://github-personal/ngneat/elf/commit/4cc021f31a55bbc875e33998fcdbbc0df1105587))
+
+
+
 # [1.2.1](https://github.com/ngneat/elf/compare/devtools-1.2.0...devtools-1.2.1) (2022-03-16)
 
 
