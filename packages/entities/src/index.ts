@@ -45,6 +45,7 @@ export { unionEntitiesAsMap as unionEntitiesAsMap } from './lib/union-entities-a
 export * from './lib/active/active';
 export {
   getEntity,
+  getEntityByPredicate,
   hasEntity,
   getAllEntities,
   getAllEntitiesApply,

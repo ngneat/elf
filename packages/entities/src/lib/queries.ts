@@ -95,11 +95,11 @@ export function getEntity<
 
 /**
  *
- * Get an entity by predicate
+ * Get first entity by predicate
  *
  * @example
  *
- * store.query(getEntityByPredicate((el) => el.country === 'Russia'))
+ * store.query(getEntityByPredicate(({ title }) => title === 'Elf'))
  *
  */
 export function getEntityByPredicate<
