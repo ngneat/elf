@@ -6,6 +6,7 @@ import {
   EntitiesState,
   getEntityType,
   getIdType,
+  ItemPredicate,
 } from './entity.state';
 import { Query } from '@ngneat/elf';
 
@@ -89,6 +90,33 @@ export function getEntity<
     const { ref: { entitiesKey } = defaultEntitiesRef } = options;
 
     return state[entitiesKey][id];
+  };
+}
+
+/**
+ *
+ * Get an entity by predicate
+ *
+ * @example
+ *
+ * store.query(getEntityByPredicate((el) => el.country === 'Russia'))
+ *
+ */
+export function getEntityByPredicate<
+  S extends EntitiesState<Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(
+  predicate: ItemPredicate<getEntityType<S, Ref>>,
+  options: BaseEntityOptions<Ref> = {}
+): Query<S, getEntityType<S, Ref> | undefined> {
+    return function (state) {
+    const { ref: { entitiesKey, idsKey } = defaultEntitiesRef } = options;
+    const entities = state[entitiesKey];
+    const id = state[idsKey].find((id: getIdType<S, Ref>) => {
+      return predicate(entities[id]);
+    });
+
+    return entities[id];
   };
 }
 
