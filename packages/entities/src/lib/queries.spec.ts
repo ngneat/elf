@@ -58,7 +58,6 @@ describe('queries', () => {
     });
 
     it('should return an entity by predicate', () => {
-      console.log('qw2er');
       const store = createEntitiesStore();
 
       store.update(
