@@ -236,7 +236,7 @@ Get first entity from the store by predicate:
 ```ts
 import { getEntityByPredicate } from '@ngneat/elf-entities';
 
-const todo = todosStore.query(getEntityByPredicate(({ title }) => title = 'Elf'));
+const todo = todosStore.query(getEntityByPredicate(({ title }) => title === 'Elf'));
 ```
 
 ### `hasEntity`
