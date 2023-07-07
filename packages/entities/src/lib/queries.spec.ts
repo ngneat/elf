@@ -11,6 +11,7 @@ import {
   getEntity,
   hasEntity,
   getEntitiesIds,
+  getEntityByPredicate,
 } from './queries';
 import { addEntities } from './add.mutation';
 import { UIEntitiesRef } from './entity.state';
@@ -56,6 +57,25 @@ describe('queries', () => {
       expect(store.query(getEntity(1))).toEqual(todo);
     });
 
+    it('should return an entity by predicate', () => {
+      const store = createEntitiesStore();
+
+      store.update(
+        addEntities([
+          createTodo(1),
+          {
+            id: 4,
+            title: `todo 2`,
+            completed: false,
+          },
+          createTodo(3),
+        ])
+      );
+      expect(
+        store.query(getEntityByPredicate((el) => el.title === `todo 2`))?.id
+      ).toEqual(4);
+    });
+
     it('should work with ref', () => {
       const store = createUIEntityStore();
       expect(store.query(getEntity(1, { ref: UIEntitiesRef }))).toEqual(
@@ -65,6 +85,26 @@ describe('queries', () => {
       const todo = createUITodo(1);
       store.update(addEntities(todo, { ref: UIEntitiesRef }));
       expect(store.query(getEntity(1, { ref: UIEntitiesRef }))).toEqual(todo);
+    });
+
+    it('should find by predicate with ref', () => {
+      const store = createUIEntityStore();
+      expect(
+        store.query(
+          getEntityByPredicate((el) => el.id === 1, { ref: UIEntitiesRef })
+        )
+      ).toEqual(undefined);
+
+      store.update(
+        addEntities([createUITodo(1), createUITodo(2), createUITodo(3)], {
+          ref: UIEntitiesRef,
+        })
+      );
+      expect(
+        store.query(
+          getEntityByPredicate((el) => el.id === 2, { ref: UIEntitiesRef })
+        )?.id
+      ).toEqual(2);
     });
   });
 
