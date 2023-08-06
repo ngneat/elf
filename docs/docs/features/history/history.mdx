@@ -133,3 +133,19 @@ An observable that returns whether you're not in the latest step in the history:
 ```ts
 propsStateHistory.hasFuture$;
 ```
+
+### `resetFutureOnNewState`
+
+A boolean flag in the `StateHistoryOptions` that controls whether the future redo states should be cleared when a new state is added after the user has undone one or more state changes.
+
+If `resetFutureOnNewState` is set to `true`, the future states will be cleared when a new state is added. If it's set to `false` (which is the defalt value), the future states will be preserved.
+
+Here is how you can set `resetFutureOnNewState` when calling the `stateHistory` method:
+
+```ts
+const propsStateHistory = stateHistory(propsStore, {
+  resetFutureOnNewState: false,
+});
+```
+
+In this example, the future states will not be cleared when a new state is added, allowing the user to still redo previously undone state changes even after a new state has been added.

@@ -7,6 +7,7 @@ export interface StateHistoryOptions<State> {
 
   // comparatorFn: (prev, current) => isEqual(prev, current) === false
   comparatorFn: (prevState: State, currentState: State) => boolean;
+  resetFutureOnNewState?: boolean;
 }
 
 type History<State> = {
@@ -41,7 +42,12 @@ export class StateHistory<T extends Store, State extends StoreValue<T>> {
     protected store: T,
     private options: Partial<StateHistoryOptions<State>> = {}
   ) {
-    this.mergedOptions = { maxAge: 10, comparatorFn: () => true, ...options };
+    this.mergedOptions = {
+      maxAge: 10,
+      comparatorFn: () => true,
+      resetFutureOnNewState: false,
+      ...options,
+    };
     this.activate();
   }
 
@@ -78,6 +84,12 @@ export class StateHistory<T extends Store, State extends StoreValue<T>> {
             this.history.past = [...this.history.past, past];
           }
           this.history.present = present;
+          if (
+            this.mergedOptions.resetFutureOnNewState &&
+            this.history.future.length > 0
+          ) {
+            this.history.future = [];
+          }
           this.updateHasHistory();
         }
       });
