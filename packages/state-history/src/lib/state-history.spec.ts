@@ -182,4 +182,33 @@ describe('state history', () => {
 
     expect(history.getFuture()).toEqual([{ counter: 5, newProperty: false }]);
   });
+
+  it('should clear the future state when adding new state after undo', () => {
+    const { state, config } = createState(withProp());
+    const store = new Store({ state, config, name: '' });
+
+    const history = stateHistory(store, { resetFutureOnNewState: true });
+
+    eq(store, 0);
+
+    store.update(setProp(1));
+    eq(store, 1);
+
+    history.undo();
+    eq(store, 0);
+
+    history.redo();
+    eq(store, 1);
+
+    history.undo();
+    eq(store, 0);
+
+    store.update(setProp(2));
+    eq(store, 2);
+
+    history.redo();
+    eq(store, 2);
+
+    expect(history.getFuture()).toEqual([]);
+  });
 });
