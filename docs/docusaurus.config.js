@@ -14,10 +14,20 @@ module.exports = {
   organizationName: 'ngneat',
   projectName: 'elf',
   themeConfig: {
-    metadata: [{
-      name: 'google-site-verification',
-      content: 'zLIQAxOp2sGFy10UE51HAMtWTqg7J8z1hpTxZR9G1WA'
-    }],
+    metadata: [
+      { name: 'google-site-verification', content: 'zLIQAxOp2sGFy10UE51HAMtWTqg7J8z1hpTxZR9G1WA' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { property: 'twitter:domain', content: 'ngneat.github.io' },
+      { property: 'twitter:url', content: 'https://ngneat.github.io/elf/' },
+      { name: 'twitter:title', content: 'Elf 🧝' },
+      { name: 'twitter:description', content: 'A Reactive Store with Magical Powers' },
+      { name: 'twitter:image', content: 'https://ngneat.github.io/elf/img/elf.png' },
+      { property: 'og:url', content: 'https://ngneat.github.io/elf/' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:title', content: 'Elf 🧝' },
+      { property: 'og:description', content: 'A Reactive Store with Magical Powers' },
+      { property: 'og:image', content: 'https://ngneat.github.io/elf/img/elf.png' },
+    ],
     algolia: {
       appId: 'GSDPQ4A8PM',
       apiKey: 'a7655f6472e9024f257027fa9b4e9e7e',
