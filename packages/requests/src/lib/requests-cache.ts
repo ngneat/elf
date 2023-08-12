@@ -54,10 +54,15 @@ export function selectRequestCache<S extends RequestsCacheState>(
 
 export function updateRequestsCache<S extends RequestsCacheState>(
   keys: Array<CacheRecordKeys<S>>,
-  value: CacheState
+  value: CacheState | { value: CacheState['value']; ttl?: number }
 ): Reducer<S>;
 export function updateRequestsCache<S extends RequestsCacheState>(
-  requests: Partial<Record<CacheRecordKeys<S>, CacheState>>
+  requests: Partial<
+    Record<
+      CacheRecordKeys<S>,
+      CacheState | { value: CacheState['value']; ttl?: number }
+    >
+  >
 ): Reducer<S>;
 export function updateRequestsCache<S extends RequestsCacheState>(
   requestsOrKeys: any,
@@ -67,7 +72,15 @@ export function updateRequestsCache<S extends RequestsCacheState>(
 
   if (value) {
     normalized = requestsOrKeys.reduce((acc: any, key: string) => {
-      acc[key] = value;
+      const data = {
+        value: value.value ?? 'full',
+      } as CacheState;
+
+      if (value.ttl) {
+        data.timestamp = Date.now() + value.ttl;
+      }
+
+      acc[key] = data;
 
       return acc;
     }, {});

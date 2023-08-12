@@ -209,3 +209,33 @@ test('updateRequestsCache', () => {
 
   expect(store.getValue()).toMatchSnapshot();
 });
+
+test('updateRequestsCache with ttl', () => {
+  const { state, config } = createState(
+    withRequestsCache<'foo' | 'bar' | 'baz'>()
+  );
+
+  const store = new Store({ state, config, name: 'users' });
+
+  jest.useFakeTimers();
+
+  store.update(
+    updateRequestsCache(['foo', 'bar'], { value: 'partial', ttl: 1000 })
+  );
+
+  expect(
+    store.query(isRequestCached('foo', { value: 'partial' }))
+  ).toBeTruthy();
+
+  expect(
+    store.query(isRequestCached('bar', { value: 'partial' }))
+  ).toBeTruthy();
+
+  jest.advanceTimersByTime(2000);
+
+  expect(store.query(isRequestCached('foo', { value: 'partial' }))).toBeFalsy();
+
+  expect(store.query(isRequestCached('bar', { value: 'partial' }))).toBeFalsy();
+
+  jest.useRealTimers();
+});

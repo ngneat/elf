@@ -200,7 +200,14 @@ store.update(
 );
 
 store.update(updateRequestsCache(['keyOne', 'keyTwo'], { value: 'partial' }));
+
+store.update(
+  updateRequestsCache(['keyOne', 'keyTwo'], { value: 'partial', ttl: 1000 })
+);
 ```
+
+If you pass `ttl` (time to live) when updating a cache record, that represents the time (in milliseconds) that key will
+have the value that was set (afterward, it reverts to 'none'). This parameter can be used to set individual `ttl` values for each key when updating multiple keys at once. If a `ttl` is not passed for a key, the value for that key does not expire.
 
 ### `clearRequestsCache`
 
