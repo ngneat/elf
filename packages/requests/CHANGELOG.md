@@ -2,6 +2,20 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.9.0](https://github-personal/ngneat/elf/compare/requests-1.8.0...requests-1.9.0) (2023-08-12)
+
+
+### Bug Fixes
+
+* **requests:** expose RequestResult ([#469](https://github-personal/ngneat/elf/issues/469)) ([8de9ffb](https://github-personal/ngneat/elf/commit/8de9ffb883028502f739a8b26ed30fe2c0f19fc6))
+
+
+### Features
+
+* **requests-result:** 🔥 Add ttl to updateRequestsCache ([#477](https://github-personal/ngneat/elf/issues/477)) ([c62d9a2](https://github-personal/ngneat/elf/commit/c62d9a2a91948fa65c7a985a83a15b288118f8a2))
+
+
+
 # [1.8.0](https://github-personal/ngneat/elf/compare/requests-1.7.0...requests-1.8.0) (2023-05-13)
 
 
