@@ -2,14 +2,15 @@
 export default {
   displayName: 'store',
 
-  globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.spec.json',
-    },
-  },
+  globals: {},
   testEnvironment: 'node',
   transform: {
-    '^.+\\.[tj]sx?$': 'ts-jest',
+    '^.+\\.[tj]sx?$': [
+      'ts-jest',
+      {
+        tsconfig: '<rootDir>/tsconfig.spec.json',
+      },
+    ],
   },
   testPathIgnorePatterns: ['stale'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],

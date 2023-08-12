@@ -1,17 +1,18 @@
 {
+  "name": "mocks",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/mocks/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["packages/mocks/**/*.ts"]
       },
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/packages/mocks"],
       "options": {
         "jestConfig": "packages/mocks/jest.config.ts",
@@ -19,6 +20,5 @@
       }
     }
   },
-  "tags": [],
-  "name": "mocks"
+  "tags": []
 }

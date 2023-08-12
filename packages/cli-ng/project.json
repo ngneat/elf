@@ -1,4 +1,5 @@
 {
+  "name": "cli-ng",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/cli-ng/src",
   "projectType": "library",
@@ -13,7 +14,7 @@
         "project": "packages/cli-ng/package.json",
         "entryFile": "packages/cli-ng/src/index.ts",
         "format": ["esm", "cjs"],
-        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "rollupConfig": "@nx/react/plugins/bundle-rollup",
         "assets": [
           {
             "glob": "packages/cli-ng/*.md",
@@ -24,14 +25,14 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/cli-ng/**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/packages/cli-ng"],
       "options": {
         "jestConfig": "packages/cli-ng/jest.config.ts",
@@ -45,6 +46,5 @@
       }
     }
   },
-  "tags": [],
-  "name": "cli-ng"
+  "tags": []
 }
