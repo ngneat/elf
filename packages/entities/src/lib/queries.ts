@@ -154,7 +154,6 @@ export function getManyByPredicate<
         filteredEntities.push(checkPluck(entity, pluck));
       }
     });
-    console.log(filteredEntities);
 
     return filteredEntities;
   };
