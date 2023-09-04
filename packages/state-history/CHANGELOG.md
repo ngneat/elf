@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.4.0](https://github-personal/ngneat/elf/compare/state-history-1.3.0...state-history-1.4.0) (2023-08-06)
+
+
+### Features
+
+* **state-history:** 🔥 Add an option to control future state ([#475](https://github-personal/ngneat/elf/issues/475)) ([65738ad](https://github-personal/ngneat/elf/commit/65738adc0ad528021465336b518af40c2358d605))
+
+
+
 # [1.3.0](https://github.com/ngneat/elf/compare/state-history-1.2.2...state-history-1.3.0) (2022-09-30)
 
 

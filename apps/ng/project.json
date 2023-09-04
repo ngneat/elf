@@ -1,4 +1,5 @@
 {
+  "name": "ng",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/ng/src",
@@ -70,14 +71,14 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["apps/ng/src/**/*.ts", "apps/ng/src/**/*.html"]
       },
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/ng"],
       "options": {
         "jestConfig": "apps/ng/jest.config.ts",
@@ -85,6 +86,5 @@
       }
     }
   },
-  "tags": [],
-  "name": "ng"
+  "tags": []
 }

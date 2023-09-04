@@ -1,4 +1,5 @@
 {
+  "name": "persist-state",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/persist-state/src",
   "projectType": "library",
@@ -12,7 +13,7 @@
         "tsConfig": "packages/persist-state/tsconfig.lib.json",
         "project": "packages/persist-state/package.json",
         "entryFile": "packages/persist-state/src/index.ts",
-        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "rollupConfig": "@nx/react/plugins/bundle-rollup",
         "format": ["esm", "cjs"],
         "globals": [
           {
@@ -34,14 +35,14 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["packages/persist-state/**/*.ts"]
       },
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/packages/persist-state"],
       "options": {
         "jestConfig": "packages/persist-state/jest.config.ts",
@@ -55,6 +56,5 @@
       }
     }
   },
-  "tags": [],
-  "name": "persist-state"
+  "tags": []
 }

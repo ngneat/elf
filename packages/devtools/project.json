@@ -1,4 +1,5 @@
 {
+  "name": "devtools",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/devtools/src",
   "projectType": "library",
@@ -13,7 +14,7 @@
         "project": "packages/devtools/package.json",
         "entryFile": "packages/devtools/src/index.ts",
         "format": ["esm", "cjs"],
-        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "rollupConfig": "@nx/react/plugins/bundle-rollup",
         "globals": [
           {
             "global": "Rx",
@@ -34,14 +35,14 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["packages/devtools/**/*.ts"]
       },
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/packages/devtools"],
       "options": {
         "jestConfig": "packages/devtools/jest.config.ts",
@@ -55,6 +56,5 @@
       }
     }
   },
-  "tags": [],
-  "name": "devtools"
+  "tags": []
 }

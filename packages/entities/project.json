@@ -1,4 +1,5 @@
 {
+  "name": "entities",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/entities/src",
   "projectType": "library",
@@ -12,7 +13,7 @@
         "tsConfig": "packages/entities/tsconfig.lib.json",
         "project": "packages/entities/package.json",
         "entryFile": "packages/entities/src/index.ts",
-        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "rollupConfig": "@nx/react/plugins/bundle-rollup",
         "format": ["esm", "cjs"],
         "globals": [
           {
@@ -34,14 +35,14 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["packages/entities/**/*.ts"]
       },
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/packages/entities"],
       "options": {
         "jestConfig": "packages/entities/jest.config.ts",
@@ -55,6 +56,5 @@
       }
     }
   },
-  "tags": [],
-  "name": "entities"
+  "tags": []
 }

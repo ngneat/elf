@@ -1,10 +1,11 @@
 {
+  "name": "react",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/react/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/react",
@@ -15,7 +16,7 @@
         "assets": ["apps/react/src/favicon.ico", "apps/react/src/assets"],
         "styles": ["apps/react/src/styles.scss"],
         "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack"
+        "webpackConfig": "@nx/react/plugins/webpack"
       },
       "configurations": {
         "production": {
@@ -50,7 +51,7 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@nrwl/webpack:dev-server",
+      "executor": "@nx/webpack:dev-server",
       "options": {
         "buildTarget": "react:build",
         "hmr": true
@@ -67,13 +68,12 @@
       "defaultConfiguration": "development"
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/react/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },
-  "tags": [],
-  "name": "react"
+  "tags": []
 }
