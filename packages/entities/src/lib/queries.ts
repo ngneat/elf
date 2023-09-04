@@ -9,6 +9,7 @@ import {
   ItemPredicate,
 } from './entity.state';
 import { Query } from '@ngneat/elf';
+import { checkPluck } from './entity.utils';
 
 /**
  *
@@ -109,7 +110,7 @@ export function getEntityByPredicate<
   predicate: ItemPredicate<getEntityType<S, Ref>>,
   options: BaseEntityOptions<Ref> = {}
 ): Query<S, getEntityType<S, Ref> | undefined> {
-    return function (state) {
+  return function (state) {
     const { ref: { entitiesKey, idsKey } = defaultEntitiesRef } = options;
     const entities = state[entitiesKey];
     const id = state[idsKey].find((id: getIdType<S, Ref>) => {
@@ -117,6 +118,45 @@ export function getEntityByPredicate<
     });
 
     return entities[id];
+  };
+}
+
+/**
+ *
+ * Get many entities by predicate
+ *
+ * @example
+ *
+ * store.query(geManyByPredicate(({ active }) => active))
+ * store.query(geManyByPredicate((el: Todo) => el.active, { pluck: 'title' }))
+ * store.query(geManyByPredicate((el: Todo) => el.active, { ref: UIEntitiesRef, pluck: 'title' }))
+ */
+export function getManyByPredicate<
+  S extends EntitiesState<Ref>,
+  R extends getEntityType<S, Ref>[],
+  K extends keyof getEntityType<S, Ref>,
+  Ref extends EntitiesRef = DefaultEntitiesRef
+>(
+  predicate: ItemPredicate<getEntityType<S, Ref>>,
+  options?: {
+    pluck?: K | ((entity: getEntityType<S, Ref>) => R);
+  } & BaseEntityOptions<Ref>
+): Query<S, getEntityType<S, Ref>[]> {
+  return function (state) {
+    const { ref: { entitiesKey, idsKey } = defaultEntitiesRef, pluck } =
+      options || {};
+    const filteredEntities: getEntityType<S, Ref>[] = [];
+
+    state[idsKey].forEach((id: getIdType<S, Ref>, index: number) => {
+      const entity = state[entitiesKey][id];
+
+      if (predicate(entity, index)) {
+        filteredEntities.push(checkPluck(entity, pluck));
+      }
+    });
+    console.log(filteredEntities);
+
+    return filteredEntities;
   };
 }
 
