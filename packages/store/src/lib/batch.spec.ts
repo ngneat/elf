@@ -1,3 +1,4 @@
+import { Subject, map } from 'rxjs';
 import {
   emitOnce,
   batchInProgress,
@@ -361,6 +362,47 @@ test('nested batch in async batch', async () => {
   expect(spy).toHaveBeenCalledTimes(2);
   expect(spy).toHaveBeenCalledWith(1);
   expect(spy).toHaveBeenCalledWith(21);
+});
+
+test('async batch with observable', async () => {
+  const store = createStore(
+    {
+      name: 'todos',
+    },
+    withProps<{ name: string; count: number }>({ name: 'foo', count: 1 })
+  );
+
+  const spy = jest.fn();
+  store.pipe(select((s) => s.count)).subscribe(spy);
+
+  expect(batchInProgress.getValue()).toBeFalsy();
+  expect(asyncBatchesInProgress).toBe(0);
+
+  const obs$ = new Subject<void>();
+
+  const v = emitOnceAsync(() => obs$.pipe(map(() => {
+    for (let i = 0; i < 10; i++) {
+      store.update((s) => ({
+        ...s,
+        count: s.count + 1,
+      }));
+    }
+  })));
+
+
+  expect(batchInProgress.getValue()).toBeTruthy();
+  expect(asyncBatchesInProgress).toBe(1);
+
+  obs$.next();
+
+  await v;
+
+  expect(batchInProgress.getValue()).toBeFalsy();
+  expect(asyncBatchesInProgress).toBe(0);
+
+  expect(spy).toHaveBeenCalledTimes(2);
+  expect(spy).toHaveBeenCalledWith(1);
+  expect(spy).toHaveBeenCalledWith(11);
 });
 
 class Deferred {

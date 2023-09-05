@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, firstValueFrom, isObservable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
 export let asyncBatchesInProgress = 0;
@@ -23,12 +23,14 @@ export function emitOnce<T>(cb: () => T) {
   return cb();
 }
 
-export async function emitOnceAsync<T>(cb: () => Promise<T>) {
+export async function emitOnceAsync<T>(cb: () => Promise<T> | Observable<T>) {
   asyncBatchesInProgress++;
   if (!batchInProgress.getValue()) {
     batchInProgress.next(true);
   }
-  const value = await cb();
+
+  const callbackReturnValue = cb();
+  const value = await (isObservable(callbackReturnValue) ? firstValueFrom(callbackReturnValue) : callbackReturnValue);
   if (--asyncBatchesInProgress === 0) {
     batchInProgress.next(false);
   }

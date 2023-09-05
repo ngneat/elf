@@ -84,7 +84,7 @@ In this case, subscribers will only receive **one** emission instead of two.
 
 ## emitOnceAsync
 
-In some cases, you might need to use `emitOnce` with async functions. To do so, you can use `emitOnceAsync`:
+In some cases, you might need to use `emitOnce` with async functions or observables. To do so, you can use `emitOnceAsync`:
 
 ```ts title=todos.repository.ts
 export async function updateCount() {
@@ -140,7 +140,9 @@ await emitOnceAsync(async () => {
 });
 ```
 
+You can also provide an observable to `emitOnceAsync`, in this case, the store will only update when the observable emits its **first** value.
+
 Using `emitOnceAsync` inside `emitOnce` will not work as expected because `emitOnce` will not wait for the async function to finish.
 
-Use `emitOnceAsync` with caution, the store will not update until the async function finishes.
-If your async function takes too long to finish, the app might appear unresponsive.
+Use `emitOnceAsync` with caution, the store will not update until the async function finishes or the observable emits its first value.
+If your async function or observable takes too long to finish, the app might appear unresponsive.
