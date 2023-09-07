@@ -80,3 +80,6 @@ export function updateFilter(filter: TodosProps['filter']) {
 - [`@ngneat/persist-state`](https://github.com/ngneat/elf/blob/master/packages/persist-state/CHANGELOG.md)
 - [`@ngneat/requests`](https://github.com/ngneat/elf/blob/master/packages/requests/CHANGELOG.md)
 - [`@ngneat/state-history`](https://github.com/ngneat/elf/blob/master/packages/state-history/CHANGELOG.md)
+
+## ⭐ Usage Trend of Elf Packages
+[Usage Trend of Elf Packages](https://npm-compare.com/@ngneat/elf,@ngneat/elf-entities,@ngneat/elf-devtools,@ngneat/elf-persist-state,@ngneat/elf-requests,@ngneat/elf-pagination,@ngneat/elf-cli-ng,@ngneat/elf-state-history,@ngneat/elf-cli)
