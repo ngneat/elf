@@ -1,4 +1,4 @@
-export { createStore, StoreConfig } from './lib/create-store';
+export { createStore, type StoreConfig } from './lib/create-store';
 export { elfHooks } from './lib/elf-hooks';
 export { setProp, setProps } from './lib/mutations';
 export {
@@ -17,15 +17,15 @@ export {
   getStoresSnapshot,
   registry$,
 } from './lib/registry';
-export { createState, EmptyConfig, PropsFactory } from './lib/state';
+export { createState, type EmptyConfig, type PropsFactory } from './lib/state';
 export {
-  Reducer,
-  ReducerContext,
+  type Reducer,
+  type ReducerContext,
   Store,
-  StoreDef,
-  StoreValue,
+  type StoreDef,
+  type StoreValue,
 } from './lib/store';
-export { OrArray, Query, StateOf } from './lib/types';
+export type { OrArray, Query, StateOf } from './lib/types';
 export {
   capitalize,
   coerceArray,
