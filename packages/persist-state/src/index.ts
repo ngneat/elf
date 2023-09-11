@@ -1,8 +1,8 @@
 export { persistState } from './lib/persist-state';
 export {
-  StateStorage,
+  type StateStorage,
   localStorageStrategy,
   sessionStorageStrategy,
-  Async,
+  type Async,
 } from './lib/storage';
 export { excludeKeys } from './lib/exclude-keys';

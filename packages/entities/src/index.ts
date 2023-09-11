@@ -32,11 +32,11 @@ export {
 export {
   withUIEntities,
   withEntities,
-  getEntityType,
-  getIdType,
-  DefaultEntitiesRef,
+  type getEntityType,
+  type getIdType,
+  type DefaultEntitiesRef,
   EntitiesRef,
-  EntitiesState,
+  type EntitiesState,
   UIEntitiesRef,
   entitiesPropsFactory,
 } from './lib/entity.state';

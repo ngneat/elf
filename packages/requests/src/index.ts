@@ -1,6 +1,5 @@
 export {
   getRequestCache,
-  CacheState,
   isRequestCached,
   withRequestsCache,
   updateRequestCache,
@@ -10,9 +9,11 @@ export {
   clearRequestsCache,
   updateRequestsCache,
 } from './lib/requests-cache';
+
+export type { CacheState } from './lib/requests-cache';
+
 export {
   createRequestsStatusOperator,
-  StatusState,
   initializeAsPending,
   updateRequestStatus,
   getRequestStatus,
@@ -22,6 +23,9 @@ export {
   clearRequestsStatus,
   updateRequestsStatus,
 } from './lib/requests-status';
+
+export type { StatusState } from './lib/requests-status';
+
 export { createRequestDataSource } from './lib/request-data-source';
 export {
   joinRequestResult,
@@ -33,5 +37,6 @@ export {
   filterSuccess,
   mapResultData,
   resetStaleTime,
-  RequestResult,
 } from './lib/requests-result';
+
+export type { RequestResult } from './lib/requests-result';

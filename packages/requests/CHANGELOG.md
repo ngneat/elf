@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.9.1](https://github-personal/ngneat/elf/compare/requests-1.9.0...requests-1.9.1) (2023-09-07)
+
+
+### Bug Fixes
+
+* **requests:** staleTime can be undefined ([#482](https://github-personal/ngneat/elf/issues/482)) ([9fb0651](https://github-personal/ngneat/elf/commit/9fb0651aee26d0eaa060c4c0a486989b307925e1))
+
+
+
 # [1.9.0](https://github-personal/ngneat/elf/compare/requests-1.8.0...requests-1.9.0) (2023-08-12)
 
 

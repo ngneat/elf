@@ -185,19 +185,19 @@ interface Options<TData> {
   // Wheteher to cache the response data
   cacheResponseData?: boolean;
   // Whether to cache request result for any additional keys
-  additionalKeys?: (_: TData) => unknown[][],
+  additionalKeys?: (_: TData) => unknown[][];
 }
 
 export function trackRequestResult<TData>(
   key: unknown[],
-  options?: Options<TData>,
+  options?: Options<TData>
 ): MonoTypeOperatorFunction<TData> {
   return function (source: Observable<TData>) {
     return getRequestResult(key).pipe(
       take(1),
       switchMap((result) => {
         const stale = options?.staleTime
-          ? result.staleTime! < Date.now()
+          ? (result.staleTime ?? 0) < Date.now()
           : false;
 
         const preventConcurrentRequest =
