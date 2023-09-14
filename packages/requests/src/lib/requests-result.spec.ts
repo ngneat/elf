@@ -605,6 +605,37 @@ describe('requests result', () => {
     expect(reqSpy).toHaveBeenCalledTimes(2);
   });
 
+  it('should prevent concurrent requests when stale time is set', () => {
+    jest.useFakeTimers();
+
+    const { state, config } = createState(withEntities<Todo>());
+
+    const store = new Store({ state, config, name: 'todos' });
+    const reqSpy = jest.fn();
+
+    function getTodos() {
+      return timer(1000).pipe(
+        map(() => [createTodo(1)]),
+        tap(() => reqSpy()),
+        tap((todos) => store.update(setEntities(todos))),
+        trackRequestResult(['todos'], { staleTime: 900_000, preventConcurrentRequest: true })
+      );
+    }
+
+    getTodos().subscribe();
+    getTodos().subscribe();
+
+    jest.runAllTimers();
+
+    expect(reqSpy).toHaveBeenCalledTimes(1);
+
+    getTodos().subscribe();
+
+    jest.runAllTimers();
+
+    expect(reqSpy).toHaveBeenCalledTimes(1);
+  });
+
   it('should request when staleTime pass', () => {
     jest.useFakeTimers();
 
