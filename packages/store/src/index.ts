@@ -35,5 +35,5 @@ export {
   isString,
   isUndefined,
 } from './lib/utils';
-export { emitOnce } from './lib/batch';
+export { emitOnce, emitOnceAsync } from './lib/batch';
 export { isDev, enableElfProdMode } from './lib/env';
