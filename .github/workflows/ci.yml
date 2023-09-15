@@ -32,14 +32,14 @@ jobs:
             ${{ runner.os }}-
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '18'
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm i
+        run: npm i --legacy-peer-deps
 
       - name: Install CLI dependencies
-        run: cd packages/cli && npm i
+        run: cd packages/cli && npm i --legacy-peer-deps
 
       - name: Run ESLint
         run: npm run lint:all
