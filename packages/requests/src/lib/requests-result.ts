@@ -214,8 +214,7 @@ export function trackRequestResult<TData>(
         if (
           result.fetchStatus === 'fetching' &&
           preventConcurrentRequest &&
-          !options?.skipCache &&
-          !stale
+          !options?.skipCache
         ) {
           return getRequestResult(key).pipe(
             filter((requestResult) => requestResult.fetchStatus === 'idle'),
