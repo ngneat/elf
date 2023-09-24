@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.9.2](https://github.com/ngneat/elf/compare/requests-1.9.1...requests-1.9.2) (2023-09-24)
+
+
+### Bug Fixes
+
+* **requests:** preventConcurrentRequest along with staleTime ([#486](https://github.com/ngneat/elf/issues/486)) ([b5abab0](https://github.com/ngneat/elf/commit/b5abab0b94ad72998cbae9543d48c12ed0810763))
+
+
+
 ## [1.9.1](https://github-personal/ngneat/elf/compare/requests-1.9.0...requests-1.9.1) (2023-09-07)
 
 

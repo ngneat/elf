@@ -1,6 +1,6 @@
 {
   "name": "@ngneat/elf-requests",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "description": "Status and requests cache for elf store",
   "publishConfig": {
     "access": "public"
