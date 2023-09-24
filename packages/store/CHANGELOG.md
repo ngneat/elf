@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [2.4.0](https://github.com/ngneat/elf/compare/store-2.3.2...store-2.4.0) (2023-09-24)
+
+
+### Features
+
+* **store:** async batch operations ([#480](https://github.com/ngneat/elf/issues/480)) ([8d30ccb](https://github.com/ngneat/elf/commit/8d30ccb1be0ff9007be26a8b8c960cbce22a40be)), closes [#478](https://github.com/ngneat/elf/issues/478)
+
+
+
 ## [2.3.2](https://github-personal/ngneat/elf/compare/store-2.3.1...store-2.3.2) (2023-06-02)
 
 
