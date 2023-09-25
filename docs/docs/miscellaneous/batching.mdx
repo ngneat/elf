@@ -7,10 +7,12 @@ store.update(
   setProp('count', 1),
   addEntities([todo, todo]),
   deleteEntities(1)
-)
+);
 ```
 
 In this case, subscribers will only receive **one** emission instead of three.
+
+## emitOnce
 
 There are cases where you have multiple update functions of the **same** store that you want to batch together. To do so you can use the `emitOnce` function:
 
@@ -18,13 +20,13 @@ There are cases where you have multiple update functions of the **same** store t
 export function updateCount() {
   store.update(
     setProp('count', 1),
-  )
+  );
 }
 
 export function updateUser() {
   store.update(
     setProp('user', null),
-  )
+  );
 }
 ```
 
@@ -35,7 +37,7 @@ import { updateCount, updateUser } from './todos.repository';
 emitOnce(() => {
   updateCount();
   updateUser();
-})
+});
 ```
 
 In this case, subscribers will only receive **one** emission instead of two.
@@ -47,7 +49,7 @@ export function restoreFilters() {
   emitOnce(() => {
     store.update(
       setProp('filters', null),
-    )
+    );
     resetPagination();
   });
 }
@@ -64,7 +66,7 @@ export function resetSort() {
 export function resetPagination() {
   store.update(
     setProp('pagination', null),
-  )
+  );
 }
 ```
 
@@ -79,3 +81,68 @@ emitOnce(() => {
 ```
 
 In this case, subscribers will only receive **one** emission instead of two.
+
+## emitOnceAsync
+
+In some cases, you might need to use `emitOnce` with async functions or observables. To do so, you can use `emitOnceAsync`:
+
+```ts title=todos.repository.ts
+export async function updateCount() {
+  const newCount = await fetchCount(); // Fetch count from API
+  store.update(setProp('count', newCount));
+}
+
+export async function updateUser() {
+  const newUser = await fetchUser(); // Fetch user from API
+  store.update(setProp('user', newUser));
+}
+
+export function clearCount() {
+  store.update(setProp('user', null));
+}
+
+export function clearUser() {
+  store.update(setProp('user', null));
+}
+```
+
+```ts
+import { emitOnceAsync } from '@elf/store';
+import { updateCount, updateUser } from './todos.repository';
+
+await emitOnceAsync(async () => {
+  await updateCount();
+  await updateUser();
+});
+```
+
+In this case, subscribers will also only receive **one** emission instead of two.
+
+You can also use `emitOnce` and `emitOnceAsync` inside another `emitOnceAsync`:
+
+```ts
+import { emitOnce, emitOnceAsync } from '@elf/store';
+import { updateCount, updateUser } from './todos.repository';
+
+async function updateCountAndUser() {
+  await emitOnceAsync(async () => {
+    await updateCount();
+    await updateUser();
+  });
+}
+
+await emitOnceAsync(async () => {
+  emitOnce(() => {
+    clearCount();
+    clearUser();
+  });
+  await updateCountAndUser();
+});
+```
+
+You can also provide an observable to `emitOnceAsync`, in this case, the store will only update when the observable emits its **first** value.
+
+Using `emitOnceAsync` inside `emitOnce` will not work as expected because `emitOnce` will not wait for the async function to finish.
+
+Use `emitOnceAsync` with caution, the store will not update until the async function finishes or the observable emits its first value.
+If your async function or observable takes too long to finish, the app might appear unresponsive.

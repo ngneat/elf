@@ -2,45 +2,11 @@
   "migrations": [
     {
       "cli": "nx",
-      "version": "16.8.0-beta.3",
-      "description": "Escape $ in env variables",
-      "implementation": "./src/migrations/update-16-8-0/escape-dollar-sign-env-variables",
-      "package": "nx",
-      "name": "16.8.0-escape-dollar-sign-env"
-    },
-    {
-      "cli": "nx",
-      "version": "16.7.0-beta.6",
-      "requires": {
-        "@angular/core": ">=16.2.0"
-      },
-      "description": "Update the @angular/cli package version to ~16.2.0.",
-      "factory": "./src/migrations/update-16-7-0/update-angular-cli",
-      "package": "@nx/angular",
-      "name": "update-angular-cli-version-16-2-0"
-    },
-    {
-      "version": "16.8.0",
-      "description": "update-16-8-0-add-ignored-files",
-      "implementation": "./src/migrations/update-16-8-0-add-ignored-files/update-16-8-0-add-ignored-files",
-      "package": "@nx/linter",
-      "name": "update-16-8-0-add-ignored-files"
-    },
-    {
-      "cli": "nx",
-      "version": "16.7.0-beta.2",
-      "description": "Add @babel/core to package.json if @babel/preset-react is present",
-      "implementation": "./src/migrations/update-16-7-0/add-babel-core",
-      "package": "@nx/react",
-      "name": "add-babel-core"
-    },
-    {
-      "cli": "nx",
-      "version": "16.7.0-beta.2",
-      "description": "Add @nx/react types to tsconfig types array",
-      "implementation": "./src/migrations/update-16-7-0-add-typings/update-16-7-0-add-typings",
-      "package": "@nx/react",
-      "name": "update-16-7-0-add-typings"
+      "version": "16.8.2-beta.0",
+      "description": "Remove invalid options (strict, noInterop) for ES6 type modules.",
+      "factory": "./src/migrations/update-16-8-2/update-swcrc",
+      "package": "@nx/js",
+      "name": "16-8-2-update-swcrc"
     }
   ]
 }
