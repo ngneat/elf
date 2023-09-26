@@ -228,7 +228,11 @@ describe('queries', () => {
       store.update(addEntities(createTodo(3)));
       store.update(addEntities(createTodo(4)));
       expect(
-        store.query(getManyByPredicate((el: Todo) => [4, 3].includes(el.id)))
+        store.query(
+          getManyByPredicate((el: Todo) => [4, 3].includes(el.id), {
+            pluck: 'id',
+          })
+        )
       ).toMatchInlineSnapshot(`
         Array [
           3,
