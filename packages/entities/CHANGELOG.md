@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [4.6.0](https://github-personal/ngneat/elf/compare/entities-4.5.0...entities-4.6.0) (2023-10-03)
+
+
+### Features
+
+* added function getManyByPredicate ([c92beb1](https://github-personal/ngneat/elf/commit/c92beb16df1ca1c363fa196aaecf8c6876cdae8d))
+
+
+
 # [4.5.0](https://github-personal/ngneat/elf/compare/entities-4.4.4...entities-4.5.0) (2023-08-06)
 
 
