@@ -29,6 +29,20 @@ describe('Repo Builder', () => {
     expect(output).toMatchSnapshot('withProps in a class');
   });
 
+  it('withProps in a class without constructor', () => {
+    const output = createRepo({
+      idKey: 'id',
+      features: ['withProps'],
+      crud: [],
+      template: 'class',
+      inlineStoreInClass: 'withoutConstructor',
+      storeName: 'todos',
+      path: '',
+    });
+
+    expect(output).toMatchSnapshot('withProps in a class without constructor');
+  });
+
   it('withRequestsCache', () => {
     const output = createRepo({
       idKey: 'id',
@@ -54,6 +68,22 @@ describe('Repo Builder', () => {
     });
 
     expect(output).toMatchSnapshot('withRequestsCache in a class');
+  });
+
+  it('withRequestsCache in a class without constructor', () => {
+    const output = createRepo({
+      idKey: 'id',
+      features: ['withRequestsCache'],
+      crud: [],
+      template: 'class',
+      inlineStoreInClass: 'withoutConstructor',
+      storeName: 'todos',
+      path: '',
+    });
+
+    expect(output).toMatchSnapshot(
+      'withRequestsCache in a class without constructor'
+    );
   });
 
   it('withRequestsStatus', () => {
@@ -83,6 +113,22 @@ describe('Repo Builder', () => {
     expect(output).toMatchSnapshot('withRequestsStatus in a class');
   });
 
+  it('withRequestsStatus in a class without constructor', () => {
+    const output = createRepo({
+      idKey: 'id',
+      features: ['withRequestsStatus'],
+      crud: [],
+      template: 'class',
+      inlineStoreInClass: 'withoutConstructor',
+      storeName: 'todos',
+      path: '',
+    });
+
+    expect(output).toMatchSnapshot(
+      'withRequestsStatus in a class without constructor'
+    );
+  });
+
   it('withActiveId', () => {
     const output = createRepo({
       idKey: 'id',
@@ -108,6 +154,22 @@ describe('Repo Builder', () => {
     });
 
     expect(output).toMatchSnapshot('withActiveId in a class');
+  });
+
+  it('withActiveId in a class without constructor', () => {
+    const output = createRepo({
+      idKey: 'id',
+      features: ['withActiveId'],
+      crud: [],
+      template: 'class',
+      inlineStoreInClass: 'withoutConstructor',
+      storeName: 'todos',
+      path: '',
+    });
+
+    expect(output).toMatchSnapshot(
+      'withActiveId in a class without constructor'
+    );
   });
 
   it('withActiveIds', () => {
@@ -137,6 +199,22 @@ describe('Repo Builder', () => {
     expect(output).toMatchSnapshot('withActiveIds in a class');
   });
 
+  it('withActiveIds in a class without constructor', () => {
+    const output = createRepo({
+      idKey: 'id',
+      features: ['withActiveIds'],
+      crud: [],
+      template: 'class',
+      inlineStoreInClass: 'withoutConstructor',
+      storeName: 'todos',
+      path: '',
+    });
+
+    expect(output).toMatchSnapshot(
+      'withActiveIds in a class without constructor'
+    );
+  });
+
   it('withEntities', () => {
     const output = createRepo({
       idKey: 'id',
@@ -164,6 +242,22 @@ describe('Repo Builder', () => {
     expect(output).toMatchSnapshot('withEntities in a class');
   });
 
+  it('withEntities in a class without constructor', () => {
+    const output = createRepo({
+      idKey: 'id',
+      features: ['withEntities'],
+      crud: [],
+      template: 'class',
+      inlineStoreInClass: 'withoutConstructor',
+      storeName: 'todos',
+      path: '',
+    });
+
+    expect(output).toMatchSnapshot(
+      'withEntities in a class without constructor'
+    );
+  });
+
   it('withEntities idKey', () => {
     const output = createRepo({
       idKey: '_id',
@@ -174,7 +268,7 @@ describe('Repo Builder', () => {
       template: 'class',
     });
 
-    expect(output).toMatchSnapshot('withEntities');
+    expect(output).toMatchSnapshot('withEntities idKey');
   });
 
   it('withEntities idKey in a class', () => {
@@ -188,7 +282,23 @@ describe('Repo Builder', () => {
       path: '',
     });
 
-    expect(output).toMatchSnapshot('withEntities in a class');
+    expect(output).toMatchSnapshot('withEntities idKey in a class');
+  });
+
+  it('withEntities idKey in a class without constructor', () => {
+    const output = createRepo({
+      idKey: '_id',
+      features: ['withEntities'],
+      crud: ['addEntities', 'updateEntities', 'deleteEntities'],
+      template: 'class',
+      inlineStoreInClass: 'withoutConstructor',
+      storeName: 'todos',
+      path: '',
+    });
+
+    expect(output).toMatchSnapshot(
+      'withEntities idKey in a class without constructor'
+    );
   });
 
   it('withUIEntities', () => {
@@ -218,6 +328,22 @@ describe('Repo Builder', () => {
     expect(output).toMatchSnapshot('withUIEntities in a class');
   });
 
+  it('withUIEntities in a class without constructor', () => {
+    const output = createRepo({
+      idKey: 'id',
+      features: ['withUIEntities'],
+      crud: [],
+      template: 'class',
+      inlineStoreInClass: 'withoutConstructor',
+      storeName: 'todos',
+      path: '',
+    });
+
+    expect(output).toMatchSnapshot(
+      'withUIEntities in a class without constructor'
+    );
+  });
+
   it('all', () => {
     const output = createRepo({
       idKey: 'id',
@@ -243,6 +369,20 @@ describe('Repo Builder', () => {
     });
 
     expect(output).toMatchSnapshot('all in a class');
+  });
+
+  it('all in a class without constructor', () => {
+    const output = createRepo({
+      idKey: 'id',
+      features: baseFeatures.map(({ value }) => value),
+      crud: ['deleteEntities', 'addEntities', 'updateEntities'],
+      template: 'class',
+      inlineStoreInClass: 'withoutConstructor',
+      storeName: 'todos',
+      path: '',
+    });
+
+    expect(output).toMatchSnapshot('all in a class without constructor');
   });
 
   it('should support function template', () => {
