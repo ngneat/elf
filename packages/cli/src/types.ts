@@ -9,7 +9,7 @@ export interface Options {
   path: string;
   idKey: string;
   template?: 'class' | 'functions';
-  inlineStoreInClass?: boolean;
+  inlineStoreInClass?: boolean | 'withoutConstructor';
   hooks?: Array<Hooks>;
 }
 

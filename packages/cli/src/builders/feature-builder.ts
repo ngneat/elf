@@ -36,7 +36,7 @@ export abstract class FeatureBuilder {
     protected repo: ClassDeclaration,
     protected options: Options
   ) {
-    if (this.isStoreInlinedInClass) {
+    if (this.isStoreInlinedInClass === true) {
       this.repoConstructor = this.repo.getConstructors()[0];
     }
   }

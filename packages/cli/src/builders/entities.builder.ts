@@ -72,7 +72,7 @@ export class EntitiesBuilder extends FeatureBuilder {
       kind: StructureKind.Property,
     };
 
-    if (this.isStoreInlinedInClass) {
+    if (this.repoConstructor) {
       this.addImport('Observable', 'rxjs');
 
       this.repo.insertProperty(0, {
@@ -80,7 +80,7 @@ export class EntitiesBuilder extends FeatureBuilder {
         type: `Observable<${this.storeSingularNames.className}[]>`,
       });
 
-      this.repoConstructor?.addStatements(
+      this.repoConstructor.addStatements(
         `this.${memberData.name} = ${initializer};`
       );
     } else {

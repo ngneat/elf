@@ -27,6 +27,7 @@ export function createRepo(options: Options) {
   const storeNames = names(storeName);
   const isFunctionTpl = !options.template || options.template === 'functions';
   const isStoreInlinedInClass = !isFunctionTpl && options.inlineStoreInClass;
+  const classWithConstructor = isStoreInlinedInClass !== 'withoutConstructor';
 
   const project = new Project({
     manipulationSettings: {
@@ -46,7 +47,7 @@ export function createRepo(options: Options) {
   });
   let repoClassDecConstructor: ConstructorDeclaration | undefined;
 
-  if (isStoreInlinedInClass) {
+  if (isStoreInlinedInClass && classWithConstructor) {
     repoClassDec.addConstructor();
     repoClassDecConstructor = repoClassDec.getConstructors()[0];
   }
@@ -91,14 +92,21 @@ export function createRepo(options: Options) {
     [storeOpts, ...propsFactories]
   );
 
-  if (isStoreInlinedInClass && repoClassDecConstructor) {
-    addInlineStoreToRepoClass({
-      repoClassDec,
-      repoClassDecConstructor,
-      options,
-      store,
-      storeNames,
-    });
+  if (isStoreInlinedInClass) {
+    if (repoClassDecConstructor) {
+      addInlineStoreToRepoClass({
+        repoClassDec,
+        repoClassDecConstructor,
+        options,
+        store,
+        storeNames,
+      });
+    } else {
+      addInlineStoreToRepoClassWithoutConstructor({
+        repoClassDec,
+        store,
+      });
+    }
   } else {
     addStoreToRepo({
       repoClassDec,
@@ -170,22 +178,16 @@ function addInlineStoreToRepoClass({
     storeNames,
     true
   );
-  const { propertyIndex, methodIndex } = getPositionsOfInlineStoreDeclarations(
-    classDec,
-    constructorDec
-  );
+  const lastPropertyIndex = classDec
+    .getLastChildByKind(SyntaxKind.PropertyDeclaration)
+    ?.getChildIndex();
+  const propertyIndex = lastPropertyIndex
+    ? lastPropertyIndex + 1
+    : constructorDec.getChildIndex();
 
-  const createStoreMethodName = 'createStore';
-
-  classDec.insertMethod(methodIndex, {
-    name: createStoreMethodName,
-    returnType: `typeof store`,
-    scope: Scope.Private,
-    statements: (writer) => {
-      writer.writeLine(`const store = ${printNode(store)};`);
-      writer.blankLine();
-      writer.writeLine(`return store;`);
-    },
+  const createStoreMethodName = addCreateStoreMethod({
+    repoClassDec: classDec,
+    store,
   });
 
   constructorDec.insertStatements(
@@ -201,6 +203,28 @@ function addInlineStoreToRepoClass({
   if (propertyIndex > 0) {
     storeProperty?.prependWhitespace('\n');
   }
+}
+
+function addInlineStoreToRepoClassWithoutConstructor({
+  repoClassDec: classDec,
+  store,
+}: {
+  repoClassDec: ClassDeclaration;
+  store: CallExpression;
+}) {
+  const createStoreMethodName = addCreateStoreMethod({
+    repoClassDec: classDec,
+    store,
+  });
+
+  classDec.insertProperty(0, {
+    name: 'store',
+    scope: Scope.Private,
+    isReadonly: true,
+    initializer: `this.${createStoreMethodName}()`,
+  });
+
+  classDec.insertMember(1, '\n');
 }
 
 function toFunctions(sourceFile: SourceFile, classDec: ClassDeclaration) {
@@ -221,21 +245,25 @@ function toFunctions(sourceFile: SourceFile, classDec: ClassDeclaration) {
   );
 }
 
-function getPositionsOfInlineStoreDeclarations(
-  classDec: ClassDeclaration,
-  constructorDec: ConstructorDeclaration
-) {
-  const lastPropertyIndex = classDec
-    .getLastChildByKind(SyntaxKind.PropertyDeclaration)
-    ?.getChildIndex();
-  const lastMethodIndex = classDec
-    .getLastChildByKind(SyntaxKind.MethodDeclaration)
-    ?.getChildIndex();
+function addCreateStoreMethod({
+  repoClassDec: classDec,
+  store,
+}: {
+  repoClassDec: ClassDeclaration;
+  store: CallExpression;
+}): string {
+  const createStoreMethodName = 'createStore';
 
-  return {
-    methodIndex: (lastMethodIndex ?? constructorDec.getChildIndex()) + 1,
-    propertyIndex: lastPropertyIndex
-      ? lastPropertyIndex + 1
-      : constructorDec.getChildIndex(),
-  };
+  classDec.addMethod({
+    name: createStoreMethodName,
+    returnType: `typeof store`,
+    scope: Scope.Private,
+    statements: (writer) => {
+      writer.writeLine(`const store = ${printNode(store)};`);
+      writer.blankLine();
+      writer.writeLine(`return store;`);
+    },
+  });
+
+  return createStoreMethodName;
 }

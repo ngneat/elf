@@ -11,7 +11,7 @@ export function coerceArray<T>(value: T[] | T): T[] {
 export function resolveStoreVariableName(
   template: Options['template'],
   { propertyName }: ReturnType<typeof names>,
-  inlineStoreInClass: boolean = false
+  inlineStoreInClass: Options['inlineStoreInClass'] = false
 ) {
   return template === 'functions'
     ? `${propertyName}Store`

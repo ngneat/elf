@@ -28,13 +28,13 @@ export class ActiveIdBuilder extends FeatureBuilder {
       kind: StructureKind.Property,
     };
 
-    if (this.isStoreInlinedInClass) {
+    if (this.repoConstructor) {
       this.repo.insertProperty(0, {
         ...memberData,
         type: `Observable<${this.storeSingularNames.className} | undefined>`,
       });
 
-      this.repoConstructor?.addStatements(
+      this.repoConstructor.addStatements(
         `this.${memberData.name} = ${initializer};`
       );
     } else {
