@@ -2,6 +2,20 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [3.1.0](https://github-personal/ngneat/elf/compare/cli-3.0.1...cli-3.1.0) (2023-10-14)
+
+
+### Bug Fixes
+
+* **requests-cache:** 🐞 remove redunant code ([94306fc](https://github-personal/ngneat/elf/commit/94306fc09c54f4208d6cad165bf7a8696fbf6062))
+
+
+### Features
+
+* **cli:** allow build repo class without constructor ([#493](https://github-personal/ngneat/elf/issues/493)) ([8f5f351](https://github-personal/ngneat/elf/commit/8f5f351a8797763337dbec7e6f971ad52e1923d3))
+
+
+
 ## [3.0.1](https://github.com/ngneat/elf/compare/cli-3.0.0...cli-3.0.1) (2022-07-20)
 
 
