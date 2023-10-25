@@ -5,6 +5,7 @@ export interface Todo {
   id: number;
   title: string;
   completed: boolean;
+  sensitiveData?: string;
 }
 
 const { state, config } = createState(withEntities<Todo>());

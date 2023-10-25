@@ -39,7 +39,8 @@ As the second parameter you should pass a `Options` object, which can be used to
 
 - `storage`: an Object with `setItem`, `getItem` and `removeItem` method for storing the state (required).
 - `source`: a method that receives the store and return what to save from it (by default - the entire store).
-- `preStoreInit`: a method that run upon initializing the store with a saved value, used for any required modifications before the value is set.
+- `preStoreInit`: a method that runs upon initializing the store with a saved value, used for any required modifications before the value is set.
+- `preStorageUpdate`: a method that runs before saving the store, used for any required modifications before the value is set.
 - `key`: the name under which the store state is saved (by default - the store name plus a `@store` suffix).
 - `runGuard` - returns whether the actual implementation should be run. The default is `() => typeof window !== 'undefined'`
 
@@ -113,3 +114,34 @@ persistState(todoStore, {
   source: () => todoStore.pipe(debounceTime(1000)),
 });
 ```
+
+## preStorageUpdate
+
+The `preStorageUpdate` option is a function that is called before the state is saved to the storage. It receives two parameters: `storeName` and `state`. The `storeName` is a string representing the name of the store, and `state` is the current state of the store.
+
+This function is useful when you want to modify the state before it is saved to the storage. For example, you might want to remove some sensitive data or transform the state in some way.
+
+The function should return the modified state which will be saved to the storage. If you don't return anything from this function, the original state will be saved.
+
+Here is an example of how to use `preStorageUpdate`:
+
+```ts
+import { persistState, localStorageStrategy } from '@ngneat/elf-persist-state';
+
+const preStorageUpdate = (storeName, state) => {
+  const newState = { ...state };
+  if (storeName === 'todos') {
+    delete newState.sensitiveData;
+  }    
+  return newState;
+}
+  
+
+persistState(todoStore, {
+  key: 'todos',
+  storage: localStorageStrategy,
+  preStorageUpdate,
+});
+```
+
+In this example, the `preStorageUpdate` function removes the `sensitiveData` property from the state before it is saved to storage.

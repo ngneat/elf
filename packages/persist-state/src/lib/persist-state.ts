@@ -7,6 +7,10 @@ interface Options<S extends Store> {
   storage: StateStorage;
   source?: (store: S) => Observable<Partial<StoreValue<S>>>;
   preStoreInit?: (value: StoreValue<S>) => Partial<StoreValue<S>>;
+  preStorageUpdate?: (
+    storeName: string,
+    state: Partial<StoreValue<S>>
+  ) => Partial<StoreValue<S>>;
   key?: string;
   runGuard?(): boolean;
 }
@@ -54,7 +58,12 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
   const saveToStorageSubscription = merged.source!(store)
     .pipe(
       skip(1),
-      switchMap((value) => storage.setItem(merged.key!, value))
+      switchMap((value) => {
+        const updatedValue = merged.preStorageUpdate
+          ? merged.preStorageUpdate(store.name, value)
+          : value;
+        return storage.setItem(merged.key!, updatedValue);
+      })
     )
     .subscribe();
 
