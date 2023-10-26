@@ -127,4 +127,36 @@ describe('persist state', () => {
       new TypeError(`Cannot read properties of undefined (reading '_storage')`)
     );
   });
+
+  it('should call preStorageUpdate and remove sensitive data before saving to storage', () => {
+    const storage: StateStorage = {
+      getItem: jest.fn().mockImplementation(() => of(null)),
+      setItem: jest.fn().mockImplementation(() => of(true)),
+      removeItem: jest.fn().mockImplementation(() => of(true)),
+    };
+
+    const preStorageUpdate = jest
+      .fn()
+      .mockImplementation((storeName, state) => {
+        const newState = { ...state };
+        if (storeName === 'todos') {
+          delete newState.sensitiveData;
+        }
+        return newState;
+      });
+
+    const store = createEntitiesStore();
+    persistState(store, { storage, preStorageUpdate });
+    expect(preStorageUpdate).not.toHaveBeenCalled();
+
+    const todo = createTodo(1);
+    todo.sensitiveData = 'secret';
+    store.update(addEntities(todo));
+    expect(preStorageUpdate).toHaveBeenCalledTimes(1);
+    expect(preStorageUpdate).toHaveBeenCalledWith('todos', store.getValue());
+
+    const savedState = store.getValue();
+    expect(savedState).not.toHaveProperty('sensitiveData');
+    expect(storage.setItem).toHaveBeenCalledWith('todos@store', savedState);
+  });
 });
