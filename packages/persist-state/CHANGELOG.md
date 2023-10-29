@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.2.0](https://github-personal/ngneat/elf/compare/persist-state-1.1.6...persist-state-1.2.0) (2023-10-29)
+
+
+### Features
+
+* **persist-state:** 🔥 Add callback to change state before save ([#495](https://github-personal/ngneat/elf/issues/495)) ([e21793a](https://github-personal/ngneat/elf/commit/e21793a4e5b20853c35c3ad98521b9fc69eb1a61))
+
+
+
 ## [1.1.6](https://github.com/ngneat/elf/compare/persist-state-1.1.5...persist-state-1.1.6) (2022-09-09)
 
 
