@@ -57,7 +57,7 @@ We can register `effects` that'll execute when we dispatch actions using [`@ngne
 
 ```ts title="todos.effects.ts"
 
-import { createEffect, ofType } from '@ngneat/effects';
+import { createAction, createEffect, ofType } from '@ngneat/effects';
 
 const loadTodos = createAction('[Todos] Load');
 
