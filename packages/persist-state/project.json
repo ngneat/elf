@@ -35,7 +35,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": ["packages/persist-state/**/*.ts"]
       },
@@ -45,8 +45,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/packages/persist-state"],
       "options": {
-        "jestConfig": "packages/persist-state/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "packages/persist-state/jest.config.ts"
       }
     },
     "version": {

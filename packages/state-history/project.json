@@ -35,7 +35,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": ["packages/state-history/**/*.ts"]
       },
@@ -45,8 +45,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/packages/state-history"],
       "options": {
-        "jestConfig": "packages/state-history/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "packages/state-history/jest.config.ts"
       }
     },
     "version": {

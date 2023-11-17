@@ -5,7 +5,7 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": ["packages/mocks/**/*.ts"]
       },
@@ -15,8 +15,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/packages/mocks"],
       "options": {
-        "jestConfig": "packages/mocks/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "packages/mocks/jest.config.ts"
       }
     }
   },
