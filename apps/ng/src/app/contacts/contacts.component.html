@@ -1,7 +1,8 @@
 <section class="padding">
   <h1 class="d-flex justify-content-center mb-4">Contacts</h1>
 
-  <section *ngIf="contacts$ | async as contacts">
+  @if (contacts$ | async; as contacts) {
+  <section>
     <table class="table table-striped mb-4">
       <thead>
         <tr>
@@ -12,25 +13,26 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let contact of contacts">
+        @for (contact of contacts; track contact) {
+        <tr>
           <td>{{ contact.name }}</td>
           <td>{{ contact.address }}</td>
           <td>&#64;{{ contact.email }}</td>
         </tr>
+        }
       </tbody>
     </table>
 
-    <ul
-      class="pagination d-flex justify-content-center"
-      *ngIf="paginationData$ | async as paginationData"
-    >
-      <li
-        *ngFor="let page of paginationData | paginationControls; index as i"
-        class="page-item page-link"
-        (click)="updateActivePage(i + 1)"
-      >
+    @if (paginationData$ | async; as paginationData) {
+    <ul class="pagination d-flex justify-content-center">
+      @for (page of paginationData | paginationControls; track page; let i =
+      $index) {
+      <li class="page-item page-link" (click)="updateActivePage(i + 1)">
         {{ i + 1 }}
       </li>
+      }
     </ul>
+    }
   </section>
+  }
 </section>

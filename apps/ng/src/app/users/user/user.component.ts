@@ -5,11 +5,13 @@ import { UsersRepository } from '../users.repository';
 
 @Component({
   template: `
-    <ng-container *ngIf="user$ | async as user">
-      <h1>Loading: {{ user.isLoading }}</h1>
+    @if (user$ | async; as user) {
 
-      <code>User: {{ user.data | json }}</code>
-    </ng-container>
+    <h1>Loading: {{ user.isLoading }}</h1>
+
+    <code>User: {{ user.data | json }}</code>
+
+    }
   `,
 })
 export class UserComponent implements OnInit {

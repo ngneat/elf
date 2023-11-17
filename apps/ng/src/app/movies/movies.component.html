@@ -1,9 +1,11 @@
 <section class="padding">
-  <div class="text-center" *ngIf="isLoading">
+  @if (isLoading) {
+  <div class="text-center">
     <div class="spinner-border" role="status">
       <span class="sr-only">Loading...</span>
     </div>
   </div>
+  }
 
   <h2 class="mb-2">Movies</h2>
 
@@ -18,15 +20,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let movie of movies">
+          @for (movie of movies; track movie) {
+          <tr>
             <td>{{ movie.title }}</td>
             <td>
-              <span *ngFor="let actor of movie.actors">{{ actor }}</span>
+              @for (actor of movie.actors; track actor) {
+              <span>{{ actor }}</span>
+              }
             </td>
             <td>
-              <span *ngFor="let genre of movie.genres">{{ genre }}</span>
+              @for (genre of movie.genres; track genre) {
+              <span>{{ genre }}</span>
+              }
             </td>
           </tr>
+          }
         </tbody>
       </table>
     </div>
@@ -43,7 +51,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let actor of actors">
+          @for (actor of actors; track actor) {
+          <tr>
             <td class="row align-items-center me-0">
               <div class="col-8">
                 <input
@@ -55,20 +64,21 @@
               </div>
               <div class="col-4">
                 <div class="action-buttons float-end">
+                  @if (!inEditMode(actor.id)) {
                   <button
-                    *ngIf="!inEditMode(actor.id)"
                     class="btn btn-light me-2"
                     (click)="toggleView(actor.id, actorName)"
                   >
                     <i class="fas fa-pencil-alt"></i>
                   </button>
+                  } @if (inEditMode(actor.id)) {
                   <button
-                    *ngIf="inEditMode(actor.id)"
                     class="btn btn-light me-2 bg-success text-light"
                     (click)="edit(actor.id, actorName.value)"
                   >
                     <i class="fas fa-check"></i>
                   </button>
+                  }
                   <button
                     class="btn btn-danger"
                     (click)="deleteActor(actor.id)"
@@ -79,6 +89,7 @@
               </div>
             </td>
           </tr>
+          }
         </tbody>
       </table>
     </div>

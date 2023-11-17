@@ -5,7 +5,8 @@
 <button (click)="todosRepo.updateFilter('ALL')">All</button>
 
 <ul>
-  <li *ngFor="let todo of todosRepo.visibleTodos$ | async">
+  @for (todo of todosRepo.visibleTodos$ | async; track todo) {
+  <li>
     <input
       type="checkbox"
       (change)="todosRepo.updateCompleted(todo.id)"
@@ -13,6 +14,7 @@
     />
     {{ todo.title }}
   </li>
+  }
 </ul>
 
 <input
@@ -23,7 +25,8 @@
 
 <h2 style="margin-top: 20px">Completed</h2>
 <ul>
-  <li *ngFor="let todo of todosRepo.selectByCompletedState(true) | async">
+  @for (todo of todosRepo.selectByCompletedState(true) | async; track todo) {
+  <li>
     <input
       type="checkbox"
       (change)="todosRepo.updateCompleted(todo.id)"
@@ -31,4 +34,5 @@
     />
     {{ todo.title }}
   </li>
+  }
 </ul>
