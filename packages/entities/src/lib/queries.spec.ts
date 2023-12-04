@@ -12,7 +12,6 @@ import {
   hasEntity,
   getEntitiesIds,
   getEntityByPredicate,
-  getManyByPredicate,
 } from './queries';
 import { addEntities } from './add.mutation';
 import { UIEntitiesRef } from './entity.state';
@@ -195,100 +194,5 @@ describe('queries', () => {
         "todo 1",
       ]
     `);
-  });
-
-  describe('getManyByPredicate', () => {
-    it('should return the collection', () => {
-      const store = createEntitiesStore();
-      store.update(addEntities(createTodo(1)));
-      store.update(addEntities(createTodo(2)));
-      store.update(addEntities(createTodo(3)));
-      store.update(addEntities(createTodo(4)));
-      expect(
-        store.query(getManyByPredicate((el: Todo) => [2, 3].includes(el.id)))
-      ).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "completed": false,
-            "id": 2,
-            "title": "todo 2",
-          },
-          Object {
-            "completed": false,
-            "id": 3,
-            "title": "todo 3",
-          },
-        ]
-      `);
-    });
-    it('should work with pluck', () => {
-      const store = createEntitiesStore();
-      store.update(addEntities(createTodo(1)));
-      store.update(addEntities(createTodo(2)));
-      store.update(addEntities(createTodo(3)));
-      store.update(addEntities(createTodo(4)));
-      expect(
-        store.query(
-          getManyByPredicate((el: Todo) => [4, 3].includes(el.id), {
-            pluck: 'id',
-          })
-        )
-      ).toMatchInlineSnapshot(`
-        Array [
-          3,
-          4,
-        ]
-      `);
-    });
-
-    it('should work with ref', () => {
-      const store = createUIEntityStore();
-
-      store.update(addEntities(createUITodo(1), { ref: UIEntitiesRef }));
-      store.update(addEntities(createUITodo(2), { ref: UIEntitiesRef }));
-      store.update(addEntities(createUITodo(3), { ref: UIEntitiesRef }));
-      store.update(addEntities(createUITodo(4), { ref: UIEntitiesRef }));
-      expect(
-        store.query(
-          getManyByPredicate(
-            (el: { id: number; open: boolean }) => [2, 3].includes(el.id),
-            { ref: UIEntitiesRef }
-          )
-        )
-      ).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "id": 2,
-            "open": false,
-          },
-          Object {
-            "id": 3,
-            "open": false,
-          },
-        ]
-      `);
-    });
-
-    it('should work with ref and pluck', () => {
-      const store = createUIEntityStore();
-
-      store.update(addEntities(createUITodo(1), { ref: UIEntitiesRef }));
-      store.update(addEntities(createUITodo(2), { ref: UIEntitiesRef }));
-      store.update(addEntities(createUITodo(3), { ref: UIEntitiesRef }));
-      store.update(addEntities(createUITodo(4), { ref: UIEntitiesRef }));
-      expect(
-        store.query(
-          getManyByPredicate(
-            (el: { id: number; open: boolean }) => [2, 3].includes(el.id),
-            { ref: UIEntitiesRef, pluck: 'id' }
-          )
-        )
-      ).toMatchInlineSnapshot(`
-        Array [
-          2,
-          3,
-        ]
-      `);
-    });
   });
 });

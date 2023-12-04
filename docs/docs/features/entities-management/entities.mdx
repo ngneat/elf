@@ -236,19 +236,9 @@ Get first entity from the store by predicate:
 ```ts
 import { getEntityByPredicate } from '@ngneat/elf-entities';
 
-const todo = todosStore.query(getEntityByPredicate(({ title }) => title === 'Elf'));
-```
-
-### `getManyByPredicate`
-
-Get multiple entities from the store by predicate:
-
-```ts
-import { getManyByPredicate } from '@ngneat/elf-entities';
-
-const todo = todosStore.query(getManyByPredicate(({ active }) => active));
-const todo = todosStore.query(getManyByPredicate(({ active }) => active), { pluck: 'title });
-const todo = todosStore.query(getManyByPredicate(({ active }) => active), { ref: UIEntitiesRef, pluck: 'title });
+const todo = todosStore.query(
+  getEntityByPredicate(({ title }) => title === 'Elf')
+);
 ```
 
 ### `hasEntity`

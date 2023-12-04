@@ -123,44 +123,6 @@ export function getEntityByPredicate<
 
 /**
  *
- * Get many entities by predicate
- *
- * @example
- *
- * store.query(geManyByPredicate(({ active }) => active))
- * store.query(geManyByPredicate((el: Todo) => el.active, { pluck: 'title' }))
- * store.query(geManyByPredicate((el: Todo) => el.active, { ref: UIEntitiesRef, pluck: 'title' }))
- */
-export function getManyByPredicate<
-  S extends EntitiesState<Ref>,
-  R extends getEntityType<S, Ref>[],
-  K extends keyof getEntityType<S, Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
->(
-  predicate: ItemPredicate<getEntityType<S, Ref>>,
-  options?: {
-    pluck?: K | ((entity: getEntityType<S, Ref>) => R);
-  } & BaseEntityOptions<Ref>
-): Query<S, getEntityType<S, Ref>[]> {
-  return function (state) {
-    const { ref: { entitiesKey, idsKey } = defaultEntitiesRef, pluck } =
-      options || {};
-    const filteredEntities: getEntityType<S, Ref>[] = [];
-
-    state[idsKey].forEach((id: getIdType<S, Ref>, index: number) => {
-      const entity = state[entitiesKey][id];
-
-      if (predicate(entity, index)) {
-        filteredEntities.push(checkPluck(entity, pluck));
-      }
-    });
-
-    return filteredEntities;
-  };
-}
-
-/**
- *
  * Check whether the entity exist
  *
  * @example
