@@ -9,7 +9,6 @@ import {
   ItemPredicate,
 } from './entity.state';
 import { Query } from '@ngneat/elf';
-import { checkPluck } from './entity.utils';
 
 /**
  *
