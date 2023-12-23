@@ -36,9 +36,6 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "options": {
-        "lintFilePatterns": ["packages/store/**/*.ts"]
-      },
       "outputs": ["{options.outputFile}"]
     },
     "test": {

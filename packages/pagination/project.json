@@ -36,9 +36,6 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "options": {
-        "lintFilePatterns": ["packages/pagination/**/*.ts"]
-      },
       "outputs": ["{options.outputFile}"]
     },
     "test": {

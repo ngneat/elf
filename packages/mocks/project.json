@@ -6,9 +6,6 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "options": {
-        "lintFilePatterns": ["packages/mocks/**/*.ts"]
-      },
       "outputs": ["{options.outputFile}"]
     },
     "test": {
