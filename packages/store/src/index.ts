@@ -37,3 +37,4 @@ export {
 } from './lib/utils';
 export { emitOnce, emitOnceAsync } from './lib/batch';
 export { isDev, enableElfProdMode } from './lib/env';
+export { _setEvent } from './lib/events';

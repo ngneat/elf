@@ -1,20 +1,27 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Query } from '..';
 import { batchInProgress, batchDone$ } from './batch';
 import { elfHooksRegistry } from './elf-hooks';
 import { addStore, removeStore } from './registry';
+import { StoreEvent, emitEvents, _setEvent } from './events';
 
 export class Store<
   SDef extends StoreDef = any,
-  State = SDef['state']
+  State = SDef['state'],
 > extends BehaviorSubject<State> {
   initialState!: State;
   state!: State;
   private batchInProgress = false;
+  private events = new Subject<StoreEvent>();
 
   private context: ReducerContext = {
     config: this.getConfig(),
+    setEvent: (action: StoreEvent) => {
+      _setEvent(action);
+    },
   };
+
+  events$ = this.events.asObservable();
 
   constructor(private storeDef: SDef) {
     super(storeDef.state);
@@ -56,7 +63,7 @@ export class Store<
       nextState = elfHooksRegistry.preStoreUpdate(
         currentState,
         nextState,
-        this.name
+        this.name,
       );
     }
 
@@ -69,11 +76,13 @@ export class Store<
 
           batchDone$.subscribe(() => {
             super.next(this.state);
+            emitEvents(this.events);
             this.batchInProgress = false;
           });
         }
       } else {
         super.next(this.state);
+        emitEvents(this.events);
       }
     }
   }
@@ -87,7 +96,7 @@ export class Store<
   }
 
   combine<O extends Record<string, Observable<any>>>(
-    observables: O
+    observables: O,
   ): Observable<{
     [P in keyof O]: O[P] extends Observable<infer R> ? R : never;
   }> {
@@ -100,7 +109,7 @@ export class Store<
           query.subscribe((value) => {
             buffer[key] = value;
             hasChange = true;
-          })
+          }),
         );
       }
 
@@ -139,7 +148,10 @@ export class Store<
 
 export type StoreValue<T extends Store> = ReturnType<T['getValue']>;
 export type Reducer<State> = (state: State, context: ReducerContext) => State;
-export type ReducerContext = { config: Record<PropertyKey, any> };
+export type ReducerContext = {
+  config: Record<PropertyKey, any>;
+  setEvent: (action: StoreEvent) => void;
+};
 
 export interface StoreDef<State = any> {
   name: string;
