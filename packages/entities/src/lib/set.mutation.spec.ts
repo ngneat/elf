@@ -7,6 +7,7 @@ import {
 } from '@ngneat/elf-mocks';
 import { setEntities, setEntitiesMap } from './set.mutation';
 import { UIEntitiesRef } from './entity.state';
+import { take } from 'rxjs';
 
 describe('set', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -18,7 +19,12 @@ describe('set', () => {
   it('should set entities', () => {
     store.update(setEntities([createTodo(1)]));
     toMatchSnapshot(expect, store, 'set one');
-
+    store.events$.pipe(take(1)).subscribe((action) => {
+      expect(action).toMatchObject({
+        type: 'set',
+        ids: [2],
+      });
+    });
     store.update(setEntities([createTodo(2)]));
     toMatchSnapshot(expect, store, 'set one');
   });
@@ -27,14 +33,14 @@ describe('set', () => {
     store.update(
       setEntitiesMap({
         1: createTodo(1),
-      })
+      }),
     );
     toMatchSnapshot(expect, store, 'set one');
 
     store.update(
       setEntitiesMap({
         2: createTodo(2),
-      })
+      }),
     );
     toMatchSnapshot(expect, store, 'set one');
   });

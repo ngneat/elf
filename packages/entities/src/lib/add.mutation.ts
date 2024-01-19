@@ -31,16 +31,16 @@ export interface AddEntitiesOptions {
  */
 export function addEntities<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   entities: OrArray<getEntityType<S, Ref>>,
-  options: AddEntitiesOptions & BaseEntityOptions<Ref> = {}
+  options: AddEntitiesOptions & BaseEntityOptions<Ref> = {},
 ): Reducer<S> {
-  return function (state, context) {
+  return function (state, ctx) {
     const { prepend = false, ref = defaultEntitiesRef } = options;
 
     const { entitiesKey, idsKey } = ref!;
-    const idKey = getIdKey<any>(context, ref);
+    const idKey = getIdKey<any>(ctx, ref);
 
     const asArray = coerceArray(entities);
 
@@ -52,6 +52,8 @@ export function addEntities<
     }
 
     const { ids, asObject } = buildEntities<S, Ref>(asArray, idKey);
+
+    ctx.setEvent({ type: 'add', ids });
 
     return {
       ...state,
@@ -75,14 +77,14 @@ export function addEntities<
  */
 export function addEntitiesFifo<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   entities: OrArray<getEntityType<S, Ref>>,
   options: {
     limit: number;
-  } & BaseEntityOptions<Ref>
+  } & BaseEntityOptions<Ref>,
 ): Reducer<S> {
-  return function (state, context) {
+  return function (state, ctx) {
     const { ref = defaultEntitiesRef, limit } = options;
 
     const { entitiesKey, idsKey } = ref!;
@@ -94,7 +96,7 @@ export function addEntitiesFifo<
     if (normalizedEntities.length > limit) {
       // Remove new entities that pass the limit
       normalizedEntities = normalizedEntities.slice(
-        normalizedEntities.length - limit
+        normalizedEntities.length - limit,
       );
     }
 
@@ -103,13 +105,15 @@ export function addEntitiesFifo<
     // Remove exiting entities that passes the limit
     if (total > limit) {
       const idsRemove = currentIds.slice(0, total - limit);
-      newState = deleteEntities<S, Ref>(idsRemove)(state, context);
+      newState = deleteEntities<S, Ref>(idsRemove)(state, ctx);
     }
 
     const { ids, asObject } = buildEntities<S, Ref>(
       normalizedEntities,
-      getIdKey(context, ref)
+      getIdKey(ctx, ref),
     );
+
+    ctx.setEvent({ type: 'add', ids });
 
     return {
       ...state,
@@ -123,7 +127,7 @@ function throwIfEntityExists(
   entities: any[],
   idKey: string,
   state: Record<any, any>,
-  entitiesKey: string
+  entitiesKey: string,
 ) {
   entities.forEach((entity) => {
     const id = entity[idKey];

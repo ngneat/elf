@@ -16,6 +16,7 @@ import {
   upsertEntities,
   upsertEntitiesById,
 } from './update.mutation';
+import { take } from 'rxjs';
 
 describe('update', () => {
   let store: ReturnType<typeof createEntitiesStore>;
@@ -27,6 +28,12 @@ describe('update', () => {
   it('should update one entity', () => {
     store.update(addEntities(createTodo(1)));
     toMatchSnapshot(expect, store, 'completed false');
+    store.events$.pipe(take(1)).subscribe((action) => {
+      expect(action).toMatchObject({
+        type: 'update',
+        ids: [1],
+      });
+    });
     store.update(updateEntities(1, { completed: true }));
     toMatchSnapshot(expect, store, 'completed true');
     // store shouldn't be changed since there's no entity with id 2
@@ -37,6 +44,12 @@ describe('update', () => {
   it('should update multiple entities', () => {
     store.update(addEntities([createTodo(1), createTodo(2)]));
     toMatchSnapshot(expect, store, 'multi completed false');
+    store.events$.pipe(take(1)).subscribe((action) => {
+      expect(action).toMatchObject({
+        type: 'update',
+        ids: [1, 2],
+      });
+    });
     store.update(updateEntities([1, 2], { completed: true }));
     toMatchSnapshot(expect, store, 'multi completed true');
     // store shouldn't be changed since there's no entities with ids 3 and 4
@@ -47,13 +60,19 @@ describe('update', () => {
   it('should update by callback', () => {
     store.update(addEntities(createTodo(1)));
     toMatchSnapshot(expect, store, 'completed false');
+    store.events$.pipe(take(1)).subscribe((action) => {
+      expect(action).toMatchObject({
+        type: 'update',
+        ids: [1],
+      });
+    });
     store.update(
-      updateEntities(1, (todo) => ({ ...todo, completed: !todo.completed }))
+      updateEntities(1, (todo) => ({ ...todo, completed: !todo.completed })),
     );
     toMatchSnapshot(expect, store, 'completed true');
     // store shouldn't be changed since there's no entity with id 2
     store.update(
-      updateEntities(2, (todo) => ({ ...todo, completed: !todo.completed }))
+      updateEntities(2, (todo) => ({ ...todo, completed: !todo.completed })),
     );
     toMatchSnapshot(expect, store, 'completed true');
   });
@@ -61,10 +80,16 @@ describe('update', () => {
   it('should update by predicate', () => {
     store.update(addEntities([createTodo(1), createTodo(2)]));
     toMatchSnapshot(expect, store, 'completed false');
+    store.events$.pipe(take(1)).subscribe((action) => {
+      expect(action).toMatchObject({
+        type: 'update',
+        ids: [1],
+      });
+    });
     store.update(
       updateEntitiesByPredicate((entity) => entity.id === 1, {
         completed: true,
-      })
+      }),
     );
     toMatchSnapshot(expect, store, 'completed true');
   });
@@ -79,7 +104,7 @@ describe('update', () => {
   it('should work with ref', () => {
     const store = createUIEntityStore();
     store.update(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
+      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef }),
     );
     toMatchSnapshot(expect, store, 'open false');
     store.update(updateEntities(1, { open: true }, { ref: UIEntitiesRef }));
@@ -89,7 +114,7 @@ describe('update', () => {
   it('should work with ref update all', () => {
     const store = createUIEntityStore();
     store.update(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
+      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef }),
     );
     toMatchSnapshot(expect, store, 'open false');
     store.update(updateAllEntities({ open: true }, { ref: UIEntitiesRef }));
@@ -106,19 +131,53 @@ describe('update', () => {
 
     it(`should add the entity if it doesn't exists`, () => {
       const store = createEntitiesStore();
+      const spy = jest.fn();
+
+      store.events$.pipe(take(2)).subscribe(spy);
+
       store.update(
         addEntities([createTodo(1)]),
-        upsertEntitiesById(2, options)
+        upsertEntitiesById(2, options),
       );
+
+      expect(spy).toBeCalledTimes(2);
+
+      expect(spy).nthCalledWith(1, {
+        type: 'add',
+        ids: [1],
+      });
+
+      expect(spy).nthCalledWith(2, {
+        type: 'add',
+        ids: [2],
+      });
+
       toMatchSnapshot(expect, store, 'two entities');
     });
 
     it('should update an entity if exists', () => {
       const store = createEntitiesStore();
+      const spy = jest.fn();
+
+      store.events$.pipe(take(2)).subscribe(spy);
+
       store.update(
         addEntities([createTodo(1)]),
-        upsertEntitiesById(1, options)
+        upsertEntitiesById(1, options),
       );
+
+      expect(spy).toBeCalledTimes(2);
+
+      expect(spy).nthCalledWith(1, {
+        type: 'add',
+        ids: [1],
+      });
+
+      expect(spy).nthCalledWith(2, {
+        type: 'update',
+        ids: [1],
+      });
+
       toMatchSnapshot(expect, store, 'one entity, title "elf"');
     });
 
@@ -126,12 +185,12 @@ describe('update', () => {
       const store = createEntitiesStore();
       store.update(
         addEntities([createTodo(1)]),
-        upsertEntitiesById([1, 2], options)
+        upsertEntitiesById([1, 2], options),
       );
       toMatchSnapshot(
         expect,
         store,
-        'two entities, 1: title "elf", 2: title "todo 2"'
+        'two entities, 1: title "elf", 2: title "todo 2"',
       );
     });
 
@@ -142,7 +201,7 @@ describe('update', () => {
         upsertEntitiesById([1, 2], {
           ...options,
           mergeUpdaterWithCreator: true,
-        })
+        }),
       );
       toMatchSnapshot(expect, store, 'two entities, title "elf"');
     });
@@ -156,7 +215,7 @@ describe('update', () => {
           creator: (id) => createUITodo(id),
           mergeUpdaterWithCreator: true,
           ref: UIEntitiesRef,
-        })
+        }),
       );
       toMatchSnapshot(expect, store, 'two entities, open true');
     });
@@ -185,7 +244,7 @@ describe('update', () => {
       const store = createUIEntityStore();
       store.update(
         addEntities([createUITodo(1)], { ref: UIEntitiesRef }),
-        upsertEntities([{ id: 1, open: true }], { ref: UIEntitiesRef })
+        upsertEntities([{ id: 1, open: true }], { ref: UIEntitiesRef }),
       );
       toMatchSnapshot(expect, store, 'one ui entity, open true');
     });
@@ -236,7 +295,7 @@ describe('update', () => {
       store.update(addEntities([createTodo(1)]));
       store.update(
         updateEntitiesIds(1, 2),
-        updateEntities(2, { completed: true })
+        updateEntities(2, { completed: true }),
       );
       toMatchSnapshot(expect, store, 'id updated true, completed true');
     });

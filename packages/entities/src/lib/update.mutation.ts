@@ -41,27 +41,33 @@ function toModel<Entity>(updater: UpdateFn<Entity>, entity: Entity): Entity {
 export function updateEntities<
   S extends EntitiesState<Ref>,
   U extends UpdateFn<getEntityType<S, Ref>>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   ids: OrArray<getIdType<S, Ref>>,
   updater: U,
-  options: BaseEntityOptions<Ref> = {}
+  options: BaseEntityOptions<Ref> = {},
 ): Reducer<S> {
-  return function (state) {
+  return function (state, ctx) {
+    const coerceIds = coerceArray(ids);
+
+    if (!coerceIds.length) return state;
+
     const { ref: { entitiesKey } = defaultEntitiesRef } = options;
     const updatedEntities = {} as Record<
       getIdType<S, Ref>,
       getEntityType<S, Ref>
     >;
 
-    for (const id of coerceArray(ids)) {
+    for (const id of coerceIds) {
       if (hasEntity(id, options)(state)) {
         updatedEntities[id] = toModel<getEntityType<S, Ref>>(
           updater,
-          getEntity(id, options)(state)
+          getEntity(id, options)(state),
         );
       }
     }
+
+    ctx.setEvent({ type: 'update', ids: coerceIds });
 
     return {
       ...state,
@@ -82,17 +88,17 @@ export function updateEntities<
 export function updateEntitiesByPredicate<
   S extends EntitiesState<Ref>,
   U extends UpdateFn<getEntityType<S, Ref>>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   predicate: ItemPredicate<getEntityType<S, Ref>>,
   updater: U,
-  options: BaseEntityOptions<Ref> = {}
+  options: BaseEntityOptions<Ref> = {},
 ): Reducer<S> {
   return function (state, context) {
     const ids = findIdsByPredicate(
       state,
       options.ref || (defaultEntitiesRef as Ref),
-      predicate
+      predicate,
     );
 
     if (ids.length) {
@@ -116,7 +122,7 @@ export function updateEntitiesByPredicate<
 export function updateAllEntities<
   S extends EntitiesState<Ref>,
   U extends UpdateFn<getEntityType<S, Ref>>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(updater: U, options: BaseEntityOptions<Ref> = {}): Reducer<S> {
   return function (state, context) {
     const { ref: { idsKey } = defaultEntitiesRef } = options;
@@ -139,7 +145,7 @@ export function upsertEntitiesById<
   U extends UpdateFn<EntityType>,
   C extends CreateFn<EntityType, getIdType<S, Ref>>,
   Ref extends EntitiesRef = DefaultEntitiesRef,
-  EntityType = getEntityType<S, Ref>
+  EntityType = getEntityType<S, Ref>,
 >(
   ids: OrArray<getIdType<S, Ref>>,
   {
@@ -151,9 +157,9 @@ export function upsertEntitiesById<
     creator: C;
     mergeUpdaterWithCreator?: boolean;
   } & AddEntitiesOptions &
-    BaseEntityOptions<Ref>
+    BaseEntityOptions<Ref>,
 ): Reducer<S> {
-  return function (state, context) {
+  return function (state, ctx) {
     const updatedEntitiesIds = [];
     const newEntities = [];
 
@@ -175,10 +181,10 @@ export function upsertEntitiesById<
     const newState = updateEntities(
       updatedEntitiesIds,
       updater,
-      options
-    )(state, context);
+      options,
+    )(state, ctx);
 
-    return addEntities(newEntities, options)(newState, context) as S;
+    return addEntities(newEntities, options)(newState, ctx) as S;
   };
 }
 
@@ -201,18 +207,19 @@ export function upsertEntitiesById<
  */
 export function upsertEntities<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   entities: OrArray<Partial<getEntityType<S, Ref>>>,
-  options: AddEntitiesOptions & BaseEntityOptions<Ref> = {}
+  options: AddEntitiesOptions & BaseEntityOptions<Ref> = {},
 ): Reducer<S> {
-  return function (state, context) {
+  return function (state, ctx) {
     const { prepend = false, ref = defaultEntitiesRef } = options;
     const { entitiesKey, idsKey } = ref!;
-    const idKey = getIdKey<getIdType<S, Ref>>(context, ref);
+    const idKey = getIdKey<getIdType<S, Ref>>(ctx, ref);
 
     const asObject = {} as Record<getIdType<S, Ref>, getEntityType<S, Ref>>;
     const ids = [] as getIdType<S, Ref>;
+    const updatedEntitiesId = [];
 
     const entitiesArray = coerceArray(entities);
     if (!entitiesArray.length) {
@@ -224,6 +231,7 @@ export function upsertEntities<
       // if entity exists, merge update, else add
       if (hasEntity(id, options)(state)) {
         asObject[id] = { ...state[entitiesKey][id], ...entity };
+        updatedEntitiesId.push(id);
       } else {
         ids.push(id);
         asObject[id] = entity;
@@ -237,6 +245,14 @@ export function upsertEntities<
             ? [...ids, ...state[idsKey]]
             : [...state[idsKey], ...ids],
         };
+
+    if (ids.length) {
+      ctx.setEvent({ type: 'add', ids });
+    }
+
+    if (updatedEntitiesId.length) {
+      ctx.setEvent({ type: 'update', ids: updatedEntitiesId });
+    }
 
     return {
       ...state,
@@ -263,13 +279,13 @@ export function upsertEntities<
  */
 export function updateEntitiesIds<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   oldId: OrArray<getIdType<S, Ref>>,
   newId: OrArray<getIdType<S, Ref>>,
-  options: BaseEntityOptions<Ref> = {}
+  options: BaseEntityOptions<Ref> = {},
 ): Reducer<S> {
-  return function (state, context) {
+  return function (state, ctx) {
     const oldIds = coerceArray(oldId);
     const newIds = coerceArray(newId);
 
@@ -277,8 +293,10 @@ export function updateEntitiesIds<
       throw new Error('The number of old and new ids must be equal');
     }
 
+    if (!oldIds.length || !newIds.length) return state;
+
     const { ref = defaultEntitiesRef } = options;
-    const idProp = getIdKey<string>(context, ref);
+    const idProp = getIdKey<string>(ctx, ref);
     const updatedEntities = { ...state[ref.entitiesKey] };
 
     for (let i = 0; i < oldIds.length; i++) {
@@ -287,7 +305,7 @@ export function updateEntitiesIds<
 
       if (state[ref.entitiesKey][newVal]) {
         throw new Error(
-          `Updating id "${oldVal}". The new id "${newVal}" already exists`
+          `Updating id "${oldVal}". The new id "${newVal}" already exists`,
         );
       }
 
@@ -319,6 +337,8 @@ export function updateEntitiesIds<
         break;
       }
     }
+
+    ctx.setEvent({ type: 'update', ids: newIds });
 
     return {
       ...state,

@@ -22,18 +22,20 @@ import { buildEntities } from './entity.utils';
  */
 export function setEntities<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   entities: getEntityType<S, Ref>[],
-  options: BaseEntityOptions<Ref> = {}
+  options: BaseEntityOptions<Ref> = {},
 ): Reducer<S> {
-  return function (state, context) {
+  return function (state, ctx) {
     const { ref = defaultEntitiesRef } = options;
     const { entitiesKey, idsKey } = ref!;
     const { ids, asObject } = buildEntities<S, Ref>(
       entities,
-      getIdKey<getIdType<S, Ref>>(context, ref)
+      getIdKey<getIdType<S, Ref>>(ctx, ref),
     );
+
+    ctx.setEvent({ type: 'set', ids });
 
     return {
       ...state,
@@ -45,10 +47,10 @@ export function setEntities<
 
 export function setEntitiesMap<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   entities: Record<any, getEntityType<S, Ref>>,
-  options: BaseEntityOptions<Ref> = {}
+  options: BaseEntityOptions<Ref> = {},
 ) {
   return setEntities(Object.values(entities), options);
 }

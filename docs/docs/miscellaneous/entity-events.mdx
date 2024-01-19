@@ -1,0 +1,18 @@
+# Entity Events
+
+You can listen to store entity events using the `store.events$` observable:
+
+```ts
+store.events$.subscribe((event: StoreEvent) => {
+  if (event.type === 'add') {
+    console.log(event.ids);
+  }
+});
+
+interface StoreEvent {
+  type: 'add' | 'delete' | 'update' | 'set';
+  ids: any[];
+}
+```
+
+Delete all - `event.type === 'delete' && !event.ids.length`
