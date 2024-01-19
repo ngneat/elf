@@ -2,6 +2,20 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [5.0.0](https://github-personal/ngneat/elf/compare/entities-4.6.0...entities-5.0.0) (2024-01-19)
+
+
+### Features
+
+* **entities:** 🔥 add events ([e05d8ff](https://github-personal/ngneat/elf/commit/e05d8ffc244ca24568824eb18aebabb6be4e8ae4))
+
+
+### BREAKING CHANGES
+
+* **entities:** 🧨 the store peer dependency is now v2.5.0
+
+
+
 # [4.6.0](https://github-personal/ngneat/elf/compare/entities-4.5.0...entities-4.6.0) (2023-10-03)
 
 
