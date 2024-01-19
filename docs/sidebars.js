@@ -63,6 +63,7 @@ module.exports = {
         'miscellaneous/registry',
         'miscellaneous/hooks',
         'miscellaneous/batching',
+        'miscellaneous/entity-events',
       ],
     },
     'recipes',
