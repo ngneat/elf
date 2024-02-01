@@ -22,7 +22,7 @@ $ npm install -g @ngneat/elf-cli
 $ elf COMMAND
 running command...
 $ elf (-v|--version|version)
-@ngneat/elf-cli/3.1.0 darwin-arm64 node-v18.17.1
+@ngneat/elf-cli/3.1.0 darwin-arm64 node-v18.18.0
 $ elf --help [COMMAND]
 USAGE
   $ elf COMMAND
