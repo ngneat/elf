@@ -1,11 +1,9 @@
-type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
-  k: infer I
-) => void
-  ? I
-  : never;
-type Merge<State extends any[], Key extends PropertyKey> = UnionToIntersection<
-  State[number][Key]
->;
+export type Merge<
+  State extends Record<Key, any>[],
+  Key extends PropertyKey,
+> = State extends [Record<Key, infer V>, ...infer Rest extends any[]]
+  ? V & Merge<Rest, Key>
+  : unknown;
 
 export type PropsFactory<Props, Config> = { props: Props; config: Config };
 export type EmptyConfig = undefined;

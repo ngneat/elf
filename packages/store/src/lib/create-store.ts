@@ -1,17 +1,8 @@
-import { createState, PropsFactory } from './state';
+import { createState, Merge, PropsFactory } from './state';
 import { Store } from './store';
 
-type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
-  k: infer I
-) => void
-  ? I
-  : never;
-type Merge<State extends any[], Key extends PropertyKey> = UnionToIntersection<
-  State[number][Key]
->;
-
 export function createStore<
-  S extends [PropsFactory<any, any>, ...PropsFactory<any, any>[]]
+  S extends [PropsFactory<any, any>, ...PropsFactory<any, any>[]],
 >(
   storeConfig: StoreConfig,
   ...propsFactories: S

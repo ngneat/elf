@@ -31,7 +31,7 @@ describe('Store types', () => {
   it('should set the correct types', () => {
     const { state, config } = createState(
       withProps<Props>({ id: 1, name: 'foo' }),
-      withFoo()
+      withFoo(),
     );
 
     expectTypeOf(state).toEqualTypeOf<Props & FooProps>();
@@ -66,5 +66,22 @@ describe('Store types', () => {
     } catch {
       //
     }
+  });
+
+  it('should work with union types', () => {
+    type Circle = { kind: 'CIRCLE'; diameter: number };
+    type Square = { kind: 'SQUARE'; edge: number };
+    type Shape = Circle | Square;
+
+    const v1 = createState(
+      withProps<Shape>({ kind: 'CIRCLE', diameter: 2 }),
+      withProps<{ id: number }>({ id: 1 }),
+    );
+
+    expectTypeOf(v1.state).toEqualTypeOf<Shape & { id: number }>();
+
+    const v2 = createState(withProps<Shape>({ kind: 'CIRCLE', diameter: 2 }));
+
+    expectTypeOf(v2.state).toEqualTypeOf<Shape>();
   });
 });
