@@ -29,7 +29,8 @@
     "url": "https://netbasal.com"
   },
   "peerDependencies": {
-    "@ngneat/elf": ">=2.5.0"
+    "@ngneat/elf": ">=2.5.0",
+    "rxjs": ">=7.0.0"
   },
   "sideEffects": false,
   "license": "MIT"
