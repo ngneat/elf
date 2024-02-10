@@ -28,6 +28,9 @@
     "email": "netanel7799@gmail.com",
     "url": "https://netbasal.com"
   },
+  "peerDependencies": {
+    "rxjs": ">=7.0.0"
+  },
   "sideEffects": false,
   "license": "MIT"
 }
