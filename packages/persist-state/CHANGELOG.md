@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.2.1](https://github-personal/ngneat/elf/compare/persist-state-1.2.0...persist-state-1.2.1) (2024-02-10)
+
+
+### Bug Fixes
+
+* **persist-state:** 🐞 mark rxjs as peer dep ([07eff2f](https://github-personal/ngneat/elf/commit/07eff2f0f0ec0d5d2328e7db98cca2dcb66bdb21)), closes [#511](https://github-personal/ngneat/elf/issues/511)
+
+
+
 # [1.2.0](https://github-personal/ngneat/elf/compare/persist-state-1.1.6...persist-state-1.2.0) (2023-10-29)
 
 

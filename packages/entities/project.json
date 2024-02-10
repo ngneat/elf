@@ -15,16 +15,6 @@
         "entryFile": "packages/entities/src/index.ts",
         "rollupConfig": "@nx/react/plugins/bundle-rollup",
         "format": ["esm", "cjs"],
-        "globals": [
-          {
-            "global": "Rx",
-            "moduleId": "rxjs"
-          },
-          {
-            "global": "Rx",
-            "moduleId": "rxjs/operators"
-          }
-        ],
         "assets": [
           {
             "glob": "packages/entities/*.md",
