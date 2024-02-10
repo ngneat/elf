@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [5.0.1](https://github-personal/ngneat/elf/compare/entities-5.0.0...entities-5.0.1) (2024-02-10)
+
+
+### Bug Fixes
+
+* **entities:** 🐞 mark rxjs as peer dep ([5aac7af](https://github-personal/ngneat/elf/commit/5aac7af192a352650d827dac5a66a88c60657b9d)), closes [#511](https://github-personal/ngneat/elf/issues/511)
+
+
+
 # [5.0.0](https://github-personal/ngneat/elf/compare/entities-4.6.0...entities-5.0.0) (2024-01-19)
 
 
