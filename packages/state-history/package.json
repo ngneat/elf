@@ -30,7 +30,8 @@
   },
   "sideEffects": false,
   "peerDependencies": {
-    "@ngneat/elf-entities": "*"
+    "@ngneat/elf-entities": "*",
+    "rxjs": ">=7.0.0"
   },
   "license": "MIT"
 }
