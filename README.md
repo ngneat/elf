@@ -20,6 +20,25 @@ Elf encourages simplicity. It saves you the hassle of creating boilerplate code 
 ✅ &nbsp;Pagination  
 ✅ &nbsp;Devtools
 
+## Sponsoring ngneat
+
+[Sponsorships](https://github.com/sponsors/ngneat) aid in the continued development and maintenance of ngneat libraries. Consider asking your company to sponsor ngneat as its core to their business and application development.
+
+### Gold Sponsors
+
+Elevate your support by becoming a Gold Sponsor and have your logo prominently featured on our README in the top 5 repositories.
+
+### Silver Sponsors
+
+Boost your backing by becoming a Gold Sponsor and enjoy the spotlight with your logo prominently showcased in the top 3 repositories on our README.
+
+### Bronze Sponsors
+
+<a href="https://houseofangular.io" target="_blank">
+  <img src="https://github.com/ngrx/platform/blob/main/projects/ngrx.io/src/assets/images/sponsors/house-of-angular.png" width="50px" height="50px" alt="House of Angular" />
+</a>
+
+Become a bronze sponsor and get your logo on our README on GitHub.
 
 <hr />
 
@@ -31,10 +50,13 @@ Elf encourages simplicity. It saves you the hassle of creating boilerplate code 
 [![coc-badge](https://img.shields.io/badge/codeof-conduct-ff69b4.svg?style=flat-square)]()
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e5079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
 </p>
 
 ## 🤓 Learn about it on the [docs site](https://ngneat.github.io/elf/)
+
 ## 👩‍🎓 Check out the React Todos [example](https://stackblitz.com/edit/react-ts-jidhej?file=todos/todos.tsx)
+
 ## 😋 Check out the Angular Todos [example](https://stackblitz.com/edit/angular-ivy-sky1gb?file=src/app/todos/state/todos.repository.ts) or Books [example](https://stackblitz.com/edit/angular-ivy-j9azue?file=src/app/state/books.repository.ts)
 
 <br >
@@ -53,11 +75,7 @@ interface Todo {
   status: string;
 }
 
-const store = createStore(
-  { name: 'todos' },
-  withProps<TodosProps>({ filter: 'ALL' }),
-  withEntities<Todo>()
-);
+const store = createStore({ name: 'todos' }, withProps<TodosProps>({ filter: 'ALL' }), withEntities<Todo>());
 
 export const filter$ = store.pipe(select(({ filter }) => filter));
 export const todos$ = store.pipe(selectAllEntities());
@@ -72,6 +90,7 @@ export function updateFilter(filter: TodosProps['filter']) {
 ```
 
 ## 🗒️ Review the Change Logs
+
 - [`@ngneat/elf`](https://github.com/ngneat/elf/blob/master/packages/store/CHANGELOG.md)
 - [`@ngneat/elf-cli`](https://github.com/ngneat/elf/blob/master/packages/cli/CHANGELOG.md)
 - [`@ngneat/elf-devtools`](https://github.com/ngneat/elf/blob/master/packages/devtools/CHANGELOG.md)
@@ -82,4 +101,5 @@ export function updateFilter(filter: TodosProps['filter']) {
 - [`@ngneat/state-history`](https://github.com/ngneat/elf/blob/master/packages/state-history/CHANGELOG.md)
 
 ## ⭐ Usage Trend of Elf Packages
+
 [Usage Trend of Elf Packages](https://npm-compare.com/@ngneat/elf,@ngneat/elf-entities,@ngneat/elf-devtools,@ngneat/elf-persist-state,@ngneat/elf-requests,@ngneat/elf-pagination,@ngneat/elf-cli-ng,@ngneat/elf-state-history,@ngneat/elf-cli)
