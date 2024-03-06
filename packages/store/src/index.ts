@@ -32,6 +32,7 @@ export {
   deepFreeze,
   isFunction,
   isObject,
+  isRecord,
   isString,
   isUndefined,
 } from './lib/utils';

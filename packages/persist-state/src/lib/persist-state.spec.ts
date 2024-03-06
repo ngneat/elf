@@ -27,7 +27,7 @@ describe('persist state', () => {
     expect(storage.setItem).toHaveBeenCalledTimes(1);
     expect(storage.setItem).toHaveBeenCalledWith(
       `todos@store`,
-      store.getValue()
+      store.getValue(),
     );
   });
 
@@ -99,8 +99,8 @@ describe('persist state', () => {
     class CustomStateStorage implements StateStorage {
       private readonly _storage: Record<string, string> = {};
 
-      getItem<T extends Record<string, any>>(
-        key: string
+      getItem<T extends Record<string, any> | string>(
+        key: string,
       ): Async<T | undefined | null> {
         const value = this._storage[key];
         return Promise.resolve(value && JSON.parse(value));
@@ -124,11 +124,44 @@ describe('persist state', () => {
       store.update(updateEntities(1, { title: 'new-title' }));
       store.update(deleteEntities(1));
     }).not.toThrowError(
-      new TypeError(`Cannot read properties of undefined (reading '_storage')`)
+      new TypeError(`Cannot read properties of undefined (reading '_storage')`),
     );
   });
 
-  it('should call preStorageUpdate and remove sensitive data before saving to storage', () => {
+  it('should call preStoreValueInit and preStoreInit and decode sensitive data and complete before saving to store', () => {
+    const value = createTodo(1);
+    value.sensitiveData = 'S3cr37';
+
+    const storage: StateStorage = {
+      getItem: jest.fn().mockImplementation(() => of(value)),
+      setItem: jest.fn().mockImplementation(() => of(true)),
+      removeItem: jest.fn().mockImplementation(() => of(true)),
+    };
+
+    const preStoreValueInit = jest.fn().mockImplementation((value) => {
+      const newValue = { ...value };
+      newValue.sensitiveData = 'Secret';
+      return newValue;
+    });
+
+    const preStoreInit = jest.fn().mockImplementation((value) => {
+      const newState = { ...value };
+      newState.completed = true;
+      return newState;
+    });
+
+    const store = createEntitiesStore();
+    persistState(store, { storage, preStoreValueInit, preStoreInit });
+    expect(preStoreValueInit).toHaveBeenCalledTimes(1);
+    expect(preStoreInit).toHaveBeenCalledTimes(1);
+
+    const savedState = store.getValue();
+    expect(savedState).toEqual(store.getValue());
+    expect(savedState).toHaveProperty('sensitiveData', 'Secret');
+    expect(savedState).toHaveProperty('completed', true);
+  });
+
+  it('should call preStorageUpdate and encode sensitive data and complete before saving to storage', () => {
     const storage: StateStorage = {
       getItem: jest.fn().mockImplementation(() => of(null)),
       setItem: jest.fn().mockImplementation(() => of(true)),
@@ -139,24 +172,41 @@ describe('persist state', () => {
       .fn()
       .mockImplementation((storeName, state) => {
         const newState = { ...state };
+
         if (storeName === 'todos') {
-          delete newState.sensitiveData;
+          newState.entities['1'].completed = true;
         }
+
+        return newState;
+      });
+
+    const preStorageValueUpdate = jest
+      .fn()
+      .mockImplementation((storeName, state) => {
+        const newState = { ...state };
+
+        if (storeName === 'todos') {
+          newState.entities['1'].sensitiveData = 'S3cr37';
+        }
+
         return newState;
       });
 
     const store = createEntitiesStore();
-    persistState(store, { storage, preStorageUpdate });
+    persistState(store, { storage, preStorageUpdate, preStorageValueUpdate });
     expect(preStorageUpdate).not.toHaveBeenCalled();
+    expect(preStorageValueUpdate).not.toHaveBeenCalled();
 
     const todo = createTodo(1);
-    todo.sensitiveData = 'secret';
+    todo.sensitiveData = 'Secret';
     store.update(addEntities(todo));
     expect(preStorageUpdate).toHaveBeenCalledTimes(1);
     expect(preStorageUpdate).toHaveBeenCalledWith('todos', store.getValue());
+    expect(preStorageValueUpdate).toHaveBeenCalledTimes(1);
 
     const savedState = store.getValue();
-    expect(savedState).not.toHaveProperty('sensitiveData');
+    expect(savedState).toHaveProperty('entities.1.sensitiveData', 'S3cr37');
+    expect(savedState).toHaveProperty('entities.1.completed', true);
     expect(storage.setItem).toHaveBeenCalledWith('todos@store', savedState);
   });
 });

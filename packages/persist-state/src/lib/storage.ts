@@ -1,29 +1,36 @@
+import { isRecord } from '@ngneat/elf';
 import { Observable, of } from 'rxjs';
 
 export type Async<T> = Promise<T> | Observable<T>;
 
 export interface StateStorage {
-  getItem<T extends Record<string, any>>(
-    key: string
+  getItem<T extends Record<string, any> | string>(
+    key: string,
   ): Async<T | null | undefined>;
 
-  setItem(key: string, value: Record<string, any>): Async<any>;
+  setItem(key: string, value: Record<string, any> | string): Async<any>;
 
   removeItem(key: string): Async<boolean | void>;
 }
 
 function createStorage(storage: Storage | undefined): StateStorage | undefined {
   if (!storage) {
-    return;
+    return undefined;
   }
 
   return {
     getItem(key: string) {
-      const v = storage.getItem(key);
-      return of(v ? JSON.parse(v) : v);
+      const value = storage.getItem(key);
+
+      try {
+        return of(JSON.parse(value!));
+      } catch (e) {
+        return of(value);
+      }
     },
-    setItem(key: string, value: Record<string, any>) {
-      storage.setItem(key, JSON.stringify(value));
+    setItem(key: string, value: Record<string, any> | string) {
+      const formattedValue = isRecord(value) ? JSON.stringify(value) : value;
+      storage.setItem(key, formattedValue);
       return of(true);
     },
     removeItem(key: string) {

@@ -18,7 +18,7 @@ import { createStore, withProps, select } from '@ngneat/elf';
 import {
   persistState,
   localStorageStrategy,
-  sessionStorageStrategy,
+  sessionStorageStrategy
 } from '@ngneat/elf-persist-state';
 
 interface AuthProps {
@@ -29,7 +29,7 @@ const authStore = createStore({ name }, withProps<AuthProps>({ user: null }));
 
 export const persist = persistState(authStore, {
   key: 'auth',
-  storage: localStorageStrategy,
+  storage: localStorageStrategy
 });
 
 export const user$ = authStore.pipe(select((state) => state.user));
@@ -39,8 +39,10 @@ As the second parameter you should pass a `Options` object, which can be used to
 
 - `storage`: an Object with `setItem`, `getItem` and `removeItem` method for storing the state (required).
 - `source`: a method that receives the store and return what to save from it (by default - the entire store).
-- `preStoreInit`: a method that runs upon initializing the store with a saved value, used for any required modifications before the value is set.
-- `preStorageUpdate`: a method that runs before saving the store, used for any required modifications before the value is set.
+- `preStoreInit`: a method that runs upon initializing the store with a saved value, used for any required modifications before the value is initialized for store.
+- `preStoreValueInit`: a method that runs before initializing the store with a saved value, used for any required modifications before the value is set for store.
+- `preStorageUpdate`: a method that runs before saving the store, used for any required modifications before the value is prepared for storage.
+- `preStorageValueUpdate`: a method that runs after saving the store, used for any required modifications before the value is set to storage.
 - `key`: the name under which the store state is saved (by default - the store name plus a `@store` suffix).
 - `runGuard` - returns whether the actual implementation should be run. The default is `() => typeof window !== 'undefined'`
 
@@ -55,7 +57,7 @@ import { persistState, localStorageStrategy } from '@ngneat/elf-persist-state';
 
 const instance = persistState(todoStore, {
   key: 'todos',
-  storage: localStorageStrategy,
+  storage: localStorageStrategy
 });
 
 instance.initialized$.subscribe(console.log);
@@ -72,12 +74,12 @@ localForage.config({
   driver: localForage.INDEXEDDB,
   name: 'myApp',
   version: 1.0,
-  storeName: 'auth',
+  storeName: 'auth'
 });
 
 export const persist = persistState(authStore, {
   key: 'auth',
-  storage: localForage,
+  storage: localForage
 });
 ```
 
@@ -89,13 +91,13 @@ The `excludeKeys()` operator can be used to exclude keys from the state:
 import {
   excludeKeys,
   persistState,
-  localStorageStrategy,
+  localStorageStrategy
 } from '@ngneat/elf-persist-state';
 
 persistState(todoStore, {
   key: 'todos',
   storage: localStorageStrategy,
-  source: () => todoStore.pipe(excludeKeys(['ids', 'entities'])),
+  source: () => todoStore.pipe(excludeKeys(['ids', 'entities']))
 });
 ```
 
@@ -111,15 +113,43 @@ import { debounceTime } from 'rxjs/operators';
 persistState(todoStore, {
   key: 'todos',
   storage: localStorageStrategy,
-  source: () => todoStore.pipe(debounceTime(1000)),
+  source: () => todoStore.pipe(debounceTime(1000))
 });
 ```
 
+## preStoreInit
+
+The `preStoreInit` option is a function that is called before the state is initialized to be saved to the state from storage. It receives a single parameter: `value`. The `value` is the current value in the local storage.
+
+This function is useful when you want to modify the storage value before it is initialized to be saved to the state. For example, you might want to remove some sensitive data or transform the value in some way.
+
+The function should return the modified value which will be saved to the state. If you don't return anything from this function, the original state will be saved.
+
+Here is an example of how to use `preStoreInit`:
+
+```ts
+import { persistState, localStorageStrategy } from '@ngneat/elf-persist-state';
+
+const preStoreInit = (value) => {
+  const newState = { ...value };
+  delete newState.sensitiveData;
+  return newState;
+};
+
+persistState(todoStore, {
+  key: 'todos',
+  storage: localStorageStrategy,
+  preStoreInit
+});
+```
+
+In this example, the `preStoreInit` function removes the `sensitiveData` property from the state before it is saved to state.
+
 ## preStorageUpdate
 
-The `preStorageUpdate` option is a function that is called before the state is saved to the storage. It receives two parameters: `storeName` and `state`. The `storeName` is a string representing the name of the store, and `state` is the current state of the store.
+The `preStorageUpdate` option is a function that is called before the state is prepared to be saved to the storage. It receives two parameters: `storeName` and `state`. The `storeName` is a string representing the name of the store, and `state` is the current state of the store.
 
-This function is useful when you want to modify the state before it is saved to the storage. For example, you might want to remove some sensitive data or transform the state in some way.
+This function is useful when you want to modify the state before it is prepared to be saved to the storage. For example, you might want to remove some sensitive data or transform the state in some way.
 
 The function should return the modified state which will be saved to the storage. If you don't return anything from this function, the original state will be saved.
 
@@ -132,16 +162,53 @@ const preStorageUpdate = (storeName, state) => {
   const newState = { ...state };
   if (storeName === 'todos') {
     delete newState.sensitiveData;
-  }    
+  }
   return newState;
-}
-  
+};
 
 persistState(todoStore, {
   key: 'todos',
   storage: localStorageStrategy,
-  preStorageUpdate,
+  preStorageUpdate
 });
 ```
 
 In this example, the `preStorageUpdate` function removes the `sensitiveData` property from the state before it is saved to storage.
+
+## preStoreValueInit
+
+The `preStoreValueInit` option is a function that is called before the state is initialized from the storage and before `preStoreInit`. It receives a single parameter: `value`. The `value` is the current value in the local storage.
+
+This function is useful when you want to prepare the state before it is initialized from the storage. For example, you might want to decrypt or decompress data, paired with `preStorageValueUpdate`.
+
+The function should return the storage value which will be used to initialize the state.
+
+## preStorageValueUpdate
+
+The `preStorageValueUpdate` option is a function that is called after `preStorageUpdate` and before the storage is initialized from the state. It receives two parameters: `storeName` and `state`. The `storeName` is a string representing the name of the store, and `state` is the current state of the store.
+
+This function is useful when you want to prepare the storage before it is initialized from the state. For example, you might want to encrypt or compress data, paired with `preStoreValueInit`.
+
+The function should return the state value which will be used to initialize the storage.
+
+Here is an example of how to use `preStoreValueInit` and `preStorageValueUpdate` by compressing / decompressing store value:
+
+```ts
+import { persistState, localStorageStrategy } from '@ngneat/elf-persist-state';
+import { compressToUTF16, decompressFromUTF16 } from 'lz-string';
+
+const preStorageValueUpdate = (value) => {
+  return JSON.parse(decompressFromUTF16(state.toString()));
+};
+
+const preStorageUpdate = (storeName: string, state) => {
+  return compressToUTF16(JSON.stringify(state));
+};
+
+persistState(todoStore, {
+  key: 'todos',
+  storage: localStorageStrategy,
+  preStoreValueInit,
+  preStorageValueUpdate
+});
+```

@@ -24,6 +24,10 @@ export function isObject(item: any) {
   return typeof item === 'object' && !Array.isArray(item) && item !== null;
 }
 
+export function isRecord(value: any): value is Record<string, any> {
+  return typeof value === 'object' && value !== null;
+}
+
 export function deepFreeze(o: any) {
   Object.freeze(o);
 

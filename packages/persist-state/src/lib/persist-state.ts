@@ -1,16 +1,23 @@
-import { from, Observable, of, ReplaySubject } from 'rxjs';
-import { StateStorage } from './storage';
+import { Store, StoreValue, isRecord } from '@ngneat/elf';
+import { Observable, ReplaySubject, from, of } from 'rxjs';
 import { skip, switchMap } from 'rxjs/operators';
-import { Store, StoreValue } from '@ngneat/elf';
+import { StateStorage } from './storage';
 
 interface Options<S extends Store> {
   storage: StateStorage;
   source?: (store: S) => Observable<Partial<StoreValue<S>>>;
   preStoreInit?: (value: StoreValue<S>) => Partial<StoreValue<S>>;
+  preStoreValueInit?: (
+    value: Record<string, any> | string,
+  ) => Partial<StoreValue<S>>;
   preStorageUpdate?: (
     storeName: string,
-    state: Partial<StoreValue<S>>
+    state: Partial<StoreValue<S>>,
   ) => Partial<StoreValue<S>>;
+  preStorageValueUpdate?: (
+    storeName: string,
+    state: Partial<StoreValue<S>>,
+  ) => Partial<StoreValue<S>> | string;
   key?: string;
   runGuard?(): boolean;
 }
@@ -19,6 +26,7 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
   const defaultOptions: Partial<Options<S>> = {
     source: (store) => store,
     preStoreInit: (value) => value,
+    preStorageUpdate: (storeName, value) => value,
     key: options.key ?? `${store.name}@store`,
     runGuard() {
       return typeof window !== 'undefined';
@@ -40,13 +48,19 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
   const initialized = new ReplaySubject<boolean>(1);
 
   const loadFromStorageSubscription = from(
-    storage.getItem(merged.key!)
+    storage.getItem(merged.key!),
   ).subscribe((value) => {
     if (value) {
+      const preparedValue = merged.preStoreValueInit
+        ? merged.preStoreValueInit(value)
+        : isRecord(value)
+          ? value
+          : { value };
+
       store.update((state) => {
         return merged.preStoreInit!({
           ...state,
-          ...value,
+          ...preparedValue,
         });
       });
     }
@@ -62,8 +76,13 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
         const updatedValue = merged.preStorageUpdate
           ? merged.preStorageUpdate(store.name, value)
           : value;
-        return storage.setItem(merged.key!, updatedValue);
-      })
+
+        const preparedValue = merged.preStorageValueUpdate
+          ? merged.preStorageValueUpdate(store.name, updatedValue)
+          : updatedValue;
+
+        return storage.setItem(merged.key!, preparedValue);
+      }),
     )
     .subscribe();
 
