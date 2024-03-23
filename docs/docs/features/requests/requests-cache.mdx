@@ -216,3 +216,13 @@ import { clearRequestsCache } from '@ngneat/elf-requests';
 
 store.update(clearRequestsCache());
 ```
+
+### `deleteRequestsCache`
+
+```ts
+import { deleteRequestsCache } from '@ngneat/elf-requests';
+
+store.update(deleteRequestsCache('keyOne'));
+
+store.update(deleteRequestsCache(['keyOne', 'keyTwo']));
+```

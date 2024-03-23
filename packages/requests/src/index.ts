@@ -7,6 +7,7 @@ export {
   selectRequestCache,
   selectIsRequestCached,
   clearRequestsCache,
+  deleteRequestsCache,
   updateRequestsCache,
 } from './lib/requests-cache';
 
