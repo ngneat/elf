@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [5.0.2](https://github-personal/ngneat/elf/compare/entities-5.0.1...entities-5.0.2) (2024-04-16)
+
+
+### Bug Fixes
+
+* **entities:** correct behavior of `upsertEntities` with duplicate ids ([#519](https://github-personal/ngneat/elf/issues/519)) ([9411e87](https://github-personal/ngneat/elf/commit/9411e871e19dfa207f2d22f4e1c90f405ef855b6))
+
+
+
 ## [5.0.1](https://github-personal/ngneat/elf/compare/entities-5.0.0...entities-5.0.1) (2024-02-10)
 
 
