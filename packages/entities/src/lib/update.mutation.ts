@@ -228,8 +228,9 @@ export function upsertEntities<
 
     for (const entity of entitiesArray) {
       const id: getIdType<S, Ref> = entity[idKey];
-      // if entity exists, merge update, else add
-      if (hasEntity(id, options)(state)) {
+      if (asObject[id]) {
+        asObject[id] = { ...asObject[id], ...entity };
+      } else if (hasEntity(id, options)(state)) {
         asObject[id] = { ...state[entitiesKey][id], ...entity };
         updatedEntitiesId.push(id);
       } else {
