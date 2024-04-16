@@ -259,6 +259,19 @@ describe('update', () => {
 
       expect(ids).toBe(sameIds);
     });
+
+    it('should be able to handle duplicate ids', () => {
+      const store = createEntitiesStore();
+      store.update(
+        upsertEntities([
+          { id: 1, completed: true },
+          { id: 1, completed: false },
+        ]),
+      );
+      const { ids, entities } = store.getValue();
+      expect(ids).toEqual([1]);
+      expect(entities).toEqual({ 1: { id: 1, completed: false } });
+    });
   });
 
   describe('UpdateEntitiesIds', () => {
