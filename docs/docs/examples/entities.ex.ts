@@ -18,7 +18,7 @@ todosStore.pipe(selectAllEntities()).subscribe((todos) => {
 
 todosStore.update(
   setEntities([
-    { id: 1, label: 'one ' },
+    { id: 1, label: 'one' },
     { id: 2, label: 'two' },
   ])
 );
