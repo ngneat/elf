@@ -17,7 +17,7 @@ interface Todo {
 const todosStore = createStore(
   { name: 'todos' },
   withEntities<Todo>(),
-  withRequestsStatus<'todos'>()
+  withRequestsStatus<'todos'>(),
 );
 
 const trackTodosRequestsStatus = createRequestsStatusOperator(todosStore);
@@ -29,7 +29,7 @@ todosStore.pipe(selectRequestStatus('todos')).subscribe((status) => {
 function setTodos(todos: Todo[]) {
   todosStore.update(
     setEntities(todos),
-    updateRequestStatus('todos', 'success')
+    updateRequestStatus('todos', 'success'),
   );
 }
 

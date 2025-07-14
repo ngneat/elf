@@ -76,7 +76,7 @@ function initialResult(): RequestResult {
 function getSource<TValue>(
   key: unknown[],
   initialValue: TValue,
-  map: Map<string, BehaviorSubject<TValue>>
+  map: Map<string, BehaviorSubject<TValue>>,
 ) {
   const item = map.get(resolveKey(key));
 
@@ -99,7 +99,7 @@ const emitters = new Map<string, BehaviorSubject<RequestResult>>();
 // @public
 export function getRequestResult<TError>(
   key: unknown[],
-  { initialStatus }: { initialStatus?: 'idle' } = {}
+  { initialStatus }: { initialStatus?: 'idle' } = {},
 ): Observable<RequestResult<TError>> {
   let result = initialResult();
 
@@ -134,11 +134,12 @@ function updateRequestResult(key: unknown[], newValue: Partial<RequestResult>) {
       }
     }
 
-    hasChange &&
+    if (hasChange) {
       result.next({
         ...currentResult,
         ...newValue,
       } as RequestResult);
+    }
   }
 }
 
@@ -170,7 +171,7 @@ export function joinRequestResult<T, TError = any, TData = any>(
           ...result,
           data,
         };
-      })
+      }),
     );
   };
 }
@@ -190,7 +191,7 @@ interface Options<TData> {
 
 export function trackRequestResult<TData>(
   key: unknown[],
-  options?: Options<TData>
+  options?: Options<TData>,
 ): MonoTypeOperatorFunction<TData> {
   return function (source: Observable<TData>) {
     return getRequestResult(key).pipe(
@@ -227,7 +228,7 @@ export function trackRequestResult<TData>(
               }
               return EMPTY;
             }),
-            take(1)
+            take(1),
           );
         }
 
@@ -281,9 +282,9 @@ export function trackRequestResult<TData>(
                 }
               }
             },
-          })
+          }),
         );
-      })
+      }),
     );
   };
 }
@@ -294,7 +295,7 @@ export function filterSuccess<TData>(): OperatorFunction<
 > {
   return filter(
     (result): result is SuccessRequestResult & { data: TData } =>
-      result.status === 'success'
+      result.status === 'success',
   );
 }
 
@@ -303,12 +304,12 @@ export function filterError<TError>(): OperatorFunction<
   ErrorRequestResult<TError>
 > {
   return filter(
-    (result): result is ErrorRequestResult<TError> => result.status === 'error'
+    (result): result is ErrorRequestResult<TError> => result.status === 'error',
   );
 }
 
 export function mapResultData<TData, R>(
-  mapFn: (data: NonNullable<TData>) => R
+  mapFn: (data: NonNullable<TData>) => R,
 ): MonoTypeOperatorFunction<RequestResult & { data: TData }> {
   return pipe(
     map((result) => {
@@ -316,6 +317,6 @@ export function mapResultData<TData, R>(
         ...result,
         data: result.data != null ? mapFn(result.data as any) : result.data,
       } as any;
-    })
+    }),
   );
 }

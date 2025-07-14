@@ -5,7 +5,6 @@ A Facade is a simple public interface that hides more complex usage. Facades enc
 For example, we can create a `products.facade.ts`:
 
 ```ts title="products.facade.ts"
-
 import { createEffectFn } from '@ngneat/effects';
 import { createStore } from '@ngneat/elf';
 import {
@@ -31,16 +30,15 @@ export interface Product {
 const store = createStore(
   { name: 'products' },
   withEntities<Product>(),
-  withRequestsStatus()
+  withRequestsStatus(),
 );
 
-const { setSuccess, trackRequestStatus, data$ } =
-  createRequestDataSource({
-    data$: () => store.pipe(selectAllEntities()),
-    requestKey: 'products',
-    dataKey: 'products',
-    store,
-  });
+const { setSuccess, trackRequestStatus, data$ } = createRequestDataSource({
+  data$: () => store.pipe(selectAllEntities()),
+  requestKey: 'products',
+  dataKey: 'products',
+  store,
+});
 
 export const productsDataSource = data$();
 
@@ -54,12 +52,11 @@ export const getProductsEffect = createEffectFn(($: Observable<void>) => {
     mergeMap(() =>
       http<Product[]>('assets/products.json', {
         selector: (res) => res.json(),
-      })
+      }),
     ),
-    tap(setProducts)
+    tap(setProducts),
   );
 });
-
 ```
 
 ### Creating a Facade with the CLI

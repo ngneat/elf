@@ -5,7 +5,7 @@ const todosStore = createStore(
   { name: 'auth' },
   withProps<{ user: string }>({
     user: '',
-  })
+  }),
 );
 
 export const todosStateHistory = stateHistory(todosStore);

@@ -10,7 +10,7 @@ describe('createStore', () => {
     const store = createStore(
       { name: 'todos' },
       withEntities<Todo>(),
-      withProps<{ filter: string }>({ filter: '' })
+      withProps<{ filter: string }>({ filter: '' }),
     );
 
     expect(store.getValue()).toMatchSnapshot();
@@ -20,7 +20,7 @@ describe('createStore', () => {
     const store = createStore(
       // @ts-expect-error - The name property is missing
       {},
-      withProps<{ filter: string }>({ filter: '' })
+      withProps<{ filter: string }>({ filter: '' }),
     );
 
     // @ts-expect-error - The state wasn't created with "asd" property
@@ -33,7 +33,7 @@ describe('createStore', () => {
   it('should create object of Store type', () => {
     const store = createStore(
       { name: 'filter' },
-      withProps<{ filter: string }>({ filter: '' })
+      withProps<{ filter: string }>({ filter: '' }),
     );
 
     type ExpectedType = Store<

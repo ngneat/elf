@@ -3,7 +3,7 @@ import { map } from 'rxjs/operators';
 import { OperatorFunction, pipe } from 'rxjs';
 
 export function excludeKeys<S extends Store, State extends StoreValue<S>>(
-  keys: Array<keyof State>
+  keys: Array<keyof State>,
 ): OperatorFunction<State, Partial<State>> {
   return pipe(
     map((state) => {
@@ -14,6 +14,6 @@ export function excludeKeys<S extends Store, State extends StoreValue<S>>(
 
         return toSave;
       }, {} as State);
-    })
+    }),
   );
 }

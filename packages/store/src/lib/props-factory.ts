@@ -8,13 +8,13 @@ export function propsFactory<
   T,
   K extends string,
   Props extends { [Key in K]: T },
-  Config = EmptyConfig
+  Config = EmptyConfig,
 >(
   key: K,
   {
     initialValue: propsFactoryInitialValue,
     config,
-  }: { initialValue: T; config?: Config }
+  }: { initialValue: T; config?: Config },
 ) {
   let initialValue = propsFactoryInitialValue;
   const normalizedKey = capitalize(key);
@@ -88,19 +88,19 @@ export function propsFactory<
       | `get${Capitalize<K>}`]: P extends `get${Capitalize<K>}`
       ? <S extends Props>(state: S) => T
       : P extends `select${Capitalize<K>}`
-      ? <S extends Props>() => OperatorFunction<S, T>
-      : P extends `reset${Capitalize<K>}`
-      ? <S extends Props>() => Reducer<S>
-      : P extends `set${Capitalize<K>}InitialValue`
-      ? (value: T) => void
-      : P extends `set${Capitalize<K>}`
-      ? <S extends Props>(value: T | ((state: S) => T)) => Reducer<S>
-      : P extends `update${Capitalize<K>}`
-      ? <S extends Props>(
-          value: Partial<T> | ((state: S) => Partial<T>)
-        ) => Reducer<S>
-      : P extends `with${Capitalize<K>}`
-      ? (initialValue?: T) => PropsFactory<Props, Config>
-      : any;
+        ? <S extends Props>() => OperatorFunction<S, T>
+        : P extends `reset${Capitalize<K>}`
+          ? <S extends Props>() => Reducer<S>
+          : P extends `set${Capitalize<K>}InitialValue`
+            ? (value: T) => void
+            : P extends `set${Capitalize<K>}`
+              ? <S extends Props>(value: T | ((state: S) => T)) => Reducer<S>
+              : P extends `update${Capitalize<K>}`
+                ? <S extends Props>(
+                    value: Partial<T> | ((state: S) => Partial<T>),
+                  ) => Reducer<S>
+                : P extends `with${Capitalize<K>}`
+                  ? (initialValue?: T) => PropsFactory<Props, Config>
+                  : any;
   };
 }

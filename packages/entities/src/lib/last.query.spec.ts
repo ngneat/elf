@@ -35,7 +35,7 @@ describe('last', () => {
     });
 
     store.update(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
+      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef }),
     );
   });
 });

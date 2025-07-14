@@ -22,7 +22,7 @@ interface Contact {
 const store = createStore(
   { name: 'contacts' },
   withPagination(),
-  withEntities<Contact>()
+  withEntities<Contact>(),
 );
 
 @Injectable({ providedIn: 'root' })
@@ -43,8 +43,8 @@ export class ContactsRepository {
       updatePaginationData(pagination),
       setPage(
         page,
-        data.map((c) => c.id)
-      )
+        data.map((c) => c.id),
+      ),
     );
   }
 

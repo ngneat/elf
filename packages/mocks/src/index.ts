@@ -21,7 +21,7 @@ export function createTodo(id: number): Todo {
 export function toMatchSnapshot(
   expect: jest.Expect,
   store: Store,
-  label: string
+  label: string,
 ) {
   return expect(store.getValue()).toMatchSnapshot(label);
 }

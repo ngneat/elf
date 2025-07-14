@@ -83,13 +83,13 @@ export function createRepo(options: Options) {
   }
 
   const storeOpts = factory.createIdentifier(
-    `{ name: '${storeNames.propertyName}' }`
+    `{ name: '${storeNames.propertyName}' }`,
   );
 
   const store = factory.createCallExpression(
     factory.createIdentifier('createStore'),
     undefined,
-    [storeOpts, ...propsFactories]
+    [storeOpts, ...propsFactories],
   );
 
   if (isStoreInlinedInClass) {
@@ -176,7 +176,7 @@ function addInlineStoreToRepoClass({
   const storeName = resolveStoreVariableName(
     options.template,
     storeNames,
-    true
+    true,
   );
   const lastPropertyIndex = classDec
     .getLastChildByKind(SyntaxKind.PropertyDeclaration)
@@ -192,7 +192,7 @@ function addInlineStoreToRepoClass({
 
   constructorDec.insertStatements(
     0,
-    `${storeName} = this.${createStoreMethodName}();`
+    `${storeName} = this.${createStoreMethodName}();`,
   );
 
   const storeProperty = classDec.insertProperty(propertyIndex, {
@@ -241,7 +241,7 @@ function toFunctions(sourceFile: SourceFile, classDec: ClassDeclaration) {
   classDec?.remove();
 
   sourceFile.replaceWithText(
-    `${sourceFile.getText()}\n ${exported.join('\n\n')}`
+    `${sourceFile.getText()}\n ${exported.join('\n\n')}`,
   );
 }
 

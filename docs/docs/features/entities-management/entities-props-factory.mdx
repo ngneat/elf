@@ -21,7 +21,7 @@ interface Product {
 
 export const productsStore = createStore(
   { name: 'products' },
-  withEntities<Product>()
+  withEntities<Product>(),
 );
 ```
 
@@ -48,7 +48,7 @@ interface CartItem {
 export const productsStore = createStore(
   { name: 'products' },
   withEntities<Product>(),
-  withCartEntities<CartItem>()
+  withCartEntities<CartItem>(),
 );
 ```
 
@@ -82,7 +82,7 @@ export function updateCart(id: Product['id']) {
       creator: (id) => ({ id, quantity: 1 }),
       // highlight-next-line
       ref: cartEntitiesRef,
-    })
+    }),
   );
 }
 ```
@@ -117,7 +117,7 @@ const store = createStore(
   { name: 'movies' },
   withEntities<Movie>(),
   withGenresEntities<Genre>(),
-  withActorsEntities<Actor>()
+  withActorsEntities<Actor>(),
 );
 
 store.update(
@@ -128,6 +128,6 @@ store.update(
     title: 'Gone in 60 Seconds',
     genres: ['1'],
     actors: ['1'],
-  })
+  }),
 );
 ```

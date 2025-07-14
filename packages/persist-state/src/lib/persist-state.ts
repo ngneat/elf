@@ -9,7 +9,7 @@ interface Options<S extends Store> {
   preStoreInit?: (value: StoreValue<S>) => Partial<StoreValue<S>>;
   preStorageUpdate?: (
     storeName: string,
-    state: Partial<StoreValue<S>>
+    state: Partial<StoreValue<S>>,
   ) => Partial<StoreValue<S>>;
   key?: string;
   runGuard?(): boolean;
@@ -40,7 +40,7 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
   const initialized = new ReplaySubject<boolean>(1);
 
   const loadFromStorageSubscription = from(
-    storage.getItem(merged.key!)
+    storage.getItem(merged.key!),
   ).subscribe((value) => {
     if (value) {
       store.update((state) => {
@@ -63,7 +63,7 @@ export function persistState<S extends Store>(store: S, options: Options<S>) {
           ? merged.preStorageUpdate(store.name, value)
           : value;
         return storage.setItem(merged.key!, updatedValue);
-      })
+      }),
     )
     .subscribe();
 

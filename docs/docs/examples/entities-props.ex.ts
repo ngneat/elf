@@ -22,7 +22,7 @@ interface CartItem {
 const productsStore = createStore(
   { name: 'products' },
   withEntities<Product>(),
-  withCartEntities<CartItem>()
+  withCartEntities<CartItem>(),
 );
 
 productsStore.subscribe((value) => {
@@ -35,5 +35,5 @@ productsStore.update(
     updater: (e) => ({ ...e, quantity: e.quantity + 1 }),
     creator: (id) => ({ id, quantity: 1 }),
     ref: cartEntitiesRef,
-  })
+  }),
 );

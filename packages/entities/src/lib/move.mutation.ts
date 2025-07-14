@@ -17,12 +17,12 @@ import { BaseEntityOptions, defaultEntitiesRef } from './entity.state';
  */
 export function moveEntity<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   options: {
     fromIndex: number;
     toIndex: number;
-  } & BaseEntityOptions<Ref>
+  } & BaseEntityOptions<Ref>,
 ): Reducer<S> {
   return function (state) {
     const {
@@ -35,7 +35,7 @@ export function moveEntity<
     ids.splice(
       toIndex < 0 ? ids.length + toIndex : toIndex,
       0,
-      ids.splice(fromIndex, 1)[0]
+      ids.splice(fromIndex, 1)[0],
     );
 
     return {

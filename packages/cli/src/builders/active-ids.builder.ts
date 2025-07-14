@@ -12,14 +12,14 @@ export class ActiveIdsBuilder extends FeatureBuilder {
     return factory.createCallExpression(
       factory.createIdentifier('withActiveIds'),
       undefined,
-      []
+      [],
     );
   }
 
   run() {
     this.addImport(
       ['withActiveIds', 'selectActiveEntities', 'toggleActiveIds'],
-      '@ngneat/elf-entities'
+      '@ngneat/elf-entities',
     );
 
     const initializer = `${this.storeVariableName}.pipe(selectActiveEntities())`;
@@ -35,7 +35,7 @@ export class ActiveIdsBuilder extends FeatureBuilder {
       });
 
       this.repoConstructor.addStatements(
-        `this.${memberData.name} = ${initializer};`
+        `this.${memberData.name} = ${initializer};`,
       );
     } else {
       this.repo.insertMember(0, {

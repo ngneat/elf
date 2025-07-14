@@ -27,7 +27,7 @@ describe('entities state history', () => {
       entitiesPropsFactory('product');
     const propsStore = createStore(
       { name: '' },
-      withProps<{ loading?: boolean }>({})
+      withProps<{ loading?: boolean }>({}),
     );
     // It doesn't work without entities
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -36,7 +36,7 @@ describe('entities state history', () => {
 
     const wrongEntitiesStore = createStore(
       { name: '' },
-      withEntities<Entity>()
+      withEntities<Entity>(),
     );
     // It doesn't work with wrong passed entities ref
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -45,7 +45,7 @@ describe('entities state history', () => {
 
     const wrongUIEntitiesStore = createStore(
       { name: '' },
-      withUIEntities<Entity>()
+      withUIEntities<Entity>(),
     );
     // It doesn't work with wrong passed entities ref
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -54,7 +54,7 @@ describe('entities state history', () => {
 
     const wrongProductEntitiesStore = createStore(
       { name: '' },
-      withProductEntities<{ id: string }>()
+      withProductEntities<{ id: string }>(),
     );
     // It doesn't work with wrong passed entities ref
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -70,7 +70,7 @@ describe('entities state history', () => {
 
     const uiEntitiesStore = createStore(
       { name: '' },
-      withUIEntities<Entity, 'label'>({ idKey: 'label' })
+      withUIEntities<Entity, 'label'>({ idKey: 'label' }),
     );
     const uiEntitiesHistory = entitiesStateHistory(uiEntitiesStore, {
       entitiesRef: UIEntitiesRef,
@@ -82,7 +82,7 @@ describe('entities state history', () => {
 
     const productEntitiesStore = createStore(
       { name: '' },
-      withProductEntities<{ id: string }>()
+      withProductEntities<{ id: string }>(),
     );
     const productEntitiesHistory = entitiesStateHistory(productEntitiesStore, {
       entitiesRef: productEntitiesRef,
@@ -112,7 +112,7 @@ describe('entities state history', () => {
       setEntities([
         { id: 1, label: 'first' },
         { id: 2, label: 'second' },
-      ])
+      ]),
     );
 
     // id: 1 - 1 update
@@ -126,14 +126,14 @@ describe('entities state history', () => {
       upsertEntitiesById([2, 3], {
         updater: (e) => ({ ...e, label: 'upsert test' }),
         creator: (id) => ({ id, label: 'upsert test' }),
-      })
+      }),
     );
     // id: 2 - 4 update; id: 3 - 1 update
     store.update(
       upsertEntitiesById([2, 3], {
         updater: (e) => ({ ...e, label: 'upsert test 1' }),
         creator: (id) => ({ id, label: 'upsert test 1' }),
-      })
+      }),
     );
 
     // id: 2 - to 3 update; id: 3 - to base
@@ -331,7 +331,7 @@ describe('entities state history', () => {
           status: 'loading' | 'idle' | 'error' | 'success';
         },
         'uiId'
-      >({ idKey: 'uiId' })
+      >({ idKey: 'uiId' }),
     );
     const history = entitiesStateHistory(store, { entitiesRef: UIEntitiesRef });
 
@@ -342,21 +342,21 @@ describe('entities state history', () => {
           { uiId: 1, status: 'idle' },
           { uiId: 2, status: 'idle' },
         ],
-        { ref: UIEntitiesRef }
-      )
+        { ref: UIEntitiesRef },
+      ),
     );
 
     // uiId: 1 - 1 update
     store.update(
-      updateEntities(1, { status: 'loading' }, { ref: UIEntitiesRef })
+      updateEntities(1, { status: 'loading' }, { ref: UIEntitiesRef }),
     );
     // uiId: 2 - 1 update
     store.update(
-      updateEntities(2, { status: 'loading' }, { ref: UIEntitiesRef })
+      updateEntities(2, { status: 'loading' }, { ref: UIEntitiesRef }),
     );
     // uiId: 2 - 2 update
     store.update(
-      updateEntities(2, { status: 'success' }, { ref: UIEntitiesRef })
+      updateEntities(2, { status: 'success' }, { ref: UIEntitiesRef }),
     );
 
     // uiId: 2 - to 1 update
@@ -372,7 +372,7 @@ describe('entities state history', () => {
 
     // uiId: 1 - 2 update; uiId: 2 - 2 update
     store.update(
-      updateEntities([1, 2], { status: 'error' }, { ref: UIEntitiesRef })
+      updateEntities([1, 2], { status: 'error' }, { ref: UIEntitiesRef }),
     );
 
     expect(history.hasPast(1)).toBeTruthy();
@@ -434,15 +434,15 @@ describe('entities state history', () => {
 
     // uiId: 2 - 1 update
     store.update(
-      updateEntities(2, { status: 'error' }, { ref: UIEntitiesRef })
+      updateEntities(2, { status: 'error' }, { ref: UIEntitiesRef }),
     );
     // uiId: 2 - 2 update
     store.update(
-      updateEntities(2, { status: 'success' }, { ref: UIEntitiesRef })
+      updateEntities(2, { status: 'success' }, { ref: UIEntitiesRef }),
     );
     // uiId: 2 - 3 update
     store.update(
-      updateEntities(2, { status: 'loading' }, { ref: UIEntitiesRef })
+      updateEntities(2, { status: 'loading' }, { ref: UIEntitiesRef }),
     );
     // uiId: 2 - 4 update
     store.update(updateEntities(2, { status: 'idle' }, { ref: UIEntitiesRef }));
@@ -467,11 +467,11 @@ describe('entities state history', () => {
 
     // uiId: 1 - 1 update
     store.update(
-      updateEntities(1, { status: 'error' }, { ref: UIEntitiesRef })
+      updateEntities(1, { status: 'error' }, { ref: UIEntitiesRef }),
     );
     // uiId: 1 - 2 update
     store.update(
-      updateEntities(1, { status: 'success' }, { ref: UIEntitiesRef })
+      updateEntities(1, { status: 'success' }, { ref: UIEntitiesRef }),
     );
 
     // uiId: 1 - to base; uiId: 2 - to base
@@ -494,15 +494,15 @@ describe('entities state history', () => {
 
     // uiId: 1 - base; uiId: 2 - base
     store.update(
-      updateEntities([1, 2], { status: 'error' }, { ref: UIEntitiesRef })
+      updateEntities([1, 2], { status: 'error' }, { ref: UIEntitiesRef }),
     );
     // uiId: 1 - update 1; uiId: 2 - update 1
     store.update(
-      updateEntities([1, 2], { status: 'success' }, { ref: UIEntitiesRef })
+      updateEntities([1, 2], { status: 'success' }, { ref: UIEntitiesRef }),
     );
     // uiId: 1 - update 2; uiId: 2 - update 2
     store.update(
-      updateEntities([1, 2], { status: 'idle' }, { ref: UIEntitiesRef })
+      updateEntities([1, 2], { status: 'idle' }, { ref: UIEntitiesRef }),
     );
 
     // uiId: 1 - to base; uiId: 2 - to base
@@ -521,13 +521,13 @@ describe('entities state history', () => {
     history.pause();
 
     store.update(
-      updateEntities([1, 2], { status: 'idle' }, { ref: UIEntitiesRef })
+      updateEntities([1, 2], { status: 'idle' }, { ref: UIEntitiesRef }),
     );
     store.update(
-      updateEntities([1, 2], { status: 'success' }, { ref: UIEntitiesRef })
+      updateEntities([1, 2], { status: 'success' }, { ref: UIEntitiesRef }),
     );
     store.update(
-      updateEntities([1, 2], { status: 'loading' }, { ref: UIEntitiesRef })
+      updateEntities([1, 2], { status: 'loading' }, { ref: UIEntitiesRef }),
     );
 
     expect(history.hasFuture(1)).toBeFalsy();
@@ -538,13 +538,13 @@ describe('entities state history', () => {
     history.resume(1);
 
     store.update(
-      updateEntities([1, 2], { status: 'idle' }, { ref: UIEntitiesRef })
+      updateEntities([1, 2], { status: 'idle' }, { ref: UIEntitiesRef }),
     );
     store.update(
-      updateEntities([1, 2], { status: 'success' }, { ref: UIEntitiesRef })
+      updateEntities([1, 2], { status: 'success' }, { ref: UIEntitiesRef }),
     );
     store.update(
-      updateEntities([1, 2], { status: 'loading' }, { ref: UIEntitiesRef })
+      updateEntities([1, 2], { status: 'loading' }, { ref: UIEntitiesRef }),
     );
 
     history.undo(1);
@@ -565,7 +565,7 @@ describe('entities state history', () => {
           { id: 1, label: 'first' },
           { id: 2, label: 'second' },
         ],
-      })
+      }),
     );
     const history = entitiesStateHistory(store);
 
@@ -587,7 +587,7 @@ describe('entities state history', () => {
       setEntities([
         { id: 1, label: 'first' },
         { id: 2, label: 'second' },
-      ])
+      ]),
     );
 
     store.update(updateEntities([1, 2], { label: 'updateEntities' }));
@@ -629,7 +629,7 @@ describe('entities state history', () => {
   it('should update history if only comparatorFn allows', () => {
     const store = createStore(
       { name: '' },
-      withEntities<{ id: number; nested: { nestedTwo: { name: string } } }>()
+      withEntities<{ id: number; nested: { nestedTwo: { name: string } } }>(),
     );
     const history = entitiesStateHistory(store, {
       comparatorFn: (prevState, currentState) =>
@@ -637,7 +637,7 @@ describe('entities state history', () => {
     });
 
     store.update(
-      setEntities([{ id: 1, nested: { nestedTwo: { name: 'first' } } }])
+      setEntities([{ id: 1, nested: { nestedTwo: { name: 'first' } } }]),
     );
     store.update(updateEntities(1, (entity) => ({ ...entity })));
 
@@ -647,7 +647,7 @@ describe('entities state history', () => {
       updateEntities(1, (entity) => ({
         ...entity,
         nested: { nestedTwo: { name: 'updated first' } },
-      }))
+      })),
     );
 
     expect(history.hasPast(1)).toBeTruthy();
@@ -657,7 +657,7 @@ describe('entities state history', () => {
     const store = createStore(
       { name: '' },
       withEntities<Entity>(),
-      withUIEntities<{ id: string; selected: boolean }>()
+      withUIEntities<{ id: string; selected: boolean }>(),
     );
     const history = entitiesStateHistory(store, { entitiesRef: UIEntitiesRef });
 
@@ -671,13 +671,13 @@ describe('entities state history', () => {
           { id: '1', selected: false },
           { id: '2', selected: false },
         ],
-        { ref: UIEntitiesRef }
-      )
+        { ref: UIEntitiesRef },
+      ),
     );
 
     store.update(updateEntities([1, 2], { label: 'updateEntities 1' }));
     store.update(
-      updateEntities(['1', '2'], { selected: true }, { ref: UIEntitiesRef })
+      updateEntities(['1', '2'], { selected: true }, { ref: UIEntitiesRef }),
     );
 
     history.undo(['1', '2']);
@@ -700,7 +700,7 @@ describe('entities state history', () => {
       setEntities([
         { id: 1, label: 'first' },
         { id: 2, label: 'second' },
-      ])
+      ]),
     );
 
     store.update(updateEntities([1, 2], { label: 'updateEntities' }));
@@ -742,7 +742,7 @@ describe('entities state history', () => {
       setEntities([
         { id: 1, label: 'first' },
         { id: 2, label: 'second' },
-      ])
+      ]),
     );
 
     store.update(updateEntities([1, 2], { label: 'updateEntities' }));

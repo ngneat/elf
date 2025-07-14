@@ -27,7 +27,7 @@ export interface TodosProps {
 const store = createStore(
   { name: 'todos' },
   withEntities<Todo>(),
-  withProps<TodosProps>({ filter: 'ALL' })
+  withProps<TodosProps>({ filter: 'ALL' }),
 );
 
 export const todos$ = store.pipe(selectAllEntities());
@@ -36,7 +36,7 @@ export function updateFilter(filter: TodosProps['filter']) {
   store.update(
     write((state) => {
       state.filter = filter;
-    })
+    }),
   );
 }
 
@@ -44,7 +44,7 @@ export function updateCompleted(id: Todo['id']) {
   store.update(
     updateEntities(
       id,
-      write<Todo>((entity) => (entity.completed = !entity.completed))
-    )
+      write<Todo>((entity) => (entity.completed = !entity.completed)),
+    ),
   );
 }

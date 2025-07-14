@@ -23,7 +23,11 @@ Now you can use it in the store's `update` function:
 
 ```ts title="todos.respository.ts"
 import { withProps, createStore } from '@ngneat/elf';
-import { withEntities, selectAllEntities, updateEntities } from '@ngneat/elf-entities';
+import {
+  withEntities,
+  selectAllEntities,
+  updateEntities,
+} from '@ngneat/elf-entities';
 
 interface Todo {
   id: number;
@@ -38,7 +42,7 @@ export interface TodosProps {
 const store = createStore(
   { name: 'todos' },
   withEntities<Todo>(),
-  withProps<TodosProps>({ filter: 'ALL' })
+  withProps<TodosProps>({ filter: 'ALL' }),
 );
 
 export const todos$ = store.pipe(selectAllEntities());
@@ -48,7 +52,7 @@ export function updateFilter(filter: TodosProps['filter']) {
     // highlight-start
     write((state) => {
       state.filter = filter;
-    })
+    }),
     // highlight-end
   );
 }
@@ -58,8 +62,8 @@ export function updateCompleted(id: Todo['id']) {
     updateEntities(
       id,
       // highlight-next-line
-      write<Todo>((entity) => (entity.completed = !entity.completed))
-    )
+      write<Todo>((entity) => (entity.completed = !entity.completed)),
+    ),
   );
 }
 ```

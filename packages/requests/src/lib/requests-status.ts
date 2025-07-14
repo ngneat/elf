@@ -44,7 +44,7 @@ export interface IdleState {
 }
 
 export function withRequestsStatus<Keys extends string>(
-  initialValue?: Record<Keys, StatusState>
+  initialValue?: Record<Keys, StatusState>,
 ): PropsFactory<{ requestsStatus: Record<Keys, StatusState> }, EmptyConfig> {
   return {
     props: {
@@ -57,19 +57,19 @@ export function withRequestsStatus<Keys extends string>(
 export function updateRequestsStatus<S extends RequestsStatusState>(
   keys: Array<RecordKeys<S>>,
   value: 'error',
-  error: any
+  error: any,
 ): Reducer<S>;
 export function updateRequestsStatus<S extends RequestsStatusState>(
   keys: Array<RecordKeys<S>>,
-  value: Exclude<StatusState['value'], 'error'>
+  value: Exclude<StatusState['value'], 'error'>,
 ): Reducer<S>;
 export function updateRequestsStatus<S extends RequestsStatusState>(
-  requests: Partial<Record<RecordKeys<S>, StatusState>>
+  requests: Partial<Record<RecordKeys<S>, StatusState>>,
 ): Reducer<S>;
 export function updateRequestsStatus<S extends RequestsStatusState>(
   requestsOrKeys: any,
   value?: any,
-  error?: any
+  error?: any,
 ): Reducer<S> {
   let normalized = requestsOrKeys;
   if (value) {
@@ -106,19 +106,19 @@ function resolveStatus(value: StatusState['value'], error?: any) {
 export function updateRequestStatus<S extends RequestsStatusState>(
   key: RecordKeys<S>,
   value: 'error',
-  error: any
+  error: any,
 ): Reducer<S>;
 
 export function updateRequestStatus<S extends RequestsStatusState>(
   key: RecordKeys<S>,
   value: Exclude<StatusState['value'], 'error'>,
-  error?: any
+  error?: any,
 ): Reducer<S>;
 
 export function updateRequestStatus<S extends RequestsStatusState>(
   key: any,
   value: any,
-  error?: any
+  error?: any,
 ): Reducer<S> {
   return function (state) {
     return {
@@ -132,7 +132,7 @@ export function updateRequestStatus<S extends RequestsStatusState>(
 }
 
 export function getRequestStatus<S extends RequestsStatusState>(
-  key: RecordKeys<S>
+  key: RecordKeys<S>,
 ): Query<S, StatusState> {
   return function (state) {
     return (
@@ -146,7 +146,7 @@ export function getRequestStatus<S extends RequestsStatusState>(
 
 export function selectRequestStatus<S extends RequestsStatusState>(
   key: RecordKeys<S>,
-  options?: { groupKey?: string }
+  options?: { groupKey?: string },
 ): OperatorFunction<S, StatusState> {
   return pipe(
     distinctUntilKeyChanged('requestsStatus'),
@@ -159,23 +159,23 @@ export function selectRequestStatus<S extends RequestsStatusState>(
       }
 
       return base;
-    })
+    }),
   );
 }
 
 export function selectIsRequestPending<S extends RequestsStatusState>(
-  key: RecordKeys<S>
+  key: RecordKeys<S>,
 ): OperatorFunction<S, boolean> {
   return pipe(
     distinctUntilKeyChanged('requestsStatus'),
-    select((state) => getRequestStatus(key)(state).value === 'pending')
+    select((state) => getRequestStatus(key)(state).value === 'pending'),
   );
 }
 
 export function trackRequestStatus<S extends RequestsStatusState, T>(
   store: Store<StoreDef<S>>,
   key: RecordKeys<S>,
-  options?: { mapError?: (error: any) => any }
+  options?: { mapError?: (error: any) => any },
 ): MonoTypeOperatorFunction<T> {
   return function (source: Observable<T>) {
     return defer(() => {
@@ -190,39 +190,42 @@ export function trackRequestStatus<S extends RequestsStatusState, T>(
               updateRequestStatus(
                 key,
                 'error',
-                options?.mapError ? options?.mapError(error) : error
-              )
+                options?.mapError ? options?.mapError(error) : error,
+              ),
             );
           },
-        })
+        }),
       );
     });
   };
 }
 
 export function createRequestsStatusOperator<S extends RequestsStatusState>(
-  store: Store<StoreDef<S>>
+  store: Store<StoreDef<S>>,
 ) {
   return function <T>(
     key: RecordKeys<S>,
-    options?: Parameters<typeof trackRequestStatus>[2]
+    options?: Parameters<typeof trackRequestStatus>[2],
   ) {
     return trackRequestStatus<S, T>(store, key, options);
   };
 }
 
 export function initializeAsPending<T extends string>(keys: OrArray<T>) {
-  return coerceArray(keys).reduce((acc, key) => {
-    acc[key] = {
-      value: 'pending',
-    };
+  return coerceArray(keys).reduce(
+    (acc, key) => {
+      acc[key] = {
+        value: 'pending',
+      };
 
-    return acc;
-  }, {} as Record<string, PendingState>);
+      return acc;
+    },
+    {} as Record<string, PendingState>,
+  );
 }
 
 export function clearRequestsStatus<
-  S extends RequestsStatusState
+  S extends RequestsStatusState,
 >(): Reducer<S> {
   return function (state) {
     return {

@@ -1,4 +1,4 @@
-import { Command, flags } from '@oclif/command';
+import { Command, Flags } from '@oclif/core';
 import chalk from 'chalk';
 import { cosmiconfigSync } from 'cosmiconfig';
 import { outputFileSync } from 'fs-extra';
@@ -15,14 +15,14 @@ export default class Repo extends Command {
   static examples = [];
 
   static flags = {
-    'dry-run': flags.boolean({ default: false }),
-    help: flags.help({ char: 'h' }),
+    'dry-run': Flags.boolean({ default: false }),
+    help: Flags.help({ char: 'h' }),
   };
 
-  static args = [];
+  static args = {};
 
   async run() {
-    const { flags } = this.parse(Repo);
+    const { flags } = await this.parse(Repo);
 
     const globalConfig: GlobalConfig | undefined =
       cosmiconfigSync('elf').search()?.config;
@@ -48,7 +48,7 @@ export default class Repo extends Command {
     const path = resolve(
       options.path,
       globalConfig?.cli?.repoLibrary ?? '',
-      `${names(options.storeName).fileName}.repository.ts`
+      `${names(options.storeName).fileName}.repository.ts`,
     );
 
     if (globalConfig) {
@@ -73,7 +73,7 @@ export default class Repo extends Command {
       console.log(repo);
 
       console.log(
-        chalk.yellow('NOTE: The "dryRun" flag means no changes were made.')
+        chalk.yellow('NOTE: The "dryRun" flag means no changes were made.'),
       );
 
       console.log('\n');

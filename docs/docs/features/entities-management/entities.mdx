@@ -56,7 +56,7 @@ const titles$ = todosStore.pipe(
   selectAllEntitiesApply({
     mapEntity: (e) => e.title,
     filterEntity: (e) => e.completed,
-  })
+  }),
 );
 ```
 
@@ -73,7 +73,7 @@ const titles = todosStore.query(
   getAllEntitiesApply({
     mapEntity: (e) => e.title,
     filterEntity: (e) => e.completed,
-  })
+  }),
 );
 ```
 
@@ -107,19 +107,19 @@ Select an entity from the store by predicate:
 import { selectEntityByPredicate } from '@ngneat/elf-entities';
 
 const todo$ = todosStore.pipe(
-  selectEntityByPredicate(({ completed }) => !completed)
+  selectEntityByPredicate(({ completed }) => !completed),
 );
 const title$ = todosStore.pipe(
   selectEntityByPredicate(({ completed }) => !completed, {
     pluck: 'title',
     idKey: '_id',
-  })
+  }),
 );
 const title$ = todosStore.pipe(
   selectEntityByPredicate(({ completed }) => !completed, {
     pluck: (e) => e.title,
     idKey: '_id',
-  })
+  }),
 );
 ```
 
@@ -143,17 +143,17 @@ Select multiple entities from the store by predicate:
 import { selectManyByPredicate } from '@ngneat/elf-entities';
 
 const todos$ = todosStore.pipe(
-  selectManyByPredicate((entity) => entity.completed === false)
+  selectManyByPredicate((entity) => entity.completed === false),
 );
 const titles$ = todosStore.pipe(
   selectManyByPredicate((entity) => entity.completed === false, {
     pluck: 'title',
-  })
+  }),
 );
 const titles$ = todosStore.pipe(
   selectManyByPredicate((entity) => entity.completed === false, {
     pluck: (e) => e.title,
-  })
+  }),
 );
 ```
 
@@ -195,7 +195,7 @@ Select the store's entity collection size:
 import { selectEntitiesCountByPredicate } from '@ngneat/elf-entities';
 
 const count$ = todosStore.pipe(
-  selectEntitiesCountByPredicate((entity) => entity.completed)
+  selectEntitiesCountByPredicate((entity) => entity.completed),
 );
 ```
 
@@ -237,7 +237,7 @@ Get first entity from the store by predicate:
 import { getEntityByPredicate } from '@ngneat/elf-entities';
 
 const todo = todosStore.query(
-  getEntityByPredicate(({ title }) => title === 'Elf')
+  getEntityByPredicate(({ title }) => title === 'Elf'),
 );
 ```
 
@@ -270,7 +270,7 @@ Get the store's entity collection size:
 import { getEntitiesCountByPredicate } from '@ngneat/elf-entities';
 
 const count = todosStore.query(
-  getEntitiesCountByPredicate((entity) => entity.completed)
+  getEntitiesCountByPredicate((entity) => entity.completed),
 );
 ```
 
@@ -352,12 +352,12 @@ Update an entity or entities in the store:
 import { updateEntitiesByPredicate } from '@ngneat/elf-entities';
 
 todosStore.update(
-  updateEntitiesByPredicate(({ count }) => count === 0, { open: false })
+  updateEntitiesByPredicate(({ count }) => count === 0, { open: false }),
 );
 
 todosStore.update(
   updateEntitiesByPredicate(({ count }) => count === 0),
-  (entity) => ({ ...entity, open: false })
+  (entity) => ({ ...entity, open: false }),
 );
 ```
 
@@ -371,7 +371,7 @@ import { updateAllEntities } from '@ngneat/elf-entities';
 todosStore.update(updateAllEntities({ name: 'elf' }));
 
 todosStore.update(
-  updateAllEntities((entity) => ({ ...entity, count: entity.count + 1 }))
+  updateAllEntities((entity) => ({ ...entity, count: entity.count + 1 })),
 );
 ```
 
@@ -390,7 +390,7 @@ todosStore.update(
   upsertEntities([
     { id: '1', happy: true },
     { id: '2', name: 'elf 2', happy: false },
-  ])
+  ]),
 );
 ```
 
@@ -407,14 +407,14 @@ todosStore.update(
   upsertEntitiesById(1, {
     updater: { name: 'elf' },
     creator,
-  })
+  }),
 );
 
 todosStore.update(
   upsertEntitiesById([1, 2], {
     updater: (entity) => ({ ...entity, count: entity.count + 1 }),
     creator,
-  })
+  }),
 );
 ```
 
@@ -427,7 +427,7 @@ todosStore.update(
     creator,
     // highlight-next-line
     mergeUpdaterWithCreator: true,
-  })
+  }),
 );
 ```
 
@@ -456,13 +456,13 @@ function addTodo(todo: Todo) {
     (response) => {
       todosStore.update(
         updateEntitiesIds(tempId, response.id),
-        updateEntities(response.id, response)
+        updateEntities(response.id, response),
       );
     },
     (error) => {
       todosStore.update(deleteEntities(tempId));
       // handle error
-    }
+    },
   );
 }
 ```
@@ -524,7 +524,7 @@ interface Todo {
 
 const todosStore = createStore(
   { name: 'todos' },
-  withEntities<Todo, '_id'>({ idKey: '_id' })
+  withEntities<Todo, '_id'>({ idKey: '_id' }),
 );
 ```
 
@@ -537,6 +537,6 @@ import { createStore } from '@ngneat/elf';
 
 const store = createStore(
   { name },
-  withEntities<Widget>({ initialValue: [{ id: 1, name: '' }] })
+  withEntities<Widget>({ initialValue: [{ id: 1, name: '' }] }),
 );
 ```

@@ -4,12 +4,9 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ## [2.5.1](https://github-personal/ngneat/elf/compare/store-2.5.0...store-2.5.1) (2024-02-03)
 
-
 ### Bug Fixes
 
-* **store:** 🐞 improve state type ([ee784a4](https://github-personal/ngneat/elf/commit/ee784a464970bef6d71ad4998dc34a5ecdb97126)), closes [#510](https://github-personal/ngneat/elf/issues/510)
-
-
+- **store:** 🐞 improve state type ([ee784a4](https://github-personal/ngneat/elf/commit/ee784a464970bef6d71ad4998dc34a5ecdb97126)), closes [#510](https://github-personal/ngneat/elf/issues/510)
 
 # [2.5.0](https://github-personal/ngneat/elf/compare/store-2.4.0...store-2.5.0) (2024-01-19)
 

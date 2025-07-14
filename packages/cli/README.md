@@ -21,8 +21,8 @@ elf cli
 $ npm install -g @ngneat/elf-cli
 $ elf COMMAND
 running command...
-$ elf (-v|--version|version)
-@ngneat/elf-cli/3.1.0 darwin-arm64 node-v18.18.0
+$ elf (--version)
+@ngneat/elf-cli/3.1.0 darwin-arm64 node-v24.3.0
 $ elf --help [COMMAND]
 USAGE
   $ elf COMMAND
@@ -33,26 +33,8 @@ USAGE
 # Commands
 
 <!-- commands -->
-* [`elf help [COMMAND]`](#elf-help-command)
 * [`elf install`](#elf-install)
 * [`elf repo`](#elf-repo)
-
-## `elf help [COMMAND]`
-
-display help for elf
-
-```
-USAGE
-  $ elf help [COMMAND]
-
-ARGUMENTS
-  COMMAND  command to show help for
-
-OPTIONS
-  --all  see all commands in CLI
-```
-
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.3.1/src/commands/help.ts)_
 
 ## `elf install`
 
@@ -60,13 +42,16 @@ Install Elf packages
 
 ```
 USAGE
-  $ elf install
+  $ elf install [-h]
 
-OPTIONS
-  -h, --help  show CLI help
+FLAGS
+  -h, --help  Show CLI help.
+
+DESCRIPTION
+  Install Elf packages
 ```
 
-_See code: [lib/commands/install.js](https://github.com/ngneat/elf/blob/v3.1.0/lib/commands/install.js)_
+_See code: [src/commands/install.ts](https://github.com/ngneat/elf/blob/v3.1.0/src/commands/install.ts)_
 
 ## `elf repo`
 
@@ -74,12 +59,15 @@ Create a repository
 
 ```
 USAGE
-  $ elf repo
+  $ elf repo [--dry-run] [-h]
 
-OPTIONS
-  -h, --help  show CLI help
+FLAGS
+  -h, --help     Show CLI help.
   --dry-run
+
+DESCRIPTION
+  Create a repository
 ```
 
-_See code: [lib/commands/repo.js](https://github.com/ngneat/elf/blob/v3.1.0/lib/commands/repo.js)_
+_See code: [src/commands/repo.ts](https://github.com/ngneat/elf/blob/v3.1.0/src/commands/repo.ts)_
 <!-- commandsstop -->

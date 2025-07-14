@@ -3,11 +3,7 @@
 When using the store's `update` function, you can pass multiple mutation functions:
 
 ```ts
-store.update(
-  setProp('count', 1),
-  addEntities([todo, todo]),
-  deleteEntities(1)
-);
+store.update(setProp('count', 1), addEntities([todo, todo]), deleteEntities(1));
 ```
 
 In this case, subscribers will only receive **one** emission instead of three.
@@ -18,15 +14,11 @@ There are cases where you have multiple update functions of the **same** store t
 
 ```ts title=todos.repository.ts
 export function updateCount() {
-  store.update(
-    setProp('count', 1),
-  );
+  store.update(setProp('count', 1));
 }
 
 export function updateUser() {
-  store.update(
-    setProp('user', null),
-  );
+  store.update(setProp('user', null));
 }
 ```
 
@@ -47,26 +39,20 @@ Also, you might face the need to use functions that use `emitOnce` inside anothe
 ```ts title=table.repository.ts
 export function restoreFilters() {
   emitOnce(() => {
-    store.update(
-      setProp('filters', null),
-    );
+    store.update(setProp('filters', null));
     resetPagination();
   });
 }
 
 export function resetSort() {
   emitOnce(() => {
-    store.update(
-      setProp('sort', null),
-    );
+    store.update(setProp('sort', null));
     resetPagination();
   });
 }
 
 export function resetPagination() {
-  store.update(
-    setProp('pagination', null),
-  );
+  store.update(setProp('pagination', null));
 }
 ```
 

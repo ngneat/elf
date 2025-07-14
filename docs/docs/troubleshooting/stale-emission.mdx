@@ -12,7 +12,7 @@ interface Props {
 
 export const store = createStore(
   { name: 'todo' },
-  withProps<Props>({ filter: null, counter: 0 })
+  withProps<Props>({ filter: null, counter: 0 }),
 );
 
 export const filter$ = store.pipe(select(({ filters }) => filters));
@@ -47,6 +47,7 @@ Why would we see **1 2 1** in logs? Once `FIRST SUBSCRIBER` receives first emiss
 There are two ways to get around this issue:
 
 1. Change the subscriptions order - `SECONED SUBSCRIBER` and then `FIRST SUBSCRIBER`:
+
 ```ts title="component.ts"
 import { filter$, counter$, store } from './store.ts';
 
@@ -61,7 +62,9 @@ filter$.subscribe(() => {
   }));
 });
 ```
+
 2. Delay the `FIRST SUBSCRIBER` update using one of RxJS operators. (e.g auditTime(0)):
+
 ```ts title="component.ts"
 import { filter$, counter$, store } from './store.ts';
 import { auditTime } from 'rxjs';

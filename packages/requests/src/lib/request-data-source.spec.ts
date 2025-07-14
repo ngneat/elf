@@ -29,7 +29,7 @@ describe('createRequestDataSource', () => {
     const { state, config } = createState(
       withEntities<Todo>(),
       withRequestsStatus(),
-      withRequestsCache()
+      withRequestsCache(),
     );
 
     const store = new Store({ state, config, name: 'todos' });
@@ -57,14 +57,14 @@ describe('createRequestDataSource', () => {
       return timer(1000).pipe(
         mapTo([createTodo(1)]),
         tap((todos) =>
-          store.update(setEntities(todos), setSuccess(), setCached())
+          store.update(setEntities(todos), setSuccess(), setCached()),
         ),
         trackRequestStatus(),
         skipWhileCached(),
         tap((todos) => {
           // should persist the passed type
           expectTypeOf(todos).toEqualTypeOf<Todo[]>();
-        })
+        }),
       );
     }
 
@@ -98,7 +98,7 @@ describe('createRequestDataSource', () => {
     const { state, config } = createState(
       withEntities<Todo>(),
       withRequestsStatus(),
-      withRequestsCache()
+      withRequestsCache(),
     );
 
     const store = new Store({ state, config, name: 'todos' });
@@ -121,10 +121,10 @@ describe('createRequestDataSource', () => {
           throw new Error('This is not valid');
         }),
         tap((todos) =>
-          store.update(setEntities(todos), setSuccess(), setCached())
+          store.update(setEntities(todos), setSuccess(), setCached()),
         ),
         trackRequestStatus(),
-        catchError(() => EMPTY)
+        catchError(() => EMPTY),
       );
     }
 
@@ -151,7 +151,7 @@ describe('createRequestDataSource', () => {
     const { state, config } = createState(
       withEntities<Todo>(),
       withRequestsStatus(),
-      withRequestsCache()
+      withRequestsCache(),
     );
 
     const store = new Store({ state, config, name: 'todos' });
@@ -181,15 +181,15 @@ describe('createRequestDataSource', () => {
           store.update(
             addEntities(todo),
             setSuccess({ key: 1 }),
-            setCached({ key: 1 })
-          )
+            setCached({ key: 1 }),
+          ),
         ),
         trackRequestStatus({ key: 1 }),
         skipWhileCached({ key: 1 }),
         tap((todo) => {
           // should persist the passed type
           expectTypeOf(todo).toEqualTypeOf<Todo>();
-        })
+        }),
       );
     }
 
@@ -218,7 +218,7 @@ describe('createRequestDataSource', () => {
   it('should work', () => {
     const { state, config } = createState(
       withEntities<Todo>(),
-      withRequestsStatus()
+      withRequestsStatus(),
     );
 
     const store = new Store({ state, config, name: '' });
@@ -281,7 +281,7 @@ describe('createRequestDataSource', () => {
   it('should not emit if values are the same by ref', () => {
     const { state, config } = createState(
       withEntities<Todo>(),
-      withRequestsStatus<'todos'>()
+      withRequestsStatus<'todos'>(),
     );
 
     const store = new Store({ state, config, name: '' });
@@ -308,7 +308,7 @@ describe('createRequestDataSource', () => {
   it('should return proper type without using generic on "withRequestsStatus"', () => {
     const { state, config } = createState(
       withEntities<Todo>(),
-      withRequestsStatus()
+      withRequestsStatus(),
     );
 
     const store = new Store({ state, config, name: '' });
@@ -354,7 +354,7 @@ describe('createRequestDataSource', () => {
     type TodoStatuses = 'get' | 'add' | 'delete';
     const { state, config } = createState(
       withEntities<Todo>(),
-      withRequestsStatus<TodoStatuses>()
+      withRequestsStatus<TodoStatuses>(),
     );
 
     const store = new Store({ state, config, name: '' });

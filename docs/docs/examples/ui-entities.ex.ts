@@ -22,12 +22,12 @@ interface Todo {
 const todosStore = createStore(
   { name: 'todos' },
   withEntities<Todo>(),
-  withUIEntities<TodoUI>()
+  withUIEntities<TodoUI>(),
 );
 
 todosStore.update(
   addEntities({ id: 1, name: 'foo' }),
-  addEntities({ id: 1, open: true }, { ref: UIEntitiesRef })
+  addEntities({ id: 1, open: true }, { ref: UIEntitiesRef }),
 );
 
 todosStore.pipe(selectEntity(1, { ref: UIEntitiesRef })).subscribe((todo) => {

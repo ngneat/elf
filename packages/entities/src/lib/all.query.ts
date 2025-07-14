@@ -13,7 +13,7 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 import { select } from '@ngneat/elf';
 
 export function untilEntitiesChanges<T extends EntitiesRecord>(
-  key: string
+  key: string,
 ): MonoTypeOperatorFunction<T> {
   return distinctUntilChanged((prev, current) => {
     return prev[key] === current[key];
@@ -33,17 +33,17 @@ export function untilEntitiesChanges<T extends EntitiesRecord>(
  */
 export function selectAllEntities<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
-  options: BaseEntityOptions<Ref> = {}
+  options: BaseEntityOptions<Ref> = {},
 ): OperatorFunction<S, getEntityType<S, Ref>[]> {
   const { ref: { entitiesKey, idsKey } = defaultEntitiesRef } = options;
 
   return pipe(
     untilEntitiesChanges(entitiesKey),
     map((state) =>
-      state[idsKey].map((id: getIdType<S, Ref>) => state[entitiesKey][id])
-    )
+      state[idsKey].map((id: getIdType<S, Ref>) => state[entitiesKey][id]),
+    ),
   );
 }
 
@@ -60,9 +60,9 @@ export function selectAllEntities<
  */
 export function selectEntities<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
-  options: BaseEntityOptions<Ref> = {}
+  options: BaseEntityOptions<Ref> = {},
 ): OperatorFunction<S, Record<getIdType<S, Ref>, getEntityType<S, Ref>>> {
   const { ref: { entitiesKey } = defaultEntitiesRef } = options;
 
@@ -85,12 +85,12 @@ export function selectEntities<
 export function selectAllEntitiesApply<
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef,
-  R = getEntityType<S, Ref>
+  R = getEntityType<S, Ref>,
 >(
   options: {
     mapEntity?(entity: getEntityType<S, Ref>): R;
     filterEntity?(entity: getEntityType<S, Ref>): boolean;
-  } & BaseEntityOptions<Ref>
+  } & BaseEntityOptions<Ref>,
 ): OperatorFunction<S, R[]> {
   const {
     ref: { entitiesKey, idsKey } = defaultEntitiesRef,
@@ -111,6 +111,6 @@ export function selectAllEntitiesApply<
       }
 
       return result;
-    })
+    }),
   );
 }

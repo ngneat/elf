@@ -7,7 +7,7 @@ interface AuthProps {
 
 const authStore = createStore(
   { name: 'auth' },
-  withProps<AuthProps>({ user: null })
+  withProps<AuthProps>({ user: null }),
 );
 
 export const persist = persistState(authStore, {

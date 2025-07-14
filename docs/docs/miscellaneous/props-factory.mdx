@@ -21,7 +21,12 @@ export const {
 The `propsFactory` function takes the `name` of a property and the initial value and returns everything we need to add, query, and mutate that property. The `type` of a property is inferred based on the `initialValue`.
 
 ```ts title="todos.repository.ts"
-import { withVersion, updateVersion, selectVersion, setVersionInitialValue } from '@app/store-props.ts';
+import {
+  withVersion,
+  updateVersion,
+  selectVersion,
+  setVersionInitialValue,
+} from '@app/store-props.ts';
 
 setVersionInitialValue(1.1);
 

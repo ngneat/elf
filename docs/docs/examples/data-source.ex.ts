@@ -19,7 +19,7 @@ interface Todo {
 const store = createStore(
   { name: 'todos' },
   withEntities<Todo>(),
-  withRequestsStatus()
+  withRequestsStatus(),
 );
 
 const dataSource = createRequestDataSource({

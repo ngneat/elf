@@ -11,7 +11,7 @@ describe('unionEntities', () => {
   it('should return intersection of ui and model', () => {
     const { state, config } = createState(
       withEntities<Todo>(),
-      withUIEntities<UITodo>()
+      withUIEntities<UITodo>(),
     );
 
     const store = new Store({ state, name: 'todos', config });
@@ -33,7 +33,7 @@ describe('unionEntities', () => {
 
     store.update(
       addEntities(createTodo(1)),
-      addEntities({ id: 1, open: false }, { ref: UIEntitiesRef })
+      addEntities({ id: 1, open: false }, { ref: UIEntitiesRef }),
     );
 
     expect(spy).toHaveBeenCalledTimes(2);
@@ -58,7 +58,7 @@ describe('unionEntities', () => {
 
     store.update(
       addEntities(createTodo(2)),
-      addEntities({ id: 2, open: false }, { ref: UIEntitiesRef })
+      addEntities({ id: 2, open: false }, { ref: UIEntitiesRef }),
     );
 
     expect(spy).toHaveBeenCalledTimes(4);

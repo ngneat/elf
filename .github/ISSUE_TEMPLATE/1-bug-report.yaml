@@ -60,7 +60,7 @@ body:
     id: other
     attributes:
       label: Anything else?
-  
+
   - type: dropdown
     id: contribute
     attributes:

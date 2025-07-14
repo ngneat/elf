@@ -14,7 +14,7 @@ interface Todo {
 const todosStore = createStore(
   { name: 'todos' },
   withEntities<Todo>(),
-  withPagination()
+  withPagination(),
 );
 
 export function addTodos(todos: Todo[]) {
@@ -28,8 +28,8 @@ export function addTodos(todos: Todo[]) {
     }),
     setPage(
       1,
-      todos.map((c) => c.id)
-    )
+      todos.map((c) => c.id),
+    ),
   );
 }
 

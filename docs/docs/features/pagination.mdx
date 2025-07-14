@@ -34,7 +34,7 @@ interface Todo {
 const todosStore = createStore(
   { name: 'todos' },
   withEntities<Todo>(),
-  withPagination()
+  withPagination(),
 );
 ```
 
@@ -53,8 +53,8 @@ export function addTodos(response: PaginationData & { data: Todo[] }) {
     updatePaginationData(paginationData),
     setPage(
       1,
-      data.map((c) => c.id)
-    )
+      data.map((c) => c.id),
+    ),
   );
 }
 ```
@@ -68,7 +68,7 @@ import { skipWhilePageExists } from '@ngneat/elf-pagination';
 export function getTodosPage(page: number) {
   return http.get(todosUrl).pipe(
     tap((todos) => addTodos(todos)),
-    skipWhilePageExists(page)
+    skipWhilePageExists(page),
   );
 }
 ```
@@ -176,7 +176,7 @@ store.update(
     perPage: 10,
     total: 96,
     lastPage: 10,
-  })
+  }),
 );
 ```
 

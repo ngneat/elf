@@ -7,12 +7,12 @@ export function getIdKey<T>(context: ReducerContext, ref: EntitiesRef): T {
 
 export type getEntityType<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef
+  Ref extends EntitiesRef,
 > = S[Ref['entitiesKey']][getIdType<S, Ref>];
 
 export type getIdType<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef
+  Ref extends EntitiesRef,
 > = S[Ref['idsKey']][0];
 
 export type ItemPredicate<Item> = (item: Item, index?: number) => boolean;
@@ -26,8 +26,8 @@ type EntitiesKeys<T> = {
   [key in keyof T]: key extends 'entitiesKey'
     ? T[key]
     : key extends 'idsKey'
-    ? T[key]
-    : never;
+      ? T[key]
+      : never;
 };
 
 // This will return { entities: any, ids: any }
@@ -44,7 +44,7 @@ export interface BaseEntityOptions<Ref extends EntitiesRef> {
 export class EntitiesRef<
   EntitiesKey extends string = string,
   IdsKey extends string = string,
-  IdKey extends string = string
+  IdKey extends string = string,
 > {
   entitiesKey: EntitiesKey;
   idsKey: IdsKey;
@@ -67,7 +67,7 @@ export function entitiesPropsFactory<
   EntitiesKey extends string = Feature extends ''
     ? `entities`
     : `${Feature}Entities`,
-  IdsKey extends string = Feature extends '' ? `ids` : `${Feature}Ids`
+  IdsKey extends string = Feature extends '' ? `ids` : `${Feature}Ids`,
 >(feature: Feature) {
   const idKeyRef = feature ? `idKey${capitalize(feature)}` : 'idKey';
 
@@ -83,7 +83,7 @@ export function entitiesPropsFactory<
 
   function propsFactory<
     EntityType extends { [P in IdKey]: PropertyKey },
-    IdKey extends string = 'id'
+    IdKey extends string = 'id',
   >(config?: { initialValue?: Array<EntityType>; idKey?: IdKey }) {
     let entities = {};
     let ids = [];
@@ -92,7 +92,7 @@ export function entitiesPropsFactory<
     if (config?.initialValue) {
       ({ ids, asObject: entities } = buildEntities<any, any>(
         config.initialValue,
-        idKey
+        idKey,
       ));
     }
 
@@ -104,8 +104,8 @@ export function entitiesPropsFactory<
         [K in EntitiesKey | IdsKey]: K extends EntitiesKey
           ? Record<EntityType[IdKey], EntityType>
           : K extends IdsKey
-          ? Array<EntityType[IdKey]>
-          : never;
+            ? Array<EntityType[IdKey]>
+            : never;
       },
       config: {
         [idKeyRef]: idKey,
@@ -124,8 +124,8 @@ export function entitiesPropsFactory<
       | `with${Capitalize<Feature>}Entities`]: K extends `${Feature}EntitiesRef`
       ? typeof ref
       : K extends `with${Capitalize<Feature>}Entities`
-      ? typeof propsFactory
-      : never;
+        ? typeof propsFactory
+        : never;
   };
 }
 

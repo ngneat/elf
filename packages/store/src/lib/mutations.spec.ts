@@ -6,7 +6,7 @@ import { setProp, setProps } from './mutations';
 describe('mutations', () => {
   it('should set the prop', () => {
     const { state, config } = createState(
-      withProps<{ filter: string }>({ filter: '' })
+      withProps<{ filter: string }>({ filter: '' }),
     );
 
     const store = new Store({ state, name: 'foo', config });
@@ -39,7 +39,7 @@ describe('mutations', () => {
       withProps<{ nested: { a: string; b: number }; count: number }>({
         nested: { a: '', b: 1 },
         count: 0,
-      })
+      }),
     );
 
     const store = new Store({ state, name: 'foo', config });
@@ -47,7 +47,7 @@ describe('mutations', () => {
     store.update(
       setProps({
         count: 1,
-      })
+      }),
     );
 
     expect(store.getValue()).toMatchInlineSnapshot(`
@@ -68,7 +68,7 @@ describe('mutations', () => {
             b: 2,
           },
         };
-      })
+      }),
     );
 
     expect(store.getValue()).toMatchInlineSnapshot(`
@@ -85,7 +85,7 @@ describe('mutations', () => {
       setProps({
         // @ts-expect-error - Should be value type
         foo: 1,
-      })
+      }),
     );
 
     store.update(
@@ -94,7 +94,7 @@ describe('mutations', () => {
         return {
           bar: 3,
         };
-      })
+      }),
     );
   });
 });

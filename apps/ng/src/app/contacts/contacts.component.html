@@ -2,37 +2,40 @@
   <h1 class="d-flex justify-content-center mb-4">Contacts</h1>
 
   @if (contacts$ | async; as contacts) {
-  <section>
-    <table class="table table-striped mb-4">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Address</th>
-          <th scope="col">Email</th>
-        </tr>
-      </thead>
+    <section>
+      <table class="table table-striped mb-4">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
 
-      <tbody>
-        @for (contact of contacts; track contact) {
-        <tr>
-          <td>{{ contact.name }}</td>
-          <td>{{ contact.address }}</td>
-          <td>&#64;{{ contact.email }}</td>
-        </tr>
-        }
-      </tbody>
-    </table>
+        <tbody>
+          @for (contact of contacts; track contact) {
+            <tr>
+              <td>{{ contact.name }}</td>
+              <td>{{ contact.address }}</td>
+              <td>&#64;{{ contact.email }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
 
-    @if (paginationData$ | async; as paginationData) {
-    <ul class="pagination d-flex justify-content-center">
-      @for (page of paginationData | paginationControls; track page; let i =
-      $index) {
-      <li class="page-item page-link" (click)="updateActivePage(i + 1)">
-        {{ i + 1 }}
-      </li>
+      @if (paginationData$ | async; as paginationData) {
+        <ul class="pagination d-flex justify-content-center">
+          @for (
+            page of paginationData | paginationControls;
+            track page;
+            let i = $index
+          ) {
+            <li class="page-item page-link" (click)="updateActivePage(i + 1)">
+              {{ i + 1 }}
+            </li>
+          }
+        </ul>
       }
-    </ul>
-    }
-  </section>
+    </section>
   }
 </section>

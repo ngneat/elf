@@ -1,4 +1,4 @@
-const {themes} = require('prism-react-renderer');
+const { themes } = require('prism-react-renderer');
 const lightCodeTheme = themes.nightOwlLight;
 const darkCodeTheme = themes.oceanicNext;
 
@@ -15,18 +15,33 @@ module.exports = {
   projectName: 'elf',
   themeConfig: {
     metadata: [
-      { name: 'google-site-verification', content: 'zLIQAxOp2sGFy10UE51HAMtWTqg7J8z1hpTxZR9G1WA' },
+      {
+        name: 'google-site-verification',
+        content: 'zLIQAxOp2sGFy10UE51HAMtWTqg7J8z1hpTxZR9G1WA',
+      },
       { name: 'twitter:card', content: 'summary_large_image' },
       { property: 'twitter:domain', content: 'ngneat.github.io' },
       { property: 'twitter:url', content: 'https://ngneat.github.io/elf/' },
       { name: 'twitter:title', content: 'Elf 🧝' },
-      { name: 'twitter:description', content: 'A Reactive Store with Magical Powers' },
-      { name: 'twitter:image', content: 'https://ngneat.github.io/elf/img/elf.png' },
+      {
+        name: 'twitter:description',
+        content: 'A Reactive Store with Magical Powers',
+      },
+      {
+        name: 'twitter:image',
+        content: 'https://ngneat.github.io/elf/img/elf.png',
+      },
       { property: 'og:url', content: 'https://ngneat.github.io/elf/' },
       { property: 'og:type', content: 'website' },
       { property: 'og:title', content: 'Elf 🧝' },
-      { property: 'og:description', content: 'A Reactive Store with Magical Powers' },
-      { property: 'og:image', content: 'https://ngneat.github.io/elf/img/elf.png' },
+      {
+        property: 'og:description',
+        content: 'A Reactive Store with Magical Powers',
+      },
+      {
+        property: 'og:image',
+        content: 'https://ngneat.github.io/elf/img/elf.png',
+      },
     ],
     algolia: {
       appId: 'GSDPQ4A8PM',
@@ -45,7 +60,7 @@ module.exports = {
           activeBasePath: 'docs',
           label: 'Docs',
           position: 'left',
-          className: "first-nav-element"
+          className: 'first-nav-element',
         },
         {
           href: 'https://github.com/sponsors/ngneat',
@@ -147,9 +162,9 @@ module.exports = {
           {
             from: '/docs/features/entities/entities-props-factory',
             to: '/docs/features/entities-management/entities-props-factory',
-          }
+          },
         ],
-      }
-    ]
-  ]
+      },
+    ],
+  ],
 };

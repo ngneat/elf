@@ -17,9 +17,8 @@ import {
 } from './requests-status';
 
 describe('requestsStatus', () => {
-  const { state, config } = createState(
-    withRequestsStatus<'users' | `user-${string}`>()
-  );
+  const { state, config } =
+    createState(withRequestsStatus<'users' | `user-${string}`>());
 
   const store = new Store({ state, config, name: 'users' });
 
@@ -82,7 +81,7 @@ describe('requestsStatus', () => {
 
   it('should initializeAsIdle', () => {
     const { state, config } = createState(
-      withRequestsStatus(initializeAsPending<'foo' | 'bar'>(['foo', 'bar']))
+      withRequestsStatus(initializeAsPending<'foo' | 'bar'>(['foo', 'bar'])),
     );
     const store = new Store({ state, config, name: 'users' });
 
@@ -94,9 +93,8 @@ describe('requestsStatus', () => {
   it('should createRequestStatusOperator', () => {
     jest.useFakeTimers();
 
-    const { state, config } = createState(
-      withRequestsStatus<'users' | `user-${string}`>()
-    );
+    const { state, config } =
+      createState(withRequestsStatus<'users' | `user-${string}`>());
 
     const store = new Store({ state, config, name: 'users' });
 
@@ -117,7 +115,7 @@ describe('requestsStatus', () => {
         tap((v) => {
           // check that we persists the return type
           expectTypeOf(v).toEqualTypeOf<{ id: number }>();
-        })
+        }),
       )
       .subscribe();
 
@@ -162,7 +160,7 @@ test('updateRequestsStatus', () => {
       foo: {
         value: 'pending',
       },
-    })
+    }),
   );
 
   expect(store.getValue()).toMatchSnapshot();
@@ -175,7 +173,7 @@ test('updateRequestsStatus', () => {
       bar: {
         value: 'pending',
       },
-    })
+    }),
   );
 
   expect(store.getValue()).toMatchSnapshot();

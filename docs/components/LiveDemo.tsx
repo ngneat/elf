@@ -57,7 +57,7 @@ export function LiveDemo({ src, packages = [] }: Props) {
           devToolsHeight: 99,
           theme: colorMode,
           height: '500px',
-        }
+        },
       )
       .then((vm) => {
         editor.current = vm.editor;

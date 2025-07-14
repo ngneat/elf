@@ -22,7 +22,7 @@ export interface TodosProps {
 const store = createStore(
   { name: 'todos' },
   withProps<TodosProps>({ filter: 'ALL' }),
-  withEntities<Todo>()
+  withEntities<Todo>(),
 );
 
 const filter$ = store.pipe(select(({ filter }) => filter));
@@ -35,9 +35,9 @@ export const visibleTodos$ = filter$.pipe(
           if (filter === 'ALL') return true;
           return filter === 'COMPLETED' ? completed : !completed;
         },
-      })
+      }),
     );
-  })
+  }),
 );
 
 export function updateTodosFilter(filter: TodosProps['filter']) {
@@ -57,7 +57,7 @@ export function addTodo(text: Todo['text']) {
       id: Math.random().toFixed(5),
       text,
       completed: false,
-    })
+    }),
   );
 }
 
@@ -66,7 +66,7 @@ export function updateTodoCompleted(id: Todo['id']) {
     updateEntities(id, (todo) => ({
       ...todo,
       completed: !todo.completed,
-    }))
+    })),
   );
 }
 

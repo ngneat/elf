@@ -42,7 +42,7 @@ describe('selectAllEntities', () => {
     });
 
     store.update(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
+      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef }),
     );
   });
 
@@ -60,7 +60,7 @@ describe('selectAllEntities', () => {
     store.update(
       addEntities(createTodo(1)),
       addEntities(createTodo(2)),
-      updateEntities(1, { completed: true })
+      updateEntities(1, { completed: true }),
     );
 
     it('should map', () => {
@@ -89,7 +89,7 @@ describe('selectAllEntities', () => {
           selectAllEntitiesApply({
             mapEntity: (e) => e.title,
             filterEntity: (e) => e.completed,
-          })
+          }),
         )
         .subscribe((v) => {
           expectTypeOf(v).toEqualTypeOf<string[]>();
@@ -103,7 +103,7 @@ describe('selectAllEntities', () => {
       store.update(
         addEntities(createUITodo(1), { ref: UIEntitiesRef }),
         addEntities(createUITodo(2), { ref: UIEntitiesRef }),
-        updateEntities(1, { open: true }, { ref: UIEntitiesRef })
+        updateEntities(1, { open: true }, { ref: UIEntitiesRef }),
       );
 
       store
@@ -112,7 +112,7 @@ describe('selectAllEntities', () => {
             mapEntity: (e) => e.id,
             filterEntity: (e) => e.open,
             ref: UIEntitiesRef,
-          })
+          }),
         )
         .subscribe((v) => {
           expectTypeOf(v).toEqualTypeOf<number[]>();

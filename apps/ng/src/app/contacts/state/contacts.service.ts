@@ -13,7 +13,7 @@ export class ContactsService {
     return timer(300).pipe(
       map(() => getData({ page })),
       tap((res) => this.repo.addContacts(page, res)),
-      skipWhilePageExists(this.repo.store, page)
+      skipWhilePageExists(this.repo.store, page),
     );
   }
 }

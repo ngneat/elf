@@ -23,7 +23,7 @@ const todosStore = createStore(
   { name },
   withEntities<Todo>(),
   withUIEntities<TodoUI>(),
-  withCartEntities<CartItem>()
+  withCartEntities<CartItem>(),
 );
 
 export const todosStateHistory = entitiesStateHistory(todosStore);

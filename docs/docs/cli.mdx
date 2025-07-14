@@ -17,9 +17,10 @@ $ npx @ngneat/elf-cli repo
 $ npx @ngneat/elf-cli repo --dry-run
 ```
 
-Using the above command, you can create a `repository` file. All the boilerplate will be created for you based on which *features* you select.
+Using the above command, you can create a `repository` file. All the boilerplate will be created for you based on which _features_ you select.
 
 ### Config
+
 You can set the configuration by providing the `package.json` file:
 
 ```json title="package.json"
@@ -37,17 +38,23 @@ You can set the configuration by providing the `package.json` file:
 ```
 
 ### `repoTemplate`
+
 By default, the `repository` file generates exported functions. If you prefer to use a class, for instance, when working with Angular, you can set this option to `class`.
 
 ### `inlineStoreInClass`
+
 By default, a store is created outside of the class. If you prefer creating the store inside a class you can set this option to `true` or `withoutConstructor`. It might be helpful when you create a `component store` or you want to set the initial value to the store given via Angular DI (Works only with `repoTemplate` set as `class`).
 
 ### `idKey`
+
 The default `idKey` for the package `@ngneat/elf-entities` is `id`. By setting this option, you can change it globally.
 
 ### `repoLibrary`
+
 The `repository` file is created by default at the root path you specify (i.e., `flat`). If you set this option, you can specify the `directory` you want.
+
 ### `plugins`
+
 Specify which plugins you want to use.
 
 #### `@ngneat/elf-cli-ng`
@@ -68,6 +75,7 @@ Install the package, and add the following code:
 The plugin will add the `Injectable` decorator to the `repository` class.
 
 ### fuzzypath
+
 A [fuzzy](https://github.com/adelsz/inquirer-fuzzy-path) file/directory search and selection prompt. It can be configured as follows:
 
 ```ts title="elf.config.js"

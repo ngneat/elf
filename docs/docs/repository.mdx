@@ -11,7 +11,7 @@ interface AuthProps {
 
 const authStore = createStore(
   { name: 'auth' },
-  withProps<AuthProps>({ user: null })
+  withProps<AuthProps>({ user: null }),
 );
 
 export const user$ = authStore.pipe(select((state) => state.user));
@@ -40,7 +40,7 @@ interface AuthProps {
 
 const authStore = createStore(
   { name: 'auth' },
-  withProps<AuthProps>({ user: null })
+  withProps<AuthProps>({ user: null }),
 );
 
 export class AuthRepository {

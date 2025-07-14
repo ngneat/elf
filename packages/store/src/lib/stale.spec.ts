@@ -7,7 +7,7 @@ type Props = {
 
 test('stale emission demo', async () => {
   const { state, config } = createState(
-    withProps<Props>({ filter: '', counter: 0 })
+    withProps<Props>({ filter: '', counter: 0 }),
   );
   const store = new Store({ state, config, name: 'stale' });
 

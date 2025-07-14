@@ -3,6 +3,7 @@
 Elf keeps your stores in a `registry` and exposes the following functions:
 
 ## getRegistry
+
 Get the the registry:
 
 ```ts
@@ -14,7 +15,6 @@ const stores = getRegistry();
 ## getStore
 
 Get a reference to a store by name:
-
 
 ```ts
 import { getStore } from '@ngneat/elf';
@@ -33,12 +33,13 @@ const storesValues = getStoresSnapshot();
 ```
 
 ## registry$
+
 An observable that emits when a store is added or removed:
 
 ```ts
 import { registry$ } from '@ngneat/elf';
 
-registry$.subscribe(event => {
+registry$.subscribe((event) => {
   // event = { type: 'add' | 'remove'; store: Store }
-})
+});
 ```

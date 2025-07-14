@@ -6,11 +6,9 @@ import { UsersRepository } from '../users.repository';
 @Component({
   template: `
     @if (user$ | async; as user) {
+      <h1>Loading: {{ user.isLoading }}</h1>
 
-    <h1>Loading: {{ user.isLoading }}</h1>
-
-    <code>User: {{ user.data | json }}</code>
-
+      <code>User: {{ user.data | json }}</code>
     }
   `,
 })

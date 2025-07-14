@@ -33,7 +33,7 @@ describe('requests result', () => {
 
     const entities$ = store.pipe(
       selectAllEntities(),
-      joinRequestResult(['todos'])
+      joinRequestResult(['todos']),
     );
 
     const spy = jest.fn();
@@ -49,7 +49,7 @@ describe('requests result', () => {
       return timer(1000).pipe(
         map(() => [createTodo(1)]),
         tap((todos) => store.update(setEntities(todos))),
-        trackRequestResult(['todos'])
+        trackRequestResult(['todos']),
       );
     }
 
@@ -69,7 +69,7 @@ describe('requests result', () => {
 
     const entities$ = store.pipe(
       selectAllEntities(),
-      joinRequestResult(['todos'])
+      joinRequestResult(['todos']),
     );
 
     const spy = jest.fn();
@@ -79,7 +79,7 @@ describe('requests result', () => {
         mapResultData((data) => {
           expectTypeOf(data).toEqualTypeOf<Todo[]>();
           return data.filter((todo) => todo.id === 1);
-        })
+        }),
       )
       .subscribe((value) => {
         spy(value);
@@ -89,7 +89,7 @@ describe('requests result', () => {
       return timer(1000).pipe(
         map(() => [createTodo(1), createTodo(2)]),
         tap((todos) => store.update(setEntities(todos))),
-        trackRequestResult(['todos'])
+        trackRequestResult(['todos']),
       );
     }
 
@@ -171,7 +171,7 @@ describe('requests result', () => {
 
     const entities$ = store.pipe(
       selectAllEntities(),
-      joinRequestResult(['todos'])
+      joinRequestResult(['todos']),
     );
 
     const spy = jest.fn();
@@ -187,7 +187,7 @@ describe('requests result', () => {
         map(() => [createTodo(1)]),
         tap(() => reqSpy()),
         tap((todos) => store.update(setEntities(todos))),
-        trackRequestResult(['todos'])
+        trackRequestResult(['todos']),
       );
     }
 
@@ -309,7 +309,7 @@ describe('requests result', () => {
 
     const entities$ = store.pipe(
       selectAllEntities(),
-      joinRequestResult(['todos'], { initialStatus: 'idle' })
+      joinRequestResult(['todos'], { initialStatus: 'idle' }),
     );
 
     const spy = jest.fn();
@@ -322,7 +322,7 @@ describe('requests result', () => {
       return timer(1000).pipe(
         map(() => [createTodo(1)]),
         tap((todos) => store.update(setEntities(todos))),
-        trackRequestResult(['todos'])
+        trackRequestResult(['todos']),
       );
     }
 
@@ -465,7 +465,7 @@ describe('requests result', () => {
       return timer(1000).pipe(
         map(() => [createTodo(1)]),
         tap((todos) => store.update(setEntities(todos))),
-        trackRequestResult(['todos'], { cacheResponseData: true })
+        trackRequestResult(['todos'], { cacheResponseData: true }),
       );
     }
 
@@ -557,7 +557,7 @@ describe('requests result', () => {
         map(() => [createTodo(1)]),
         tap(() => reqSpy()),
         tap((todos) => store.update(setEntities(todos))),
-        trackRequestResult(['todos'], { skipCache: true })
+        trackRequestResult(['todos'], { skipCache: true }),
       );
     }
 
@@ -587,7 +587,7 @@ describe('requests result', () => {
         map(() => [createTodo(1)]),
         tap(() => reqSpy()),
         tap((todos) => store.update(setEntities(todos))),
-        trackRequestResult(['todos'], { preventConcurrentRequest: false })
+        trackRequestResult(['todos'], { preventConcurrentRequest: false }),
       );
     }
 
@@ -618,7 +618,10 @@ describe('requests result', () => {
         map(() => [createTodo(1)]),
         tap(() => reqSpy()),
         tap((todos) => store.update(setEntities(todos))),
-        trackRequestResult(['todos'], { staleTime: 900_000, preventConcurrentRequest: true })
+        trackRequestResult(['todos'], {
+          staleTime: 900_000,
+          preventConcurrentRequest: true,
+        }),
       );
     }
 
@@ -645,7 +648,7 @@ describe('requests result', () => {
     const reqSpy = jest.fn();
     const entities$ = store.pipe(
       selectAllEntities(),
-      joinRequestResult(['todos'])
+      joinRequestResult(['todos']),
     );
 
     const spy = jest.fn();
@@ -659,7 +662,7 @@ describe('requests result', () => {
         map(() => [createTodo(1)]),
         tap(() => reqSpy()),
         tap((todos) => store.update(setEntities(todos))),
-        trackRequestResult(['todos'], { staleTime: 5000 })
+        trackRequestResult(['todos'], { staleTime: 5000 }),
       );
     }
 
@@ -700,8 +703,10 @@ describe('requests result', () => {
       return timer(1000).pipe(
         map(() => [createTodo(1)]),
         tap((todos) => store.update(setEntities(todos))),
-        tap(todo => spy(todo)),
-        trackRequestResult(['todos'], { additionalKeys: todos => todos.map(todo => (['todos', todo.id])) })
+        tap((todo) => spy(todo)),
+        trackRequestResult(['todos'], {
+          additionalKeys: (todos) => todos.map((todo) => ['todos', todo.id]),
+        }),
       );
     }
 
@@ -711,8 +716,8 @@ describe('requests result', () => {
       return timer(1000).pipe(
         map(() => createTodo(id)),
         tap((todo) => store.update(upsertEntities([todo]))),
-        tap(todo => spy(todo)),
-        trackRequestResult(['todos', id])
+        tap((todo) => spy(todo)),
+        trackRequestResult(['todos', id]),
       );
     }
 
@@ -732,10 +737,7 @@ describe('requests result', () => {
     const store = new Store({ state, config, name: 'todos' });
 
     function getEntity$(id: number) {
-      return store.pipe(
-        selectEntity(id),
-        joinRequestResult(['todos', id])
-      );
+      return store.pipe(selectEntity(id), joinRequestResult(['todos', id]));
     }
 
     const spy = jest.fn();
@@ -751,7 +753,9 @@ describe('requests result', () => {
         map(() => [createTodo(1)]),
         tap(() => reqSpy()),
         tap((todos) => store.update(setEntities(todos))),
-        trackRequestResult(['todos'], { additionalKeys: todos => todos.map(todo => (['todos', todo.id])) })
+        trackRequestResult(['todos'], {
+          additionalKeys: (todos) => todos.map((todo) => ['todos', todo.id]),
+        }),
       );
     }
 

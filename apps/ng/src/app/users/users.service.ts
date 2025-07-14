@@ -16,7 +16,7 @@ export class UsersService {
       .get<User[]>('https://jsonplaceholder.typicode.com/users')
       .pipe(
         tap((users) => this.usersRepo.setUsers(users)),
-        trackRequestResult(['users'])
+        trackRequestResult(['users']),
       );
   }
 
@@ -25,7 +25,7 @@ export class UsersService {
       .get<User>(`https://jsonplaceholder.typicode.com/users/${id}`)
       .pipe(
         tap((user) => this.usersRepo.addUser(user)),
-        trackRequestResult(['users', id])
+        trackRequestResult(['users', id]),
       );
   }
 }

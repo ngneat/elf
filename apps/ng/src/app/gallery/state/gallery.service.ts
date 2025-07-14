@@ -11,7 +11,7 @@ export class GalleryService {
   getGalleryItems() {
     return timer(300).pipe(
       map(() => getData()),
-      tap((res) => this.repo.addGalleryItems(res))
+      tap((res) => this.repo.addGalleryItems(res)),
     );
   }
 }

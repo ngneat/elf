@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/persist-state/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nrwl/rollup:rollup",
@@ -51,6 +52,5 @@
         "syncVersions": false
       }
     }
-  },
-  "tags": []
+  }
 }

@@ -20,7 +20,7 @@ export function fetchTodos() {
   return http.get(todosUrl).pipe(
     tap(setTodos),
     // highlight-next-line
-    trackRequestResult(['todos'])
+    trackRequestResult(['todos']),
   );
 }
 ```
@@ -42,7 +42,7 @@ const todosStore = createStore({ name: 'todos' }, withEntities<Todo>());
 export const entities$ = store.pipe(
   selectAllEntities(),
   // highlight-next-line
-  joinRequestResult(['todos'])
+  joinRequestResult(['todos']),
 );
 ```
 
@@ -58,9 +58,9 @@ entities$.subscribe(
       status,
       successfulRequestsCount,
       data, // typed as Todo[]
-      error
+      error,
     );
-  }
+  },
 );
 ```
 
@@ -91,7 +91,7 @@ export function fetchTodos() {
   return http.get(todosUrl).pipe(
     tap(setTodos),
     // highlight-next-line
-    trackRequestResult(['todos'], { staleTime: 10_000 })
+    trackRequestResult(['todos'], { staleTime: 10_000 }),
   );
 }
 ```
@@ -106,7 +106,7 @@ export function fetchTodos() {
   return http.get(todosUrl).pipe(
     tap(setTodos),
     // highlight-next-line
-    trackRequestResult(['todos'], { skipCache: true })
+    trackRequestResult(['todos'], { skipCache: true }),
   );
 }
 ```
@@ -121,7 +121,7 @@ export function fetchTodos() {
   return http.get(todosUrl).pipe(
     tap(setTodos),
     // highlight-next-line
-    trackRequestResult(['todos'], { preventConcurrentRequest: false })
+    trackRequestResult(['todos'], { preventConcurrentRequest: false }),
   );
 }
 ```
@@ -136,7 +136,7 @@ export function fetchTodos() {
   return http.get(todosUrl).pipe(
     tap(setTodos),
     // highlight-next-line
-    trackRequestResult(['todos'], { cacheResponseData: true })
+    trackRequestResult(['todos'], { cacheResponseData: true }),
   );
 }
 
@@ -155,7 +155,9 @@ export function fetchTodos() {
   return http.get(todosUrl).pipe(
     tap(setTodos),
     // highlight-next-line
-    trackRequestResult(['todos'], { additionalKeys: todos => todos.map(todo => (['todos', todo.id])) })
+    trackRequestResult(['todos'], {
+      additionalKeys: (todos) => todos.map((todo) => ['todos', todo.id]),
+    }),
   );
 }
 ```
@@ -178,7 +180,7 @@ entities$
     mapResultData((data) => {
       // This will be called only when data is defined (not `null` or `undefined`)
       return data.filter((todo) => todo.id === 1);
-    })
+    }),
   )
   .subscribe((result) => {});
 ```

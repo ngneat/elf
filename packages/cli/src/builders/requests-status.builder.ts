@@ -12,7 +12,7 @@ export class RequestsStatusBuilder extends FeatureBuilder {
     return factory.createCallExpression(
       factory.createIdentifier(`withRequestsStatus<'${this.storeName}'>`),
       undefined,
-      []
+      [],
     );
   }
 

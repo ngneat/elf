@@ -20,22 +20,22 @@ type ReturnedData<DataKey extends string, Data, Error> = {
   [K in 'loading' | 'error' | DataKey]: K extends DataKey
     ? Data
     : K extends 'loading'
-    ? boolean
-    : K extends 'error'
-    ? Error
-    : never;
+      ? boolean
+      : K extends 'error'
+        ? Error
+        : never;
 };
 
 export type DataSource<S, DataKey extends string, Data, Error> = {
   trackRequestStatus: <T>(
-    options?: Parameters<typeof trackRequestStatus>[2]
+    options?: Parameters<typeof trackRequestStatus>[2],
   ) => MonoTypeOperatorFunction<T>;
   setSuccess(): Reducer<S>;
   data$: () => Observable<ReturnedData<DataKey, Data, Error>>;
 } & (S extends RequestsCacheState
   ? {
       skipWhileCached: <T>(
-        options?: Parameters<typeof skipWhileCached>[2]
+        options?: Parameters<typeof skipWhileCached>[2],
       ) => MonoTypeOperatorFunction<T>;
       setCached(options?: Parameters<typeof updateRequestCache>[1]): Reducer<S>;
     }
@@ -43,24 +43,24 @@ export type DataSource<S, DataKey extends string, Data, Error> = {
 
 export type DynamicKeyDataSource<S, DataKey extends string, Data, Error> = {
   trackRequestStatus: <T>(
-    options: KeyProp & Parameters<typeof trackRequestStatus>[2]
+    options: KeyProp & Parameters<typeof trackRequestStatus>[2],
   ) => MonoTypeOperatorFunction<T>;
   setSuccess(options: KeyProp): Reducer<S>;
   data$: (options: KeyProp) => Observable<ReturnedData<DataKey, Data, Error>>;
 } & (S extends RequestsCacheState
   ? {
       skipWhileCached: <T>(
-        options: KeyProp & Parameters<typeof skipWhileCached>[2]
+        options: KeyProp & Parameters<typeof skipWhileCached>[2],
       ) => MonoTypeOperatorFunction<T>;
       setCached(
-        options: KeyProp & Parameters<typeof updateRequestCache>[1]
+        options: KeyProp & Parameters<typeof updateRequestCache>[1],
       ): Reducer<S>;
     }
   : Record<any, any>);
 
 interface DataSourceCreationDefaultParams<
   S extends RequestsStatusState,
-  DataKey extends string
+  DataKey extends string,
 > {
   store: Store<StoreDef<S>>;
   dataKey: DataKey;
@@ -72,7 +72,7 @@ interface DataSourceCreationParams<
   Data,
   S extends RequestsStatusState,
   RequestKey extends RecordKeys<S>,
-  DataKey extends string
+  DataKey extends string,
 > extends DataSourceCreationDefaultParams<S, DataKey> {
   data$: () => Observable<Data>;
   requestKey: RequestKey;
@@ -81,7 +81,7 @@ interface DataSourceCreationParams<
 interface DynamicKeyDataSourceCreationParams<
   Data,
   S extends RequestsStatusState,
-  DataKey extends string
+  DataKey extends string,
 > extends DataSourceCreationDefaultParams<S, DataKey> {
   data$: (key: any) => Observable<Data>;
 }
@@ -91,28 +91,28 @@ export function createRequestDataSource<
   S extends RequestsStatusState,
   RequestKey extends RecordKeys<S>,
   DataKey extends string,
-  Error = unknown
+  Error = unknown,
 >(
-  params: DataSourceCreationParams<Data, S, RequestKey, DataKey>
+  params: DataSourceCreationParams<Data, S, RequestKey, DataKey>,
 ): DataSource<S, DataKey, Data, Error>;
 export function createRequestDataSource<
   Data,
   S extends RequestsStatusState,
   DataKey extends string,
-  Error = unknown
+  Error = unknown,
 >(
-  params: DynamicKeyDataSourceCreationParams<Data, S, DataKey>
+  params: DynamicKeyDataSourceCreationParams<Data, S, DataKey>,
 ): DynamicKeyDataSource<S, DataKey, Data, Error>;
 export function createRequestDataSource<
   Data,
   S extends RequestsStatusState,
   RequestKey extends RecordKeys<S>,
   DataKey extends string,
-  Error = unknown
+  Error = unknown,
 >(
   params:
     | DataSourceCreationParams<Data, S, RequestKey, DataKey>
-    | DynamicKeyDataSourceCreationParams<Data, S, DataKey>
+    | DynamicKeyDataSourceCreationParams<Data, S, DataKey>,
 ):
   | DynamicKeyDataSource<S, DataKey, Data, Error>
   | DataSource<S, DataKey, Data, Error> {
@@ -129,10 +129,10 @@ export function createRequestDataSource<
 
   return {
     trackRequestStatus: (
-      options: KeyProp & Parameters<typeof trackRequestStatus>[2]
+      options: KeyProp & Parameters<typeof trackRequestStatus>[2],
     ) => trackRequestStatus(store, requestKey ?? options?.key, options),
     skipWhileCached: (
-      options: KeyProp & Parameters<typeof skipWhileCached>[2]
+      options: KeyProp & Parameters<typeof skipWhileCached>[2],
     ) => skipWhileCached(store as any, requestKey ?? options?.key, options),
     setSuccess(options: KeyProp) {
       return updateRequestStatus(requestKey ?? options?.key, 'success');
@@ -147,8 +147,8 @@ export function createRequestDataSource<
           status: store.pipe(
             selectRequestStatus(
               requestKey ?? options?.key,
-              requestStatusOptions || {}
-            )
+              requestStatusOptions || {},
+            ),
           ),
         })
         .pipe(
@@ -169,7 +169,7 @@ export function createRequestDataSource<
               a.loading === b.loading &&
               a.error === b.error
             );
-          })
+          }),
         ),
   } as any;
 }

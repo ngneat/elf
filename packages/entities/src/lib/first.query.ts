@@ -19,11 +19,11 @@ import {
  */
 export function selectFirst<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(options: BaseEntityOptions<Ref> = {}) {
   const { ref: { entitiesKey, idsKey } = defaultEntitiesRef } = options;
 
   return select<S, getEntityType<S, Ref> | undefined>(
-    (state) => state[entitiesKey][state[idsKey][0]]
+    (state) => state[entitiesKey][state[idsKey][0]],
   );
 }

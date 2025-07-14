@@ -25,7 +25,7 @@ describe('activeId', () => {
   it('should select the active entity', () => {
     const { state, config } = createState(
       withEntities<{ id: number; title: string }>(),
-      withActiveId()
+      withActiveId(),
     );
 
     const store = new Store({ state, config, name: '' });
@@ -61,7 +61,7 @@ describe('activeId', () => {
   it('should get the active entity', () => {
     const { state, config } = createState(
       withEntities<{ id: number; title: string }>(),
-      withActiveId()
+      withActiveId(),
     );
 
     const store = new Store({ state, config, name: '' });
@@ -98,20 +98,20 @@ describe('activeId', () => {
 
     const { state, config } = createState(
       withPersonEntities<{ id: number; name: string }>(),
-      withActiveId()
+      withActiveId(),
     );
 
     const store = new Store({ state, config, name: '' });
 
     expect(
-      store.query(getActiveEntity({ ref: personEntitiesRef }))
+      store.query(getActiveEntity({ ref: personEntitiesRef })),
     ).toBeUndefined();
 
     store.update(addEntities({ id: 1, name: '' }, { ref: personEntitiesRef }));
     store.update(setActiveId(1));
 
     const activeRefEntity = store.query(
-      getActiveEntity({ ref: personEntitiesRef })
+      getActiveEntity({ ref: personEntitiesRef }),
     );
 
     expect(activeRefEntity).toEqual({ id: 1, name: '' });
@@ -125,7 +125,7 @@ describe('activeIds', () => {
   it('should select the active entities', () => {
     const { state, config } = createState(
       withEntities<{ id: number; title: string }>(),
-      withActiveIds()
+      withActiveIds(),
     );
 
     const store = new Store({ state, config, name: '' });
@@ -156,7 +156,7 @@ describe('activeIds', () => {
   it('should get the active entities', () => {
     const { state, config } = createState(
       withEntities<{ id: number; title: string }>(),
-      withActiveIds()
+      withActiveIds(),
     );
 
     const store = new Store({ state, config, name: '' });
@@ -203,22 +203,22 @@ describe('activeIds', () => {
 
     const { state, config } = createState(
       withPersonEntities<{ id: number; name: string }>(),
-      withActiveIds()
+      withActiveIds(),
     );
 
     const store = new Store({ state, config, name: '' });
 
     expect(store.query(getActiveEntities({ ref: personEntitiesRef }))).toEqual(
-      []
+      [],
     );
 
     store.update(
-      addEntities([{ id: 1, name: '' }], { ref: personEntitiesRef })
+      addEntities([{ id: 1, name: '' }], { ref: personEntitiesRef }),
     );
     store.update(setActiveIds([1]));
 
     const activeRefEntities = store.query(
-      getActiveEntities({ ref: personEntitiesRef })
+      getActiveEntities({ ref: personEntitiesRef }),
     );
 
     expect(activeRefEntities).toEqual([{ id: 1, name: '' }]);

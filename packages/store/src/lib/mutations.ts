@@ -16,7 +16,7 @@ import { isFunction } from './utils';
  */
 export function setProp<S extends Record<string, any>, K extends keyof S>(
   key: K,
-  value: S[K] | ((current: S[K]) => S[K])
+  value: S[K] | ((current: S[K]) => S[K]),
 ): Reducer<S> {
   return function (state) {
     return {
@@ -46,7 +46,7 @@ export function setProp<S extends Record<string, any>, K extends keyof S>(
  *
  */
 export function setProps<S extends Record<string, any>, V extends Partial<S>>(
-  props: V | ((state: S) => V)
+  props: V | ((state: S) => V),
 ): Reducer<S> {
   return function (state) {
     return {

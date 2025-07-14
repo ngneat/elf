@@ -30,7 +30,7 @@ describe('devtools', () => {
           entities: {},
           ids: [],
         },
-      }
+      },
     );
 
     const store = createEntitiesStore();
@@ -46,7 +46,7 @@ describe('devtools', () => {
           entities: {},
           ids: [],
         },
-      }
+      },
     );
 
     store.update(addEntities(createTodo(1)));
@@ -68,7 +68,7 @@ describe('devtools', () => {
           },
           ids: [1],
         },
-      }
+      },
     );
 
     store.destroy();
@@ -80,7 +80,7 @@ describe('devtools', () => {
           entities: {},
           ids: [],
         },
-      }
+      },
     );
 
     createEntitiesStore('foo');
@@ -96,7 +96,7 @@ describe('devtools', () => {
           entities: {},
           ids: [],
         },
-      }
+      },
     );
 
     const bar = createEntitiesStore('bar');
@@ -116,7 +116,7 @@ describe('devtools', () => {
           entities: {},
           ids: [],
         },
-      }
+      },
     );
 
     bar.update(addEntities(createTodo(1)));
@@ -142,7 +142,7 @@ describe('devtools', () => {
           },
           ids: [1],
         },
-      }
+      },
     );
   });
 });

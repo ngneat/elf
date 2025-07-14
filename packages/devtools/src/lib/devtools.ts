@@ -27,7 +27,7 @@ declare global {
       connect(options: DevtoolsOptions): {
         send(
           data: { type: string } & Record<string, any>,
-          state: Record<string, any>
+          state: Record<string, any>,
         ): void;
         init(state: Record<string, any>): void;
         unsubscribe(): void;
@@ -36,7 +36,7 @@ declare global {
             type: string;
             payload: { type: string };
             state: string;
-          }) => void
+          }) => void,
         ): () => void;
       };
     };
@@ -89,7 +89,7 @@ export function devTools(options: DevtoolsOptions = {}) {
       'actionsDispatcher',
       options.actionsDispatcher.subscribe((action) => {
         send(action);
-      })
+      }),
     );
   }
 
