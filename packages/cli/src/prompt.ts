@@ -78,6 +78,7 @@ export async function prompt(options: GlobalConfig | undefined) {
       name: 'idKey',
       default: DEFAULT_ID_KEY,
       type: 'input',
+      message: 'ID key',
       when(answers: Options) {
         return has(answers, 'withEntities');
       },
