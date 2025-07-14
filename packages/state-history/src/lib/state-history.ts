@@ -40,7 +40,7 @@ export class StateHistory<T extends Store, State extends StoreValue<T>> {
 
   constructor(
     protected store: T,
-    private options: Partial<StateHistoryOptions<State>> = {}
+    private options: Partial<StateHistoryOptions<State>> = {},
   ) {
     this.mergedOptions = {
       maxAge: 10,
@@ -217,7 +217,7 @@ export class StateHistory<T extends Store, State extends StoreValue<T>> {
 
 export function stateHistory<T extends Store, State extends StoreValue<T>>(
   store: T,
-  options: Partial<StateHistoryOptions<State>> = {}
+  options: Partial<StateHistoryOptions<State>> = {},
 ) {
   return new StateHistory<T, State>(store, options);
 }

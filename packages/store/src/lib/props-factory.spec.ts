@@ -49,7 +49,7 @@ describe('propsFactory', () => {
         return {
           2: 'error',
         };
-      })
+      }),
     );
 
     expect(store.getValue()).toEqual({
@@ -67,7 +67,7 @@ describe('propsFactory', () => {
       setRequestsStatus((state) => ({
         ...state.requestsStatus,
         2: 'success',
-      }))
+      })),
     );
     expect(store.getValue()).toEqual({
       requestsStatus: { 10: 'success', 2: 'success' },
@@ -135,14 +135,14 @@ describe('propsFactory Types', () => {
       // @ts-expect-error - Should be number
       setVersion(() => {
         return '1';
-      })
+      }),
     );
 
     store.update(
       setVersion((state) => {
         expectTypeOf(state).toEqualTypeOf<{ version: number }>();
         return 2;
-      })
+      }),
     );
 
     store.pipe(selectVersion()).subscribe((v) => {
@@ -157,14 +157,14 @@ describe('propsFactory Types', () => {
       // @ts-expect-error - Should be number
       updateVersion(() => {
         return '1';
-      })
+      }),
     );
 
     store.update(
       updateVersion((state) => {
         expectTypeOf(state).toEqualTypeOf<{ version: number }>();
         return 2;
-      })
+      }),
     );
 
     store.update(resetVersion());

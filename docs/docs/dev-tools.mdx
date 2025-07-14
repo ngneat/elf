@@ -36,12 +36,14 @@ import { AppModule } from './app/app.module';
 import { devTools } from '@ngneat/elf-devtools';
 
 platformBrowserDynamic()
-  .bootstrapModule(AppModule).then((moduleRef) => {
+  .bootstrapModule(AppModule)
+  .then((moduleRef) => {
     devTools({
-      postTimelineUpdate: () => moduleRef.injector.get(ApplicationRef).tick()
+      postTimelineUpdate: () => moduleRef.injector.get(ApplicationRef).tick(),
     });
-})
+  });
 ```
+
 ## Display actions from [@ngneat/effects](https://github.com/ngneat/effects)
 
 ### Angular
@@ -55,8 +57,8 @@ export function initElfDevTools(actions: Actions) {
   return () => {
     devTools({
       name: 'Sample Application',
-      actionsDispatcher: actions
-    })
+      actionsDispatcher: actions,
+    });
   };
 }
 
@@ -70,10 +72,9 @@ export function initElfDevTools(actions: Actions) {
       provide: APP_INITIALIZER,
       multi: true,
       useFactory: initElfDevTools,
-      deps: [Actions]
-    }
-  ]
+      deps: [Actions],
+    },
+  ],
 })
-export class AppModule {
-}
+export class AppModule {}
 ```

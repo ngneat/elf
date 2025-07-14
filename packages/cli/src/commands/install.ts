@@ -1,11 +1,11 @@
-import { Command, flags } from '@oclif/command';
-import * as inquirer from 'inquirer';
+import { Command, Flags } from '@oclif/core';
+import inquirer from 'inquirer';
 
 export default class Install extends Command {
   static description = 'Install Elf packages';
 
   static flags = {
-    help: flags.help({ char: 'h' }),
+    help: Flags.help({ char: 'h' }),
   };
 
   async run() {
@@ -20,7 +20,7 @@ export default class Install extends Command {
 
     if (all.length) {
       const shell = `${pm} ${pm === 'npm' ? 'install' : 'add'} ${all.join(
-        ' '
+        ' ',
       )}`;
 
       // eslint-disable-next-line @typescript-eslint/no-var-requires

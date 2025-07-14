@@ -24,7 +24,7 @@ import { findIdsByPredicate } from './entity.utils';
  */
 export function selectEntitiesCount<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(options: BaseEntityOptions<Ref> = {}): OperatorFunction<S, number> {
   const { ref: { idsKey } = defaultEntitiesRef } = options;
 
@@ -42,17 +42,17 @@ export function selectEntitiesCount<
  */
 export function selectEntitiesCountByPredicate<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   predicate: ItemPredicate<getEntityType<S, Ref>>,
-  options: BaseEntityOptions<Ref> = {}
+  options: BaseEntityOptions<Ref> = {},
 ): OperatorFunction<S, number> {
   const ref = options.ref || (defaultEntitiesRef as Ref);
 
   return pipe(
     untilEntitiesChanges(ref.entitiesKey),
     map((state) => findIdsByPredicate(state, ref, predicate).length),
-    distinctUntilChanged()
+    distinctUntilChanged(),
   );
 }
 
@@ -67,7 +67,7 @@ export function selectEntitiesCountByPredicate<
  */
 export function getEntitiesCount<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(options: BaseEntityOptions<Ref> = {}): Query<S, number> {
   return function (state) {
     const { ref: { idsKey } = defaultEntitiesRef } = options;
@@ -87,10 +87,10 @@ export function getEntitiesCount<
  */
 export function getEntitiesCountByPredicate<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   predicate: ItemPredicate<getEntityType<S, Ref>>,
-  options: BaseEntityOptions<Ref> = {}
+  options: BaseEntityOptions<Ref> = {},
 ): Query<S, number> {
   return function (state) {
     const ref = options.ref || (defaultEntitiesRef as Ref);

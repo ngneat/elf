@@ -23,7 +23,7 @@ import { Subject } from 'rxjs';
 describe('withPagination', () => {
   const { state, config } = createState(
     withEntities<{ id: number; name?: string }>(),
-    withPagination()
+    withPagination(),
   );
 
   let store: Store<{
@@ -66,7 +66,7 @@ describe('withPagination', () => {
         total: 22,
         perPage: 2,
         lastPage: 2,
-      })
+      }),
     );
 
     expect(store.query(getPaginationData())).toStrictEqual({

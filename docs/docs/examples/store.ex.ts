@@ -6,7 +6,7 @@ interface AuthProps {
 
 const authStore = createStore(
   { name: 'auth' },
-  withProps<AuthProps>({ user: null })
+  withProps<AuthProps>({ user: null }),
 );
 
 authStore.subscribe((state) => {

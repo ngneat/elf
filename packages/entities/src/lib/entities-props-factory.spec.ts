@@ -10,11 +10,11 @@ describe('entities props factory', () => {
   it('should create entities', () => {
     const store = createStore(
       { name: 'todos' },
-      withCartEntities<{ title: string; id: number }>()
+      withCartEntities<{ title: string; id: number }>(),
     );
 
     store.update(
-      addEntities({ id: 1, title: 'foo' }, { ref: cartEntitiesRef })
+      addEntities({ id: 1, title: 'foo' }, { ref: cartEntitiesRef }),
     );
 
     expect(store.getValue()).toMatchSnapshot();
@@ -24,12 +24,12 @@ describe('entities props factory', () => {
     const store = createStore(
       { name: 'todos' },
       withEntities<{ id: string; label: string }>(),
-      withCartEntities<{ title: string; id: number }>()
+      withCartEntities<{ title: string; id: number }>(),
     );
 
     store.update(
       addEntities({ id: '1', label: 'foo' }),
-      addEntities({ id: 1, title: 'foo' }, { ref: cartEntitiesRef })
+      addEntities({ id: 1, title: 'foo' }, { ref: cartEntitiesRef }),
     );
 
     expect(store.getValue()).toMatchSnapshot();
@@ -57,7 +57,7 @@ describe('entities props factory', () => {
   it('should infer types', () => {
     const store = createStore(
       { name: 'todos' },
-      withCartEntities<{ title: string; id: number }>()
+      withCartEntities<{ title: string; id: number }>(),
     );
 
     expectTypeOf(store.getValue()).toEqualTypeOf<{
@@ -75,7 +75,7 @@ describe('entities props factory', () => {
       store.update(
         // @ts-expect-error - The default entities isn't declared
         addEntities({ id: '1', label: 'foo' }),
-        addEntities({ id: 2, title: 'foo' }, { ref: cartEntitiesRef })
+        addEntities({ id: 2, title: 'foo' }, { ref: cartEntitiesRef }),
       );
     } catch {
       //
@@ -85,7 +85,7 @@ describe('entities props factory', () => {
       // @ts-expect-error - id should be a number
       addEntities({ id: '1', title: 'foo' }, { ref: cartEntitiesRef }),
       // @ts-expect-error - nope isn't exists on type of cart entity
-      addEntities({ id: 2, title: 'foo', nope: '' }, { ref: cartEntitiesRef })
+      addEntities({ id: 2, title: 'foo', nope: '' }, { ref: cartEntitiesRef }),
     );
   });
 
@@ -116,7 +116,7 @@ describe('entities props factory', () => {
       { name: 'movies' },
       withEntities<Movie>(),
       withGenresEntities<Genre>(),
-      withActorsEntities<Actor>()
+      withActorsEntities<Actor>(),
     );
 
     expect(store.getValue()).toMatchSnapshot();
@@ -144,7 +144,7 @@ describe('entities props factory', () => {
     store.update(
       addEntities({ id: '1', name: 'foo' }, { ref: actorsEntitiesRef }),
       addEntities({ id: '1', name: 'foo' }, { ref: genresEntitiesRef }),
-      addEntities({ id: '1', title: 'one', genres: ['1'], actors: ['1'] })
+      addEntities({ id: '1', title: 'one', genres: ['1'], actors: ['1'] }),
     );
 
     expect(store.getValue()).toMatchSnapshot();
@@ -164,7 +164,7 @@ describe('entities props factory', () => {
             count: 0,
           },
         ],
-      })
+      }),
     );
 
     expect(store.getValue()).toMatchInlineSnapshot(`

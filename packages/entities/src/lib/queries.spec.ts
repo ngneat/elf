@@ -69,17 +69,17 @@ describe('queries', () => {
             completed: false,
           },
           createTodo(3),
-        ])
+        ]),
       );
       expect(
-        store.query(getEntityByPredicate((el) => el.title === `todo 2`))?.id
+        store.query(getEntityByPredicate((el) => el.title === `todo 2`))?.id,
       ).toEqual(4);
     });
 
     it('should work with ref', () => {
       const store = createUIEntityStore();
       expect(store.query(getEntity(1, { ref: UIEntitiesRef }))).toEqual(
-        undefined
+        undefined,
       );
 
       const todo = createUITodo(1);
@@ -91,19 +91,19 @@ describe('queries', () => {
       const store = createUIEntityStore();
       expect(
         store.query(
-          getEntityByPredicate((el) => el.id === 1, { ref: UIEntitiesRef })
-        )
+          getEntityByPredicate((el) => el.id === 1, { ref: UIEntitiesRef }),
+        ),
       ).toEqual(undefined);
 
       store.update(
         addEntities([createUITodo(1), createUITodo(2), createUITodo(3)], {
           ref: UIEntitiesRef,
-        })
+        }),
       );
       expect(
         store.query(
-          getEntityByPredicate((el) => el.id === 2, { ref: UIEntitiesRef })
-        )?.id
+          getEntityByPredicate((el) => el.id === 2, { ref: UIEntitiesRef }),
+        )?.id,
       ).toEqual(2);
     });
   });
@@ -163,13 +163,13 @@ describe('queries', () => {
     store.update(addEntities([createTodo(1), createTodo(2)]));
 
     const entities = store.query(
-      getAllEntitiesApply({ filterEntity: (e) => e.id === 1 })
+      getAllEntitiesApply({ filterEntity: (e) => e.id === 1 }),
     );
 
     expectTypeOf(entities).toEqualTypeOf<Todo[]>();
 
     const titles = store.query(
-      getAllEntitiesApply({ mapEntity: (e) => e.title })
+      getAllEntitiesApply({ mapEntity: (e) => e.title }),
     );
 
     expectTypeOf(titles).toEqualTypeOf<string[]>();
@@ -187,8 +187,8 @@ describe('queries', () => {
         getAllEntitiesApply({
           mapEntity: (e) => e.title,
           filterEntity: (e) => e.id === 1,
-        })
-      )
+        }),
+      ),
     ).toMatchInlineSnapshot(`
       Array [
         "todo 1",

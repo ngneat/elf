@@ -33,7 +33,7 @@ export interface PaginationState<IdType extends number | string = number> {
 }
 
 export function withPagination<
-  IdType extends number | string = number
+  IdType extends number | string = number,
 >(options?: {
   initialPage?: IdType;
 }): PropsFactory<PaginationState<IdType>, EmptyConfig> {
@@ -53,7 +53,7 @@ export function withPagination<
 
 export function setPage<
   S extends StateOf<typeof withPagination> & EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(key: string | number, ids: Array<getIdType<S, Ref>>): Reducer<S> {
   return function (state: S) {
     return {
@@ -71,14 +71,14 @@ export function setPage<
 
 export function selectPaginationData<
   S extends StateOf<typeof withPagination> & EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(): OperatorFunction<S, PaginationState['pagination']> {
   return select(getPaginationData<S, Ref>());
 }
 
 export function getPaginationData<
   S extends StateOf<typeof withPagination> & EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(): Query<S, PaginationState['pagination']> {
   return function (state: S) {
     return state.pagination as PaginationState['pagination'];
@@ -87,7 +87,7 @@ export function getPaginationData<
 
 export function updatePaginationData<
   S extends StateOf<typeof withPagination> & EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(data: PaginationData): Reducer<S> {
   return function (state: S) {
     return {
@@ -102,7 +102,7 @@ export function updatePaginationData<
 
 export function deletePage<
   S extends StateOf<typeof withPagination> & EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(id: string | number): Reducer<S> {
   return function (state: S) {
     const pages = { ...state.pagination.pages };
@@ -120,7 +120,7 @@ export function deletePage<
 
 export function deleteAllPages<
   S extends StateOf<typeof withPagination> & EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(): Reducer<S> {
   return function (state: S) {
     return {
@@ -134,7 +134,7 @@ export function deleteAllPages<
 }
 
 export function setCurrentPage<
-  S extends StateOf<typeof withPagination> & EntitiesState<DefaultEntitiesRef>
+  S extends StateOf<typeof withPagination> & EntitiesState<DefaultEntitiesRef>,
 >(id: S['pagination']['currentPage']): Reducer<S> {
   return function (state: S) {
     return {
@@ -148,19 +148,19 @@ export function setCurrentPage<
 }
 
 export function selectCurrentPage<
-  S extends StateOf<typeof withPagination>
+  S extends StateOf<typeof withPagination>,
 >(): OperatorFunction<S, S['pagination']['currentPage']> {
   return select((state) => state.pagination.currentPage);
 }
 
 export function selectHasPage<S extends StateOf<typeof withPagination>>(
-  id: S['pagination']['currentPage']
+  id: S['pagination']['currentPage'],
 ): OperatorFunction<S, boolean> {
   return select(hasPage<S>(id));
 }
 
 export function hasPage<S extends StateOf<typeof withPagination>>(
-  id: S['pagination']['currentPage']
+  id: S['pagination']['currentPage'],
 ): Query<S, boolean> {
   return function (state: S) {
     return Reflect.has(state.pagination.pages, id);
@@ -169,7 +169,7 @@ export function hasPage<S extends StateOf<typeof withPagination>>(
 
 export function selectCurrentPageEntities<
   S extends StateOf<typeof withPagination> & EntitiesState<DefaultEntitiesRef>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(): OperatorFunction<S, Array<getEntityType<S, Ref>>> {
   return function (source: Observable<S>) {
     return source.pipe(selectCurrentPage()).pipe(
@@ -177,18 +177,18 @@ export function selectCurrentPageEntities<
         return source
           .pipe(select((state) => state.pagination.pages[page]))
           .pipe(switchMap((ids) => source.pipe(selectMany(ids ?? []))));
-      })
+      }),
     );
   };
 }
 
 export function skipWhilePageExists<
   T,
-  S extends StateOf<typeof withPagination>
+  S extends StateOf<typeof withPagination>,
 >(
   store: Store<StoreDef<S>>,
   page: string | number,
-  options?: { returnSource?: Observable<any> }
+  options?: { returnSource?: Observable<any> },
 ) {
   return function (source: Observable<T>) {
     if (store.query(hasPage(page))) {

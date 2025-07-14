@@ -17,7 +17,7 @@ interface Todo {
 const todosStore = createStore(
   { name: 'todos' },
   withEntities<Todo>(),
-  withRequestsCache<'todos'>()
+  withRequestsCache<'todos'>(),
 );
 
 const skipWhileTodosCached = createRequestsCacheOperator(todosStore);

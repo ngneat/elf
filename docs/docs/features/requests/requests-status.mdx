@@ -30,7 +30,7 @@ const todosStore = createStore(
   withEntities<Todo>(),
   // You can pass the keys type
   // highlight-next-line
-  withRequestsStatus<`todos` | `todo-${string}`>()
+  withRequestsStatus<`todos` | `todo-${string}`>(),
 );
 ```
 
@@ -58,7 +58,7 @@ export function fetchTodos() {
   return http.get(todosUrl).pipe(
     tap(setTodos),
     // highlight-next-line
-    trackTodosRequestsStatus('todos')
+    trackTodosRequestsStatus('todos'),
   );
 }
 ```
@@ -73,7 +73,7 @@ export function setTodos(todos: Todo[]) {
   store.update(
     addEntities(todos),
     // highlight-next-line
-    updateRequestStatus('todos', 'success')
+    updateRequestStatus('todos', 'success'),
   );
 }
 ```
@@ -92,8 +92,8 @@ const todosStore = createStore(
   withEntities<Todo>(),
   withRequestsStatus(
     // highlight-next-line
-    initializeAsPending('todos')
-  )
+    initializeAsPending('todos'),
+  ),
 );
 ```
 
@@ -160,7 +160,7 @@ store.update(
     keyOne: {
       value: 'success',
     },
-  })
+  }),
 );
 
 store.update(updateRequestsStatus(['keyOne', 'keyTwo'], 'success'));

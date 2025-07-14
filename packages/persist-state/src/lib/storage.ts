@@ -4,7 +4,7 @@ export type Async<T> = Promise<T> | Observable<T>;
 
 export interface StateStorage {
   getItem<T extends Record<string, any>>(
-    key: string
+    key: string,
   ): Async<T | null | undefined>;
 
   setItem(key: string, value: Record<string, any>): Async<any>;

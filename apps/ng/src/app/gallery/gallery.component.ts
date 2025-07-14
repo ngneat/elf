@@ -12,7 +12,7 @@ export class GalleryComponent implements OnInit {
 
   constructor(
     private service: GalleryService,
-    private galleryRepo: GalleryRepository
+    private galleryRepo: GalleryRepository,
   ) {}
 
   toggleItemOpen(galleryItemId: number) {

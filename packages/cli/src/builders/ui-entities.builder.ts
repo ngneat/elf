@@ -11,7 +11,7 @@ export class UIEntitiesBuilder extends FeatureBuilder {
     const type: any[] = [
       factory.createTypeReferenceNode(
         factory.createIdentifier(`${this.storeSingularNames.className}UI`),
-        undefined
+        undefined,
       ),
     ];
 
@@ -20,8 +20,8 @@ export class UIEntitiesBuilder extends FeatureBuilder {
     if (notDefaultId) {
       type.push(
         factory.createLiteralTypeNode(
-          factory.createStringLiteral(this.idKey, true)
-        )
+          factory.createStringLiteral(this.idKey, true),
+        ),
       );
     }
 
@@ -33,10 +33,10 @@ export class UIEntitiesBuilder extends FeatureBuilder {
           [
             factory.createPropertyAssignment(
               factory.createIdentifier('idKey'),
-              factory.createStringLiteral(this.idKey, true)
+              factory.createStringLiteral(this.idKey, true),
             ),
           ],
-          false
+          false,
         ),
       ];
     }
@@ -44,7 +44,7 @@ export class UIEntitiesBuilder extends FeatureBuilder {
     return factory.createCallExpression(
       factory.createIdentifier('withUIEntities'),
       type,
-      props
+      props,
     );
   }
 

@@ -22,9 +22,9 @@ export const {
 
 export function selectActiveEntity<
   S extends EntitiesState<Ref> & StateOf<typeof withActiveId>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
-  options: BaseEntityOptions<Ref> = {}
+  options: BaseEntityOptions<Ref> = {},
 ): OperatorFunction<S, getEntityType<S, Ref> | undefined> {
   const { ref = defaultEntitiesRef } = options;
 
@@ -37,9 +37,9 @@ export function selectActiveEntity<
 
 export function getActiveEntity<
   S extends EntitiesState<Ref> & StateOf<typeof withActiveId>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
-  options: BaseEntityOptions<Ref> = {}
+  options: BaseEntityOptions<Ref> = {},
 ): Query<S, getEntityType<S, Ref> | undefined> {
   const { ref: { entitiesKey } = defaultEntitiesRef } = options;
 
@@ -61,9 +61,9 @@ export const {
 
 export function selectActiveEntities<
   S extends EntitiesState<Ref> & StateOf<typeof withActiveIds>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
-  options: BaseEntityOptions<Ref> = {}
+  options: BaseEntityOptions<Ref> = {},
 ): OperatorFunction<S, getEntityType<S, Ref>[]> {
   const { ref = defaultEntitiesRef } = options;
 
@@ -76,7 +76,7 @@ export function selectActiveEntities<
 
 export function getActiveEntities<
   S extends EntitiesState<Ref> & StateOf<typeof withActiveIds>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(options: BaseEntityOptions<Ref> = {}): Query<S, getEntityType<S, Ref>[]> {
   const { ref: { entitiesKey } = defaultEntitiesRef } = options;
 

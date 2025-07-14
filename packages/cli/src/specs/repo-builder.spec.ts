@@ -82,7 +82,7 @@ describe('Repo Builder', () => {
     });
 
     expect(output).toMatchSnapshot(
-      'withRequestsCache in a class without constructor'
+      'withRequestsCache in a class without constructor',
     );
   });
 
@@ -125,7 +125,7 @@ describe('Repo Builder', () => {
     });
 
     expect(output).toMatchSnapshot(
-      'withRequestsStatus in a class without constructor'
+      'withRequestsStatus in a class without constructor',
     );
   });
 
@@ -168,7 +168,7 @@ describe('Repo Builder', () => {
     });
 
     expect(output).toMatchSnapshot(
-      'withActiveId in a class without constructor'
+      'withActiveId in a class without constructor',
     );
   });
 
@@ -211,7 +211,7 @@ describe('Repo Builder', () => {
     });
 
     expect(output).toMatchSnapshot(
-      'withActiveIds in a class without constructor'
+      'withActiveIds in a class without constructor',
     );
   });
 
@@ -254,7 +254,7 @@ describe('Repo Builder', () => {
     });
 
     expect(output).toMatchSnapshot(
-      'withEntities in a class without constructor'
+      'withEntities in a class without constructor',
     );
   });
 
@@ -297,7 +297,7 @@ describe('Repo Builder', () => {
     });
 
     expect(output).toMatchSnapshot(
-      'withEntities idKey in a class without constructor'
+      'withEntities idKey in a class without constructor',
     );
   });
 
@@ -340,7 +340,7 @@ describe('Repo Builder', () => {
     });
 
     expect(output).toMatchSnapshot(
-      'withUIEntities in a class without constructor'
+      'withUIEntities in a class without constructor',
     );
   });
 

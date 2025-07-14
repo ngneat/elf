@@ -49,7 +49,7 @@ describe('count', () => {
       });
 
     store.update(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
+      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef }),
     );
   });
 
@@ -89,7 +89,7 @@ describe('count', () => {
 
       store.update(
         updateEntities(1, { completed: true }),
-        updateEntities(2, { title: '' })
+        updateEntities(2, { title: '' }),
       );
 
       expect(store.query(getEntitiesCountByPredicate(predicate))).toEqual(1);
@@ -98,21 +98,21 @@ describe('count', () => {
     it('should work with ref', () => {
       const uiStore = createUIEntityStore();
       expect(uiStore.query(getEntitiesCount({ ref: UIEntitiesRef }))).toEqual(
-        0
+        0,
       );
 
       uiStore.update(
-        addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
+        addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef }),
       );
 
       expect(uiStore.query(getEntitiesCount({ ref: UIEntitiesRef }))).toEqual(
-        2
+        2,
       );
 
       uiStore.update(deleteEntities(1, { ref: UIEntitiesRef }));
 
       expect(uiStore.query(getEntitiesCount({ ref: UIEntitiesRef }))).toEqual(
-        1
+        1,
       );
     });
   });

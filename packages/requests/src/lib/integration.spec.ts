@@ -23,7 +23,7 @@ test('intergation', () => {
   const { state, config } = createState(
     withEntities<Todo>(),
     withRequestsCache<'todos'>(),
-    withRequestsStatus()
+    withRequestsStatus(),
   );
 
   const todosStore = new Store({ name: 'todos', state, config });
@@ -34,7 +34,7 @@ test('intergation', () => {
     todosStore.update(
       updateRequestStatus('todos', 'success'),
       updateRequestCache('todos'),
-      setEntities(todos)
+      setEntities(todos),
     );
   }
 
@@ -61,7 +61,7 @@ test('intergation', () => {
       mapTo([]),
       tap(setTodos),
       trackTodosRequestsStatus('todos'),
-      skipWhileTodosCached('todos')
+      skipWhileTodosCached('todos'),
     );
   }
 

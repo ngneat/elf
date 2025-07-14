@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "declaration": true,
-    "types": [],
+    "types": ["inquirer"],
     "module": "commonjs",
     "forceConsistentCasingInFileNames": true,
     "strict": true,

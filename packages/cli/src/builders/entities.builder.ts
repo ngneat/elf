@@ -12,7 +12,7 @@ export class EntitiesBuilder extends FeatureBuilder {
     const type: any[] = [
       factory.createTypeReferenceNode(
         factory.createIdentifier(this.storeSingularNames.className),
-        undefined
+        undefined,
       ),
     ];
 
@@ -21,8 +21,8 @@ export class EntitiesBuilder extends FeatureBuilder {
     if (notDefaultId) {
       type.push(
         factory.createLiteralTypeNode(
-          factory.createStringLiteral(this.idKey, true)
-        )
+          factory.createStringLiteral(this.idKey, true),
+        ),
       );
     }
 
@@ -34,10 +34,10 @@ export class EntitiesBuilder extends FeatureBuilder {
           [
             factory.createPropertyAssignment(
               factory.createIdentifier('idKey'),
-              factory.createStringLiteral(this.idKey, true)
+              factory.createStringLiteral(this.idKey, true),
             ),
           ],
-          false
+          false,
         ),
       ];
     }
@@ -45,14 +45,14 @@ export class EntitiesBuilder extends FeatureBuilder {
     return factory.createCallExpression(
       factory.createIdentifier('withEntities'),
       type,
-      props
+      props,
     );
   }
 
   run() {
     this.addImport(
       ['withEntities', 'selectAllEntities', ...this.options.crud],
-      '@ngneat/elf-entities'
+      '@ngneat/elf-entities',
     );
 
     this.sourceFile.insertInterface(this.getLastImportIndex() + 1, {
@@ -81,7 +81,7 @@ export class EntitiesBuilder extends FeatureBuilder {
       });
 
       this.repoConstructor.addStatements(
-        `this.${memberData.name} = ${initializer};`
+        `this.${memberData.name} = ${initializer};`,
       );
     } else {
       this.repo.insertMember(0, {

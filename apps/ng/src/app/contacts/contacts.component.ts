@@ -16,7 +16,7 @@ export class ContactsComponent implements OnInit {
 
   constructor(
     private service: ContactsService,
-    private repo: ContactsRepository
+    private repo: ContactsRepository,
   ) {}
 
   ngOnInit() {

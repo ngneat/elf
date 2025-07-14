@@ -26,7 +26,7 @@ export interface EntitiesTimelineOptions {
 export interface EntitiesStateHistoryOptions<
   T extends Store<any, StoreValue<any> & EntitiesState<E>>,
   E extends EntitiesRef,
-  S extends StoreValue<T> = StoreValue<T>
+  S extends StoreValue<T> = StoreValue<T>,
 > {
   maxAge: number;
   entitiesRef?: E;
@@ -34,7 +34,7 @@ export interface EntitiesStateHistoryOptions<
   // comparatorFn: (prev, current) => isEqual(prev, current) === false
   comparatorFn: (
     prevState: getEntityType<S, E>,
-    currentState: getEntityType<S, E>
+    currentState: getEntityType<S, E>,
   ) => boolean;
 }
 
@@ -47,7 +47,7 @@ type EntityHistory<E extends EntitiesRef> = {
 export class EntitiesStateHistory<
   T extends Store<any, StoreValue<any> & EntitiesState<E>>,
   E extends EntitiesRef,
-  S extends StoreValue<T> = StoreValue<T>
+  S extends StoreValue<T> = StoreValue<T>,
 > {
   private entitiesHistory = new Map<
     getIdType<EntitiesState<E>, E>,
@@ -66,7 +66,7 @@ export class EntitiesStateHistory<
 
   constructor(
     protected store: T,
-    private options: Partial<EntitiesStateHistoryOptions<T, E, S>> = {}
+    private options: Partial<EntitiesStateHistoryOptions<T, E, S>> = {},
   ) {
     this.mergedOptions = {
       maxAge: 10,
@@ -93,7 +93,7 @@ export class EntitiesStateHistory<
           selectEntities(this.entitiesRef),
           map(getIds),
           startWith(getIds()),
-          pairwise()
+          pairwise(),
         )
         .subscribe(([prevEntities, currentEntities]) => {
           if (!prevEntities.length && !currentEntities.length) {
@@ -130,7 +130,7 @@ export class EntitiesStateHistory<
   }
 
   getEntitiesPast(
-    options: EntitiesTimelineOptions = { showIfEmpty: false }
+    options: EntitiesTimelineOptions = { showIfEmpty: false },
   ): Record<
     getIdType<EntitiesState<E>, E>,
     Array<getEntityType<EntitiesState<E>, E>>
@@ -150,7 +150,7 @@ export class EntitiesStateHistory<
   }
 
   getEntitiesFuture(
-    options: EntitiesTimelineOptions = { showIfEmpty: false }
+    options: EntitiesTimelineOptions = { showIfEmpty: false },
   ): Record<
     getIdType<EntitiesState<E>, E>,
     Array<getEntityType<EntitiesState<E>, E>>
@@ -332,7 +332,7 @@ export class EntitiesStateHistory<
    */
   clear(
     ids?: OrArray<getIdType<S, E>>,
-    customUpdateFn?: (history: EntityHistory<E>) => EntityHistory<E>
+    customUpdateFn?: (history: EntityHistory<E>) => EntityHistory<E>,
   ) {
     this.getEntitiesIds(ids).forEach((id) => {
       const entityHistory = this.entitiesHistory.get(id);
@@ -394,7 +394,7 @@ export class EntitiesStateHistory<
       .pipe(
         selectEntity(id, this.entitiesRef),
         filterNil(),
-        filter(() => !(this.skipUpdate || this.pausedEntitiesChanges.has(id)))
+        filter(() => !(this.skipUpdate || this.pausedEntitiesChanges.has(id))),
       )
       .subscribe((entity) => {
         const entityHistory =
@@ -428,7 +428,7 @@ export class EntitiesStateHistory<
   }
 
   private getEntitiesIds(
-    ids?: OrArray<getIdType<S, E>>
+    ids?: OrArray<getIdType<S, E>>,
   ): Array<getIdType<S, E>> {
     if (isUndefined(ids)) {
       if (this.mergedOptions.entityIds) {
@@ -452,16 +452,16 @@ export class EntitiesStateHistory<
 
 type WithEntitiesState<
   S extends StoreValue<Store>,
-  E extends EntitiesRef
+  E extends EntitiesRef,
 > = S extends EntitiesState<E> & infer R
   ? EntitiesState<E> & R
   : S extends EntitiesState<E>
-  ? EntitiesState<E>
-  : never;
+    ? EntitiesState<E>
+    : never;
 
 export function entitiesStateHistory<
   T extends Store<any, WithEntitiesState<StoreValue<T>, E>>,
-  E extends EntitiesRef = DefaultEntitiesRef
+  E extends EntitiesRef = DefaultEntitiesRef,
 >(store: T, options: Partial<EntitiesStateHistoryOptions<T, E>> = {}) {
   return new EntitiesStateHistory<T, E>(store, options);
 }

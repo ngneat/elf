@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/cli-ng/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nrwl/rollup:rollup",
@@ -41,6 +42,5 @@
         "syncVersions": false
       }
     }
-  },
-  "tags": []
+  }
 }

@@ -27,7 +27,7 @@ describe('persist state', () => {
     expect(storage.setItem).toHaveBeenCalledTimes(1);
     expect(storage.setItem).toHaveBeenCalledWith(
       `todos@store`,
-      store.getValue()
+      store.getValue(),
     );
   });
 
@@ -100,7 +100,7 @@ describe('persist state', () => {
       private readonly _storage: Record<string, string> = {};
 
       getItem<T extends Record<string, any>>(
-        key: string
+        key: string,
       ): Async<T | undefined | null> {
         const value = this._storage[key];
         return Promise.resolve(value && JSON.parse(value));
@@ -124,7 +124,7 @@ describe('persist state', () => {
       store.update(updateEntities(1, { title: 'new-title' }));
       store.update(deleteEntities(1));
     }).not.toThrowError(
-      new TypeError(`Cannot read properties of undefined (reading '_storage')`)
+      new TypeError(`Cannot read properties of undefined (reading '_storage')`),
     );
   });
 

@@ -11,7 +11,7 @@ export function coerceArray<T>(value: T[] | T): T[] {
 export function resolveStoreVariableName(
   template: Options['template'],
   { propertyName }: ReturnType<typeof names>,
-  inlineStoreInClass: Options['inlineStoreInClass'] = false
+  inlineStoreInClass: Options['inlineStoreInClass'] = false,
 ) {
   return template === 'functions'
     ? `${propertyName}Store`
@@ -57,7 +57,7 @@ function toClassName(str: string): string {
 function toPropertyName(s: string): string {
   return s
     .replace(/(-|_|\.|\s)+(.)?/g, (_, __, chr) =>
-      chr ? chr.toUpperCase() : ''
+      chr ? chr.toUpperCase() : '',
     )
     .replace(/[^a-zA-Z\d]/g, '')
     .replace(/^([A-Z])/, (m) => m.toLowerCase());

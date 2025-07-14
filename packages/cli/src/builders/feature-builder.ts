@@ -27,14 +27,14 @@ export abstract class FeatureBuilder {
   storeVariableName = resolveStoreVariableName(
     this.options.template,
     this.storeNames,
-    this.isStoreInlinedInClass
+    this.isStoreInlinedInClass,
   );
   repoConstructor: ConstructorDeclaration | undefined;
 
   constructor(
     protected sourceFile: SourceFile,
     protected repo: ClassDeclaration,
-    protected options: Options
+    protected options: Options,
   ) {
     if (this.isStoreInlinedInClass === true) {
       this.repoConstructor = this.repo.getConstructors()[0];

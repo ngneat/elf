@@ -17,7 +17,7 @@ export function select<T, R>(mapFn: (state: T) => R): OperatorFunction<T, R> {
 
 export function head<
   T extends any[],
-  Item = T extends (infer I)[] ? I : never
+  Item = T extends (infer I)[] ? I : never,
 >(): OperatorFunction<T, Item> {
   return map((arr: T) => arr[0] as Item);
 }
@@ -48,6 +48,7 @@ export const asap = <T>(): MonoTypeOperatorFunction<T> =>
 
 export function filterNil<T>(): OperatorFunction<T, NonNullable<T>> {
   return filter(
-    (value: T): value is NonNullable<T> => value !== null && value !== undefined
+    (value: T): value is NonNullable<T> =>
+      value !== null && value !== undefined,
   );
 }

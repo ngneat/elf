@@ -13,10 +13,10 @@ export class PropsBuilder extends FeatureBuilder {
       [
         factory.createTypeReferenceNode(
           factory.createIdentifier(`${this.storeNames.className}Props`),
-          undefined
+          undefined,
         ),
       ],
-      [factory.createObjectLiteralExpression([], false)]
+      [factory.createObjectLiteralExpression([], false)],
     );
   }
 
@@ -28,11 +28,11 @@ export class PropsBuilder extends FeatureBuilder {
       {
         name: `${this.storeNames.className}Props`,
         isExported: true,
-      }
+      },
     );
 
     decl.replaceWithText(
-      `// eslint-disable-next-line @typescript-eslint/no-empty-interface\n${decl.getText()}`
+      `// eslint-disable-next-line @typescript-eslint/no-empty-interface\n${decl.getText()}`,
     );
   }
 }

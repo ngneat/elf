@@ -35,10 +35,10 @@ interface Options extends BaseEntityOptions<any> {
 export function selectMany<
   S extends EntitiesState<Ref>,
   K extends keyof getEntityType<S, Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   ids: Array<getIdType<S, Ref>>,
-  options: { pluck: K } & BaseEntityOptions<Ref>
+  options: { pluck: K } & BaseEntityOptions<Ref>,
 ): OperatorFunction<S, getEntityType<S, Ref>[K][]>;
 
 /**
@@ -52,12 +52,12 @@ export function selectMany<
 export function selectMany<
   S extends EntitiesState<Ref>,
   R,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   ids: Array<getIdType<S, Ref>>,
   options: {
     pluck: (entity: getEntityType<S, Ref>) => R;
-  } & BaseEntityOptions<Ref>
+  } & BaseEntityOptions<Ref>,
 ): OperatorFunction<S, R[]>;
 
 /**
@@ -70,15 +70,15 @@ export function selectMany<
  */
 export function selectMany<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   ids: Array<getIdType<S, Ref>>,
-  options?: BaseEntityOptions<Ref>
+  options?: BaseEntityOptions<Ref>,
 ): OperatorFunction<S, getEntityType<S, Ref>[]>;
 
 export function selectMany<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(ids: any[], options: Options = {}): any {
   const { ref: { entitiesKey } = defaultEntitiesRef, pluck } = options;
 
@@ -95,7 +95,7 @@ export function selectMany<
 
       return filtered;
     }),
-    distinctUntilArrayItemChanged()
+    distinctUntilArrayItemChanged(),
   );
 }
 
@@ -103,12 +103,12 @@ export function selectManyByPredicate<
   S extends EntitiesState<Ref>,
   R extends getEntityType<S, Ref>[],
   K extends keyof getEntityType<S, Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   predicate: ItemPredicate<getEntityType<S, Ref>>,
   options?: {
     pluck?: K | ((entity: getEntityType<S, Ref>) => R);
-  } & BaseEntityOptions<Ref>
+  } & BaseEntityOptions<Ref>,
 ): OperatorFunction<S, getEntityType<S, Ref>[]> {
   const { ref: { entitiesKey, idsKey } = defaultEntitiesRef, pluck } =
     options || {};
@@ -128,6 +128,6 @@ export function selectManyByPredicate<
 
       return filteredEntities;
     }),
-    distinctUntilArrayItemChanged()
+    distinctUntilArrayItemChanged(),
   );
 }

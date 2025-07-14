@@ -25,7 +25,7 @@ export interface TodosProps {
 const store = createStore(
   { name: 'todos' },
   withEntities<Todo>(),
-  withProps<TodosProps>({ filter: 'ALL' })
+  withProps<TodosProps>({ filter: 'ALL' }),
 );
 
 @Injectable({ providedIn: 'root' })
@@ -41,20 +41,20 @@ export class TodosRepository {
             if (filter === 'ALL') return true;
             return filter === 'COMPLETED' ? completed : !completed;
           },
-        })
+        }),
       );
-    })
+    }),
   );
 
   selectByCompletedState(completed: Todo['completed']) {
     return store.pipe(
-      selectManyByPredicate((entity) => entity.completed === completed)
+      selectManyByPredicate((entity) => entity.completed === completed),
     );
   }
 
   selectFirstCompletedTitle() {
     return store.pipe(
-      selectEntityByPredicate((entity) => entity.completed, { pluck: 'title' })
+      selectEntityByPredicate((entity) => entity.completed, { pluck: 'title' }),
     );
   }
 
@@ -64,7 +64,7 @@ export class TodosRepository {
       addEntities([
         { id: 1, title, completed: false },
         { id: 2, title, completed: false },
-      ])
+      ]),
     );
   }
 
@@ -72,7 +72,7 @@ export class TodosRepository {
     store.update(
       write((state) => {
         state.filter = filter;
-      })
+      }),
     );
   }
 
@@ -81,7 +81,7 @@ export class TodosRepository {
       updateEntities(id, (entity) => ({
         ...entity,
         completed: !entity.completed,
-      }))
+      })),
     );
   }
 }

@@ -14,14 +14,14 @@ test('batch', () => {
     {
       name: 'todos',
     },
-    withProps<{ count: number }>({ count: 1 })
+    withProps<{ count: number }>({ count: 1 }),
   );
 
   const store2 = createStore(
     {
       name: 'todos2',
     },
-    withProps<{ count: number }>({ count: 1 })
+    withProps<{ count: number }>({ count: 1 }),
   );
 
   const spy = jest.fn();
@@ -70,7 +70,7 @@ test('batch loop', () => {
     {
       name: 'todos2',
     },
-    withProps<{ count: number }>({ count: 1 })
+    withProps<{ count: number }>({ count: 1 }),
   );
 
   const spy = jest.fn();
@@ -98,7 +98,7 @@ test('nested batch', () => {
     {
       name: 'todos',
     },
-    withProps<{ name: string; count: number }>({ name: 'foo', count: 1 })
+    withProps<{ name: string; count: number }>({ name: 'foo', count: 1 }),
   );
 
   const spy = jest.fn();
@@ -162,7 +162,7 @@ test('async batch', async () => {
     {
       name: 'todos',
     },
-    withProps<{ name: string; count: number }>({ name: 'foo', count: 1 })
+    withProps<{ name: string; count: number }>({ name: 'foo', count: 1 }),
   );
 
   const spy = jest.fn();
@@ -204,7 +204,7 @@ test('nested async batch resolve 1 then 2', async () => {
     {
       name: 'todos',
     },
-    withProps<{ name: string; count: number }>({ name: 'foo', count: 1 })
+    withProps<{ name: string; count: number }>({ name: 'foo', count: 1 }),
   );
 
   const spy = jest.fn();
@@ -261,7 +261,7 @@ test('nested async batch resolve 2 then 1', async () => {
     {
       name: 'todos',
     },
-    withProps<{ name: string; count: number }>({ name: 'foo', count: 1 })
+    withProps<{ name: string; count: number }>({ name: 'foo', count: 1 }),
   );
 
   const spy = jest.fn();
@@ -318,7 +318,7 @@ test('nested batch in async batch', async () => {
     {
       name: 'todos',
     },
-    withProps<{ name: string; count: number }>({ name: 'foo', count: 1 })
+    withProps<{ name: string; count: number }>({ name: 'foo', count: 1 }),
   );
 
   const spy = jest.fn();
@@ -369,7 +369,7 @@ test('async batch with observable', async () => {
     {
       name: 'todos',
     },
-    withProps<{ name: string; count: number }>({ name: 'foo', count: 1 })
+    withProps<{ name: string; count: number }>({ name: 'foo', count: 1 }),
   );
 
   const spy = jest.fn();
@@ -380,15 +380,18 @@ test('async batch with observable', async () => {
 
   const obs$ = new Subject<void>();
 
-  const v = emitOnceAsync(() => obs$.pipe(map(() => {
-    for (let i = 0; i < 10; i++) {
-      store.update((s) => ({
-        ...s,
-        count: s.count + 1,
-      }));
-    }
-  })));
-
+  const v = emitOnceAsync(() =>
+    obs$.pipe(
+      map(() => {
+        for (let i = 0; i < 10; i++) {
+          store.update((s) => ({
+            ...s,
+            count: s.count + 1,
+          }));
+        }
+      }),
+    ),
+  );
 
   expect(batchInProgress.getValue()).toBeTruthy();
   expect(asyncBatchesInProgress).toBe(1);

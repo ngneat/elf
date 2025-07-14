@@ -132,10 +132,9 @@ const preStorageUpdate = (storeName, state) => {
   const newState = { ...state };
   if (storeName === 'todos') {
     delete newState.sensitiveData;
-  }    
+  }
   return newState;
-}
-  
+};
 
 persistState(todoStore, {
   key: 'todos',

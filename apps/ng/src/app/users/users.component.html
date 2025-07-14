@@ -1,13 +1,13 @@
 @if (users$ | async; as users) {
+  <h1>{{ users.isLoading ? 'Loading' : 'Fetched' }}</h1>
 
-<h1>{{ users.isLoading ? 'Loading' : 'Fetched' }}</h1>
-
-@if (users.isSuccess) {
-<ul>
-  @for (user of users.data; track user) {
-  <li>
-    <a [routerLink]="user.id.toString()">{{ user.name }}</a>
-  </li>
+  @if (users.isSuccess) {
+    <ul>
+      @for (user of users.data; track user) {
+        <li>
+          <a [routerLink]="user.id.toString()">{{ user.name }}</a>
+        </li>
+      }
+    </ul>
   }
-</ul>
-} }
+}

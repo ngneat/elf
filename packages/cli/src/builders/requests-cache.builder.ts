@@ -12,7 +12,7 @@ export class RequestsCacheBuilder extends FeatureBuilder {
     return factory.createCallExpression(
       factory.createIdentifier(`withRequestsCache<'${this.storeName}'>`),
       undefined,
-      []
+      [],
     );
   }
 

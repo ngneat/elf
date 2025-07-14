@@ -4,6 +4,7 @@
   "projectType": "application",
   "sourceRoot": "apps/ng/src",
   "prefix": "elf",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
@@ -62,7 +63,8 @@
           "buildTarget": "ng:build:development"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "development",
+      "continuous": true
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
@@ -81,6 +83,5 @@
         "jestConfig": "apps/ng/jest.config.ts"
       }
     }
-  },
-  "tags": []
+  }
 }

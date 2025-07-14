@@ -17,7 +17,7 @@ describe('store', () => {
   it('should reset store', () => {
     const { state, config } = createState(
       withEntities<Todo>(),
-      withProps<{ filter: string }>({ filter: '' })
+      withProps<{ filter: string }>({ filter: '' }),
     );
 
     const store = new Store({ state, name: 'todos', config });
@@ -38,7 +38,7 @@ describe('store', () => {
     const { state, config } = createState(
       withEntities<Todo>(),
       withUIEntities<UIEntity>(),
-      withProps<{ filter: string }>({ filter: '' })
+      withProps<{ filter: string }>({ filter: '' }),
     );
 
     const store = new Store({ state, name: 'todos', config });
@@ -58,7 +58,7 @@ describe('store', () => {
 
     store.update(
       addEntities(createTodo(1)),
-      addEntities(createUITodo(1), { ref: UIEntitiesRef })
+      addEntities(createUITodo(1), { ref: UIEntitiesRef }),
     );
 
     expect(spy).toHaveBeenCalledTimes(2);

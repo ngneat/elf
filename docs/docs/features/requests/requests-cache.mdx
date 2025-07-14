@@ -27,7 +27,7 @@ const todosStore = createStore(
   withEntities<Todo>(),
   // You can pass the keys type
   // highlight-next-line
-  withRequestsCache<'todo'|`todo-${string}`>()
+  withRequestsCache<'todo' | `todo-${string}`>(),
 );
 ```
 
@@ -42,7 +42,7 @@ import {
 const todosStore = createStore(
   { name: 'todos' },
   withEntities<Todo>(),
-  withRequestsCache<'todo'|`todo-${string}`>()
+  withRequestsCache<'todo' | `todo-${string}`>(),
 );
 
 export const skipWhileTodosCached = createRequestsCacheOperator(todosStore);
@@ -57,7 +57,7 @@ export function fetchTodos() {
   return http.get(todosUrl).pipe(
     tap(setTodos(todos)),
     // highlight-next-line
-    skipWhileTodosCached('todos')
+    skipWhileTodosCached('todos'),
   );
 }
 ```
@@ -72,7 +72,7 @@ export function setTodos(todos: Todo[]) {
   store.update(
     // highlight-next-line
     updateRequestCache('todos'),
-    setEntities(todos)
+    setEntities(todos),
   );
 }
 ```
@@ -87,7 +87,7 @@ export function setTodos(todos: Todo[]) {
   store.update(
     // highlight-next-line
     updateRequestCache('todos', { value: 'partial' }),
-    setEntities(todos)
+    setEntities(todos),
   );
 }
 ```
@@ -99,7 +99,7 @@ export function fetchTodos() {
   return http.get(todosUrl).pipe(
     tap((todos) => setTodos(todos)),
     // highlight-next-line
-    skipWhileTodosCached('todos', { value: 'partial' })
+    skipWhileTodosCached('todos', { value: 'partial' }),
   );
 }
 ```
@@ -114,7 +114,7 @@ export function fetchTodos() {
   return http.get(todosUrl).pipe(
     tap((todos) => setTodos(todos)),
     // highlight-next-line
-    skipWhileTodosCached('todos', { returnSource: of([]) })
+    skipWhileTodosCached('todos', { returnSource: of([]) }),
   );
 }
 ```
@@ -155,7 +155,7 @@ import { selectIsRequestCached } from '@ngneat/elf-requests';
 
 const isCached$ = store.pipe(selectIsRequestCached('todos'));
 const isPartialCached$ = store.pipe(
-  selectIsRequestCached('todos', { value: 'partial' })
+  selectIsRequestCached('todos', { value: 'partial' }),
 );
 ```
 
@@ -166,7 +166,7 @@ import { isRequestCached } from '@ngneat/elf-requests';
 
 const isCached = store.query(isRequestCached('todos'));
 const isPartialCached = store.query(
-  isRequestCached('todos', { value: 'partial' })
+  isRequestCached('todos', { value: 'partial' }),
 );
 ```
 
@@ -196,13 +196,13 @@ store.update(
     keyOne: {
       value: 'partial',
     },
-  })
+  }),
 );
 
 store.update(updateRequestsCache(['keyOne', 'keyTwo'], { value: 'partial' }));
 
 store.update(
-  updateRequestsCache(['keyOne', 'keyTwo'], { value: 'partial', ttl: 1000 })
+  updateRequestsCache(['keyOne', 'keyTwo'], { value: 'partial', ttl: 1000 }),
 );
 ```
 

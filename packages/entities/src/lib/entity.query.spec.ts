@@ -55,7 +55,7 @@ describe('selectEntity', () => {
     });
 
     store.update(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
+      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef }),
     );
   });
 
@@ -77,7 +77,7 @@ describe('selectEntity', () => {
       .pipe(
         selectEntityByPredicate((entity) => entity.title === 'todo 1', {
           pluck: 'title',
-        })
+        }),
       )
       .subscribe((title) => {
         expectTypeOf(title).toEqualTypeOf<string | undefined>();
@@ -93,7 +93,7 @@ describe('selectEntity', () => {
       .pipe(
         selectEntityByPredicate((entity) => entity.title === 'todo 1', {
           pluck: (entity) => entity.title,
-        })
+        }),
       )
       .subscribe((title) => {
         expectTypeOf(title).toEqualTypeOf<string | undefined>();
@@ -111,7 +111,7 @@ describe('selectEntity', () => {
       .pipe(
         selectEntityByPredicate((entity) => entity.id === 1, {
           ref: UIEntitiesRef,
-        })
+        }),
       )
       .subscribe((entity) => {
         expectTypeOf(entity).toEqualTypeOf<UITodo | undefined>();
@@ -119,7 +119,7 @@ describe('selectEntity', () => {
       });
 
     store.update(
-      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef })
+      addEntities([createUITodo(1), createUITodo(2)], { ref: UIEntitiesRef }),
     );
   });
 
@@ -131,7 +131,7 @@ describe('selectEntity', () => {
         selectEntityByPredicate((entity) => entity._id === 1, {
           ref: UIEntitiesRef,
           idKey: '_id',
-        })
+        }),
       )
       .subscribe((entity) => {
         expectTypeOf(entity).toEqualTypeOf<UITodoCustomKey | undefined>();
@@ -142,7 +142,7 @@ describe('selectEntity', () => {
     store.update(
       addEntities([createUITodoCustomKey(1), createUITodoCustomKey(2)], {
         ref: UIEntitiesRef,
-      })
+      }),
     );
   });
 });

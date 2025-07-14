@@ -1,41 +1,59 @@
 {
-  "version": "3.1.0",
   "commands": {
     "install": {
-      "id": "install",
-      "description": "Install Elf packages",
-      "pluginName": "@ngneat/elf-cli",
-      "pluginType": "core",
       "aliases": [],
+      "args": {},
+      "description": "Install Elf packages",
       "flags": {
         "help": {
-          "name": "help",
-          "type": "boolean",
           "char": "h",
-          "description": "show CLI help",
-          "allowNo": false
+          "description": "Show CLI help.",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
         }
       },
-      "args": []
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "install",
+      "pluginAlias": "@ngneat/elf-cli",
+      "pluginName": "@ngneat/elf-cli",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": false,
+      "relativePath": ["lib", "commands", "install.js"]
     },
     "repo": {
-      "id": "repo",
-      "description": "Create a repository",
-      "pluginName": "@ngneat/elf-cli",
-      "pluginType": "core",
       "aliases": [],
+      "args": {},
+      "description": "Create a repository",
       "examples": [],
       "flags": {
-        "dry-run": { "name": "dry-run", "type": "boolean", "allowNo": false },
+        "dry-run": {
+          "name": "dry-run",
+          "allowNo": false,
+          "type": "boolean"
+        },
         "help": {
-          "name": "help",
-          "type": "boolean",
           "char": "h",
-          "description": "show CLI help",
-          "allowNo": false
+          "description": "Show CLI help.",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
         }
       },
-      "args": []
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "repo",
+      "pluginAlias": "@ngneat/elf-cli",
+      "pluginName": "@ngneat/elf-cli",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": false,
+      "relativePath": ["lib", "commands", "repo.js"]
     }
-  }
+  },
+  "version": "3.1.0"
 }

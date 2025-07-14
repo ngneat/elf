@@ -1,13 +1,13 @@
-import * as inquirer from 'inquirer';
+import { cosmiconfigSync } from 'cosmiconfig';
+import inquirer from 'inquirer';
 import {
+  baseClassStorePlaces,
   baseFeatures,
   DEFAULT_ID_KEY,
   GlobalConfig,
   Options,
-  baseClassStorePlaces,
 } from './types';
 import { has } from './utils';
-import { cosmiconfigSync } from 'cosmiconfig';
 
 inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'));
 
@@ -18,7 +18,7 @@ export async function prompt(options: GlobalConfig | undefined) {
     {
       name: 'storeName',
       message: 'Store name',
-      validate(input) {
+      validate(input: string) {
         if (!input) {
           return 'This field is required';
         }
@@ -47,7 +47,7 @@ export async function prompt(options: GlobalConfig | undefined) {
       message: 'Select features',
       type: 'checkbox',
       choices: baseFeatures,
-      validate(input) {
+      validate(input: string[]) {
         if (input.includes('withActiveId') || input.includes('withActiveIds')) {
           if (!input.includes('withEntities')) {
             return 'You must use Entities with Active';
@@ -94,5 +94,5 @@ export async function prompt(options: GlobalConfig | undefined) {
       excludePath: (nodePath: string) => nodePath.includes('node_modules'),
       ...(options?.cli?.fuzzypath || {}),
     },
-  ]);
+  ] as any);
 }

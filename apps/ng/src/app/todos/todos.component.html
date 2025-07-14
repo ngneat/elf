@@ -6,14 +6,14 @@
 
 <ul>
   @for (todo of todosRepo.visibleTodos$ | async; track todo) {
-  <li>
-    <input
-      type="checkbox"
-      (change)="todosRepo.updateCompleted(todo.id)"
-      [checked]="todo.completed"
-    />
-    {{ todo.title }}
-  </li>
+    <li>
+      <input
+        type="checkbox"
+        (change)="todosRepo.updateCompleted(todo.id)"
+        [checked]="todo.completed"
+      />
+      {{ todo.title }}
+    </li>
   }
 </ul>
 
@@ -26,13 +26,13 @@
 <h2 style="margin-top: 20px">Completed</h2>
 <ul>
   @for (todo of todosRepo.selectByCompletedState(true) | async; track todo) {
-  <li>
-    <input
-      type="checkbox"
-      (change)="todosRepo.updateCompleted(todo.id)"
-      [checked]="todo.completed"
-    />
-    {{ todo.title }}
-  </li>
+    <li>
+      <input
+        type="checkbox"
+        (change)="todosRepo.updateCompleted(todo.id)"
+        [checked]="todo.completed"
+      />
+      {{ todo.title }}
+    </li>
   }
 </ul>

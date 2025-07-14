@@ -10,10 +10,10 @@ import {
 
 export function buildEntities<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef
+  Ref extends EntitiesRef,
 >(
   entities: getEntityType<S, Ref>[],
-  idKey: string
+  idKey: string,
 ): { ids: getIdType<S, Ref>[]; asObject: getEntityType<S, Ref> } {
   const asObject = {} as Record<getIdType<S, Ref>, getEntityType<S, Ref>>;
   const ids = [] as getIdType<S, Ref>;
@@ -36,19 +36,19 @@ export function buildEntities<
 
 export function findIdsByPredicate<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef
+  Ref extends EntitiesRef,
 >(state: S, ref: Ref, predicate: ItemPredicate<getEntityType<S, Ref>>) {
   const { idsKey, entitiesKey } = ref;
 
   const entities = state[entitiesKey];
   return state[idsKey].filter((id: getIdType<S, Ref>) =>
-    predicate(entities[id])
+    predicate(entities[id]),
   );
 }
 
 export function findEntityByPredicate<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(state: S, ref: EntitiesRef, predicate: ItemPredicate<getEntityType<S, Ref>>) {
   const { idsKey, entitiesKey } = ref;
 
@@ -64,10 +64,10 @@ export function checkPluck<
   S extends EntitiesState<Ref>,
   R extends getEntityType<S, Ref>[],
   K extends keyof getEntityType<S, Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   entity: getEntityType<S, Ref>,
-  pluck?: K | ((entity: getEntityType<S, Ref>) => R)
+  pluck?: K | ((entity: getEntityType<S, Ref>) => R),
 ) {
   if (entity && pluck) {
     return isFunction(pluck) ? pluck(entity) : entity[pluck];

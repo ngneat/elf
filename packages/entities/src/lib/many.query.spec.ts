@@ -45,7 +45,7 @@ describe('selectMany', () => {
     store.update(
       addEntities([createUITodo(1), createUITodo(2), createUITodo(3)], {
         ref: UIEntitiesRef,
-      })
+      }),
     );
     store.update(addEntities(createUITodo(4), { ref: UIEntitiesRef }));
 
@@ -78,7 +78,7 @@ describe('selectMany', () => {
       .pipe(
         selectManyByPredicate((entity) => entity.open === true, {
           ref: UIEntitiesRef,
-        })
+        }),
       )
       .subscribe((value) => {
         expect(value).toMatchSnapshot(`calls: ${count++}`);
@@ -87,7 +87,7 @@ describe('selectMany', () => {
     store.update(
       addEntities([createUITodo(1), createUITodo(2), createUITodo(3)], {
         ref: UIEntitiesRef,
-      })
+      }),
     );
     store.update(addEntities(createUITodo(4), { ref: UIEntitiesRef }));
 

@@ -26,7 +26,7 @@ export interface GalleryUIItem {
 const store = createStore(
   { name: 'gallery' },
   withEntities<GalleryItem>(),
-  withUIEntities<GalleryUIItem>()
+  withUIEntities<GalleryUIItem>(),
 );
 
 @Injectable({ providedIn: 'root' })
@@ -42,7 +42,7 @@ export class GalleryRepository {
     const uiGalleryItems = galleryItems.map(({ id }) => ({ id, open: false }));
     store.update(
       addEntities(galleryItems),
-      addEntities(uiGalleryItems, { ref: UIEntitiesRef })
+      addEntities(uiGalleryItems, { ref: UIEntitiesRef }),
     );
   }
 
@@ -54,7 +54,7 @@ export class GalleryRepository {
     this.store.update(
       updateEntities(galleryItemId, (item) => ({ ...item, open: !item.open }), {
         ref: UIEntitiesRef,
-      })
+      }),
     );
   }
 }

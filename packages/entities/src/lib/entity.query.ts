@@ -32,10 +32,10 @@ interface Options extends BaseEntityOptions<any> {
 export function selectEntity<
   S extends EntitiesState<Ref>,
   K extends keyof getEntityType<S, Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   id: getIdType<S, Ref>,
-  options: { pluck: K } & BaseEntityOptions<Ref>
+  options: { pluck: K } & BaseEntityOptions<Ref>,
 ): OperatorFunction<S, getEntityType<S, Ref>[K] | undefined>;
 
 /**
@@ -51,12 +51,12 @@ export function selectEntity<
 export function selectEntity<
   S extends EntitiesState<Ref>,
   R,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   id: getIdType<S, Ref>,
   options: {
     pluck: (entity: getEntityType<S, Ref>) => R;
-  } & BaseEntityOptions<Ref>
+  } & BaseEntityOptions<Ref>,
 ): OperatorFunction<S, R | undefined>;
 
 /**
@@ -72,28 +72,28 @@ export function selectEntity<
  */
 export function selectEntity<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   id: getIdType<S, Ref>,
-  options?: BaseEntityOptions<Ref>
+  options?: BaseEntityOptions<Ref>,
 ): OperatorFunction<S, getEntityType<S, Ref> | undefined>;
 
 export function selectEntity<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(id: any, options: Options = {}) {
   const { ref: { entitiesKey } = defaultEntitiesRef, pluck } = options;
 
   return pipe(
     untilEntitiesChanges(entitiesKey),
-    select<S, Ref>((state) => getEntity(state[entitiesKey], id, pluck))
+    select<S, Ref>((state) => getEntity(state[entitiesKey], id, pluck)),
   );
 }
 
 export function getEntity(
   entities: EntitiesRecord,
   id: string | number,
-  pluck: Options['pluck']
+  pluck: Options['pluck'],
 ) {
   const entity = entities[id];
 
@@ -120,13 +120,13 @@ export function selectEntityByPredicate<
   R,
   S extends EntitiesState<Ref>,
   Ref extends EntitiesRef = DefaultEntitiesRef,
-  EntityType = getEntityType<S, Ref>
+  EntityType = getEntityType<S, Ref>,
 >(
   predicate: ItemPredicate<getEntityType<S, Ref>>,
   options: {
     pluck: (entity: EntityType) => R;
   } & BaseEntityOptions<Ref> &
-    IdKey
+    IdKey,
 ): OperatorFunction<S, R | undefined>;
 
 /**
@@ -141,10 +141,10 @@ export function selectEntityByPredicate<
 export function selectEntityByPredicate<
   K extends keyof getEntityType<S, Ref>,
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   predicate: ItemPredicate<getEntityType<S, Ref>>,
-  options: { pluck: K } & BaseEntityOptions<Ref> & IdKey
+  options: { pluck: K } & BaseEntityOptions<Ref> & IdKey,
 ): OperatorFunction<S, getEntityType<S, Ref>[K] | undefined>;
 
 /**
@@ -158,23 +158,23 @@ export function selectEntityByPredicate<
  */
 export function selectEntityByPredicate<
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   predicate: ItemPredicate<getEntityType<S, Ref>>,
-  options?: BaseEntityOptions<Ref> & IdKey
+  options?: BaseEntityOptions<Ref> & IdKey,
 ): OperatorFunction<S, getEntityType<S, Ref> | undefined>;
 
 export function selectEntityByPredicate<
   R extends getEntityType<S, Ref>[],
   K extends keyof getEntityType<S, Ref>,
   S extends EntitiesState<Ref>,
-  Ref extends EntitiesRef = DefaultEntitiesRef
+  Ref extends EntitiesRef = DefaultEntitiesRef,
 >(
   predicate: ItemPredicate<getEntityType<S, Ref>>,
   options?: {
     pluck?: K | ((entity: getEntityType<S, Ref>) => R);
   } & BaseEntityOptions<Ref> &
-    IdKey
+    IdKey,
 ): OperatorFunction<S, getEntityType<S, Ref> | undefined> {
   const { ref = defaultEntitiesRef, pluck, idKey = 'id' } = options || {};
   const { entitiesKey } = ref;
@@ -189,7 +189,7 @@ export function selectEntityByPredicate<
       return state[entitiesKey][id];
     }),
     map((entity) => (entity ? checkPluck(entity, pluck) : undefined)),
-    distinctUntilChanged()
+    distinctUntilChanged(),
   );
 }
 

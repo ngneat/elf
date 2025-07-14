@@ -19,7 +19,7 @@ export function removeStore(store: Store) {
 }
 
 export function getStore<T extends StoreDef>(
-  name: string
+  name: string,
 ): Store<T> | undefined {
   return registry.get(name);
 }

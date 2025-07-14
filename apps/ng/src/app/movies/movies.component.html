@@ -1,10 +1,10 @@
 <section class="padding">
   @if (isLoading) {
-  <div class="text-center">
-    <div class="spinner-border" role="status">
-      <span class="sr-only">Loading...</span>
+    <div class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
     </div>
-  </div>
   }
 
   <h2 class="mb-2">Movies</h2>
@@ -21,19 +21,19 @@
         </thead>
         <tbody>
           @for (movie of movies; track movie) {
-          <tr>
-            <td>{{ movie.title }}</td>
-            <td>
-              @for (actor of movie.actors; track actor) {
-              <span>{{ actor }}</span>
-              }
-            </td>
-            <td>
-              @for (genre of movie.genres; track genre) {
-              <span>{{ genre }}</span>
-              }
-            </td>
-          </tr>
+            <tr>
+              <td>{{ movie.title }}</td>
+              <td>
+                @for (actor of movie.actors; track actor) {
+                  <span>{{ actor }}</span>
+                }
+              </td>
+              <td>
+                @for (genre of movie.genres; track genre) {
+                  <span>{{ genre }}</span>
+                }
+              </td>
+            </tr>
           }
         </tbody>
       </table>
@@ -52,43 +52,44 @@
         </thead>
         <tbody>
           @for (actor of actors; track actor) {
-          <tr>
-            <td class="row align-items-center me-0">
-              <div class="col-8">
-                <input
-                  #actorName
-                  [value]="actor.name"
-                  class="actor-input"
-                  [class.view]="!inEditMode(actor.id)"
-                />
-              </div>
-              <div class="col-4">
-                <div class="action-buttons float-end">
-                  @if (!inEditMode(actor.id)) {
-                  <button
-                    class="btn btn-light me-2"
-                    (click)="toggleView(actor.id, actorName)"
-                  >
-                    <i class="fas fa-pencil-alt"></i>
-                  </button>
-                  } @if (inEditMode(actor.id)) {
-                  <button
-                    class="btn btn-light me-2 bg-success text-light"
-                    (click)="edit(actor.id, actorName.value)"
-                  >
-                    <i class="fas fa-check"></i>
-                  </button>
-                  }
-                  <button
-                    class="btn btn-danger"
-                    (click)="deleteActor(actor.id)"
-                  >
-                    X
-                  </button>
+            <tr>
+              <td class="row align-items-center me-0">
+                <div class="col-8">
+                  <input
+                    #actorName
+                    [value]="actor.name"
+                    class="actor-input"
+                    [class.view]="!inEditMode(actor.id)"
+                  />
                 </div>
-              </div>
-            </td>
-          </tr>
+                <div class="col-4">
+                  <div class="action-buttons float-end">
+                    @if (!inEditMode(actor.id)) {
+                      <button
+                        class="btn btn-light me-2"
+                        (click)="toggleView(actor.id, actorName)"
+                      >
+                        <i class="fas fa-pencil-alt"></i>
+                      </button>
+                    }
+                    @if (inEditMode(actor.id)) {
+                      <button
+                        class="btn btn-light me-2 bg-success text-light"
+                        (click)="edit(actor.id, actorName.value)"
+                      >
+                        <i class="fas fa-check"></i>
+                      </button>
+                    }
+                    <button
+                      class="btn btn-danger"
+                      (click)="deleteActor(actor.id)"
+                    >
+                      X
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
           }
         </tbody>
       </table>

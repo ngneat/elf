@@ -12,7 +12,7 @@ describe('elfHooks', () => {
 
       const store = createStore(
         { name: 'todos' },
-        withProps<{ filter: string }>({ filter: '' })
+        withProps<{ filter: string }>({ filter: '' }),
       );
 
       const spy = jest.spyOn(elfHooksRegistry, 'preStoreUpdate');
@@ -23,7 +23,7 @@ describe('elfHooks', () => {
       expect(spy).toHaveBeenCalledWith(
         { filter: '' },
         { filter: 'foo' },
-        'todos'
+        'todos',
       );
 
       expect(store.getValue()).toMatchSnapshot();
@@ -43,7 +43,7 @@ describe('elfHooks', () => {
 
       const store = createStore(
         { name: 'counter' },
-        withProps<{ num: number }>({ num: 0 })
+        withProps<{ num: number }>({ num: 0 }),
       );
 
       const spy = jest.fn();
@@ -67,7 +67,7 @@ describe('elfHooks', () => {
 
       const store = createStore(
         { name: 'todos' },
-        withProps<{ filter: string }>({ filter: '' })
+        withProps<{ filter: string }>({ filter: '' }),
       );
 
       expect(spy).toHaveBeenCalledTimes(1);

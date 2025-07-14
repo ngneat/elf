@@ -31,7 +31,7 @@ const todosStore = createStore(
       { id: 0, selected: false },
       { id: 1, selected: false },
     ],
-  })
+  }),
 );
 
 export const todosStateHistory = entitiesStateHistory(todosStore);
@@ -48,7 +48,7 @@ todosStore
 
 todosStore.update(
   updateEntities([0, 1], { label: 'Renamed Todo' }),
-  updateEntities([0, 1], { selected: true }, { ref: UIEntitiesRef })
+  updateEntities([0, 1], { selected: true }, { ref: UIEntitiesRef }),
 );
 
 todosStateHistory.undo(0);

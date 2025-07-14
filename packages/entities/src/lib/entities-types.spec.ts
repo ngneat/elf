@@ -25,7 +25,7 @@ describe('Entities Types', () => {
   it('should assert createState', () => {
     const store = createStore(
       { name: '' },
-      withProps<{ foo: string }>({ foo: '' })
+      withProps<{ foo: string }>({ foo: '' }),
     );
 
     // @ts-expect-error - We didn't provide withEntities
@@ -106,8 +106,8 @@ describe('Entities Types', () => {
           // @ts-expect-error - We don't have withUIEntities
           addEntities(
             { id: 1, title: '', completed: true },
-            { ref: UIEntitiesRef }
-          )
+            { ref: UIEntitiesRef },
+          ),
         );
 
         // @ts-expect-error - We didn't provide the complete entity
@@ -115,7 +115,7 @@ describe('Entities Types', () => {
 
         store.update(
           // @ts-expect-error - We provide an additional property that doesn't exists
-          addEntities({ id: 1, title: '', completed: true, foo: 1 })
+          addEntities({ id: 1, title: '', completed: true, foo: 1 }),
         );
       } catch {
         //
@@ -177,7 +177,7 @@ describe('Entities Types', () => {
 
       store
         .pipe(
-          selectEntitiesCountByPredicate((e) => e.open, { ref: UIEntitiesRef })
+          selectEntitiesCountByPredicate((e) => e.open, { ref: UIEntitiesRef }),
         )
         .subscribe((v) => {
           expectTypeOf(v).toEqualTypeOf<number>();
@@ -189,7 +189,7 @@ describe('Entities Types', () => {
 
         store.update(
           // @ts-expect-error - We provide an additional property that doesn't exists
-          addEntities({ id: 1, open: true, foo: 1 }, { ref: UIEntitiesRef })
+          addEntities({ id: 1, open: true, foo: 1 }, { ref: UIEntitiesRef }),
         );
       } catch {
         //
@@ -214,7 +214,7 @@ describe('Entities Types', () => {
         { name: 'foo' },
         withEntities<Foo, 'type'>({
           idKey: 'type',
-        })
+        }),
       );
 
       const entity = store.query(getEntity(FooType.C));

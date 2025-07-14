@@ -15,7 +15,7 @@ interface Todo {
 const todosStore = createStore(
   { name: 'todos' },
   withEntities<Todo>(),
-  withActiveId()
+  withActiveId(),
 );
 
 todosStore.pipe(selectActiveEntity()).subscribe((active) => {
