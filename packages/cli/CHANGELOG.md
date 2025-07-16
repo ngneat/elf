@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [3.1.1](https://github.com/ngneat/elf/compare/cli-3.1.0...cli-3.1.1) (2025-07-16)
+
+
+### Bug Fixes
+
+* **cli:** fix idKey prompt message ([#538](https://github.com/ngneat/elf/issues/538)) ([94acb6d](https://github.com/ngneat/elf/commit/94acb6d546eae69723fc9b83ed322ecf5062ccff))
+
+
+
 # [3.1.0](https://github-personal/ngneat/elf/compare/cli-3.0.1...cli-3.1.0) (2023-10-14)
 
 ### Bug Fixes
