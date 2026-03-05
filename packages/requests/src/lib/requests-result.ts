@@ -282,6 +282,20 @@ export function trackRequestResult<TData>(
                 }
               }
             },
+            finalize() {
+              const mainKey = resolveKey(key);
+              const currentResult = emitters.get(mainKey)?.getValue();
+              if (currentResult?.fetchStatus === 'fetching') {
+                updateRequestResult(key, {
+                  isLoading: false,
+                  isSuccess: false,
+                  isError: false,
+                  status: 'idle',
+                  fetchStatus: 'idle',
+                  staleTime: Date.now(),
+                });
+              }
+            },
           }),
         );
       }),

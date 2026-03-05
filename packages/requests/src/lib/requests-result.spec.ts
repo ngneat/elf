@@ -9,7 +9,7 @@ import {
 } from '@ngneat/elf-entities';
 import { createTodo, Todo } from '@ngneat/elf-mocks';
 import { expectTypeOf } from 'expect-type';
-import { map, tap, timer } from 'rxjs';
+import { map, Observable, tap, timer } from 'rxjs';
 import {
   clearRequestsResult,
   filterSuccess,
@@ -767,5 +767,42 @@ describe('requests result', () => {
     expect(subscribeSpy).toHaveBeenCalledTimes(2);
     expect(reqSpy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledTimes(2);
+  });
+
+  it('should not cache aborted requests', () => {
+    jest.useFakeTimers();
+
+    const reqSpy = jest.fn();
+
+    function get() {
+      return new Observable((observer) => {
+        const id = setTimeout(() => {
+          observer.next();
+          observer.complete();
+        }, 1000);
+
+        return () => {
+          clearTimeout(id);
+        };
+      }).pipe(
+        trackRequestResult(['todos']),
+        tap(() => reqSpy()),
+      );
+    }
+
+    const subscription = get().subscribe();
+    subscription.unsubscribe();
+
+    jest.runAllTimers();
+
+    expect(reqSpy).toHaveBeenCalledTimes(0);
+
+    // Next request should not be cached since the first one was aborted
+
+    get().subscribe();
+
+    jest.runAllTimers();
+
+    expect(reqSpy).toHaveBeenCalledTimes(1);
   });
 });
